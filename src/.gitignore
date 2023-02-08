@@ -1,6 +1,7 @@
 *.d81
 *.log
 *.png
+*.prg
 *.rep
 *.sym
 *.txt

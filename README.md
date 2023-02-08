@@ -15,14 +15,23 @@ An attempt will be made to:
 - Be more ANS FORTH (94) compliant, and hopefully Forth 2012
 - Provide access to MEGA65 features
 
-RANDOM TODOs
+# BUILDING
+
+## Requirements
+- Acme from https://sourceforge.net/projects/acme-crossass/  I was using the one from https://github.com/MEGA65/acme but switched to the svn version to get access to some of the more recent features, but I'm not certain I ended up using them.  It could be that the https://github.com/MEGA65/acme one will still work.
+
+## Recommendations
+- Vice for c1541 to manipulate d81 images
+- m65, mega65_ftp from mega65-tools
+- m65dbg
+- xemu
+
+
+# RANDOM TODOs
 - get monitor working via brk and mon/monitor word
 - https://github.com/gerryjackson/forth2012-test-suite
 - get rid of the user area
-- switch everything to petscii? or ascii?
-  - ascii would have the advantage of simplifying sharing source files
 - some sort of RPICK (like PICK but for the return stack) for J, I, LEAVE, PLOOP, PPLOOP
-- can we use +/- with ZBRANCH, BRANCH?
 
 A.3.2.3.2
 
