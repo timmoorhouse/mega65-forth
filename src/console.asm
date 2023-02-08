@@ -41,6 +41,7 @@ goto_y
 
 
 petscii_to_screencode
+        ; TODO this is a bit of a mess
         cmp #128
         bpl _128
 
@@ -301,6 +302,7 @@ flush_keyboard
 
 
 ascii_to_petscii
+        ; TODO this is a bit of a mess - should we just read scan codes and then a look up table?
         ; TODO
         cmp #$61
         bpl _61
@@ -338,6 +340,7 @@ get_char
         ldy #0
         sty ASCIIKEY
         ; lda #40
+        ; TODO this is a bit of a mess - should we just read scan codes and then a look up table?
         jsr ascii_to_petscii
         ; TODO if conversion fails, loop?
         beq -
@@ -355,7 +358,7 @@ put_string
         phx
         ldy #0
         lda (<STRING),y
-        and #$1f ; TODO just for the case of printing names where we need to mask off control bits!
+        and #$1f ; TODO just for the case of printing names where we need to mask off control bits! - split into 7 and 8 bit versions?
         taz
 
         beq +
@@ -370,47 +373,3 @@ put_string
 
 +       plx
         rts                
-
-; ****************************************************************************
-
-;;
-;;    XEMIT writes one ascii character to terminal
-;;
-;;
-;XEMIT:    TYA
-;;          SEC
-;;          LDY #$1A
-;;          ADC (UP),Y
-;;          STA (UP),Y
-;;          INY            ; bump user varaible OUT
-;;          LDA #0
-;;          ADC (UP),Y
-;;          STA (UP),Y
-;          LDA 0,X        ; fetch character to output
-;          STX XSAVE
-;          JSR $FF10      ; and display it
-;          LDX XSAVE
-;          JMP POP
-;;
-;;         XKEY reads one terminal keystroke to stack
-;;
-;;
-;XKEY :    STX XSAVE
-;          JSR $FF00       ; might otherwise clobber it while
-;          LDX XSAVE      ; inputting a char to accumulator
-;          JMP PUSHOA
-;;
-;;         XQTER leaves a boolean representing terminal break
-;;
-;;
-;XQTER:    LDA #0      ; system depend port test
-;          JMP PUSHOA
-;;
-;;         XCR displays a CR and LF to terminal
-;;
-;;
-;XCR  :    STX XSAVE
-;          LDA #$0A
-;          JSR $FF10      ; use monitor call
-;          LDX XSAVE
-;          JMP NEXT

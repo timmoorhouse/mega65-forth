@@ -1306,7 +1306,7 @@ _accept_loop
 
         ; (index)
 
-!if 1 {
+!if 0 {
         +CLITERAL '?'
         !word W_EMIT
 }
@@ -1315,7 +1315,7 @@ _accept_loop
 
         ; $64, $69, $72, $0d, $6c (dir\nl)
 
-!if 1 {
+!if 0 {
         +CLITERAL '!'
         !word W_EMIT
 }
@@ -1335,7 +1335,7 @@ _accept_loop
         +ZBRANCH _accept_not_delete
         ; It's a delete ...
 
-!if 1 {
+!if 0 {
         +CLITERAL 'd'
         !word W_EMIT
 }
@@ -1364,19 +1364,21 @@ _accept_not_delete
         !word W_ZBRANCH
         !word _accept_not_return-*
 
-!if 1 {
+!if 0 {
         +CLITERAL 'r'
         !word W_EMIT
 }
 
-        !word W_LEAVE
+        !word W_DROP ; drop the CR
+        !word W_LEAVE ; TODO once we change LEAVE to follow ANS behaviour, this will exit the loop immediately!
+        +BRANCH _accept_end_of_loop; TODO remove - won't be needed once LEAVE changed
 _accept_not_return
 
 
         ; (index key)
 
-        ; A normal character or return, add it to the buffer
-!if 1 {
+        ; A normal character, add it to the buffer
+!if 0 {
         +CLITERAL 'n'
         !word W_EMIT
 }
@@ -1388,7 +1390,7 @@ _accept_not_return
         ; (index key)
 
 _accept_do_emit
-!if 1 {
+!if 0 {
         +CLITERAL 'e'
         !word W_EMIT
 }
@@ -1399,12 +1401,17 @@ _accept_do_emit
 
         !word W_1PLUS
 
-!if 1 {
+!if 0 {
         !word W_CR
 }
 
+_accept_end_of_loop ; TODO remove
         !word W_PLOOP
         !word _accept_loop-*
+
+!if 1 {
+        !word W_CR
+}
 
         ; left with index (ie final count)
 
@@ -2050,6 +2057,8 @@ W_EVALUATE
         ; TODO setup SOURCE
 
 
+
+
 !if 0 {
         !word W_PARSE_NAME
         ; (c-addr u)
@@ -2274,25 +2283,36 @@ W_PFIND
         rts
 }
 
-; see discussion in ANSI A.3.2.2.1
 ; FIG
-;      M/MOD         ud1  u2  ---  u3  u4
-;               An unsigned mixed magnitude math operation which leaves a 
-;               double quotient ud4 and remainder u3, from a double 
-;               dividend ud1 and single divisor u2.
+;      M/            d  n1  ---  n2  n3
+;               A mixed magnitude math operator which leaves the signed 
+;               remainder n2 and signed quotient n3, from a double number 
+;               dividend and divisor n1.  The remainder takes its sign 
+;               from the dividend.
+
+;;
+;;                                       M/
+;;                                       SCREEN 57 LINE 3
+;;
 !if 0 {
-        +WORD "m/mod"
-W_MSMOD
+        +WORD "m/"
+W_MSLASH
         !word DO_COLON
+;          !word OVER
 ;          !word TOR
-;          !word ZERO
+;          !word TOR
+;          !word DABS
 ;          !word R
+;          !word ABS
 ;          !word USLAS
 ;          !word RFROM
+;          !word R
+;          !word XOR
+;          !word PM
 ;          !word SWAP
-;          !word TOR
-;          !word USLAS
 ;          !word RFROM
+;          !word PM
+;          !word SWAP
         !word W_SEMI
 }
 
@@ -2498,6 +2518,14 @@ W_KEY
 ; LEAVE 
 ; (???)
 ; ANSI 6.1.1760
+
+; The FIG behaviour is to ensure that the loop is exited when we reach the
+; next LOOP or +LOOP.  Execution continues on the current loop iteration until
+; that time.
+
+; In ANS, execution of the loop is terminated immediately.
+
+; TODO this currently implements the FIG behaviour - we should switch to ANS.
 
 ; FIG:
 ;
@@ -3490,6 +3518,28 @@ W_USLASH
         jmp POP
 }
 
+; see discussion in ANSI A.3.2.2.1
+; FIG
+;      M/MOD         ud1  u2  ---  u3  u4
+;               An unsigned mixed magnitude math operation which leaves a 
+;               double quotient ud4 and remainder u3, from a double 
+;               dividend ud1 and single divisor u2.
+!if 0 {
+        +WORD "m/mod"
+W_MSMOD
+        !word DO_COLON
+;          !word TOR
+;          !word ZERO
+;          !word R
+;          !word USLAS
+;          !word RFROM
+;          !word SWAP
+;          !word TOR
+;          !word USLAS
+;          !word RFROM
+        !word W_SEMI
+}
+
 ; ****************************************************************************
 ; UNLOOP
 ; (???)
@@ -3531,25 +3581,6 @@ W_UNTIL
 ;          !word COMPILE
 ;          !word W_ZBRANCH
 ;          !word BACK
-        !word W_SEMI
-}
-
-; TODO REMOVE !!!!!!!!!!!!!!!!!
-; FIG
-;      END                                                   P,C2,L0
-;               This is an 'alias' or duplicate definition for UNTIL.
-
-;;
-;;                                       END
-;;                                       SCREEN 74 LINE 1
-;;
-
-; TODO REMOVE
-!if 0 {
-;        +WORD "end"
-W_END
-        !word DO_COLON
-;          !word UNTIL
         !word W_SEMI
 }
 
@@ -3696,33 +3727,38 @@ W_WORD
 ;        +WORD "enclose"
 W_ENCLOSE
         !word *+2
-;          LDA #2
-;          JSR SETUP ; in fig
-;          TXA
+
+;          LDA #2               ; move addr and c to N
+;          JSR SETUP 
+
+;          TXA                  ; make space on data stack for 4 words
 ;          SEC
-;          SBC #8
+;          SBC #8    
 ;          TAX
-;          STY 3,X
+
+;          STY 3,X              ; set MSB of n2 & n3 to 0 (assume MSB of n1 still 0, addr1 still on stack)
 ;          STY 1,X
-;          DEY
-;L313:     INY
+
+;          DEY                  ; setup for loop
+;-         INY                  ; skip leading delimiters
 ;          LDA (N+2),Y
 ;          CMP N
-;          BEQ L313
-;          STY 4,X
-;L318:     LDA (N+2),Y
-;          BNE L327
+;          BEQ -
+;          STY 4,X              ; and now set n1 (number of leading delimiters)
+
+;-         LDA (N+2),Y
+;          BNE ++
 ;          STY 2,X
 ;          STY 0,X
 ;          TYA
 ;          CMP 4,X
-;          BNE L326
+;          BNE +
 ;          INC 2,X
-;L326:     JMP NEXT
-;L327:     STY 2,X
+;+         JMP NEXT
+;++        STY 2,X
 ;          INY
 ;          CMP N
-;          BNE L318
+;          BNE -
 ;          STY 0,X
         jmp NEXT
 
@@ -3781,13 +3817,18 @@ W_LBRACKET
 
 ; ****************************************************************************
 ; [CHAR]
-; (???)
 ; ANSI 6.1.2520
-!if 0 {
+
+; Compilation ("<spaces>name" --):
+;       Skip leading space delimiters.  Parse name delimited by a space.
+; Run-time (-- char):
+;       Place char, the first character of name, on the stack
+
+;
         +WORD "[char]"
+W_BCHARB
         !word *+2
-        rts
-}
+        jmp NEXT
 
 ; ****************************************************************************
 ; ]

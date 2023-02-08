@@ -8,16 +8,32 @@
 
 ; from FIG ...
 ; used by (find), enclose, cmove
-;SETUP:    ASL A
-;          STA N-1
-;L63:      LDA 0,X
-;          STA N,Y
-;          INX
-;          INY
-;          CPY N-1
-;          BNE L63
-;          LDY #0
-;          RTS
+;
+;
+; Move a number of words from data stack to array N[8] in basepage
+; (the idea being to allow lda ($<N+xx),y for scanning strings)
+; Can we instead move to return stack and use lda ($xx,SP),y?
+; We'd need to clean up the return stack
+;
+;SETUP
+        ; A - # of words to move from stack to N (at most 4? 3?)
+        ; X - data stack pointer
+        ; Y - assumed to be 0
+        ; Z -
+;        asl
+;        sta N-1
+;-       lda 0,X
+;        sta N,Y
+;        inx
+;        iny
+;        cpy N-1
+;        bne -
+;        ldy #0
+        ; A - trashed
+        ; X - data stack pointer (adjusted)
+        ; Y - 0 
+        ; Z -
+;        rts
 
 ; ****************************************************************************
 ; 0

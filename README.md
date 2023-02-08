@@ -28,10 +28,11 @@ An attempt will be made to:
 
 
 # RANDOM TODOs
+- Should we make use of the kernel?  So far I've been keeping things completely independent of the kernel so we'll be able to bank it out (though that's not currently being done).
 - get monitor working via brk and mon/monitor word
 - https://github.com/gerryjackson/forth2012-test-suite
 - get rid of the user area
-- some sort of RPICK (like PICK but for the return stack) for J, I, LEAVE, PLOOP, PPLOOP
+- Some sort of RPICK (like PICK but for the return stack) for J, I, LEAVE, PLOOP, PPLOOP
 
 A.3.2.3.2
 

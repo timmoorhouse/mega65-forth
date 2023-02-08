@@ -879,41 +879,6 @@ W_QLOAD
 }
 
 ; ****************************************************************************
-; M/
-
-;      M/            d  n1  ---  n2  n3
-;               A mixed magnitude math operator which leaves the signed 
-;               remainder n2 and signed quotient n3, from a double number 
-;               dividend and divisor n1.  The remainder takes its sign 
-;               from the dividend.
-
-;;
-;;                                       M/
-;;                                       SCREEN 57 LINE 3
-;;
-!if 0 {
-        +WORD "m/"
-W_MSLASH
-        !word DO_COLON
-;          !word OVER
-;          !word TOR
-;          !word TOR
-;          !word DABS
-;          !word R
-;          !word ABS
-;          !word USLAS
-;          !word RFROM
-;          !word R
-;          !word XOR
-;          !word PM
-;          !word SWAP
-;          !word RFROM
-;          !word PM
-;          !word SWAP
-        !word W_SEMI
-}
-
-; ****************************************************************************
 ; MESSAGE
 
 ;      MESSAGE       n  ---

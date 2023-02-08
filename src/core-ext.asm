@@ -380,17 +380,114 @@ W_PAD
 
 ; ****************************************************************************
 ; PARSE
-; (char "text" -- c-addr u)
+; (char "ccc<char>" -- c-addr u)
 ; ANSI 6.2.2008
+;
+; Parse ccc delimited by char
 
+        +WORD "parse"
+W_PARSE
+        !word DO_COLON
+        !word W_SEMI        
+
+!if 0 {
+
+        +WORD "word"
+W_WORD
+        !word DO_COLON
+
+;          !word BLK
+;          !word AT
+;          !word ZBRANCH
+;L1908:    !word $C       ; L1914-L1908
+;          !word BLK
+;          !word AT
+;          !word BLOCK
+;          !word BRANCH
+;L1913:    !word $6       ; L1916-L1913
+
+;L1914:    !word TIB
+;          !word AT
+
+;L1916:    !word IN
+;          !word AT
+;          !word PLUS
+;          !word SWAP
+;          !word W_ENCLOSE
+;          !word HERE
+;          !word CLITERAL
+;          !byte $22
+;          !word BLANK
+;          !word IN
+;          !word PSTOR
+;          !word OVER
+;          !word SUB
+;          !word TOR
+;          !word R
+;          !word HERE
+;          !word CSTOR
+;          !word PLUS
+;          !word HERE
+;          !word 1PLUS
+;          !word RFROM
+;          !word CMOVE
+        !word W_SEMI
+
+;      ENCLOSE       addr1  c  ---  addr1  n1  n2  n3
+;               The text scanning primitive used by WORD.  From the text 
+;               address addr1 and an ascii delimiting character c, is 
+;               determined the byte offset to the first non-delimiting 
+;               character n1, the offset to the first delimiter after the 
+;               text n2, and the offset to the first character not 
+;               included.  This procedure will not process past an ascii 
+;               'null', treating it as an unconditional delimiter.
+
+;        +WORD "enclose"
+W_ENCLOSE
+        !word *+2
+;          LDA #2
+;          JSR SETUP ; in fig
+;          TXA
+;          SEC
+;          SBC #8
+;          TAX
+;          STY 3,X
+;          STY 1,X
+;          DEY
+;L313:     INY
+;          LDA (N+2),Y
+;          CMP N
+;          BEQ L313
+;          STY 4,X
+;L318:     LDA (N+2),Y
+;          BNE L327
+;          STY 2,X
+;          STY 0,X
+;          TYA
+;          CMP 4,X
+;          BNE L326
+;          INC 2,X
+;L326:     JMP NEXT
+;L327:     STY 2,X
+;          INY
+;          CMP N
+;          BNE L318
+;          STY 0,X
+        jmp NEXT
+
+}
 ; ****************************************************************************
 ; PARSE-NAME
 ; Forth 2012 6.2.2020
+; ("<spaces>name<space>" -- c-addr u)
+        +WORD "parse-name"
+W_PARSE_NAME
+        !word DO_COLON
+        !word W_SEMI        
 
 ; like PARSE but is delimited by any whitespace
 
 ; see discussion in ANSI A.6.2.2008
-; ("<spaces>name" -- c-addr u)
 ;
 ; Skip leading spaces and parse name delimited by space.  c-addr is the address within the
 ; input buffer and u is the length of the selected string.  If the parse area is empty, the

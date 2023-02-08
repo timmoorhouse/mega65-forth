@@ -86,8 +86,9 @@ entry
 ; - smudge (fig uses bit 6 for hidden)
 ; - length uses bits 1-5
 
-F_IMMEDIATE = $40
-F_HIDDEN    = $20
+F_END_MARKER = $80
+F_IMMEDIATE  = $40
+F_HIDDEN     = $20
 
 !set _here = $0
 !macro WORD2 .name, .flags {
@@ -95,12 +96,15 @@ F_HIDDEN    = $20
         ; TODO locate info
         !word _here
         !set _here = *-2
-        !byte len(.name) | $80 | .flags ; TODO control bits
+        !byte len(.name) | F_END_MARKER | .flags ; TODO control bits
+!if 1 {        
         !text .name
-        ; !for i, 0, len(.name)-2 {
-        ;         !byte .name[i]
-        ; }
-        ; !byte .name[len(.name)-1] OR $80
+} else {
+        !for i, 0, len(.name)-2 {
+                !byte .name[i]
+        }
+        !byte .name[len(.name)-1] OR F_END_MARKER
+}
 }
 
 !macro WORD .name {
