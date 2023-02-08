@@ -32,6 +32,7 @@ ENABLE_TOOLS         = 1 ; for words, .s, etc
 ;ENABLE_XCHAR_EXT     = 1
 
 DEBUG = 1
+; OLD_LEAVE_BEHAVIOUR = 1 ; Pre-ANS behaviour (doesn't exit loop immediately but finishes the iteration)
 
 !source "util.asm"
 !source "dma.asm"

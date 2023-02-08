@@ -101,7 +101,7 @@ W_ZBRANCH
         lda $fe,x
         ora $ff,x
         beq W_BRANCH+2
-BUMP             ; used by (loop)  TODO MESSY !!!!!!!!!!!!!!
+BUMP             ; used by (loop) and LEAVE  TODO MESSY !!!!!!!!!!!!!!
         clc
         lda <I
         adc #2

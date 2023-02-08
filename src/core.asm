@@ -1370,8 +1370,13 @@ _accept_not_delete
 }
 
         !word W_DROP ; drop the CR
+!ifdef OLD_LEAVE_BEHAVIOUR {        
         !word W_LEAVE ; TODO once we change LEAVE to follow ANS behaviour, this will exit the loop immediately!
         +BRANCH _accept_end_of_loop; TODO remove - won't be needed once LEAVE changed
+} else {
+        !word W_LEAVE
+        !word _accept_after_loop-*
+}
 _accept_not_return
 
 
@@ -1408,6 +1413,7 @@ _accept_do_emit
 _accept_end_of_loop ; TODO remove
         !word W_PLOOP
         !word _accept_loop-*
+_accept_after_loop ; TODO remove        
 
 !if 1 {
         !word W_CR
@@ -2537,6 +2543,7 @@ W_KEY
         +WORD "leave"
 W_LEAVE
         !word *+2
+!ifdef OLD_LEAVE_BEHAVIOUR {        
         stx <XSAVE
         tsx
         lda $101,x
@@ -2545,6 +2552,13 @@ W_LEAVE
         sta $104,x
         ldx <XSAVE
         jmp NEXT
+} else {
+        pla
+        pla
+        pla
+        pla
+        jmp BRANCH
+}
 
 ; ****************************************************************************
 ; LITERAL 
