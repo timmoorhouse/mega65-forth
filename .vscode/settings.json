@@ -1,0 +1,7 @@
+{
+    "kickassembler.debuggerDumpFile": false,
+    "kickassembler.opcodes.45gs02": true,
+    "kickassembler.opcodes.65ce02": true,
+    "kickassembler.outputDirectory": "build",
+    "cmake.configureOnOpen": false
+}
