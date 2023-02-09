@@ -134,9 +134,9 @@ W_WORDS
         !word *+2
 
 WORDS
-        lda HERE
+        lda FORTH_WORDLIST   ; TODO 
         sta <WORDP
-        lda HERE+1
+        lda FORTH_WORDLIST+1
         sta <WORDP+1
 
 

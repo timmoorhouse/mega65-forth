@@ -1,6 +1,6 @@
 
-        ; our base page stuff
-        !align $ff, 0
+                ; our base page stuff
+                !align $ff, 0
 base_page
 !pseudopc $0000 {
 
@@ -11,7 +11,7 @@ base_page
 I               !word 0
 
 DO_JUMP_W
-        !byte $6c       ; jmp (W)
+                !byte $6c       ; jmp (W)
 ;      W        address of the code field pointer in zero-page.
 W               !word 0
 
@@ -21,20 +21,25 @@ U               !word 0
 
 ; X holds the stack pointer (S)
 ;      XSAVE    address of a temporary register for X in zero-page.
-XSAVE       !byte 0 ; temporary
+XSAVE           !byte 0 ; temporary
 
 ; TODO input buffer stack (need to support depth of 8)
 ; TODO open file info
-SOURCE_ID   !word 0
-INPUT_BUFFER !word 0 ; Address and length of input buffer
-INPUT_LEN   !word 0
-IN          !word 0 ; Offset of start of parse area within input buffer
+SOURCE_ID       !word 0
+INPUT_BUFFER    !word 0 ; Address and length of input buffer
+INPUT_LEN       !word 0
+IN              !word 0 ; Offset of start of parse area within input buffer
 
-WORDP       !word 0 ; temporary pointer to iterate over words TODO REMOVE
-STRING      !word 0 ; pointer to string to print, etc TODO REMOVE
+HERE            !word 0
 
-SCREEN_X    !byte 0
-SCREEN_Y    !byte 0
+WORDP           !word 0 ; temporary pointer to iterate over words TODO REMOVE
+STRING          !word 0 ; pointer to string to print, etc TODO REMOVE
+
+SCREEN_X        !byte 0
+SCREEN_Y        !byte 0
+
+; TODO BASE? or turn it into a normal variable
+; TODO STATE? or turn it into a normal variable
 
 !ifdef DEBUG {
 ;XW        =$12           ; scratch reg. to next code field add
@@ -42,8 +47,8 @@ SCREEN_Y    !byte 0
 }
 
 ; TODO make these 32-bit (or at least 28)
-SCREEN_LINE !32 0 ; start of line at SCREEN_Y
-COLOUR_LINE !32 0 ; start of colour at SCREEN_Y
+SCREEN_LINE     !32 0 ; start of line at SCREEN_Y
+COLOUR_LINE     !32 0 ; start of colour at SCREEN_Y
 COLOUR          !byte 0
         ; !word 0
 
@@ -52,8 +57,8 @@ COLOUR          !byte 0
 
 BOS = * ; Bottom of data stack
 
-        ; stack
-        !align $ff, $9E
+                ; stack
+                !align $ff, $9E
 
 TOS = * ; Top of data stack
 ; N         = TOS+8                       ; scratch workspace.
@@ -62,7 +67,6 @@ TOS = * ; Top of data stack
 ; UP        = W+2                         ; user area pointer.
 ; XSAVE     = UP+2                        ; temporary for X register.
 
-        ; TODO stacks?
 }
         ; !align 255, 0
 

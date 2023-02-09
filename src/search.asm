@@ -2,7 +2,6 @@
 ; ****************************************************************************
 ; SEARCH
 
-!if ENABLE_SEARCH {
 
 ; ****************************************************************************
 ; DEFINITIONS
@@ -22,6 +21,8 @@
 ;;
 ;;                                       DEFINITIONS
 ;;                                       SCREEN 53 LINE 11
+
+!if ENABLE_SEARCH {
 !if 0 {
         +WORD "definitions"
 W_DEFINITIONS
@@ -32,16 +33,30 @@ W_DEFINITIONS
 ;          !word STORE
         !word W_SEMIS
 }
+}
 
 ; ****************************************************************************
 ; FIND
 ; (c-addr -- c-addr 0 | xt 1 | xt -1)
 ; ANSI 16.6.1.1550
 
+!if ENABLE_SEARCH {
+}
+
 ; ****************************************************************************
 ; FORTH-WORDLIST
 ; (-- wid)
 ; 16.6.1.1595
+
+; The word itself is required by the implementation, though only visible if we enable SEARCH
+
+!if ENABLE_SEARCH {
+        +WORD "forth-wordlist"
+}
+W_FORTH_WORDLIST
+        !word DO_VARIABLE
+FORTH_WORDLIST
+        !word 0        
 
 ; ****************************************************************************
 ; GET-CURRENT
@@ -52,11 +67,14 @@ W_DEFINITIONS
 ;;                                       CURRENT
 ;;                                       SCREEN 37 LINE 3
 ;;
+
+!if ENABLE_SEARCH {
 !if 0 {
 ;        +WORD "current"
 W_CURRENT
         !word DO_USER
 ;          !byte $22
+}
 }
 
 ; ****************************************************************************
@@ -64,20 +82,32 @@ W_CURRENT
 ; (-- wid_n ... wid_1 n)
 ; ANSI 16.6.1.1647
 
+!if ENABLE_SEARCH {
+}
+
 ; ****************************************************************************
 ; SEARCH-WORDLIST
 ; (c-addr u wid -- 0 | xt 1 | xt -1)
 ; ANSI 16.6.1.2192
+
+!if ENABLE_SEARCH {
+}
 
 ; ****************************************************************************
 ; SET-CURRENT
 ; (wid --)
 ; ANSI 16.6.1.2195
 
+!if ENABLE_SEARCH {
+}
+
 ; ****************************************************************************
 ; SET-ORDER
 ; (wid_n ... wid_1 n --)
 ; ANSI 16.6.1.2197
+
+!if ENABLE_SEARCH {
+}
 
 ; ****************************************************************************
 ; WORDLIST
@@ -103,6 +133,8 @@ W_CURRENT
 ;;                                       VOCABULARY
 ;;                                       SCREEN 53 LINE 4
 ;;
+
+!if ENABLE_SEARCH {
 !if 0 {
         +WORD "vocabulary"
 W_VOCABULARY
@@ -126,5 +158,4 @@ W_VOCABULARY
 ;          !word STORE
         !word W_SEMI
 }
-
 }

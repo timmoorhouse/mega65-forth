@@ -187,18 +187,6 @@ _inc_I_PUSH
 }
 
 ; ****************************************************************************
-; DP
-
-;      DP            ---  addr                               U,L
-;               A user variable, the dictionary pointer, which contains 
-;               the address of the next free memory above the dictionary.  
-;               The value may be read by HERE and altered by ALLOT.
-;        +WORD "dp"
-W_DP
-        !word DO_USER
-        !byte U_DP
-
-; ****************************************************************************
 ;      RP! (from FIG)
 ;               A computer dependent procedure to initialise the return 
 ;               stack pointer from user variable R0.

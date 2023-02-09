@@ -325,7 +325,7 @@ U_TIB   = $0a   ; TIB (core-ext)
 ;           - 0C: WIDTH (fig)
 ;           - 0E: WARNING (fig)
 ; U_FENCE = $10   ; FENCE (fig)
-U_DP    = $12   ; DP (fig)
+; U_DP    = $12   ; DP (fig)
 ;           - 14: VOC-LINK (fig)
 U_BLK   = $16   ; BLK (block)
 ; U_IN    = $18   ; IN (fig)
@@ -334,8 +334,8 @@ U_BLK   = $16   ; BLK (block)
 ;           - 1E: OFFSET (fig)
 ;           - 20: CONTEXT (fig)
 ;           - 22: CURRENT (fig)
-U_STATE = $24   ; STATE (core)
-U_BASE  = $26   ; BASE (core)
+U_STATE = $24   ; STATE (core) TODO move to base page
+U_BASE  = $26   ; BASE (core) TODO move to base page
 ; U_DPL   = $28   ; DPL (fig)
 ;           - 2A: FLD (fig)
 ;           - 2C: CSP (fig)
@@ -442,6 +442,16 @@ WARM
         sta UAREA+U_TIB+1
         ; TODO set TIB
 
+        lda INITIAL_FORTH_WORDLIST
+        sta FORTH_WORDLIST
+        lda INITIAL_FORTH_WORDLIST+1
+        sta FORTH_WORDLIST+1
+
+        lda #<INITIAL_HERE
+        sta <HERE
+        lda #>INITIAL_HERE
+        sta <HERE+1
+
         ; TODO set WIDTH
         ; TODO set WARNING
         ; TODO set FENCE
@@ -505,6 +515,10 @@ W_TEST  !word DO_COLON
 !if 1 {
         !word W_WORDS
         !word W_CR
+}
+!if 1 {
+        !word W_FORTH_WORDLIST,W_AT,W_DOT,W_CR
+        !word W_HERE,W_DOT,W_CR
 }
 !if 0 {
         !word W_ZERO
@@ -611,8 +625,9 @@ BYE
 !src "xchar.asm"
 !src "xchar-ext.asm"
 
-HERE            ; TODO remove!!!!!
+INITIAL_FORTH_WORDLIST
         !word _here
+INITIAL_HERE
 
 ;TOP  :    .END           ; end of listing
 ;

@@ -1464,7 +1464,7 @@ W_ALIGNED
         +WORD "allot"
 W_ALLOT
         !word DO_COLON
-        !word W_DP
+        +LITERAL &HERE
         !word W_PSTORE
         !word W_SEMI
 
@@ -2365,17 +2365,13 @@ W_MSLASH
 ; (-- addr)
 ; ANSI 6.1.1650
 
-; FIG:
-;
-;      HERE          ---  addr                               L0
-;               Leave the address of the next available dictionary 
-;               location.
         +WORD "here"
 W_HERE
-        !word DO_COLON
-        !word W_DP
-        !word W_AT
-        !word W_SEMI
+        !word *+2
+        lda <HERE
+        pha
+        lda <HERE+1
+        jmp PUSH
 
 ; ****************************************************************************
 ; HOLD 
