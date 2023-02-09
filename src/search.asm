@@ -90,8 +90,34 @@ W_CURRENT
 ; (c-addr u wid -- 0 | xt 1 | xt -1)
 ; ANSI 16.6.1.2192
 
+; 0 if not found
+; 1 if immediate
+; -1 otherwise
+
+; The word itself is required by the implmentation (of FIND) but is only visible if SEARCH is enabled
+
 !if ENABLE_SEARCH {
+        +WORD "search-wordlist"
 }
+W_SEARCH_WORDLIST
+        !word DO_COLON
+        +LITERAL W_PSEARCH_WORDLIST
+        !word W_SWAP
+        !word W_TRAVERSE_WORDLIST
+        ; TODO implement using
+        ;     TRAVERSE-WORDLIST (tools-ext)
+        ;     NAME>STRING (tools)
+        ;     COMPARE (string)
+        ;
+        ;
+        ;
+        !word W_SEMI
+
+W_PSEARCH_WORDLIST ; (c-addr u nt -- c-addr u (xt 0)|1)
+        !word DO_COLON
+        ; push true if iteration should continue, false if done
+        !word W_TRUE
+        !word W_SEMI
 
 ; ****************************************************************************
 ; SET-CURRENT

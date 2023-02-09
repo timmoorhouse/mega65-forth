@@ -251,10 +251,15 @@ W_FORGET
 ; TRAVERSE-WORDLIST
 ; Forth 2012 15.6.2.2297
 
-; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
+; The word itself is required by the implementation (of FIND) but will only visible if TOOLS-EXT is enabled
 
 !if ENABLE_TOOLS_EXT {
+        +WORD "traverse-wordlist"
 }
+W_TRAVERSE_WORDLIST
+        !word DO_COLON
+        ; TODO
+        !word W_SEMI
 
 ; ****************************************************************************
 ; [DEFINED]

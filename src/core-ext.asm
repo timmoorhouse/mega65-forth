@@ -374,7 +374,11 @@ W_EXPECT
 ; ANSI 6.2.1485
 
 !if ENABLE_CORE_EXT {
+        +WORD "false"
 }
+W_FALSE
+        !word DO_CONSTANT
+        !word 0
 
 ; ****************************************************************************
 ; HEX
@@ -422,8 +426,11 @@ W_HEX
 ; (x_1 x_2 -- x_2)
 ; ANSI 6.2.1930
 
+; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
+
 !if ENABLE_CORE_EXT {
         +WORD "nip"
+}
 W_NIP
         !word *+2
         lda 0,x
@@ -431,7 +438,6 @@ W_NIP
         lda 1,x
         sta 3,x
         jmp POP
-}
 
 ; ****************************************************************************
 ; OF
@@ -921,7 +927,11 @@ W_TIB
 ; ANSI 6.2.2298
 
 !if ENABLE_CORE_EXT {
+        +WORD "true"
 }
+W_TRUE
+        !word DO_CONSTANT
+        !word $ffff
 
 ; ****************************************************************************
 ; TUCK

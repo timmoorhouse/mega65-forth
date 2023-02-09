@@ -15,7 +15,17 @@
 				"command": "./bin/build.cmd"
 			},
 			"group": "build",
-			"problemMatcher": []
+			"problemMatcher": {
+				"fileLocation": ["relative", "${workspaceFolder}/src"],
+				"pattern": {
+					"regexp": "^(.*)[(](\\d+)[)] : (Error)(.*)$",
+					"file": 1,
+					"line": 2,
+					// "column"
+					"severity": 3,
+					"message": 4
+				}
+			}
 		},
 		{
 			"type": "shell",

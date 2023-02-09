@@ -116,6 +116,7 @@ do_build() {
     # ACMEOPTS+=(-I include/acme)
     ACMEOPTS+=(-I src)
     ACMEOPTS+=(-f cbm)
+    ACMEOPTS+=(--msvc)
     cmd "${opt[acme]}" "${ACMEOPTS[@]}" \
         -l "${opt[builddir]}/forth.sym" \
         -o "${opt[builddir]}/forth.prg" \

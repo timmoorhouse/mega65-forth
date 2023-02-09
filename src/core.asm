@@ -2230,8 +2230,20 @@ W_FILL
         +WORD "find"
 W_FIND
         !word DO_COLON
+        !word W_DUP
         !word W_COUNT
-        !word W_PFIND
+!if 0 {
+        ; TODO iterate through
+        ; !word W_GET_ORDER
+        ; ...
+} else {
+        !word W_FORTH_WORDLIST 
+}
+        !word W_SEARCH_WORDLIST
+        !word W_DUP
+        +ZBRANCH +
+        !word W_NIP
++
         !word W_SEMI
 
 ; FIG
