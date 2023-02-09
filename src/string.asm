@@ -2,11 +2,6 @@
 ; ****************************************************************************
 ; STRING
 
-; TODO always enable
-; GET-ORDER
-
-!if ENABLE_STRING {
-
 ; ****************************************************************************
 ; -TRAILING
 ; (c-addr u_1 -- c-addr u_2)
@@ -23,6 +18,8 @@
 ;;
 ;;                                       -TRAILING
 ;;                                       SCREEN 44 LINE 5
+
+!if ENABLE_STRING {
         +WORD "-trailing"
 W_DTRAILING
         !word DO_COLON
@@ -47,11 +44,15 @@ W_DTRAILING
 ;L1678:    !word PLOOP
 ;L1679:    !word $FFE0    ; L1663-L1679
         !word W_SEMI
+}
 
 ; ****************************************************************************
 ; /STRING
 ; (c-addr_1 u_1 n -- c-addr_2 u_2)
 ; ANSI 17.6.1.0245
+
+!if ENABLE_STRING {
+}
 
 ; ****************************************************************************
 ; BLANK
@@ -67,6 +68,8 @@ W_DTRAILING
 ;;                                       BLANKS
 ;;                                       SCREEN 46 LINE 7
 ;;
+
+!if ENABLE_STRING {
 !if 0 {
         +WORD "blanks"
 W_BLANK
@@ -74,6 +77,7 @@ W_BLANK
         !word W_BL
         !word W_FILL
         !word W_SEMI
+}
 }
 
 ; ****************************************************************************
@@ -92,6 +96,8 @@ W_BLANK
 ;;
 ;;                                       CMOVE
 ;;                                       SCREEN 22 LINE 1
+
+!if ENABLE_STRING {
         +WORD "cmove"
 W_CMOVE
         !word *+2
@@ -109,25 +115,43 @@ W_CMOVE
 ;          INC N+5
 ;          INC N+3
 ;          JMP L370
+}
 
 ; ****************************************************************************
 ; CMOVE>
 ; (c-addr_1 c-addr_2 u --)
 ; ANSI 17.6.1.0920
 
+!if ENABLE_STRING {
+}
+
 ; ****************************************************************************
 ; COMPARE
 ; (c-addr_1 u_1 c-addr_2 u_2 -- n)
 ; ANSI 17.6.1.0935
+
+; The word itself is required by the implmentation (of FIND) but is only visible if SEARCH is enabled
+
+!if ENABLE_STRING {
+        +WORD "compare"
+}
+W_COMPARE
+        !word DO_COLON
+        ; TODO
+        !word W_SEMI
 
 ; ****************************************************************************
 ; SEARCH
 ; (c-addr_1 u_1 c-addr_2 u_2 -- c-addr_3 u_3 flag)
 ; ANSI 17.6.1.2191
 
+!if ENABLE_STRING {
+}
+
 ; ****************************************************************************
 ; SLITERAL
 ; (???)
 ; ANSI 17.6.1.2212
 
+!if ENABLE_STRING {
 }

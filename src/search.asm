@@ -115,7 +115,14 @@ W_SEARCH_WORDLIST
 
 W_PSEARCH_WORDLIST ; (c-addr u nt -- c-addr u (xt 0)|1)
         !word DO_COLON
+
+        ; Check for a name match
+        ; !word W_DUP             ; (c-addr u nt nt)
+        ; !word W_NAME_TO_STRING  ; (c-addr1 u nt c-addr2 u )
+        ; !word W_COMPARE
+
         ; push true if iteration should continue, false if done
+        ; TODO name>interpret or name>compile
         !word W_TRUE
         !word W_SEMI
 

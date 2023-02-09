@@ -97,13 +97,14 @@ F_HIDDEN     = $20
         !word _here
         !set _here = *-2
         !byte len(.name) | F_END_MARKER | .flags ; TODO control bits
+        ; TODO will need to fix NAME>STRING if we mark the last byte
 !if 1 {
         !text .name
 } else {
         !for i, 0, len(.name)-2 {
                 !byte .name[i]
         }
-        !byte .name[len(.name)-1] OR F_END_MARKER
+        !byte .name[len(.name)-1] | F_END_MARKER
 }
 }
 

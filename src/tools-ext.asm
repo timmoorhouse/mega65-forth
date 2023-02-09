@@ -205,23 +205,44 @@ W_FORGET
 ; Forth 2012 15.6.2.1909.10
 
 !if ENABLE_TOOLS_EXT {
+        +word "name>compile"
 }
+W_NAME_TO_COMPILE
+        !word DO_COLON
+        ; TODO move past link and name
+        !word W_SEMI
 
 ; ****************************************************************************
 ; NAME>INTERPRET
 ; Forth 2012 15.6.2.1909.20
 
 !if ENABLE_TOOLS_EXT {
+        +word "name>interpret"
 }
+W_NAME_TO_INTERPRET
+        !word DO_COLON
+        ; TODO move past link and name
+        !word W_SEMI
 
 ; ****************************************************************************
 ; NAME>STRING
 ; Forth 2012 15.6.2.1909.40
+; (nt -- c-addr u)
 
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
 
 !if ENABLE_TOOLS_EXT {
+        +WORD "name>string"
 }
+W_NAME_TO_STRING
+        !word DO_COLON
+        ; nt points to link, then name follows
+        !word W_2PLUS
+        !word W_DUP
+        !word W_1PLUS
+        +CLITERAL $1f ; mask off the control bits
+        !word W_AND
+        !word W_SEMI
 
 ; ****************************************************************************
 ; NR>
