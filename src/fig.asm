@@ -347,28 +347,6 @@ W_CSP
 }
 
 ; ****************************************************************************
-; D+-
-
-;      D+-           d1  n  ---  d2
-;               Apply the sign of n to the double number d1, leaving it as 
-;               d2.
-
-;;
-;;                                       D+-
-;;                                       SCREEN 56 LINE 6
-;;
-!if 0 {
-        +WORD "d+-"
-W_DPM
-        !word DO_COLON
-;          !word ZLESS
-;          !word ZBRAN
-;L2481:    !word 4        ; L2483-L2481
-;          !word DMINU
-        !word W_SEMI
-}
-
-; ****************************************************************************
 ; DIGIT
 
 ;      DIGIT         c  n1  ---  n2  tf  (ok)

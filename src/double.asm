@@ -3,21 +3,31 @@
 ; DOUBLE
 
 !if ENABLE_DOUBLE {
+}
 
 ; ****************************************************************************
 ; 2CONSTANT
 ; (???)
 ; ANSI 8.6.1.0360
 
+!if ENABLE_DOUBLE {
+}
+
 ; ****************************************************************************
 ; 2LITERAL
 ; (???)
 ; ANSI 8.6.1.0390
 
+!if ENABLE_DOUBLE {
+}
+
 ; ****************************************************************************
 ; 2VARIABLE
 ; (???)
 ; ANSI 8.6.1.0440
+
+!if ENABLE_DOUBLE {
+}
 
 ; ****************************************************************************
 ; D+
@@ -33,6 +43,8 @@
 ;;
 ;;                                       D+
 ;;                                       SCREEN 29 LINE 4
+
+!if ENABLE_DOUBLE {
         +WORD "d+"
 W_DPLUS
         !word *+2
@@ -50,27 +62,20 @@ W_DPLUS
 ;          ADC 5,X
 ;          STA 5,X
         jmp POPTWO
+}
 
 ; ****************************************************************************
 ; D-
 ; (d_1 d_2 -- d_3)
 ; ANSI 8.6.1.1050
 
-; FIG:
-;;
-;;                                       DMINUS
-;;                                       SCREEN 29 LINE 12
+!if ENABLE_DOUBLE {
         +WORD "d-"
 W_DMINUS
-;:    !word *+2
-;          SEC
-;          TYA
-;          SBC 2,X
-;          STA 2,X
-;          TYA
-;          SBC 3,X
-;          STA 3,X
-;          JMP MINUS+3
+        !word *+2
+        ; TODO
+        jmp POPTWO
+}
 
 ; ****************************************************************************
 ; D.
@@ -89,12 +94,17 @@ W_DMINUS
 ;;
 ;;                                       D.
 ;;                                       SCREEN 76 LINE 5
+
+; The word itself is required by the implmentation (of .) but is only visible if DOUBLE is enabled
+
+!if ENABLE_DOUBLE {
         +WORD "d."
+}
 W_DDOT
         !word DO_COLON
-;          !word ZERO
-;          !word DDOTR
-;          !word SPACE
+        !word W_ZERO
+        !word W_DDOTR
+        !word W_SPACE
         !word W_SEMI
 
 ; ****************************************************************************
@@ -111,22 +121,27 @@ W_DDOT
 ;;
 ;;                                       D.R
 ;;                                       SCREEN 76 LINE 1
+
+; The word itself is required by the implmentation (of .) but is only visible if DOUBLE is enabled
+
+!if ENABLE_DOUBLE {
         +WORD "d.r"
+}
 W_DDOTR
         !word DO_COLON
-;          !word TOR
-;          !word SWAP
-;          !word OVER
-;          !word DABS
-;          !word BDIGS
-;          !word DIGS
-;          !word SIGN
-;          !word EDIGS
-;          !word RFROM
-;          !word OVER
-;          !word SUB
-;          !word SPACS
-;          !word TYPE
+        !word W_TOR
+        !word W_SWAP
+        !word W_OVER
+        !word W_DABS
+        ; !word W_BDIGS ; core
+        ; !word W_DIGS  ; core
+        ; !word W_SIGN  ; core
+        ; !word W_EDIGS ; core
+        !word W_RFROM
+        !word W_OVER
+        !word W_SUB
+        !word W_SPACES
+        !word W_TYPE
         !word W_SEMI
 
 ; ****************************************************************************
@@ -134,35 +149,56 @@ W_DDOTR
 ; (d -- flag)
 ; ANSI 8.6.1.1075
 
+!if ENABLE_DOUBLE {
+}
+
 ; ****************************************************************************
 ; D0=
 ; (xd -- flag)
 ; 8.6.1.1080
+
+!if ENABLE_DOUBLE {
+}
 
 ; ****************************************************************************
 ; D2*
 ; (xd_1 -- xd_2)
 ; ANSI 8.6.1.1090
 
+!if ENABLE_DOUBLE {
+}
+
 ; ****************************************************************************
 ; D2/
 ; (xd_1 -- xd_2)
 ; ANSI 8.6.1.1100
+
+!if ENABLE_DOUBLE {
+}
 
 ; ****************************************************************************
 ; D<
 ; (d_1 d_2 -- flag)
 ; ANSI 8.6.1.1110
 
+!if ENABLE_DOUBLE {
+}
+
 ; ****************************************************************************
 ; D=
 ; (xd_1 xd_2 -- flag)
 ; ANSI 8.6.1.1120
 
+!if ENABLE_DOUBLE {
+}
+
 ; ****************************************************************************
 ; D>S
 ; (d -- n)
 ; ANSI 8.6.1.1140
+
+!if ENABLE_DOUBLE {
+}
 
 ; ****************************************************************************
 ; DABS
@@ -177,36 +213,86 @@ W_DDOTR
 ;;
 ;;                                       DABS
 ;;                                       SCREEN 56 LINE 10
+
+; The word itself is required by the implmentation (of .) but is only visible if DOUBLE is enabled
+
+!if ENABLE_DOUBLE {
         +WORD "dabs"
+}
 W_DABS
         !word DO_COLON
-;          !word DUP
-;          !word DPM
-        !word W_SEMI
+        !word W_DUP
+        !word W_ZLESS
+        +ZBRANCH +
+        !word W_DNEGATE
++       !word W_SEMI
 
 ; ****************************************************************************
 ; DMAX
 ; (d_1 d_2 -- d_3)
 ; ANSI 8.6.1.1210
 
+!if ENABLE_DOUBLE {
+}
+
 ; ****************************************************************************
 ; DMIN
 ; (d_1 d_2 -- d_3)
 ; ANSI 8.6.1.1220
+
+!if ENABLE_DOUBLE {
+}
 
 ; ****************************************************************************
 ; DNEGATE
 ; (d_1 -- d_2)
 ; ANSI 8.6.1.1230
 
+; The word itself is required by the implmentation (of .) but is only visible if DOUBLE is enabled
+
+!if ENABLE_DOUBLE {
+}
+
+; FIG:
+;;
+;;                                       DMINUS
+;;                                       SCREEN 29 LINE 12
+
+!if ENABLE_DOUBLE {
+        +WORD "dnegate"
+}
+W_DNEGATE
+        !word *+2
+        ; ldy #0 ; TODO
+        sec
+        tya
+        sbc 2,x
+        sta 2,x
+        tya
+        sbc 3,x
+        sta 3,x
+        ; see also NEGATE (core)
+        tya
+        sbc 0,x
+        sta 0,x
+        tya
+        sbc 1,x
+        sta 1,x
+        jmp NEXT
+
 ; ****************************************************************************
 ; M*/
 ; (d_1 n_1 +n_2 -- d_2)
 ; ANSI 8.6.1.1820
+
+!if ENABLE_DOUBLE {
+}
 
 ; ****************************************************************************
 ; M+
 ; (d_1 n -- d_2)
 ; ANSI 8.6.1.1830
 
+
+!if ENABLE_DOUBLE {
 }

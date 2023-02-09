@@ -447,8 +447,8 @@ W_SUB
 W_DOT
 !if 0 {
         !word DO_COLON
-;          !word STOD
-;          !word DDOT
+        !word W_STOD
+        !word W_DDOT
         !word W_SEMI
 } else {
         !word *+2
@@ -1111,10 +1111,9 @@ W_TOR
 W_QDUP
         !word DO_COLON
         !word W_DUP
-        +ZBRANCH L1303
+        +ZBRANCH +
         !word W_DUP
-L1303
-        !word W_SEMI
++       !word W_SEMI
 
 ; ****************************************************************************
 ; @ 
@@ -1376,13 +1375,8 @@ _accept_not_delete
 }
 
         !word W_DROP ; drop the CR
-!ifdef OLD_LEAVE_BEHAVIOUR {        
-        !word W_LEAVE ; TODO once we change LEAVE to follow ANS behaviour, this will exit the loop immediately!
-        +BRANCH _accept_end_of_loop; TODO remove - won't be needed once LEAVE changed
-} else {
         !word W_LEAVE
         !word _accept_after_loop-*
-}
 _accept_not_return
 
 
@@ -1416,7 +1410,6 @@ _accept_do_emit
         !word W_CR
 }
 
-_accept_end_of_loop ; TODO remove
         !word W_PLOOP
         !word _accept_loop-*
 _accept_after_loop ; TODO remove        
@@ -2577,22 +2570,12 @@ W_KEY
         +WORD "leave"
 W_LEAVE
         !word *+2
-!ifdef OLD_LEAVE_BEHAVIOUR {        
-        stx <XSAVE
-        tsx
-        lda $101,x
-        sta $103,x
-        lda $102,x
-        sta $104,x
-        ldx <XSAVE
-        jmp NEXT
-} else {
+        ; TODO
         pla
         pla
         pla
         pla
         jmp BRANCH
-}
 
 ; ****************************************************************************
 ; LITERAL 
@@ -2744,6 +2727,25 @@ W_MSTAR
         !word W_SEMI
 }
 
+;      D+-           d1  n  ---  d2
+;               Apply the sign of n to the double number d1, leaving it as 
+;               d2.
+
+;;
+;;                                       D+-
+;;                                       SCREEN 56 LINE 6
+;;
+!if 0 {
+        ; +WORD "d+-"
+W_DPM
+        !word DO_COLON
+;          !word ZLESS
+;          !word ZBRAN
+;L2481:    !word 4        ; L2483-L2481
+;          !word DNEGATE
+        !word W_SEMI
+}
+
 ; ****************************************************************************
 ; MAX 
 ; (n_1 n_2 -- n_3)
@@ -2758,10 +2760,9 @@ W_MAX
         !word DO_COLON
         !word W_2DUP
         !word W_LESS
-        +ZBRANCH L2532
+        +ZBRANCH +
         !word W_SWAP
-L2532
-        !word W_DROP
++       !word W_DROP
         !word W_SEMI
 
 ; ****************************************************************************
@@ -2778,10 +2779,9 @@ W_MIN
         !word DO_COLON
         !word W_2DUP
         !word W_GREATER
-        +ZBRANCH L2517
+        +ZBRANCH +
         !word W_SWAP
-L2517
-        !word W_DROP
++       !word W_DROP
         !word W_SEMI
 
 ; ****************************************************************************
@@ -2840,6 +2840,7 @@ W_MOD
 W_NEGATE
         !word *+2
         ; ldy #0 ; TODO
+        ; see also DNEGATE (double)
         sec
         tya
         sbc 0,x
@@ -2959,7 +2960,9 @@ W_QUIT
 }
         ; TODO set SOURCE-ID to 0
         !word W_LBRACKET
-L2388   
+
+_quit_read_loop
+
         ; !word W_RPSTORE
 
 !if 1 {
@@ -3023,21 +3026,20 @@ L2388
         !word W_STATE
         !word W_AT
         !word W_ZEQUALS
-        +ZBRANCH L2399
+        +ZBRANCH +
 
         !word W_PDOTQ
         +STRING "ok"
-
-L2399    
++
 
 !if 1 {
-        +BRANCH L2388
+        +BRANCH _quit_read_loop
 } else {
         !word W_SEMI ; TODO REMOVE
 }
 
 _test_string
-        +STRING "  123 2 3 + .s"
+        +STRING "  123 2 3 + .s" ; TODO REMOVE
 
 ; ****************************************************************************
 ; R>
@@ -3182,6 +3184,7 @@ W_ROT
 ;FIG:
 ;      S->D          n  ---  d
 ;               Sign extend a single number to form a double number.
+
         +WORD "s>d"
 W_STOD
         !word DO_COLON
@@ -3202,12 +3205,7 @@ W_STOD
 ;               output string in the text output buffer when n is 
 ;               negative.  n is discarded, but double number d is 
 ;               maintained.  Must be between <# and #>.
-;
-;;
-;;                                       SIGN
-;;                                       SCREEN 75 LINE 7
-;;
-!if 0 {
+
         +WORD "sign"
 W_SIGN
         !word DO_COLON
@@ -3218,7 +3216,6 @@ W_SIGN
         +CLITERAL '-'
 ;          !word HOLD
         !word W_SEMI
-}
 
 ; ****************************************************************************
 ; SM/REM
@@ -3270,27 +3267,26 @@ W_SPACE
 ;
 ;      SPACES        n  ---                                  L0
 ;               Transmit n ascii blanks to the output device.
-;
-;;
-;;                                       SPACES
-;;                                       SCREEN 75 LINE 1
-;;
-!if 0 {
+
         +WORD "spaces"
 W_SPACES
         !word DO_COLON
-;          !word ZERO
-;          !word MAX
-;          !word DDUP
-;          !word ZBRANCH
-;L3449:    !word $0C      ; L3455-L3449
-;          !word ZERO
-;          !word PDO
-;L3452:    !word SPACE
-;          !word PLOOP
-;L3454:    !word $FFFC    ; L3452-L3454
+        !word W_ZERO
+        !word W_MAX     ; (n|0)
+        !word W_QDUP
+        +ZBRANCH _spaces_done
+
+        !word W_ZERO    ; (n 0)
+        !word W_PDO
+
+_spaces_loop
+        !word W_SPACE
+
+        !word W_PLOOP
+        !word _spaces_loop-*
+
+_spaces_done
         !word W_SEMI
-}
 
 ; ****************************************************************************
 ; STATE
