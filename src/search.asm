@@ -103,6 +103,7 @@ W_SEARCH_WORDLIST
         !word DO_COLON
         +LITERAL W_PSEARCH_WORDLIST
         !word W_SWAP
+!if 0 {        
         !word W_TRAVERSE_WORDLIST
         ; TODO implement using
         ;     TRAVERSE-WORDLIST (tools-ext)
@@ -111,6 +112,11 @@ W_SEARCH_WORDLIST
         ;
         ;
         ;
+} else {
+        !word W_DROP        
+        !word W_DROP                
+}
+        !word W_DROP
         !word W_SEMI
 
 W_PSEARCH_WORDLIST ; (c-addr u nt -- c-addr u (xt 0)|1)

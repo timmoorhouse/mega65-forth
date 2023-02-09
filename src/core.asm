@@ -16,13 +16,19 @@ W_STORE
         lda 2,x
         sta (0,x)
 
+        ; TODO we don't really need to do this since we've got an aligned address ..
         ; just in case address is ??ff ...
+!if 1 {        
         inc 0,x
         bne +
         inc 1,x
-
-+       lda 3,x
++
+        lda 3,x
         sta (0,x)
+} else {
+        lda 3,x
+        sta (1,x)
+}        
         jmp POPTWO
 
 ; ****************************************************************************
@@ -2083,14 +2089,25 @@ W_EVALUATE
 
         ; TODO check for zero length
 
+!if 1 {
+        !word W_2DUP
+        !word W_FORTH_WORDLIST
+        !word W_SEARCH_WORDLIST
+        !word W_DOTS
+        ; !word W_DROP
+        ; !word W_DROP
+        !word W_DROP
+}
+
         !word W_DOTS
         +CLITERAL '['
         !word W_EMIT
+        !word W_2DUP
         !word W_TYPE
         +CLITERAL ']'
         !word W_EMIT
         !word W_SPACE
-        ;!word W_2DROP
+        !word W_2DROP
 
 }
 

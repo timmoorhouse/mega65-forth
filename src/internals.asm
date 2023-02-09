@@ -37,6 +37,15 @@
         ; Z -
 ;        rts
 
+
+; Is this a whitespace character?
+; Used by PARSE-NAME
+isspace
+        ; A - character to test
+        ; TODO check newline, etc
+        cmp #' '
+        rts
+
 ; ****************************************************************************
 ; 0
 

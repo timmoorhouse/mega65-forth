@@ -549,7 +549,7 @@ _parse_name_skip_whitespace_loop
         ; not at the end yet ...
         ; check for whitespace
         lda (0,x)
-        cmp #' '
+        jsr isspace
         bne _parse_name_end_of_whitespace
 
         ; advance the current position ...
@@ -592,7 +592,7 @@ _parse_name_skip_nonwhitespace_loop
         ; not at the end yet ...
         ; check for whitespace
         lda (0,x)
-        cmp #' '
+        jsr isspace
         beq _parse_name_all_done
 
         ; advance the current position ...
@@ -697,7 +697,7 @@ _parse_name_skip_whitespace_loop
         ; not at the end yet ...
         ; check for whitespace
         lda (0,x)
-        cmp #' '
+        jsr isspace
         bne _parse_name_end_of_whitespace
 
         ; advance the current position ...
@@ -740,7 +740,7 @@ _parse_name_skip_nonwhitespace_loop
         ; not at the end yet ...
         ; check for whitespace
         lda (0,x)
-        cmp #' '
+        jsr isspace
         beq _parse_name_all_done
 
         ; advance the current position ...

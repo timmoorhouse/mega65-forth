@@ -93,7 +93,6 @@ F_HIDDEN     = $20
 !set _here = $0
 !macro WORD2 .name, .flags {
         ; TODO align so that code field never straddles a page
-        ; TODO locate info
         !word _here
         !set _here = *-2
         !byte len(.name) | F_END_MARKER | .flags ; TODO control bits
@@ -343,7 +342,7 @@ U_BASE  = $26   ; BASE (core) TODO move to base page
 ;           - 30: HLD (fig)
 ; Things not in FIG ...
 
-DO_USER
+DO_USER ; TODO REMOVE
         ldy #2
         clc
         lda (<W),y
