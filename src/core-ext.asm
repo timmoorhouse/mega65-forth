@@ -2,6 +2,16 @@
 ; ****************************************************************************
 ; CORE EXT
 
+; TODO always enable:
+; PAD?
+; PARSE
+; PARSE-NAME
+; SAVE-INPUT?
+; RESTORE-INPUT?
+; SOURCE-ID?
+
+!if ENABLE_CORE_EXT {
+
 ; ****************************************************************************
 ; #TIB
 ; (-- a-addr)
@@ -390,7 +400,7 @@ W_PARSE
         !word *+2
 
         ; TODO !!!!!!!!!!!!!!!!!!!!
-        
+
 !if 0 {
         ; initialize addr
         dex
@@ -465,7 +475,7 @@ _parse_name_skip_whitespace_loop
         inc <IN+1
 +
 
-        jmp _parse_name_skip_whitespace_loop
+        bra _parse_name_skip_whitespace_loop
 
 _parse_name_end_of_whitespace
 
@@ -508,11 +518,11 @@ _parse_name_skip_nonwhitespace_loop
         inc <IN+1
 +
 
-        jmp _parse_name_skip_nonwhitespace_loop
+        bra _parse_name_skip_nonwhitespace_loop
 
 _parse_name_all_done
 
-        jmp POPTWO
+        bra POPTWO
 
 }
         jmp NEXT
@@ -609,7 +619,7 @@ _parse_name_skip_whitespace_loop
         inc <IN+1
 +
 
-        jmp _parse_name_skip_whitespace_loop
+        bra _parse_name_skip_whitespace_loop
 
 _parse_name_end_of_whitespace
 
@@ -652,7 +662,7 @@ _parse_name_skip_nonwhitespace_loop
         inc <IN+1
 +
 
-        jmp _parse_name_skip_nonwhitespace_loop
+        bra _parse_name_skip_nonwhitespace_loop
 
 _parse_name_all_done
 
@@ -842,3 +852,5 @@ W_BCOMPILE
 ; \
 ; ("text" --)
 ; ANSI 6.2.2535
+
+}

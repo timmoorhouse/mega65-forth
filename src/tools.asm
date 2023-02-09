@@ -2,6 +2,17 @@
 ; ****************************************************************************
 ; TOOLS
 
+; TODO always enable
+; AHEAD
+; CS-PICK
+; CS-ROLL
+; N>R?
+; NAME>STRING
+; STATE?
+; TRAVERSE-WORDLIST
+
+!if ENABLE_TOOLS {
+
 ; ****************************************************************************
 ; .S
 ; (--)
@@ -228,4 +239,6 @@ W_VLIST
 
 ;          !word DROP
         !word W_SEMI
+}
+
 }

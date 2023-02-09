@@ -14,6 +14,8 @@
 ; (the idea being to allow lda ($<N+xx),y for scanning strings)
 ; Can we instead move to return stack and use lda ($xx,SP),y?
 ; We'd need to clean up the return stack
+; In either case, this seems like it will be of limited usefulness
+; if we want to allow lengths > 255.
 ;
 ;SETUP
         ; A - # of words to move from stack to N (at most 4? 3?)

@@ -1156,7 +1156,7 @@ W_ABORT
         !word DO_COLON
         ; !word W_SPSTORE
         !word W_DECIMAL
-!ifdef ENABLE_BLOCK {
+!if ENABLE_BLOCK {
 ;          !word DR0 ; from fig
 }
 !if 1 {        
@@ -2082,13 +2082,26 @@ W_EVALUATE
         !word W_STORE
 
 
+        ; TODO LOOP !!!!!!!!!!!!!!!
+
 !if 1 {
         !word W_PARSE_NAME
         ; (c-addr u)
+
+        ; TODO check for zero length
+
         !word W_DOTS
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
+        !word W_SPACE
         ;!word W_2DROP
 
 }
+
+        ; TODO END LOOP !!!!!!!!!!
 
         ; !word W_2DROP ; TODO remove???
 
@@ -2221,12 +2234,14 @@ W_FILL
 ; FIND 
 ; (c-addr -- c-addr 0 | xt 1 | xt -1)
 ; ANSI 6.1.1550
-!if 0 {
         +WORD "find"
-        !word *+2
-        rts
-}
+W_FIND
+        !word DO_COLON
+        !word W_COUNT
+        !word W_PFIND
+        !word W_SEMI
 
+; FIG
 ;      (FIND)        addr1  addr2  ---  pfa  b  tf      (ok)
 ;                    addr1  addr2  ---  ff              (bad)
 ;               Searches the dictionary starting at the name field address 
@@ -2235,11 +2250,15 @@ W_FILL
 ;               for a good match.  If no match is found, only a boolean 
 ;               false is left.
 
-;;
-;;                                       (FIND)
-;;                                       SCREEN 19 LINE 1
-;;
-!if 0 {
+
+;
+; TODO like FIND but for a (c-addr u) string
+;          ... using:
+;                GET-ORDER (search)
+;                TRAVERSE-WORDLIST (tools)? SEARCH-WORDLIST? (search)
+;                NAME>STRING (tools),
+;                COMPARE (string)
+;
 ;        +WORD "(find)"
 W_PFIND
         !word *+2
@@ -2295,8 +2314,8 @@ W_PFIND
 ;          LDX XSAVE
 ;          LDA #0
 ;          PHA
-        jmp PUSH ; exit false upon reading null link
-}
+        ; jmp PUSH ; exit false upon reading null link
+        jmp NEXT
 
 ; ****************************************************************************
 ; FM/MOD 
@@ -2937,7 +2956,7 @@ W_COMPILE
         +WORD "quit"
 W_QUIT
         !word DO_COLON
-!ifdef ENABLE_BLOCK {
+!if ENABLE_BLOCK {
         !word W_ZERO
         !word W_BLK
         !word W_STORE

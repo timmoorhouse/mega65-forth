@@ -4,6 +4,7 @@
 ; - take a pass over the BASIC keywords and make equivalents? (will want DIR, etc)
 ; - look at C64 forth implementations (eg superFORTH)
 
+!if ENABLE_MEGA65 {
 
 ; ****************************************************************************
 ; MON
@@ -25,4 +26,6 @@ W_MON
 ;          BRK       ; break to monitor which is assumed
 ;          LDX XSAVE ; to save this as reentry point
         jmp NEXT
+}
+
 }

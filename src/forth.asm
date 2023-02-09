@@ -2,34 +2,34 @@
 !cpu m65
 !convtab pet
 
-;ENABLE_BLOCK         = 1
-;ENABLE_BLOCK_EXT     = 1
+ENABLE_BLOCK         = 0
+ENABLE_BLOCK_EXT     = 0
 ENABLE_CORE          = 1 ; Required
 ENABLE_CORE_EXT      = 1
-;ENABLE_DOUBLE        = 1
-;ENABLE_DOUBLE_EXT    = 1
-;ENABLE_EXCEPTION     = 1
-;ENABLE_EXCEPTION_EXT = 1
-;ENABLE_FACILITY      = 1
-;ENABLE_FACILITY_EXT  = 1
+ENABLE_DOUBLE        = 0
+ENABLE_DOUBLE_EXT    = 0
+ENABLE_EXCEPTION     = 0
+ENABLE_EXCEPTION_EXT = 0
+ENABLE_FACILITY      = 0
+ENABLE_FACILITY_EXT  = 0
 ENABLE_FIG           = 1 ; TODO remove
-;ENABLE_FILE          = 1
-;ENABLE_FILE_EXT      = 1
-;ENABLE_FLOATING      = 1
-;ENABLE_FLOATIN_EXT   = 1
-;ENABLE_LOCAL         = 1
-;ENABLE_LOCAL_EXT     = 1
+ENABLE_FILE          = 0
+ENABLE_FILE_EXT      = 0
+ENABLE_FLOATING      = 0
+ENABLE_FLOATING_EXT  = 0
+ENABLE_LOCAL         = 0
+ENABLE_LOCAL_EXT     = 0
 ENABLE_MEGA65        = 1
-;ENABLE_MEMORY        = 1
-;ENABLE_MEMORY_EXT    = 1
-;ENABLE_SEARCH        = 1
-;ENABLE_SEARCH_EXT    = 1
-;ENABLE_STRING        = 1
-;ENABLE_STRING_EXT    = 1
+ENABLE_MEMORY        = 0
+ENABLE_MEMORY_EXT    = 0
+ENABLE_SEARCH        = 0
+ENABLE_SEARCH_EXT    = 0
+ENABLE_STRING        = 0
+ENABLE_STRING_EXT    = 0
 ENABLE_TOOLS         = 1 ; for words, .s, etc
-;ENABLE_TOOLS_EXT     = 1
-;ENABLE_XCHAR         = 1
-;ENABLE_XCHAR_EXT     = 1
+ENABLE_TOOLS_EXT     = 0
+ENABLE_XCHAR         = 0
+ENABLE_XCHAR_EXT     = 0
 
 DEBUG = 1
 ; OLD_LEAVE_BEHAVIOUR = 1 ; Pre-ANS behaviour (doesn't exit loop immediately but finishes the iteration)
@@ -62,7 +62,7 @@ entry
 
 !source "basepage.asm"
 !source "console.asm"
-            
+
 
 ; VM Registers
 ; S - data stack pointer
@@ -71,7 +71,7 @@ entry
 ; W - word pointer (to definition currently executing, used to get parameter field)
 ; U - user pointer (in multitasked implementations, pointer to currently executing task) (FIG uses UP)
 ;
-; floating point stack is allowed to be on the data stack or separate 
+; floating point stack is allowed to be on the data stack or separate
 ; (might want to look at using the math register area directly?)
 
 
@@ -98,7 +98,7 @@ F_HIDDEN     = $20
         !word _here
         !set _here = *-2
         !byte len(.name) | F_END_MARKER | .flags ; TODO control bits
-!if 1 {        
+!if 1 {
         !text .name
 } else {
         !for i, 0, len(.name)-2 {
@@ -117,14 +117,14 @@ F_HIDDEN     = $20
 }
 
 ; +WORD "name"
-; !word <code field> - DO_COLON, DO_CONSTANT, DO_USER 
+; !word <code field> - DO_COLON, DO_CONSTANT, DO_USER
 ; [!word <parameter>...]
 
 
 !macro TRACE {
 !ifdef DEBUG {
         jsr TRACE
-}        
+}
 }
 
 !ifdef DEBUG                { !src "debug.asm"         }
@@ -221,9 +221,9 @@ PUSH
 ;      PUSH     address of routine to repeat PUT but creating a new
 ;                   bottom item on the computation stack.
 ;
-;               This code sequence pushes machine registers to the 
-;               computation stack and returns to NEXT.  It is not directly 
-;               executable, but is a Forth re-entry point after machine 
+;               This code sequence pushes machine registers to the
+;               computation stack and returns to NEXT.  It is not directly
+;               executable, but is a Forth re-entry point after machine
 ;               code.
         dex
         dex
@@ -235,9 +235,9 @@ PUT
 ;                   the machine stack one byte which replaces the
 ;                   present low stack byte; continue on to NEXT.
 ;
-;               This code sequence stores machine register contents over 
-;               the topmost computation stack value and returns to NEXT.  
-;               It is not directly executable, but is a Forth re-entry 
+;               This code sequence stores machine register contents over
+;               the topmost computation stack value and returns to NEXT.
+;               It is not directly executable, but is a Forth re-entry
 ;               point after machine code.
 
         sta 1,x
@@ -258,16 +258,16 @@ NEXT
 ;                   to pointed machine code.
 ;
 ;      NEXT
-;               This is the inner interpreter that uses the interpretive 
-;               pointer IP to execute compiled Forth definitions.  It is 
-;               not directly executed but is the return point for all code 
-;               procedures.  It acts by fetching the address pointed by 
-;               IP, storing this value in register W.  It then jumps to 
-;               the address pointed to by W.  W points to the code field 
-;               of a definition which contains the address of the code 
-;               which executes for that definition.  This usage of 
-;               indirect threaded code is a major contributor to the 
-;               power, portability, and extensibility of forth.  Locations 
+;               This is the inner interpreter that uses the interpretive
+;               pointer IP to execute compiled Forth definitions.  It is
+;               not directly executed but is the return point for all code
+;               procedures.  It acts by fetching the address pointed by
+;               IP, storing this value in register W.  It then jumps to
+;               the address pointed to by W.  W points to the code field
+;               of a definition which contains the address of the code
+;               which executes for that definition.  This usage of
+;               indirect threaded code is a major contributor to the
+;               power, portability, and extensibility of forth.  Locations
 ;               of IP and W are computer specific.
         ldy #1
         lda (<I),y     ; Fetch code field address pointed
@@ -353,7 +353,7 @@ DO_USER
         adc <U+1
         jmp PUSH
 
-DO_VARIABLE 
+DO_VARIABLE
         ; ldy #0 ; TODO
         clc
         lda <W
@@ -385,19 +385,19 @@ DO_DOES
 ; ****************************************************************************
 ; COLD
 
-;        +WORD "cold"  
+;        +WORD "cold"
 ;W_COLD
 ;        !word *+2
 COLD
 ;      COLD
-;               The cold start procedure to adjust the dictionary pointer 
-;               to the minimum standard and restart via ABORT.  May be 
-;               called from the terminal to remove application programs 
+;               The cold start procedure to adjust the dictionary pointer
+;               to the minimum standard and restart via ABORT.  May be
+;               called from the terminal to remove application programs
 ;               and restart.
 
         +map_reset ; TODO why do we need this for the dma fill in clear_screen to work?
 
-        +vic4_enable 
+        +vic4_enable
         +enable40MHz
         ; TODO bank I/O in
         lda #$35
@@ -450,7 +450,7 @@ WARM
         ; BLK set in QUIT
         ; TODO set IN
         ; TODO set OUT
-!ifdef ENABLE_BLOCK {
+!if ENABLE_BLOCK {
         ; TODO set SCR
 }
         ; TODO set OFFSET
@@ -500,13 +500,13 @@ WARM
 ; I_TEST  !word W_TEST
 
 W_TEST  !word DO_COLON
-;TEST    
+;TEST
         ;!word W_CR
-!if 1 {        
+!if 1 {
         !word W_WORDS
         !word W_CR
 }
-!if 0 {        
+!if 0 {
         !word W_ZERO
         !word W_ONE
         !word W_TWO
@@ -529,18 +529,18 @@ W_TEST  !word DO_COLON
 }
 !if 1 {
         !word W_ABORT
-}    
+}
         !word W_SEMI
 
         ; TODO get here after bootstrap ends
 FOO_BYE
         !word *+2
-W_BYE        
+W_BYE
         !word *+2
 
 BYE
         ; TODO restore stack
-        
+
         jsr CR
 !convtab scr {
         lda #'p'
@@ -563,7 +563,7 @@ BYE
         jsr put_hex
         jmp -
 +       clc ; TODO remove
-}        
+}
 
 !if 0 {
         lda #'m'
@@ -582,34 +582,34 @@ BYE
 
 !src "internals.asm"
 
-!ifdef ENABLE_BLOCK         { !src "block.asm"         }
-!ifdef ENABLE_BLOCK_EXT     { !src "block-ext.asm"     }
-!ifdef ENABLE_CORE          { !src "core.asm"          }
-!ifdef ENABLE_CORE_EXT      { !src "core-ext.asm"      }
-!ifdef ENABLE_DOUBLE        { !src "double.asm"        }
-!ifdef ENABLE_DOUBLE_EXT    { !src "double-ext.asm"    }
-!ifdef ENABLE_EXCEPTION     { !src "exception.asm"     }
-!ifdef ENABLE_EXCEPTION_EXT { !src "exception-ext.asm" }
-!ifdef ENABLE_FACILITY      { !src "facility.asm"      }
-!ifdef ENABLE_FACILITY_EXT  { !src "facility-ext.asm"  }
-!ifdef ENABLE_FIG           { !src "fig.asm"           }
-!ifdef ENABLE_FILE          { !src "file.asm"          }
-!ifdef ENABLE_FILE_EXT      { !src "file-ext.asm"      }
-!ifdef ENABLE_FLOATING      { !src "floating.asm"      }
-!ifdef ENABLE_FLOATIN_EXT   { !src "floating-ext.asm"  }
-!ifdef ENABLE_LOCAL         { !src "local.asm"         }
-!ifdef ENABLE_LOCAL_EXT     { !src "local-ext.asm"     }
-!ifdef ENABLE_MEGA65        { !src "mega65.asm"        }
-!ifdef ENABLE_MEMORY        { !src "memory.asm"        }
-!ifdef ENABLE_MEMORY_EXT    { !src "memory-ext.asm"    }
-!ifdef ENABLE_SEARCH        { !src "search.asm"        }
-!ifdef ENABLE_SEARCH_EXT    { !src "search-ext.asm"    }
-!ifdef ENABLE_STRING        { !src "string.asm"        }
-!ifdef ENABLE_STRING_EXT    { !src "string-ext.asm"    }
-!ifdef ENABLE_TOOLS         { !src "tools.asm"         }
-!ifdef ENABLE_TOOLS_EXT     { !src "tools-ext.asm"     }
-!ifdef ENABLE_XCHAR         { !src "xchar.asm"         }
-!ifdef ENABLE_XCHAR_EXT     { !src "xchar-ext.asm"     }
+!src "block.asm"
+!src "block-ext.asm"
+!src "core.asm"
+!src "core-ext.asm"
+!src "double.asm"
+!src "double-ext.asm"
+!src "exception.asm"
+!src "exception-ext.asm"
+!src "facility.asm"
+!src "facility-ext.asm"
+!src "fig.asm"
+!src "file.asm"
+!src "file-ext.asm"
+!src "floating.asm"
+!src "floating-ext.asm"
+!src "local.asm"
+!src "local-ext.asm"
+!src "mega65.asm"
+!src "memory.asm"
+!src "memory-ext.asm"
+!src "search.asm"
+!src "search-ext.asm"
+!src "string.asm"
+!src "string-ext.asm"
+!src "tools.asm"
+!src "tools-ext.asm"
+!src "xchar.asm"
+!src "xchar-ext.asm"
 
 HERE            ; TODO remove!!!!!
         !word _here
