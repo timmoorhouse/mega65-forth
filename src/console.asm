@@ -188,7 +188,7 @@ CR
         bmi +
         jmp _scroll_up
 +       inc <SCREEN_Y
-        pha
+        ; pha
         clc
         lda <SCREEN_LINE
         adc LINESTEPLSB
@@ -203,7 +203,7 @@ CR
         lda <COLOUR_LINE+1
         adc LINESTEPMSB
         sta <COLOUR_LINE+1
-        pla
+        ; pla
         rts
 
 _move_down

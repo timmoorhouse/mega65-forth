@@ -387,103 +387,142 @@ W_PAD
 
         +WORD "parse"
 W_PARSE
-        !word DO_COLON
-        !word W_SEMI        
-
-!if 0 {
-
-        +WORD "word"
-W_WORD
-        !word DO_COLON
-
-;          !word BLK
-;          !word AT
-;          !word ZBRANCH
-;L1908:    !word $C       ; L1914-L1908
-;          !word BLK
-;          !word AT
-;          !word BLOCK
-;          !word BRANCH
-;L1913:    !word $6       ; L1916-L1913
-
-;L1914:    !word TIB
-;          !word AT
-
-;L1916:    !word IN
-;          !word AT
-;          !word PLUS
-;          !word SWAP
-;          !word W_ENCLOSE
-;          !word HERE
-;          !word CLITERAL
-;          !byte $22
-;          !word BLANK
-;          !word IN
-;          !word PSTOR
-;          !word OVER
-;          !word SUB
-;          !word TOR
-;          !word R
-;          !word HERE
-;          !word CSTOR
-;          !word PLUS
-;          !word HERE
-;          !word 1PLUS
-;          !word RFROM
-;          !word CMOVE
-        !word W_SEMI
-
-;      ENCLOSE       addr1  c  ---  addr1  n1  n2  n3
-;               The text scanning primitive used by WORD.  From the text 
-;               address addr1 and an ascii delimiting character c, is 
-;               determined the byte offset to the first non-delimiting 
-;               character n1, the offset to the first delimiter after the 
-;               text n2, and the offset to the first character not 
-;               included.  This procedure will not process past an ascii 
-;               'null', treating it as an unconditional delimiter.
-
-;        +WORD "enclose"
-W_ENCLOSE
         !word *+2
-;          LDA #2
-;          JSR SETUP ; in fig
-;          TXA
-;          SEC
-;          SBC #8
-;          TAX
-;          STY 3,X
-;          STY 1,X
-;          DEY
-;L313:     INY
-;          LDA (N+2),Y
-;          CMP N
-;          BEQ L313
-;          STY 4,X
-;L318:     LDA (N+2),Y
-;          BNE L327
-;          STY 2,X
-;          STY 0,X
-;          TYA
-;          CMP 4,X
-;          BNE L326
-;          INC 2,X
-;L326:     JMP NEXT
-;L327:     STY 2,X
-;          INY
-;          CMP N
-;          BNE L318
-;          STY 0,X
-        jmp NEXT
+
+        ; TODO !!!!!!!!!!!!!!!!!!!!
+        
+!if 0 {
+        ; initialize addr
+        dex
+        dex
+        clc
+        lda <INPUT_BUFFER
+        adc <IN
+        sta 0,x
+        lda <INPUT_BUFFER+1
+        adc <IN+1
+        sta 1,x
+
+        ; initialize len
+        dex
+        dex
+        sty 1,x
+        sty 0,x
+
+        ; push a temporary of the end of the buffer
+        dex
+        dex
+        clc
+        lda <INPUT_BUFFER
+        adc <INPUT_LEN
+        sta 0,x
+        lda <INPUT_BUFFER+1
+        adc <INPUT_LEN+1
+        sta 1,x
+
+        ; push a temporary current position
+        dex
+        dex
+        lda 6,x
+        sta 0,x
+        lda 7,x
+        sta 1,x
+
+_parse_name_skip_whitespace_loop
+        ; check if we're at the end
+        lda 0,x
+        cmp 2,x
+        bne +
+        lda 1,x
+        cmp 3,x
+        beq _parse_name_all_done
++
+
+        ; not at the end yet ...
+        ; check for whitespace
+        lda (0,x)
+        cmp #' '
+        bne _parse_name_end_of_whitespace
+
+        ; advance the current position ...
+        clc
+        inc 0,x
+        bne +
+        inc 1,x
++
+
+        ; ... advance the start position ...
+        clc
+        inc 6,x
+        bne +
+        inc 7,x
++
+
+        ; ... and increment IN
+        clc
+        inc <IN
+        bne +
+        inc <IN+1
++
+
+        jmp _parse_name_skip_whitespace_loop
+
+_parse_name_end_of_whitespace
+
+        ; now skip non-whitespace
+
+_parse_name_skip_nonwhitespace_loop
+        ; check if we're at the end
+        lda 0,x
+        cmp 2,x
+        bne +
+        lda 1,x
+        cmp 3,x
+        beq _parse_name_all_done
++
+
+        ; not at the end yet ...
+        ; check for whitespace
+        lda (0,x)
+        cmp #' '
+        beq _parse_name_all_done
+
+        ; advance the current position ...
+        clc
+        inc 0,x
+        bne +
+        inc 1,x
++
+
+        ; ... increment the length ...
+        clc
+        inc 4,x
+        bne +
+        inc 5,x
++
+
+        ; ... and increment IN
+        clc
+        inc <IN
+        bne +
+        inc <IN+1
++
+
+        jmp _parse_name_skip_nonwhitespace_loop
+
+_parse_name_all_done
+
+        jmp POPTWO
 
 }
+        jmp NEXT
+
+
 ; ****************************************************************************
 ; PARSE-NAME
 ; Forth 2012 6.2.2020
 ; ("<spaces>name<space>" -- c-addr u)
-        +WORD "parse-name"
-W_PARSE_NAME
-        !word DO_COLON
-        !word W_SEMI        
+
 
 ; like PARSE but is delimited by any whitespace
 
@@ -492,6 +531,132 @@ W_PARSE_NAME
 ; Skip leading spaces and parse name delimited by space.  c-addr is the address within the
 ; input buffer and u is the length of the selected string.  If the parse area is empty, the
 ; resulting string has a zero length.
+
+        +WORD "parse-name"
+W_PARSE_NAME
+        !word *+2
+
+        ; initialize addr
+        dex
+        dex
+        clc
+        lda <INPUT_BUFFER
+        adc <IN
+        sta 0,x
+        lda <INPUT_BUFFER+1
+        adc <IN+1
+        sta 1,x
+
+        ; initialize len
+        dex
+        dex
+        sty 1,x
+        sty 0,x
+
+        ; push a temporary of the end of the buffer
+        dex
+        dex
+        clc
+        lda <INPUT_BUFFER
+        adc <INPUT_LEN
+        sta 0,x
+        lda <INPUT_BUFFER+1
+        adc <INPUT_LEN+1
+        sta 1,x
+
+        ; push a temporary current position
+        dex
+        dex
+        lda 6,x
+        sta 0,x
+        lda 7,x
+        sta 1,x
+
+_parse_name_skip_whitespace_loop
+        ; check if we're at the end
+        lda 0,x
+        cmp 2,x
+        bne +
+        lda 1,x
+        cmp 3,x
+        beq _parse_name_all_done
++
+
+        ; not at the end yet ...
+        ; check for whitespace
+        lda (0,x)
+        cmp #' '
+        bne _parse_name_end_of_whitespace
+
+        ; advance the current position ...
+        clc
+        inc 0,x
+        bne +
+        inc 1,x
++
+
+        ; ... advance the start position ...
+        clc
+        inc 6,x
+        bne +
+        inc 7,x
++
+
+        ; ... and increment IN
+        clc
+        inc <IN
+        bne +
+        inc <IN+1
++
+
+        jmp _parse_name_skip_whitespace_loop
+
+_parse_name_end_of_whitespace
+
+        ; now skip non-whitespace
+
+_parse_name_skip_nonwhitespace_loop
+        ; check if we're at the end
+        lda 0,x
+        cmp 2,x
+        bne +
+        lda 1,x
+        cmp 3,x
+        beq _parse_name_all_done
++
+
+        ; not at the end yet ...
+        ; check for whitespace
+        lda (0,x)
+        cmp #' '
+        beq _parse_name_all_done
+
+        ; advance the current position ...
+        clc
+        inc 0,x
+        bne +
+        inc 1,x
++
+
+        ; ... increment the length ...
+        clc
+        inc 4,x
+        bne +
+        inc 5,x
++
+
+        ; ... and increment IN
+        clc
+        inc <IN
+        bne +
+        inc <IN+1
++
+
+        jmp _parse_name_skip_nonwhitespace_loop
+
+_parse_name_all_done
+
+        jmp POPTWO
 
 ; ****************************************************************************
 ; PICK

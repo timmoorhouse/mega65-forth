@@ -954,8 +954,14 @@ W_GREATER
 ;               value of IN.
         +WORD ">in"
 W_IN
+!if 0 {
         !word DO_USER
         !byte U_IN
+} else {
+        !word DO_COLON
+        +LITERAL &IN
+        !word W_SEMI
+}
 
 ; ****************************************************************************
 ; >NUMBER 
@@ -2058,22 +2064,35 @@ W_EVALUATE
 
         !word W_PDOTQ
         +STRING "<evaluate>"
-        !word W_CR
+        ; !word W_CR
 
+        !word W_DOTS
+
+!if 1 {
         ; TODO setup SOURCE
+        ; !word W_2DUP ; TODO remove???
+        +LITERAL &INPUT_LEN
+        !word W_STORE
+        +LITERAL &INPUT_BUFFER
+        !word W_STORE
+}
+
+        !word W_ZERO
+        !word W_IN
+        !word W_STORE
 
 
-
-
-!if 0 {
+!if 1 {
         !word W_PARSE_NAME
         ; (c-addr u)
+        !word W_DOTS
+        ;!word W_2DROP
 
 }
 
+        ; !word W_2DROP ; TODO remove???
 
-
-        !word W_2DROP ; TODO REMOVE
+        ; !word W_DOTS
         !word W_SEMI
 
 ; FIG
@@ -2929,7 +2948,7 @@ L2388
         ; !word W_RPSTORE
 
 !if 1 {
-!if 0 {
+!if 1 {
         ; !word W_DOTS
         +CLITERAL '['
         !word W_EMIT
@@ -3003,7 +3022,7 @@ L2399
 }
 
 _test_string
-        +STRING "  1 2 3 + .s"
+        +STRING "  123 2 3 + .s"
 
 ; ****************************************************************************
 ; R>

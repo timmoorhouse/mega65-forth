@@ -26,6 +26,9 @@ XSAVE       !byte 0 ; temporary
 ; TODO input buffer stack (need to support depth of 8)
 ; TODO open file info
 SOURCE_ID   !word 0
+INPUT_BUFFER !word 0 ; Address and length of input buffer
+INPUT_LEN   !word 0
+IN          !word 0 ; Offset of start of parse area within input buffer
 
 WORDP       !word 0 ; temporary pointer to iterate over words TODO REMOVE
 STRING      !word 0 ; pointer to string to print, etc TODO REMOVE
