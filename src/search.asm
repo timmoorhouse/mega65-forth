@@ -48,7 +48,7 @@ W_DEFINITIONS
 ; (-- wid)
 ; 16.6.1.1595
 
-; The word itself is required by the implementation, though only visible if we enable SEARCH
+; The word itself is required by the implementation but will only be visible if SEARCH is enabled
 
 !if ENABLE_SEARCH {
         +WORD "forth-wordlist"

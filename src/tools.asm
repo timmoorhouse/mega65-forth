@@ -2,30 +2,19 @@
 ; ****************************************************************************
 ; TOOLS
 
-; TODO always enable
-; AHEAD
-; CS-PICK
-; CS-ROLL
-; N>R?
-; NAME>STRING
-; STATE?
-; TRAVERSE-WORDLIST
-
-!if ENABLE_TOOLS {
-
 ; ****************************************************************************
 ; .S
 ; (--)
 ; ANSI 15.6.0220
 
 ; TODO flip the order around!!!!!!
+; TODO rewrite in FORTH using DEPTH, ., DO, LOOP
 
-; see TRAVERSE (FIG)
+!if ENABLE_TOOLS {
         +WORD ".s"
 W_DOTS
         !word *+2
 
-        ; TODO rewrite in FORTH using DEPTH, ., DO, LOOP
         ; jsr CR
 !convtab scr {
         lda #'<'
@@ -72,6 +61,7 @@ W_DOTS
         jsr CR
 
         jmp NEXT
+}
 
 ; ****************************************************************************
 ; ?
@@ -86,6 +76,10 @@ W_DOTS
 ;;
 ;;                                       ?
 ;;                                       SCREEN 76 LINE 11
+
+; TODO always enable?
+
+!if ENABLE_TOOLS {
 !if 0 {
         +WORD "?"
 W_QUES
@@ -94,16 +88,20 @@ W_QUES
 ;          !word DOT
         !word W_SEMI
 }
+}
 
 ; ****************************************************************************
 ; DUMP
 ; (addr u --)
 ; ANSI 15.6.1.1280
+
+!if ENABLE_TOOLS {
 !if 0 {
         +WORD "dump"
 W_DUMP
         !word *+2
         rts
+}
 }
 
 ; ****************************************************************************
@@ -116,19 +114,24 @@ W_DUMP
 ;               Print the contents of n memory locations beginning at 
 ;               addr.  Both addresses and contents are shown in the 
 ;               current numeric base.
+
+!if ENABLE_TOOLS {
 !if 0 {
         +WORD "see"
 W_SEE
         !word *+2
         rts
 }
+}
 
 ; ****************************************************************************
 ; WORDS
 ; (--)
 ; ANSI 15.6.1.2465
-        ; TODO rewrite in FORTH using NAME>STRING, TYPE, TRAVERSE-WORDLIST
 
+; TODO rewrite in FORTH using NAME>STRING, TYPE, TRAVERSE-WORDLIST
+
+!if ENABLE_TOOLS {
         +WORD "words"
 W_WORDS
         !word *+2
@@ -240,5 +243,4 @@ W_VLIST
 ;          !word DROP
         !word W_SEMI
 }
-
 }

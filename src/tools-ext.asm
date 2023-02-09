@@ -3,6 +3,7 @@
 ; TOOLS EXT
 
 !if ENABLE_TOOLS_EXT {
+}
 
 ; ****************************************************************************
 ; ;CODE
@@ -30,6 +31,8 @@
 ;;
 ;;                                       ;CODE
 ;;                                       SCREEN 42 LINE 6
+
+!if ENABLE_TOOLS_EXT {
         +WORD_IMM ";code"
 W_SCODE
         !word DO_COLON
@@ -63,6 +66,7 @@ W_PSCODE
 ;          !word STORE
         !word W_SEMI
 }
+}
 
 ; ****************************************************************************
 ; AHEAD
@@ -77,43 +81,70 @@ W_PSCODE
 ;
 ;
 
+; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
+
+!if ENABLE_TOOLS_EXT {
+}
+
 ; ****************************************************************************
 ; ASSEMBLER
 ; (--)
 ; ANSI 15.6.2.0740
+
+!if ENABLE_TOOLS_EXT {
+}
 
 ; ****************************************************************************
 ; BYE
 ; (--)
 ; ANSI 15.6.2.0830
 ; Return control to the host operating system
+
+!if ENABLE_TOOLS_EXT {
 !if 0 {
         +WORD "bye"
 W_BYE
         !word *+2
         jmp NEXT
 }
-
+}
 
 ; ****************************************************************************
 ; CODE
 ; (???)
 ; ANSI 15.6.2.0930
 
+!if ENABLE_TOOLS_EXT {
+}
+
 ; ****************************************************************************
 ; CS-PICK
 ; (???)
 ; ANSI 15.6.2.1015
+
+
+; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
+
+!if ENABLE_TOOLS_EXT {
+}
 
 ; ****************************************************************************
 ; CS-ROLL
 ; (???)
 ; ANSI 15.6.2.1020
 
+; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
+
+!if ENABLE_TOOLS_EXT {
+}
+
 ; ****************************************************************************
 ; EDITOR
 ; (--)
 ; ANSI 15.6.2.1300
+
+!if ENABLE_TOOLS_EXT {
+}
 
 ; ****************************************************************************
 ; FORGET
@@ -133,6 +164,8 @@ W_BYE
 ;;                                       FORGET
 ;;                                       Altered from model
 ;;                                       SCREEN 72 LINE 6
+
+!if ENABLE_TOOLS_EXT {
         +WORD "forget"
 W_FORGET
         !word DO_COLON
@@ -156,61 +189,107 @@ W_FORGET
 ;          !word ZBRAN,$FFFF-39+1 ; L3225-*
 ;          !word RFROM,DP,STORE
         !word W_SEMI
+}
 
 ; ****************************************************************************
 ; N>R
 ; Forth 2012 15.6.2.1908
 
+; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
+
+!if ENABLE_TOOLS_EXT {
+}
+
 ; ****************************************************************************
 ; NAME>COMPILE
 ; Forth 2012 15.6.2.1909.10
+
+!if ENABLE_TOOLS_EXT {
+}
 
 ; ****************************************************************************
 ; NAME>INTERPRET
 ; Forth 2012 15.6.2.1909.20
 
+!if ENABLE_TOOLS_EXT {
+}
+
 ; ****************************************************************************
 ; NAME>STRING
 ; Forth 2012 15.6.2.1909.40
 
+; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
+
+!if ENABLE_TOOLS_EXT {
+}
+
 ; ****************************************************************************
 ; NR>
 ; Forth 2012 15.6.2.1940
+
+!if ENABLE_TOOLS_EXT {
+}
 
 ; ****************************************************************************
 ; STATE
 ; (-- a-addr)
 ; ANSI 15.6.2.2250
 
+; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
+
+!if ENABLE_TOOLS_EXT {
+}
+
 ; ****************************************************************************
 ; SYNONYM
 ; Forth 2012 15.6.2.2264
+
+!if ENABLE_TOOLS_EXT {
+}
 
 ; ****************************************************************************
 ; TRAVERSE-WORDLIST
 ; Forth 2012 15.6.2.2297
 
+; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
+
+!if ENABLE_TOOLS_EXT {
+}
+
 ; ****************************************************************************
 ; [DEFINED]
 ; Forth 2012 15.6.2.2530.30
+
+!if ENABLE_TOOLS_EXT {
+}
 
 ; ****************************************************************************
 ; [ELSE]
 ; (???)
 ; ANSI 15.6.2.2531
 
+!if ENABLE_TOOLS_EXT {
+}
+
 ; ****************************************************************************
 ; [IF]
 ; (???)
 ; ANSI 15.6.2.2532
+
+!if ENABLE_TOOLS_EXT {
+}
 
 ; ****************************************************************************
 ; [THEN]
 ; (--)
 ; ANSI 15.6.2.2533
 
+!if ENABLE_TOOLS_EXT {
+}
+
 ; ****************************************************************************
 ; [UNDEFINED]
 ; Forth 2012 15.6.2.2534
 
+!if ENABLE_TOOLS_EXT {
 }

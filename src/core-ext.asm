@@ -2,21 +2,14 @@
 ; ****************************************************************************
 ; CORE EXT
 
-; TODO always enable:
-; PAD?
-; PARSE
-; PARSE-NAME
-; SAVE-INPUT?
-; RESTORE-INPUT?
-; SOURCE-ID?
-
-!if ENABLE_CORE_EXT {
-
 ; ****************************************************************************
 ; #TIB
 ; (-- a-addr)
 ; ANSI 6.2.0060 - marked as obsolescent (see SOURCE in core)
 ; (not in Forth 2012?)
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; .(
@@ -25,6 +18,9 @@
 
 ; from ANSI A.6.2.2008 discussion:
 ;     : .( [CHAR] ) PARSE TYPE ; IMMEDIATE
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; .R
@@ -40,6 +36,8 @@
 ;;                                       .R
 ;;                                       SCREEN 76 LINE 7
 ;;
+
+!if ENABLE_CORE_EXT {
 !if 0 {
         +WORD ".r"
 W_DOTR
@@ -50,51 +48,79 @@ W_DOTR
 ;          !word DDOTR
         !word W_SEMI
 }
+}
 
 ; ****************************************************************************
 ; 0<>
 ; (x -- flag)
 ; ANSI 6.2.0260
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; 0>
 ; (n -- flag)
 ; ANSI 6.2.0280
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; 2>R
 ; (???)
 ; ANSI 6.2.0340
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; 2R>
 ; (???)
 ; ANSI 6.2.0410
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; 2R@
 ; (???)
 ; ANSI 6.2.0415
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; :NONAME
 ; (???)
 ; ANSI 6.2.0455
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; <>
 ; (x_1 x_2 -- flag)
 ; ANSI 6.2.0500
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; ?DO
 ; (???)
 ; ANSI 6.2.0620
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; ACTION-OF
 ; (???)
 ; Forth 2012 6.2.0698
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; AGAIN
@@ -118,6 +144,8 @@ W_DOTR
 ;;
 ;;                                       AGAIN
 ;;                                       SCREEN 74 LINE 3
+
+!if ENABLE_CORE_EXT {
 !if 0 {
         +WORD_IMM "again"
 W_AGAIN
@@ -129,26 +157,39 @@ W_AGAIN
 ;          !word BACK
         !word W_SEMI
 }
+}
 
 ; ****************************************************************************
 ; BUFFER:
 ; (???)
 ; Forth 2012 6.2.0825
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; C"
 ; (???)
 ; ANSI 6.2.0855
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; CASE
 ; (???)
 ; ANSI 6.2.0873
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; COMPILE,
 ; (xt --)
 ; ANSI 6.2.0945
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; CONVERT
@@ -156,17 +197,29 @@ W_AGAIN
 ; ANSI 6.2.0970
 ; Not in Forth 2012?
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; DEFER
 ; Forth 2012 6.2.1173
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; DEFER!
 ; Forth 2012 6.2.1175
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; DEFER@
 ; Forth 2012 6.2.1177
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; ENDCASE
@@ -177,6 +230,9 @@ W_AGAIN
 ;
 ;    : ENDCASE POSTPONE DROP 0 ?DO POSTPONE THEN LOOP ; IMMEDIATE
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; ENDOF
 ; (???)
@@ -185,6 +241,9 @@ W_AGAIN
 ; From discussion in ANSI A.3.2.3.2:
 ;
 ;   : ENDOF >R POSTPONE ELSE R> ; IMMEDIATE
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; ERASE
@@ -202,6 +261,8 @@ W_AGAIN
 ;;
 ;;                                       ERASE
 ;;                                       SCREEN 46 LINE 4
+
+!if ENABLE_CORE_EXT {
 !if 0 {
         +WORD "erase"
 W_ERASE
@@ -209,6 +270,7 @@ W_ERASE
         !word W_ZERO
         !word W_FILL
         !word W_SEMI
+}
 }
 
 ; ****************************************************************************
@@ -226,6 +288,8 @@ W_ERASE
 ;               One or more nulls are added at the end of the text.
 ;
 ; TODO why doesn't it use WORD?
+
+!if ENABLE_CORE_EXT {
 
         +WORD "expect"
 W_EXPECT
@@ -302,11 +366,15 @@ W_EXPECT
 ;          !word DROP      ; L1736-L1781
 }
         !word W_SEMI
+}
 
 ; ****************************************************************************
 ; FALSE
 ; (-- false)
 ; ANSI 6.2.1485
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; HEX
@@ -317,33 +385,44 @@ W_EXPECT
 ;
 ;      HEX                                                   L0
 ;               Set the numeric conversion base to sixteen (hexadecimal).
+!if ENABLE_CORE_EXT {
         +WORD "hex"
 W_HEX
         !word DO_COLON
-        !word W_CLITERAL
-        !byte 16
+        +CLITERAL 16
         !word W_BASE
         !word W_STORE
         !word W_SEMI
+}
 
 ; ****************************************************************************
 ; HOLDS
 ; Forth 2012 6.2.1675
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; IS
 ; Forth 2012 6.2.1725
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; MARKER
 ; (???)
 ; ANSI 6.2.1850
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; NIP
 ; (x_1 x_2 -- x_2)
 ; ANSI 6.2.1930
 
+!if ENABLE_CORE_EXT {
         +WORD "nip"
 W_NIP
         !word *+2
@@ -352,6 +431,7 @@ W_NIP
         lda 1,x
         sta 3,x
         jmp POP
+}
 
 ; ****************************************************************************
 ; OF
@@ -361,6 +441,9 @@ W_NIP
 ; From discussion in ANSI A.3.2.3.2:
 ;
 ;     : OF 1+ >R POSTPONE OVER POSTPONE = POSTPONE IF POSTPONE DROP R> ; IMMEDIATE
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; PAD
@@ -377,6 +460,10 @@ W_NIP
 ;;
 ;;                                       PAD
 ;;                                       SCREEN 46 LINE 13
+
+; TODO always enable?
+
+!if ENABLE_CORE_EXT {
 !if 0 {
         +WORD "pad"
 W_PAD
@@ -387,6 +474,7 @@ W_PAD
         !word W_PLUS
         !word W_SEMI
 }
+}
 
 ; ****************************************************************************
 ; PARSE
@@ -395,7 +483,11 @@ W_PAD
 ;
 ; Parse ccc delimited by char
 
+; The word itself is required by the implementation but will only be visible if CORE-EXT is enabled
+
+!if ENABLE_CORE_EXT {
         +WORD "parse"
+}
 W_PARSE
         !word *+2
 
@@ -542,7 +634,11 @@ _parse_name_all_done
 ; input buffer and u is the length of the selected string.  If the parse area is empty, the
 ; resulting string has a zero length.
 
+; The word itself is required by the implementation but will only be visible if CORE-EXT is enabled
+
+!if ENABLE_CORE_EXT {
         +WORD "parse-name"
+}
 W_PARSE_NAME
         !word *+2
 
@@ -673,6 +769,9 @@ _parse_name_all_done
 ; (x_u...x_1 x_u u -- x_u...x_1 x_0 x_u)
 ; ANSI 6.2.2030
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; QUERY
 ; (--)
@@ -685,6 +784,8 @@ _parse_name_all_done
 ;               Input 80 characters of text (or until a "return") from the 
 ;               operators terminal.  Text is positioned at the address 
 ;               contained in TIB with IN set to zero.
+
+!if ENABLE_CORE_EXT {
         +WORD "query"
 W_QUERY
         !word DO_COLON
@@ -697,21 +798,33 @@ W_QUERY
         !word W_IN 
         !word W_STORE
         !word W_SEMI
+}
 
 ; ****************************************************************************
 ; REFILL
 ; (-- flag)
 ; ANSI 6.2.2125
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; RESTORE-INPUT
 ; (x_n...x_1 n -- flag)
 ; ANSI 6.2.2148
 
+; TODO always enable?
+
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; ROLL
 ; (x_u x_u-1...x_0 u -- x_u-1...x_0 x_u)
 ; ANSI 6.2.2150
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; S\"
@@ -734,16 +847,27 @@ W_QUERY
 ; \xNN          hex digit NN                    OK?
 ; \\            92 (backslash)                  OK?
 
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; SAVE-INPUT
 ; (-- x_n...x_1 n)
 ; ANSI 6.2.2182
 
+; TODO always enable?
+
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; SOURCE-ID
 ; (-- 0|-1)
 ; ANSI 6.2.2218
+
+; TODO always enable?
+
+!if ENABLE_CORE_EXT {
         +WORD "source-id"
 W_SOURCE_ID
         !word *+2
@@ -751,12 +875,16 @@ W_SOURCE_ID
         pha
         lda <SOURCE_ID+1
         jmp PUSH
+}
 
 ; ****************************************************************************
 ; SPAN
 ; (-- a-addr)
 ; ANSI 6.2.2240 - marked as obsolescent (see ACCEPT)
 ; Not in Forth 2012?
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; TIB
@@ -772,50 +900,76 @@ W_SOURCE_ID
 
 ; TODO this returns the address of a pointer to the TIB !!!!!!!!!
 
+!if ENABLE_CORE_EXT {
         +WORD "tib"
 W_TIB
         !word DO_USER
         !byte U_TIB
+}
 
 ; ****************************************************************************
 ; TO
 ; (???)
 ; ANSI 6.2.2295
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; TRUE
 ; (-- true)
 ; ANSI 6.2.2298
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; TUCK
 ; (x_1 x_2 -- x_2 x_1 x_2)
 ; ANSI 6.2.2300
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; U.R
 ; (u n --)
 ; ANSI 6.2.2300
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; U>
 ; (u_1 u_2 flag)
 ; ANSI 6.2.2350
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; UNUSED
 ; (-- u)
 ; ANSI 6.2.2395
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; VALUE
 ; (???)
 ; ANSI 6.2.2405
 
+!if ENABLE_CORE_EXT {
+}
+
 ; ****************************************************************************
 ; WITHIN
 ; (n_1 n_2 n_3 -- flag)
 ; ANSI 6.2.2440
+
+!if ENABLE_CORE_EXT {
+}
 
 ; ****************************************************************************
 ; [COMPILE]
@@ -834,6 +988,8 @@ W_TIB
 ;;
 ;;                                       [COMPILE]
 ;;                                       SCREEN 51 LINE 2
+
+!if ENABLE_CORE_EXT {
 !if 0 {
         +WORD_IMM "[compile]"
 W_BCOMPILE
@@ -847,10 +1003,12 @@ W_BCOMPILE
 ;          !word COMMA
         !word W_SEMI
 }
+}
 
 ; ****************************************************************************
 ; \
 ; ("text" --)
 ; ANSI 6.2.2535
 
+!if ENABLE_CORE_EXT {
 }
