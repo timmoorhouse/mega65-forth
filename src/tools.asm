@@ -15,29 +15,23 @@
 W_DOTS
         !word *+2
 
-        ; jsr CR
-!convtab scr {
         lda #'<'
-        jsr put_char_screencode
-}
+        jsr put_char_petscii
         stx <XSAVE
         lda #TOS
         sec
         sbc XSAVE
         lsr
         jsr put_hex
-!convtab scr {
         lda #'>'
-}
-        jsr put_char_screencode
+        jsr put_char_petscii
 
+!if 0 {
 -       cpx #TOS
         beq +
 
-!convtab scr {
         lda #' '
-}
-        jsr put_char_screencode
+        jsr put_char_petscii
         lda 1,x
         jsr put_hex
         lda 0,x
@@ -47,17 +41,26 @@ W_DOTS
         jmp -
 
 +       ldx <XSAVE
+} else {
+        ldx #TOS
 
-!if 0 {
-!convtab scr {
+-       cpx <XSAVE
+        beq +
+
         lda #' '
-        jsr put_char_screencode
-        lda #'o'
-        jsr put_char_screencode
-        lda #'k'
-        jsr put_char_screencode
+        jsr put_char_petscii
+        dex
+        dex
+        lda 1,x
+        jsr put_hex
+        lda 0,x
+        jsr put_hex
+        jmp -
+
+
++        
 }
-}
+
         jsr CR
 
         jmp NEXT

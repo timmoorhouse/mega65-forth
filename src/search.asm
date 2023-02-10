@@ -146,7 +146,12 @@ W_PSEARCH_WORDLIST ; (c-addr u nt -- c-addr u (xt 0)|1)
 
         ; push true if iteration should continue, false if done
         ; TODO name>interpret or name>compile
-        !word W_TRUE
+        
+!if 1 {        
+        !word W_TRUE ; continue
+} else {
+        !word W_FALSE ; stop
+}
 
         
         !word W_SEMI

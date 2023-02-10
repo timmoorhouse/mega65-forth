@@ -68,27 +68,103 @@ W_DOTR
 
 ; ****************************************************************************
 ; 2>R
-; (???)
+; (x_1 x_2 --) (R: -- x_1 x_2)
 ; ANSI 6.2.0340
 
+; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
+
 !if ENABLE_CORE_EXT {
+        +WORD "2>r"
 }
+W_2TOR
+        !word *+2
+        ; see also >r (core)
+        lda 3,x
+        pha
+        lda 2,x
+        pha
+        lda 1,x
+        pha
+        lda 0,x
+        pha
+        jmp POPTWO
 
 ; ****************************************************************************
 ; 2R>
 ; (???)
 ; ANSI 6.2.0410
 
+; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
+
 !if ENABLE_CORE_EXT {
+        +WORD "2r>"
 }
+W_2RFROM
+        !word *+2
+        ; see also r> (core)
+        dex
+        dex
+        dex
+        dex
+        pla
+        sta 0,x
+        pla
+        sta 1,x
+        pla
+        sta 2,x
+        pla
+        sta 3,x
+        jmp NEXT     
 
 ; ****************************************************************************
 ; 2R@
-; (???)
+; (-- x_1 x_2) (R: x_1 x_2 -- x_1 x_2)
 ; ANSI 6.2.0415
 
+; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
+
 !if ENABLE_CORE_EXT {
+        +WORD "2r@"
 }
+W_2RAT
+        !word *+2
+        ; see also r@ (core)
+!if 1 {
+        ; TODO KLUNKY !!!!!!!!!!!!!
+        dex
+        dex
+        stx <XSAVE
+        tsx
+        lda $103,x
+        ldx <XSAVE
+        sta 0,x
+        tsx
+        lda $104,x
+        ldx <XSAVE
+        sta 1,x
+        tsx
+        lda $101,x
+        pha
+        lda $102,x
+        ldx <XSAVE        
+} else {
+        dex
+        dex
+        stx <XSAVE ; TODO saving in Z might save a couple cycles
+        tsx
+        txy
+        ldx <XSAVE
+        lda $104,y
+        lda #$ff
+        sta 0,x
+        lda $103,y
+        lda #$ee
+        sta 1,x
+        lda $101,y
+        pha
+        lda $102,y
+}        
+        jmp PUSH
 
 ; ****************************************************************************
 ; :NONAME

@@ -523,7 +523,7 @@ W_DOTQUOTE
 ;        +WORD "(.\")"
 W_PDOTQ
         !word DO_COLON
-        !word W_R
+        !word W_RAT
         !word W_COUNT
         !word W_DUP
         !word W_1PLUS ; account for length field
@@ -1097,6 +1097,7 @@ W_PNUMBER
         +WORD ">r"
 W_TOR
         !word *+2
+        ; see also 2>r (core-ext)
         lda 1,x
         pha
         lda 0,x
@@ -2445,10 +2446,10 @@ W_HOLD
 W_I
 !if 1 { 
         ; TODO does this work ???
-        !word W_R+2      ; share the code for R
+        !word W_RAT+2      ; share the code for R
 } else {
         !word DO_COLON
-        !word W_R
+        !word W_RAT
         !word W_SEMI
 }
 
@@ -3085,6 +3086,7 @@ _test_string
         +WORD "r>"
 W_RFROM
         !word *+2
+        ; see also 2r> (core-ext)
         dex
         dex
         pla
@@ -3103,7 +3105,7 @@ W_RFROM
 ;               Copy the top of the return stack to the computation stack.
 
         +WORD "r@"
-W_R ; TODO rename to W_RFETCH? W_RAT?
+W_RAT ; TODO rename to W_RFETCH?
         !word *+2
         stx <XSAVE
         tsx

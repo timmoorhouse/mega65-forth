@@ -280,46 +280,34 @@ W_NAME_TO_STRING
 }
 W_TRAVERSE_WORDLIST
         !word DO_COLON
-        ; TODO
 
-        !word W_PDOTQ
-        +STRING "<traverse>"
-        !word W_DOTS
-
-!if 0 {
-
-        ; loop
-        ;      wid = *wid
-        ;      if (!wid) break
-        ;      2dup              ; (xt wid xt nt)
-        ;      swap              ; (xt wid nt xt)
-        ;      execute           ; (xt wid 0|1)
-        ;      =0
-        ;      zbranch loop
+        !word W_2TOR
 
 _traverse_loop
 
-        ; TODO we *must* remove xt and wid from the stack
-        ; TODO this assumes xt and wid stay at the same spot on the stack !!!!
-        !word W_AT   ; wid = *wid      ; (xt wid)
-        !word W_QDUP
+        ; (i*x) (R: xt wid)
+
+        !word W_RFROM ; (i*x wid) (R: xt)
+        !word W_AT    ; (i*x wid') (R: xt) 
+        !word W_DUP
+        !word W_TOR   ; (i*x wid') (R: xt wid')
         +ZBRANCH _traverse_done
-        !word W_2DUP
-        !word W_SWAP
-!if 0 {
-        ; !word W_DOTS
-        +CLITERAL 'e'
-        !word W_EMIT
-}
-        !word W_EXECUTE
+
+        ; (i*x) (R: xt wid)
+
+        !word W_2RAT    ; (i*x xt wid=nt) (R: xt wid)
+        !word W_SWAP    ; (i*x nt xt) (R: xt wid)
+        !word W_EXECUTE ; (j*x flag) (R: xt wid)
+
         !word W_ZEQUALS
         +ZBRANCH _traverse_loop
 
 _traverse_done
-        !word W_DROP
-} else {
-        !word W_2DROP
-}
+
+        ; (i*x) (R: xt wid)
+
+        !word W_2RFROM,W_2DROP ; (ix) (R:)
+
         !word W_SEMI
 
 ; ****************************************************************************
