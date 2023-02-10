@@ -147,6 +147,7 @@ W_CMOVE
         +WORD "compare"
 }
 W_COMPARE
+!if 0 {
         !word DO_COLON
 
         ; find min(u_1, u_2)
@@ -166,6 +167,95 @@ W_COMPARE
         !word W_ONE
 
         !word W_SEMI
+} else {
+        !word *+2
+
+        ; ldy #0 ; TODO
+
+        ; TEMP1 - pointer into string 1
+        ; TEMP2 - pointer into string 2
+        ; TEMP3 - index
+
+        lda 6,x
+        sta <TEMP1
+        lda 7,x
+        sta <TEMP1+1
+
+        lda 2,x
+        sta <TEMP2
+        lda 3,x
+        sta <TEMP2+1
+
+        tya
+        sta <TEMP3
+        sta <TEMP3+1
+
+_compare_loop
+        ; while TEMP3 < u1 && TEMP3 < u2
+
+        sec
+        lda <TEMP3
+        sbc 4,x
+        lda <TEMP3+1
+        sbc 5,x
+
+        ; todo
+
+        sec
+        lda <TEMP3
+        sbc 0,x
+        lda <TEMP3+1
+        sbc 1,x
+
+        ; todo
+
+
+
+
+        ;       compare *TEMP1 and *TEMP2
+        lda (<TEMP1),y
+        cmp (<TEMP2),y
+        ; bne foo ....
+        ;       if <>0, return -1 or 1
+
+
+
+        inc <TEMP1
+        bne +
+        inc <TEMP1+1
++
+        inc <TEMP2
+        bne +
+        inc <TEMP2+1
++
+        inc <TEMP3
+        bne +
+        inc <TEMP3+1
++
+
+        ; when the loop is ready ...
+!if 0 {
+        jmp _compare_loop
+}
+
+        ; if u1 < u2 return -1
+        ; if u1 > u2 return 1
+        ; return 0
+
+
+
+
+
+        inx
+        inx
+        inx
+        inx
+        inx
+        inx
+        tya
+        pha
+        jmp PUT
+}
 
 ; ****************************************************************************
 ; SEARCH

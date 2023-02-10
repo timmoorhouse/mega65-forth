@@ -242,6 +242,7 @@ _scroll_up
 
 _recalc_screen_line
         ; TODO this assumes bank 0
+        ; TODO just use a lookup table?  definitely faster, may even be smaller
 
         ; recalculate SCREEN_LINE (pointer to start of screen mem for SCREEN_Y)
         ; TODO - can we arrange to only do this when needed?

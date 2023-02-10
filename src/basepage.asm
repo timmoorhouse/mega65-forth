@@ -21,7 +21,7 @@ U               !word 0
 
 ; X holds the stack pointer (S)
 ;      XSAVE    address of a temporary register for X in zero-page.
-XSAVE           !byte 0 ; temporary
+XSAVE           !byte 0 ; temporary to save S when we need to reuse X
 
 ; TODO input buffer stack (need to support depth of 8)
 ; TODO open file info
@@ -31,6 +31,10 @@ INPUT_LEN       !word 0
 IN              !word 0 ; Offset of start of parse area within input buffer
 
 HERE            !word 0
+
+TEMP1           !word 0 ; temporaries
+TEMP2           !word 0
+TEMP3           !word 0
 
 WORDP           !word 0 ; temporary pointer to iterate over words TODO REMOVE
 STRING          !word 0 ; pointer to string to print, etc TODO REMOVE

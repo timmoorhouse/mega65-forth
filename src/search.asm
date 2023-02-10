@@ -172,7 +172,7 @@ W_PSEARCH_WORDLIST ; (c-addr u nt -- c-addr u (xt 0)|1)
 
         !word W_RFROM,W_DROP
         
-!if 1 {        
+!if 0 {        
         !word W_TRUE ; continue
 } else {
         !word W_FALSE ; stop
