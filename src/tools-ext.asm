@@ -286,6 +286,8 @@ W_TRAVERSE_WORDLIST
         +STRING "<traverse>"
         !word W_DOTS
 
+!if 0 {
+
         ; loop
         ;      wid = *wid
         ;      if (!wid) break
@@ -315,7 +317,9 @@ _traverse_loop
 
 _traverse_done
         !word W_DROP
-
+} else {
+        !word W_2DROP
+}
         !word W_SEMI
 
 ; ****************************************************************************
