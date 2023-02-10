@@ -114,7 +114,9 @@ _255
 put_char_petscii
         cmp #$0d ; return
         bne +
+        pha
         jmp CR
+        pla
 +        
         ; TODO delete
         ; TODO home
@@ -157,8 +159,10 @@ put_char_screencode
         cpy CHRCOUNT
         bmi +
 
+        pha
         jsr CR
-
+        pla
+        
 !if 1 {
 +       ldy <SCREEN_X
         ; TODO assumes bank 0

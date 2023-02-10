@@ -313,6 +313,7 @@ W_PSTORE
         adc 2,x
         sta (0,x)
         
+        ; TODO Like for ! do we need to do this when we have an aligned address? 
         ; in case address is ??ff ...
         inc 0,x
         bne +
@@ -1135,6 +1136,7 @@ W_AT
         lda (0,x)
         pha
 
+        ; TODO like for ! can we skip this since we have an aligned address?
         ; in case address is ??ff ...
         inc 0,x
         bne +
@@ -3170,21 +3172,15 @@ W_REPEAT
 ;      ROT           n1  n2  n3  ---  n2  n3  n1             L0
 ;               Rotate the top three values on the stack, bringing the 
 ;               third to the top.
-;
-;;
-;;                                       ROT
-;;                                       SCREEN 38 LINE 11
-;;
-!if 0 {
+
         +WORD "rot"
 W_ROT
         !word DO_COLON
-;          !word TOR
-;          !word SWAP
-;          !word RFROM
-;          !word SWAP
+        !word W_TOR
+        !word W_SWAP
+        !word W_RFROM
+        !word W_SWAP
         !word W_SEMI
-}
 
 ; ****************************************************************************
 ; RSHIFT
