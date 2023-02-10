@@ -136,23 +136,47 @@ W_PSEARCH_WORDLIST ; (c-addr u nt -- c-addr u (xt 0)|1)
 
         +CLITERAL 's'
         !word W_EMIT
+
+        !word W_TOR ; (c-addr u) (R: nt)
+
+        !word W_2DUP
+        !word W_RAT ; (c-addr u c-addr u nt) (R: nt)
+
+        !word W_NAME_TO_STRING
+
+!if 1 {
+        +CLITERAL '"'
+        !word W_EMIT
+        !word W_2DUP
+        !word W_TYPE
+        +CLITERAL '"'
+        !word W_EMIT
+}
+
+        !word W_COMPARE
+
+        !word W_DOTS
+        !word W_DROP
         
         ; Check for a name match
         ; !word W_DUP             ; (c-addr u nt nt)
         ; !word W_NAME_TO_STRING  ; (c-addr1 u nt c-addr2 u )
         ; !word W_COMPARE
 
-        !word W_DROP
-
         ; push true if iteration should continue, false if done
         ; TODO name>interpret or name>compile
+
+!if 0 {
+        !word W_CR
+}
+
+        !word W_RFROM,W_DROP
         
 !if 1 {        
         !word W_TRUE ; continue
 } else {
         !word W_FALSE ; stop
 }
-
         
         !word W_SEMI
 

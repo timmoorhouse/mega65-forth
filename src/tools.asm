@@ -16,7 +16,7 @@ W_DOTS
         !word *+2
 
         lda #'<'
-        jsr put_char_petscii
+        jsr put_char
         stx <XSAVE
         lda #TOS
         sec
@@ -24,14 +24,14 @@ W_DOTS
         lsr
         jsr put_hex
         lda #'>'
-        jsr put_char_petscii
+        jsr put_char
 
 !if 0 {
 -       cpx #TOS
         beq +
 
         lda #' '
-        jsr put_char_petscii
+        jsr put_char
         lda 1,x
         jsr put_hex
         lda 0,x
@@ -48,7 +48,7 @@ W_DOTS
         beq +
 
         lda #' '
-        jsr put_char_petscii
+        jsr put_char
         dex
         dex
         lda 1,x

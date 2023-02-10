@@ -130,14 +130,41 @@ W_CMOVE
 ; (c-addr_1 u_1 c-addr_2 u_2 -- n)
 ; ANSI 17.6.1.0935
 
-; The word itself is required by the implmentation (of FIND) but is only visible if SEARCH is enabled
+; 0 if identical
+
+; if identical up to shortest length:
+; -1 if u_1 < u_2
+; 1 otherwise
+
+; if not identical up to shortest length:
+; -1 if char from str 1 < char from str 2
+; 1 otherwise
+
+
+; The word itself is required by the implementation (of FIND) but is only visible if SEARCH is enabled
 
 !if ENABLE_STRING {
         +WORD "compare"
 }
 W_COMPARE
         !word DO_COLON
+
+        ; find min(u_1, u_2)
+        ; compare positions in common
+        ;    if different, return -1 or 1
+        ; (identical up to min len)
+        ; if u_1 < u_2
+        ;    return -1
+        ; if u_1 = u_2
+        ;    return 0
+        ; if u_1 > u_2
+        ;    return 1
+
         ; TODO
+        !word W_2DROP
+        !word W_2DROP
+        !word W_ONE
+
         !word W_SEMI
 
 ; ****************************************************************************

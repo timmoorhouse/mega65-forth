@@ -317,7 +317,7 @@ DO_CONSTANT
 
 ; 00: latest???
 ; 02: backspace???
-; 04 ???
+; 04 ??? UAP start of user area?
 U_S0    = $06   ; S0 (see internal SP! in core)
 U_R0    = $08   ; R0 (see internal RP! in core)
 U_TIB   = $0a   ; TIB (core-ext)
@@ -327,7 +327,7 @@ U_TIB   = $0a   ; TIB (core-ext)
 ; U_DP    = $12   ; DP (fig)
 ;           - 14: VOC-LINK (fig)
 U_BLK   = $16   ; BLK (block)
-; U_IN    = $18   ; IN (fig)
+; U_IN    = $18   ; >IN (fig)
 ;           - 1A: OUT (fig)
 ;           - 1C: SCR (block-ext)
 ;           - 1E: OFFSET (fig)
@@ -555,23 +555,19 @@ BYE
         ; TODO restore stack
 
         jsr CR
-!convtab scr {
         lda #'p'
-}
-        jsr put_char_screencode
+        jsr put_char
         ; brk
 
 !if 1 {
         ; Test keyboard input
         sei
 -       lda #' '
-        jsr put_char_screencode
+        jsr put_char
         lda #'k'
-        jsr put_char_screencode
+        jsr put_char
         jsr get_char
-!convtab raw {
         cmp #'q'
-}
         beq +
         jsr put_hex
         jmp -
@@ -580,7 +576,7 @@ BYE
 
 !if 0 {
         lda #'m'
-        jsr put_char_screencode
+        jsr put_char
         cli
         brk
 }

@@ -110,8 +110,7 @@ _255
         rts
 
         ; TODO EMIT
-        ; TODO separate output by screen code, ascii, petscii, etc
-put_char_petscii
+put_char
         cmp #$0d ; return
         bne +
         pha
@@ -223,15 +222,23 @@ _move_down
 
 
 _scroll_up
-        ; TODO
+        ; TODO this doesn't look to be working correctly
         +dma_run +
         ; TODO scroll colour ram
+        +dma_run ++
+        ; TODO clear colour ram of last row
         rts
-        ; TODO use registers
+        ; TODO use regs?
+        ; Move lines [1,24] to [0,23]
 +       +dma_options $00, $00
         +dma_options_end
-        +dma_job_copy SCREEN_RAM+80, SCREEN_RAM, 2000-80, false, false          
-
+        +dma_job_copy SCREEN_RAM+80, SCREEN_RAM, 2000-80, false, false
+++      +dma_options $00, $00
+        +dma_options_end
+        +dma_job_fill $20, SCREEN_RAM+24*80, 80, false ; TODO use SCRNPTR
+;+++      +dma_options $00, $00
+;        +dma_options_end
+;        +dma_job_fill $42, COLOUR_RAM, 2000, false ; TODO reg
 
 _recalc_screen_line
         ; TODO this assumes bank 0
@@ -370,7 +377,7 @@ put_string
 -       iny
         lda (<STRING),y
         phy
-        jsr put_char_petscii
+        jsr put_char
         ply
         dez
         bne -

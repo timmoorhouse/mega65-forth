@@ -238,8 +238,7 @@ W_NAME_TO_STRING
         !word DO_COLON
         ; nt points to link, then name follows
         !word W_2PLUS
-        !word W_DUP
-        !word W_1PLUS
+        !word W_COUNT
         +CLITERAL $1f ; mask off the control bits
         !word W_AND
         !word W_SEMI

@@ -2043,7 +2043,7 @@ W_ELSE
 W_EMIT
         !word *+2
         lda 0,x
-        jsr put_char_petscii
+        jsr put_char
         jmp POP
 
 ; ****************************************************************************
