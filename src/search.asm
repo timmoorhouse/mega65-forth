@@ -111,40 +111,64 @@ W_SEARCH_WORDLIST
         !word W_TYPE
         +CLITERAL ']'
         !word W_EMIT
-        !word W_CR
         !word W_ROT
+        !word W_DOTS
 }
+
+        ; this zero is the default return value
+
+        !word W_ZERO
+        !word W_SWAP
+
+        ; (c-addr u 0 wid)
 
         +LITERAL W_PSEARCH_WORDLIST
         !word W_SWAP
 
-        
-        !word W_TRAVERSE_WORDLIST
-        ; TODO implement using
-        ;     TRAVERSE-WORDLIST (tools-ext)
-        ;     NAME>STRING (tools)
-        ;     COMPARE (string)
-        ;     EXECUTE (core)
-        ;
-        ;
+        ; (c-addr u 0 xt wid)
 
+        !word W_TRAVERSE_WORDLIST
+
+        ; (c-addr u 0) if not found 
+        ; (c-addr u xt 1) if immediate ???
+        ; (c-addr u xt -1) if non-immediate ???
+
+        !word W_DUP
+        +ZBRANCH _search_wordlist_not_found
+
+        ; found
+        !word W_2TOR
+        !word W_2DROP
+        !word W_2RFROM
+        +BRANCH _search_wordlist_done
+        
+_search_wordlist_not_found        
         !word W_DROP
+        !word W_2DROP
+        !word W_ZERO
+
+_search_wordlist_done
         !word W_SEMI
 
-W_PSEARCH_WORDLIST ; (c-addr u nt -- c-addr u (xt 0)|1)
+W_PSEARCH_WORDLIST 
+        ; (c-addr u 0 nt -- c-addr u 0 true) if not found
+        ; (c-addr u 0 nt -- c-addr u xt 1 false) if immediate ???
+        ; (c-addr u 0 nt -- c-addr u xt -1 false) if non-immediate ???
         !word DO_COLON
 
+!if 0 {
         +CLITERAL 's'
         !word W_EMIT
+}
 
-        !word W_TOR ; (c-addr u) (R: nt)
-
+        !word W_TOR     ; (c-addr u 0) (R: nt)
+        !word W_DROP    ; (c-addr u) (R: nt)
         !word W_2DUP
-        !word W_RAT ; (c-addr u c-addr u nt) (R: nt)
+        !word W_RAT     ; (c-addr u c-addr u nt) (R: nt)
 
         !word W_NAME_TO_STRING
 
-!if 1 {
+!if 0 {
         +CLITERAL '"'
         !word W_EMIT
         !word W_2DUP
@@ -153,30 +177,45 @@ W_PSEARCH_WORDLIST ; (c-addr u nt -- c-addr u (xt 0)|1)
         !word W_EMIT
 }
 
-        !word W_COMPARE
-
-        !word W_DOTS
-        !word W_DROP
-        
-        ; Check for a name match
-        ; !word W_DUP             ; (c-addr u nt nt)
-        ; !word W_NAME_TO_STRING  ; (c-addr1 u nt c-addr2 u )
-        ; !word W_COMPARE
-
-        ; push true if iteration should continue, false if done
-        ; TODO name>interpret or name>compile
+        !word W_COMPARE ; (c-addr u flag) (R: nt)
 
 !if 0 {
-        !word W_CR
+        !word W_DOTS
 }
 
-        !word W_RFROM,W_DROP
-        
-!if 0 {        
-        !word W_TRUE ; continue
-} else {
-        !word W_FALSE ; stop
-}
+        +ZBRANCH _psearch_wordlist_found
+
+        !word W_RFROM,W_DROP ; clean up R
+        !word W_ZERO    ; put back the not found indicator
+        !word W_TRUE    ; continue
+        +BRANCH _psearch_wordlist_done
+
+_psearch_wordlist_found
+
+        !word W_RFROM
+
+        !word W_DUP
+        !word W_2PLUS
+        !word W_CAT
+        +CLITERAL F_IMMEDIATE
+        !word W_AND
+        +ZBRANCH _psearch_wordlist_nonimmediate
+
+        ; an immediate word
+        !word W_NAME_TO_COMPILE
+        !word W_ONE
+        !word W_FALSE   ; stop
+        !word W_DOTS ; TODO 
+        +BRANCH _psearch_wordlist_done
+
+_psearch_wordlist_nonimmediate
+
+        !word W_NAME_TO_INTERPRET
+        !word W_TRUE    ; -1
+        !word W_FALSE   ; stop
+        ; +BRANCH _psearch_wordlist_done
+
+_psearch_wordlist_done
         
         !word W_SEMI
 

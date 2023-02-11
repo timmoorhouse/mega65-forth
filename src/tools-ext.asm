@@ -209,7 +209,8 @@ W_FORGET
 }
 W_NAME_TO_COMPILE
         !word DO_COLON
-        ; TODO move past link and name
+        !word W_NAME_TO_STRING  ; immediately after the name
+        !word W_PLUS
         !word W_SEMI
 
 ; ****************************************************************************
@@ -221,7 +222,8 @@ W_NAME_TO_COMPILE
 }
 W_NAME_TO_INTERPRET
         !word DO_COLON
-        ; TODO move past link and name
+        !word W_NAME_TO_STRING  ; immediately after the name
+        !word W_PLUS
         !word W_SEMI
 
 ; ****************************************************************************

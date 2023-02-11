@@ -1609,10 +1609,12 @@ W_CCOMM
         +WORD "c@"
 W_CAT
         !word *+2
+        ; ldy #0 ; TODO
         lda (0,x)
         sta 0,x
-        lda #0
-        sta 1,x
+        ;tya
+        ;sta 1,x
+        sty 1,x
         jmp NEXT
 
 ; ****************************************************************************
@@ -2060,14 +2062,13 @@ W_EMIT
 ; EVALUTATE 
 ; (i*x c-addr u -- j*x)
 ; ANSI 6.1.1360
+
         +WORD "evaluate"
 W_EVALUATE        
         !word DO_COLON
 
         !word W_PDOTQ
         +STRING "<evaluate>"
-        ; !word W_CR
-
         !word W_DOTS
 
 !if 1 {
@@ -2088,37 +2089,38 @@ W_EVALUATE
 
 !if 1 {
         !word W_PARSE_NAME
+
         ; (c-addr u)
 
         ; TODO check for zero length
 
-!if 1 {
-        !word W_2DUP
-        !word W_FORTH_WORDLIST
-        !word W_SEARCH_WORDLIST
-        !word W_DOTS
-        ; !word W_DROP
-        ; !word W_DROP
-        !word W_DROP
-}
-
-        !word W_DOTS
+        !word W_PDOTQ
+        +STRING "evaluate-pre"
         +CLITERAL '['
         !word W_EMIT
         !word W_2DUP
         !word W_TYPE
         +CLITERAL ']'
         !word W_EMIT
-        !word W_SPACE
-        !word W_2DROP
+        !word W_DOTS
 
+        !word W_2DUP ; TODO we likely want to do this in case we need to fall back to >NUMBER
+        !word W_FORTH_WORDLIST
+        !word W_SEARCH_WORDLIST
+
+        !word W_PDOTQ
+        +STRING "evaluate-post"
+        !word W_DOTS
+
+        ; TODO check result - this assumes just "0"
+        !word W_DROP
+
+
+        !word W_2DROP
 }
 
         ; TODO END LOOP !!!!!!!!!!
 
-        ; !word W_2DROP ; TODO remove???
-
-        ; !word W_DOTS
         !word W_SEMI
 
 ; FIG
@@ -2491,7 +2493,7 @@ W_I
 ;;
 ;;                                       IF
 ;;                                       SCREEN 74 LINE 8
-!if 0 {
+!if 1 {
         +WORD_IMM "if"
 W_IF
         !word DO_COLON
@@ -3071,7 +3073,7 @@ _quit_read_loop
 }
 
 _test_string
-        +STRING "  123 2 3 + .s" ; TODO REMOVE
+        +STRING "  .s 123 2 3 + .s" ; TODO REMOVE
 
 ; ****************************************************************************
 ; R>
