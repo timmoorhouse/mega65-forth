@@ -1017,6 +1017,50 @@ W_IN
 
 ; c-addr_2 u_2 is the unconverted portion of c-addr_1 u_1
 
+W_TONUMBER_TEST
+        !word DO_COLON
+
+        !word W_HEX
+!if 1 {
+        !word W_PDOTQ
+        +STRING "<base>"
+        !word W_BASE
+        !word W_AT
+        !word W_DOTS
+        !word W_DROP
+}
+
+        +CLITERAL 'f'
+        !word W_PDOTQ
+        +STRING "<digit>"
+        !word W_DUP
+        !word W_EMIT
+        !word W_DIGIT
+        !word W_DOTS
+        !word W_2DROP
+
+!if 0 {
+        +LITERAL 1
+        +LITERAL 0
+        +LITERAL _tonumber_test
+        ; !word W_COUNT
+        !word W_PDOTQ
+        +STRING "<number>"
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_DUP,W_COUNT ; W_2DUP
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
+        !word W_TONUMBER
+        !word W_DOTS
+}
+        !word W_SEMI
+
+_tonumber_test
+        +STRING "1234abxyz"
+
+
 ; FIG
 ;      (NUMBER)      d1  addr1  ---  d2  addr2
 ;               Convert the ascii text beginning at addr1+1 with regard to 
@@ -1027,6 +1071,11 @@ W_IN
         +WORD ">number"
 W_TONUMBER
         !word DO_COLON
+ 
+!if 1 {
+        +CLITERAL 'n'
+        !word W_EMIT
+}
 
         ; (ud c-addr)
 
@@ -1039,6 +1088,11 @@ _tonumber_loop
         !word W_DIGIT
         +ZBRANCH _tonumber_done
         !word W_SWAP ; (n ud) (R: c-addr)
+
+!if 1 {
+        +CLITERAL 'n'
+        !word W_EMIT
+}
 
         ; TODO some function for this?
         ; ud * u -> ud
@@ -1139,14 +1193,14 @@ W_DIGIT
         ; ldy #0 ; TODO
         sec
         lda 0,x
-        sbc '0'
+        sbc #'0'
         bmi _digit_bad ; < '0'
 
         cmp #$A
         bmi +
         ; > '9'
         sec
-        sbc #('a'-'0')
+        sbc #('a'-'9'-1)
         cmp #$A
         bmi _digit_bad ; in between '9' and 'a'
 +

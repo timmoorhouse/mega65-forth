@@ -522,26 +522,8 @@ W_TEST  !word DO_COLON
 !if 0 {
         !word W_COMPARE_TEST
 }
-!if 0 {
-        !word W_ZERO
-        !word W_ONE
-        !word W_TWO
-        !word W_TWO
-        !word W_ONE
-        ; !word W_DUP
-        !word W_PLUS
-        ; !word W_AND
-        !word W_BL
-        ; !word W_DUP
-        ; !word W_DROP
-        ; !word W_XOR
-        ; !word W_2DROP
-        !word W_STAR
-        !word W_TWO
-        !word W_SLASH
-        !word W_DEPTH
-        !word W_R
-        !word W_DOTS
+!if 1 {
+        !word W_TONUMBER_TEST
 }
 !if 1 {
         !word W_ABORT
@@ -562,28 +544,6 @@ BYE
         jsr put_char
         ; brk
 
-!if 1 {
-        ; Test keyboard input
-        sei
--       lda #' '
-        jsr put_char
-        lda #'k'
-        jsr put_char
-        jsr get_char
-        cmp #'q'
-        beq +
-        jsr put_hex
-        jmp -
-+       clc ; TODO remove
-}
-
-!if 0 {
-        lda #'m'
-        jsr put_char
-        cli
-        brk
-}
-
         ; restore base page
         lda #0
         tab
@@ -591,8 +551,6 @@ BYE
         ; TODO copy out cursor position?
 
         rts
-
-
 
 !src "internals.asm"
 
