@@ -650,6 +650,7 @@ W_ZLESS
         +WORD "0="
 W_ZEQUALS
         !word *+2
+        ; see also 0<> (core-ext)
         ; ldy #0 ; TODO
         lda 1,x
         sty 1,x
@@ -947,6 +948,7 @@ W_BDIGS
         +WORD "="
 W_EQUAL
         !word *+2
+        ; see also <> (core-ext)
         ; ldy #0 ; TODO
         lda 0,x
         eor 2,x
@@ -1333,6 +1335,8 @@ W_ABS
 ; characters are displayed as they are received (ie, we can assume keyboard input only)
 
 ; TODO who should be checking BLK, SOURCE-ID?
+
+; TODO use REFILL?
 
         +WORD "accept"
 W_ACCEPT

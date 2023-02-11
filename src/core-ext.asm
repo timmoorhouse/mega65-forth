@@ -56,6 +56,18 @@ W_DOTR
 ; ANSI 6.2.0260
 
 !if ENABLE_CORE_EXT {
+        +WORD "0<>"
+W_ZNOTEQUALS
+        !word *+2
+        ; see also 0= (core)
+        ; ldy #0 ; TODO
+        lda 1,x
+        sty 1,x
+        ora 0,x
+        beq +
+        iny
++       sty 0,x
+        jmp NEXT
 }
 
 ; ****************************************************************************
@@ -180,6 +192,24 @@ W_2RAT
 ; ANSI 6.2.0500
 
 !if ENABLE_CORE_EXT {
+        +WORD "<>"
+W_NOTEQUAL
+        !word *+2
+        ; see also = (core)
+        ; ldy #0 ; TODO
+        lda 0,x
+        eor 2,x
+        sta 2,x
+
+        lda 1,x
+        eor 3,x
+        sty 3,x
+        ora 2,x
+
+        beq +
+        iny
++       sty 2,x
+        jmp POP
 }
 
 ; ****************************************************************************
@@ -546,16 +576,14 @@ W_NIP
 ; TODO always enable?
 
 !if ENABLE_CORE_EXT {
-!if 0 {
         +WORD "pad"
 W_PAD
         !word DO_COLON
-;          !word HERE
+        !word W_HERE
         !word W_CLITERAL
-        !byte 68        ; PAD is 68 bytes above here.
+        !byte 68        ; PAD is 68 bytes above here. TODO ????????????
         !word W_PLUS
         !word W_SEMI
-}
 }
 
 ; ****************************************************************************
@@ -572,8 +600,6 @@ W_PAD
 }
 W_PARSE
         !word *+2
-
-        ; TODO !!!!!!!!!!!!!!!!!!!!
 
         ; ldy #0 ; TODO
 
@@ -1072,4 +1098,20 @@ W_BCOMPILE
 ; ANSI 6.2.2535
 
 !if ENABLE_CORE_EXT {
+        +WORD_IMM "\\" ; TODO \ is not in petscii
+W_BACKSLASH
+        !word DO_COLON
+        +CLITERAL '\r' ; TODO
+        !word W_PARSE
+!if 1 {
+        !word W_PDOTQ
+        +STRING "<comment>"
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
+        !word W_DOTS
+}
+        !word W_SEMI
 }
