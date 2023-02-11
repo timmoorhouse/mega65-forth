@@ -216,7 +216,7 @@ W_PAREN
         +WORD "*"
 W_STAR
         !word *+2
-        ; TODO does this handle negative values?
+        ; TODO FIX FOR NEGATIVE VALUES !!!!!!!!!!
         lda 0,x
         sta MULTINA
         lda 2,x
@@ -1015,52 +1015,62 @@ W_IN
 ; (ud_1 c-addr_1 u_1 -- ud_2 c-addr_2 u_2)
 ; ANSI 6.1.0570
 
+; c-addr_2 u_2 is the unconverted portion of c-addr_1 u_1
+
+; FIG
+;      (NUMBER)      d1  addr1  ---  d2  addr2
+;               Convert the ascii text beginning at addr1+1 with regard to 
+;               BASE.  The new value is accumulated into double number d1,  
+;               being left as d2.  Addr2 is the address of the first 
+;               unconvertable digit.  Used by NUMBER.
+
         +WORD ">number"
 W_TONUMBER
         !word DO_COLON
-!if 0 {
-;          !word ZERO
-;          !word ZERO
-;          !word ROT
-;          !word DUP
-;          !word 1PLUS
-;          !word CAT
-;          !word CLIT
-;          !byte $2D
-;          !word EQUAL
-;          !word DUP
-;          !word TOR
-;          !word PLUS
-;          !word LIT,$FFFF
-;L2023:    !word DPL
-;          !word STORE
-;          !word PNUMB
-;          !word DUP
-;          !word CAT
-;          !word BL
-;          !word SUB
-;          !word ZBRAN
-;L2031:    !word $15      ; L2042-L2031
-;          !word DUP
-;          !word CAT
-;          !word CLIT
-;          !byte $2E
-;          !word SUB
-;          !word ZERO
-;          !word QERR
-;          !word ZERO
-;          !word BRAN
-;L2041:    !word $FFDD    ; L2023-L2041
-;L2042:    !word DROP
-;          !word RFROM
-;          !word ZBRAN
-;L2045:    !word 4        ; L2047-L2045
-;          !word DMINU
 
+        ; (ud c-addr)
+
+_tonumber_loop
+        ; TODO change this to use c-addr u instead of counted strings
+        !word W_1PLUS
+        !word W_DUP
+        !word W_TOR    ; (ud c-addr) (R: c-addr)
+        !word W_CAT    ; (ud c) (R: c-addr)
+        !word W_DIGIT
+        +ZBRANCH _tonumber_done
+        !word W_SWAP ; (n ud) (R: c-addr)
+
+        ; TODO some function for this?
+        ; ud * u -> ud
+        !word W_BASE
+        !word W_AT
+        !word W_UMSTAR
+        !word W_DROP
+        !word W_ROT
+        !word W_BASE
+        !word W_AT
+        !word W_UMSTAR
+        !word W_DPLUS
+
+!if 0 {
+        !word DPL ; # digits to right of decimal place
+        !word W_AT
+        !word W_1PLUS
+        +ZBRANCH +
+        !word W_ONE
+        !word DPL
+        !word W_PSTORE
++
 }
+        !word W_RFROM
+        +BRANCH _tonumber_loop
+
+_tonumber_done
+        !word W_RFROM
         !word W_SEMI
 
-;      NUMBER        addr  ---  d
+
+;      NUMBER_FOO        addr  ---  d
 ;               Convert a character string left at addr with a preceding 
 ;               count, to a signed double number, using the current base.  
 ;               If a decimal point is encountered in the text, its 
@@ -1068,54 +1078,92 @@ W_TONUMBER
 ;               If numeric conversion is not possible, an error message 
 ;               will be given.
 
-
-;      (NUMBER)      d1  addr1  ---  d2  addr2
-;               Convert the ascii text beginning at addr1+1 with regard to 
-;               BASE.  The new value is accumulated into double number d1,  
-;               being left as d2.  Addr2 is the address of the first 
-;               unconvertable digit.  Used by NUMBER.
-
-;;
-;;                                       (NUMBER)
-;;                                       SCREEN 48 LINE 1
-;;
-!if 0 {
-;        +WORD "(number)"
-W_PNUMBER
+W_TONUMBER_FOO
         !word DO_COLON
-;L1971:    !word 1PLUS
-;          !word DUP
-;          !word TOR
-;          !word CAT
-;          !word BASE
-;          !word AT
-;          !word DIGIT
-;          !word ZBRAN
-;L1979:    !word $2C      ; L2001-L1979
-;          !word SWAP
-;          !word BASE
-;          !word AT
-;          !word USTAR
-;          !word DROP
-;          !word ROT
-;          !word BASE
-;          !word AT
-;          !word USTAR
-;          !word DPLUS
-;          !word DPL
-;          !word AT
-;          !word 1PLUS
-;          !word ZBRANCH
-;L1994:    !word 8        ; L1998-L1994
-;          !word ONE
-;          !word DPL
-;          !word PSTOR
-;L1998:    !word RFROM
-;          !word BRAN
-;L2000:    !word $FFC6    ; L1971-L2000
-;L2001:    !word RFROM
-        !word W_SEMI
+!if 1 {
+        ; (c-addr)
+        !word W_ZERO
+        !word W_ZERO
+        !word W_ROT     ; (0 0 c-addr)
+
+        ; check if first char is '-'
+        !word W_DUP
+        !word W_1PLUS
+        !word W_CAT
+        +CLITERAL '-'
+        !word W_EQUAL   ; (0 0 c-addr is-negative)
+        !word W_DUP
+        !word W_TOR     ; (0 0 c-addr is-negative) (R: is-negative)
+
+
+        !word W_PLUS
+        +LITERAL $ffff
+L2023
+;    !word DPL
+        !word W_STORE
+        ; !word W_TONUMBER
+        !word W_DUP    
+        !word W_CAT
+        !word W_BL
+        !word W_SUB
+        +ZBRANCH L2042
+
+        !word W_DUP
+        !word W_CAT
+        +CLITERAL '.'
+        !word W_SUB
+        !word W_ZERO
+;          !word QERR
+        !word W_ZERO
+        +BRANCH L2023
+
+L2042
+        !word W_DROP
+        !word W_RFROM
+        +ZBRANCH L2047
+        ; !word W_DMINUS
+L2047
 }
+        !word W_SEMI
+
+
+;      DIGIT         (c -- n 1)    if ok
+;                    (c -- 0)      if bad
+;               Converts the ascii character c (using BASE) to its 
+;               binary equivalent n, accompanied by a true flag.  If the 
+;               conversion is invalid, leaves only a false flag.
+
+        ; +WORD "digit"
+W_DIGIT
+        !word *+2
+        ; ldy #0 ; TODO
+        sec
+        lda 0,x
+        sbc '0'
+        bmi _digit_bad ; < '0'
+
+        cmp #$A
+        bmi +
+        ; > '9'
+        sec
+        sbc #('a'-'0')
+        cmp #$A
+        bmi _digit_bad ; in between '9' and 'a'
++
+        cmp <BASE
+        bpl _digit_bad ; >= base
+
+        sta 0,x
+        sty 1,x
+        lda #1
+        pha
+        tya
+        jmp PUSH         ; exit true with converted value
+
+_digit_bad
+        tya
+        pha
+        jmp PUT         ; exit false with bad conversion
 
 ; ****************************************************************************
 ; >R 
@@ -1554,8 +1602,8 @@ W_AND
 
         +WORD "base"
 W_BASE
-        !word DO_USER
-        !byte U_BASE
+        !word DO_CONSTANT
+        !word &BASE
 
 ; ****************************************************************************
 ; BEGIN 
@@ -2868,47 +2916,22 @@ W_PLOOP
 ;      M*            n1  n2  ---  d
 ;               A mixed magnitude math operation which leaves the double 
 ;               number signed product of two signed numbers.
-;
-;;
-;;                                       M*
-;;                                       SCREEN 57 LINE 1
-;;
 
-!if 0 {
         +WORD "m*"
 W_MSTAR
         !word DO_COLON
-;          !word OVER ; TODO 2DUP?
-;          !word OVER
-;          !word XOR
-;          !word TOR
-;          !word ABS
-;          !word SWAP
-;          !word ABS
-;          !word USTAR
-;          !word RFROM
-;          !word DPM
-        !word W_SEMI
-}
-
-;      D+-           d1  n  ---  d2
-;               Apply the sign of n to the double number d1, leaving it as 
-;               d2.
-
-;;
-;;                                       D+-
-;;                                       SCREEN 56 LINE 6
-;;
-!if 0 {
-        ; +WORD "d+-"
-W_DPM
-        !word DO_COLON
-;          !word ZLESS
-;          !word ZBRAN
-;L2481:    !word 4        ; L2483-L2481
-;          !word DNEGATE
-        !word W_SEMI
-}
+        !word W_2DUP
+        !word W_XOR
+        !word W_TOR
+        !word W_ABS
+        !word W_SWAP
+        !word W_ABS
+        !word W_UMSTAR
+        !word W_RFROM
+        !word W_ZLESS
+        +ZBRANCH +
+        !word W_DNEGATE
++       !word W_SEMI
 
 ; ****************************************************************************
 ; MAX 
@@ -3653,52 +3676,37 @@ W_ULESS
 ; (u_1 u_2 -- ud)
 ; ANSI 6.1.2360
 
-!if 0 {
-        +WORD "um*"
-        !word *+2
-        rts
-}
-
+; FIG
 ;      U*            u1  u2  ---  ud
 ;               Leave the unsigned double number product of two unsigned 
 ;               numbers.
 
-;;
-;;                                       U*
-;;                                       SCREEN 23 LINE 1
-;;
-
-!if 0 {
-        +WORD "u*"
-W_USTAR
+        +WORD "um*"
+W_UMSTAR
         !word *+2
-;          LDA 2,X
-;          STA N
-;          STY 2,X
-;          LDA 3,X
-;          STA N+1
-;          STY 3,X
-;          LDY #16        ; for 16 bits
-;L396:     ASL 2,X
-;          ROL 3,X
-;          ROL 0,X
-;          ROL 1,X
-;          BCC L411
-;          CLC
-;          LDA N
-;          ADC 2,X
-;          STA 2,X
-;          LDA N+1
-;          ADC 3,X
-;          STA 3,X
-;          LDA #0
-;          ADC 0,X
-;          STA 0,X
-;
-;L411:     DEY
-;          BNE L396
-        jmp NEXT
-}
+        ; ldy #0 ; TODO
+        lda 0,x
+        sta MULTINA
+        lda 2,x
+        sta MULTINB
+        lda 1,x
+        sta MULTINA+1
+        lda 3,x
+        sta MULTINB+1
+        sty MULTINA+2
+        sty MULTINB+2
+        sty MULTINB+3
+        sty MULTINA+3
+        ; No need to check MULBUSY (d70f bit 6)
+        lda MULTOUT
+        sta 2,x
+        lda MULTOUT+1
+        sta 3,x
+        lda MULTOUT+2
+        sta 0,x
+        lda MULTOUT+3
+        sta 1,x
+        jmp POP
 
 ; ****************************************************************************
 ; UM/MOD

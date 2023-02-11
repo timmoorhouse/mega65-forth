@@ -39,30 +39,28 @@
 ;
 ;      D+            d1  d2  ---  dsum
 ;               Leave the double number sum of two double numbers.
-;
-;;
-;;                                       D+
-;;                                       SCREEN 29 LINE 4
+
+; This is required by >number (core) but will only be visible if DOUBLE is enabled
 
 !if ENABLE_DOUBLE {
         +WORD "d+"
+}
 W_DPLUS
         !word *+2
-;          CLC
-;          LDA 2,X
-;          ADC 6,X
-;          STA 6,X
-;          LDA 3,X
-;          ADC 7,X
-;          STA 7,X
-;          LDA 0,X
-;          ADC 4,X
-;          STA 4,X
-;          LDA 1,X
-;          ADC 5,X
-;          STA 5,X
+        clc
+        lda 2,x
+        adc 6,x
+        sta 6,x
+        lda 3,x
+        adc 7,x
+        sta 7,x
+        lda 0,x
+        adc 4,x
+        sta 4,x
+        lda 1,x
+        adc 5,x
+        sta 5,x
         jmp POPTWO
-}
 
 ; ****************************************************************************
 ; D-
@@ -248,15 +246,7 @@ W_DABS
 ; (d_1 -- d_2)
 ; ANSI 8.6.1.1230
 
-; The word itself is required by the implmentation (of .) but is only visible if DOUBLE is enabled
-
-!if ENABLE_DOUBLE {
-}
-
-; FIG:
-;;
-;;                                       DMINUS
-;;                                       SCREEN 29 LINE 12
+; The word itself is required by . (core) but is only visible if DOUBLE is enabled
 
 !if ENABLE_DOUBLE {
         +WORD "dnegate"

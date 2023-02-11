@@ -347,48 +347,6 @@ W_CSP
 }
 
 ; ****************************************************************************
-; DIGIT
-
-;      DIGIT         c  n1  ---  n2  tf  (ok)
-;                    c  n1  ---  ff      (bad)
-;               Converts the ascii character c (using base n1) to its 
-;               binary equivalent n2, accompanied by a true flag.  If the 
-;               conversion is invalid, leaves only a false flag.
-
-;;
-;;                                       DIGIT
-;;                                       SCREEN 18 LINE 1
-;;
-!if 0 {
-        +WORD "digit"
-W_DIGIT
-        !word *+2
-;          SEC
-;          LDA 2,X
-;          SBC #$30
-;          BMI L234
-;          CMP #$A
-;          BMI L227
-;          SEC
-;          SBC #7
-;          CMP #$A
-;          BMI L234
-;L227:     CMP 0,X
-;          BPL L234
-;          STA 2,X
-;          LDA #1
-;          PHA
-;          TYA
-;          JMP PUT        ; exit true with converted value
-;L234:     TYA
-;          PHA
-;          INX
-;          INX
-;          JMP PUT
-        jmp PUT                 ; exit false with bad conversion
-}
-
-; ****************************************************************************
 ; DLITERAL
 
 ;      DLITERAL      d  ---  d           (executing)

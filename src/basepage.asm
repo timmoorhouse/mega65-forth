@@ -42,7 +42,7 @@ STRING          !word 0 ; pointer to string to print, etc TODO REMOVE
 SCREEN_X        !byte 0
 SCREEN_Y        !byte 0
 
-; TODO BASE? or turn it into a normal variable
+BASE            !word 10
 ; TODO STATE? or turn it into a normal variable
 
 !ifdef DEBUG {

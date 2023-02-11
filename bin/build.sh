@@ -128,6 +128,8 @@ do_build() {
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" autoboot.c65
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write src/bootstrap.f # TODO not a prg - usr? seq?
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -dir > "${opt[builddir]}/mega65-forth.txt"
+
+    cmd ls -l "${opt[builddir]}/forth.prg"
 }
 
 do_test() {

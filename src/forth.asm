@@ -334,7 +334,7 @@ U_BLK   = $16   ; BLK (block)
 ;           - 20: CONTEXT (fig)
 ;           - 22: CURRENT (fig)
 U_STATE = $24   ; STATE (core) TODO move to base page
-U_BASE  = $26   ; BASE (core) TODO move to base page
+; U_BASE  = $26   ; BASE (core) TODO move to base page
 ; U_DPL   = $28   ; DPL (fig)
 ;           - 2A: FLD (fig)
 ;           - 2C: CSP (fig)
