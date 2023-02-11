@@ -575,7 +575,8 @@ W_PARSE
 
         ; TODO !!!!!!!!!!!!!!!!!!!!
 
-!if 0 {
+        ; ldy #0 ; TODO
+
         ; initialize addr
         dex
         dex
@@ -612,64 +613,21 @@ W_PARSE
         lda 7,x
         sta 1,x
 
-_parse_name_skip_whitespace_loop
+_parse_loop
         ; check if we're at the end
         lda 0,x
         cmp 2,x
         bne +
         lda 1,x
         cmp 3,x
-        beq _parse_name_all_done
+        beq _parse_done
 +
 
         ; not at the end yet ...
-        ; check for whitespace
+        ; check for terminator
         lda (0,x)
-        jsr isspace
-        bne _parse_name_end_of_whitespace
-
-        ; advance the current position ...
-        clc
-        inc 0,x
-        bne +
-        inc 1,x
-+
-
-        ; ... advance the start position ...
-        clc
-        inc 6,x
-        bne +
-        inc 7,x
-+
-
-        ; ... and increment IN
-        clc
-        inc <IN
-        bne +
-        inc <IN+1
-+
-
-        bra _parse_name_skip_whitespace_loop
-
-_parse_name_end_of_whitespace
-
-        ; now skip non-whitespace
-
-_parse_name_skip_nonwhitespace_loop
-        ; check if we're at the end
-        lda 0,x
-        cmp 2,x
-        bne +
-        lda 1,x
-        cmp 3,x
-        beq _parse_name_all_done
-+
-
-        ; not at the end yet ...
-        ; check for whitespace
-        lda (0,x)
-        jsr isspace
-        beq _parse_name_all_done
+        cmp 8,x
+        beq _parse_found_terminator
 
         ; advance the current position ...
         clc
@@ -692,15 +650,21 @@ _parse_name_skip_nonwhitespace_loop
         inc <IN+1
 +
 
-        bra _parse_name_skip_nonwhitespace_loop
+        bra _parse_loop
 
-_parse_name_all_done
+_parse_found_terminator
 
-        bra POPTWO
+        ; and increment IN
+        clc
+        inc <IN
+        bne +
+        inc <IN+1
++
+        ;bra _parse_done
 
-}
-        jmp NEXT
+_parse_done
 
+        jmp POPTWO
 
 ; ****************************************************************************
 ; PARSE-NAME
@@ -724,6 +688,8 @@ _parse_name_all_done
 W_PARSE_NAME
         !word *+2
 
+        ; ldy #0 ; TODO
+
         ; initialize addr
         dex
         dex
@@ -817,7 +783,7 @@ _parse_name_skip_nonwhitespace_loop
         ; check for whitespace
         lda (0,x)
         jsr isspace
-        beq _parse_name_all_done
+        beq _parse_name_found_ending_whitespace
 
         ; advance the current position ...
         clc
@@ -841,6 +807,15 @@ _parse_name_skip_nonwhitespace_loop
 +
 
         bra _parse_name_skip_nonwhitespace_loop
+
+_parse_name_found_ending_whitespace
+
+        ; increment IN
+        clc
+        inc <IN
+        bne +
+        inc <IN+1
++
 
 _parse_name_all_done
 

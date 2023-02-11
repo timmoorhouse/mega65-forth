@@ -157,6 +157,9 @@ W_DIGS
         +WORD "'"
 W_TICK
         !word DO_COLON
+
+
+
 ;          !word DFIND
 ;          !word ZEQU
 ;          !word ZERO
@@ -179,18 +182,22 @@ W_TICK
 ;               parenthesis on the same line.  May occur during execution 
 ;               or in a colon-definition.  A blank after the leading 
 ;               parenthesis is required.
-;
-;;
-;;                                       (
-;;                                       SCREEN 53 LINE 14
-!if 0 {
         +WORD_IMM "("
 W_PAREN
         !word DO_COLON
         +CLITERAL ')'
-;          !word W_WORD ; TODO one of the PARSE* words instead?
-        !word W_SEMI
+        !word W_PARSE
+!if 1 {
+        !word W_PDOTQ
+        +STRING "<comment>"
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
+        !word W_DOTS
 }
+        !word W_SEMI
 
 ; ****************************************************************************
 ; * 
@@ -2151,6 +2158,7 @@ _evaluate_word_not_found
         ; TODO try >NUMBER
         !word W_PDOTQ
         +STRING "<not found>"
+        !word W_DOTS
         ; jmp _evaluate_done_word
 
 _evaluate_done_word
@@ -3115,7 +3123,8 @@ _quit_read_loop
 
 _test_string ; TODO REMOVE
 ;        +STRING "           " ; test end of input handling
-        +STRING "  bl true .s + .s" ; doesn't depend on >NUMBER
+;        +STRING "  bl true .s + .s" ; doesn't depend on >NUMBER
+        +STRING "  bl true ( a b c) .s + .s" ; doesn't depend on >NUMBER
 ;        +STRING "  .s 123 2 3 + .s" ; TODO REMOVE
 
 ; ****************************************************************************

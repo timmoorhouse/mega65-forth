@@ -65,11 +65,6 @@ BOS = * ; Bottom of data stack
                 !align $ff, $9E
 
 TOS = * ; Top of data stack
-; N         = TOS+8                       ; scratch workspace.
-; IP        = N+8                         ; interpretive pointer.
-; W         = IP+3                        ; code field pointer.
-; UP        = W+2                         ; user area pointer.
-; XSAVE     = UP+2                        ; temporary for X register.
 
 }
         ; !align 255, 0
