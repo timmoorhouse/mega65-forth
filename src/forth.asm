@@ -515,9 +515,12 @@ W_TEST  !word DO_COLON
         !word W_WORDS
         !word W_CR
 }
-!if 1 {
+!if 0 {
         !word W_FORTH_WORDLIST,W_AT,W_DOT,W_CR
         !word W_HERE,W_DOT,W_CR
+}
+!if 0 {
+        !word W_COMPARE_TEST
 }
 !if 0 {
         !word W_ZERO
@@ -588,6 +591,8 @@ BYE
         ; TODO copy out cursor position?
 
         rts
+
+
 
 !src "internals.asm"
 

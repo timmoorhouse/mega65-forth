@@ -143,31 +143,35 @@ W_CMOVE
 
 ; The word itself is required by the implementation (of FIND) but is only visible if SEARCH is enabled
 
+!if 0 {
+W_COMPARE_TEST
+        !word DO_COLON
+        !word W_PDOTQ
+        +STRING "<compare>["
+        +LITERAL str1
+        !word W_COUNT
+        !word W_2DUP
+        !word W_TYPE
+        !word W_PDOTQ
+        +STRING "]["
+        +LITERAL str2
+        !word W_COUNT
+        !word W_2DUP
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
+        !word W_COMPARE
+        !word W_DOTS
+        !word W_SEMI
+
+str1    +STRING "foocar"
+str2    +STRING "foobar"
+}
+
 !if ENABLE_STRING {
         +WORD "compare"
 }
 W_COMPARE
-!if 0 {
-        !word DO_COLON
-
-        ; find min(u_1, u_2)
-        ; compare positions in common
-        ;    if different, return -1 or 1
-        ; (identical up to min len)
-        ; if u_1 < u_2
-        ;    return -1
-        ; if u_1 = u_2
-        ;    return 0
-        ; if u_1 > u_2
-        ;    return 1
-
-        ; TODO
-        !word W_2DROP
-        !word W_2DROP
-        !word W_ONE
-
-        !word W_SEMI
-} else {
         !word *+2
 
         ; ldy #0 ; TODO
@@ -175,6 +179,8 @@ W_COMPARE
         ; TEMP1 - pointer into string 1
         ; TEMP2 - pointer into string 2
         ; TEMP3 - index
+
+        ; TODO this is pretty klunky, but should work ...
 
         lda 6,x
         sta <TEMP1
@@ -193,32 +199,58 @@ W_COMPARE
 _compare_loop
         ; while TEMP3 < u1 && TEMP3 < u2
 
+!if 0 {
+        lda #'c'
+        jsr put_char
+
+!if 0 {
+        lda #' '
+        jsr put_char
+        lda <TEMP3+1
+        jsr put_hex
+        lda <TEMP3
+        jsr put_hex
+
+        lda #' '
+        jsr put_char
+        lda 5,x
+        jsr put_hex
+        lda 4,x
+        jsr put_hex
+
+        lda #' '
+        jsr put_char
+}
+
+        ldy #0
+}
+
         sec
         lda <TEMP3
         sbc 4,x
         lda <TEMP3+1
         sbc 5,x
+        bcs _compare_end_loop ; TODO
 
-        ; todo
+!if 0 {
+        lda #'d'
+        jsr put_char
+        ldy #0
+}
 
         sec
         lda <TEMP3
         sbc 0,x
         lda <TEMP3+1
         sbc 1,x
+        bcs _compare_end_loop ; TODO
 
-        ; todo
-
-
-
-
-        ;       compare *TEMP1 and *TEMP2
         lda (<TEMP1),y
         cmp (<TEMP2),y
-        ; bne foo ....
-        ;       if <>0, return -1 or 1
-
-
+        beq +
+        bcs _compare_greater
+        jmp _compare_less
++
 
         inc <TEMP1
         bne +
@@ -233,29 +265,51 @@ _compare_loop
         inc <TEMP3+1
 +
 
-        ; when the loop is ready ...
-!if 0 {
         jmp _compare_loop
-}
+_compare_end_loop
 
-        ; if u1 < u2 return -1
-        ; if u1 > u2 return 1
-        ; return 0
+        sec
+        lda 0,x
+        sbc 4,x
+        lda 1,x
+        sbc 5,x
+        bcs _compare_lequal ; u2 >= u1
 
-
-
-
-
-        inx
-        inx
-        inx
-        inx
-        inx
-        inx
+_compare_greater
+        ; u1 > u2 ... return 1
         tya
-        pha
+        iny
+        phy
+        jmp +
+
+_compare_lequal
+        sec
+        lda 4,x
+        sbc 0,x
+        lda 5,x
+        sbc 1,x
+        bcs _compare_equal
+
+_compare_less
+        ; u1 < u2 ... return -1
+        dey
+        phy
+        tya
+        jmp +
+
+_compare_equal
+        ; return 0
+        phy
+        tya
++
+
+        inx
+        inx
+        inx
+        inx
+        inx
+        inx
         jmp PUT
-}
 
 ; ****************************************************************************
 ; SEARCH
