@@ -1039,8 +1039,8 @@ W_TONUMBER_TEST
         !word W_DOTS
         !word W_2DROP
 
-!if 0 {
-        +LITERAL 1
+!if 1 {
+        +LITERAL 0
         +LITERAL 0
         +LITERAL _tonumber_test
         ; !word W_COUNT
@@ -1058,7 +1058,8 @@ W_TONUMBER_TEST
         !word W_SEMI
 
 _tonumber_test
-        +STRING "1234abxyz"
+        ;+STRING "1xyz"
+        +STRING "1234abcdxyz"
 
 
 ; FIG
@@ -1072,12 +1073,12 @@ _tonumber_test
 W_TONUMBER
         !word DO_COLON
  
-!if 1 {
+!if 0 {
         +CLITERAL 'n'
         !word W_EMIT
 }
 
-        ; (ud c-addr)
+        ; (ud c-addr) = (ud-low ud-high c-addr)
 
 _tonumber_loop
         ; TODO change this to use c-addr u instead of counted strings
@@ -1086,25 +1087,36 @@ _tonumber_loop
         !word W_TOR    ; (ud c-addr) (R: c-addr)
         !word W_CAT    ; (ud c) (R: c-addr)
         !word W_DIGIT
+
         +ZBRANCH _tonumber_done
-        !word W_SWAP ; (n ud) (R: c-addr)
+        !word W_SWAP ; (ud-low n ud-high) (R: c-addr)
 
 !if 1 {
         +CLITERAL 'n'
         !word W_EMIT
 }
 
+        ; +BRANCH _tonumber_done ; TODO REMOVE
+
         ; TODO some function for this?
         ; ud * u -> ud
         !word W_BASE
         !word W_AT
+
+        ; (ud-low n ud-high base)
+
+        ; +BRANCH _tonumber_done ; TODO REMOVE
+
         !word W_UMSTAR
+        ; +BRANCH _tonumber_done ; TODO REMOVE
         !word W_DROP
         !word W_ROT
         !word W_BASE
         !word W_AT
         !word W_UMSTAR
         !word W_DPLUS
+
+        ; +BRANCH _tonumber_done ; TODO REMOVE
 
 !if 0 {
         !word DPL ; # digits to right of decimal place
@@ -3760,7 +3772,7 @@ W_UMSTAR
         sta 0,x
         lda MULTOUT+3
         sta 1,x
-        jmp POP
+        jmp NEXT
 
 ; ****************************************************************************
 ; UM/MOD
