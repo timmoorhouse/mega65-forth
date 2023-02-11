@@ -47,6 +47,7 @@ W_STORE
 ;;                                       #
 ;;                                       SCREEN 75 LINE 9
 ;;
+
 !if 0 {
         +WORD "#"
 W_DIG
@@ -87,6 +88,7 @@ W_DIG
 ;;                                       #>
 ;;                                       SCREEN 75 LINE 5
 ;;
+
 !if 0 {
         +WORD "#>"
 W_EDIGS
@@ -118,6 +120,7 @@ W_EDIGS
 ;;                                       #S
 ;;                                       SCREEN 75 LINE 12
 ;;
+
 !if 0 {
         +WORD "#s"
 W_DIGS
@@ -153,6 +156,7 @@ W_DIGS
 ;;                                       '
 ;;                                       SCREEN 72 LINE 2
 ;;
+
 !if 0 {
         +WORD "'"
 W_TICK
@@ -182,6 +186,7 @@ W_TICK
 ;               parenthesis on the same line.  May occur during execution 
 ;               or in a colon-definition.  A blank after the leading 
 ;               parenthesis is required.
+
         +WORD_IMM "("
 W_PAREN
         !word DO_COLON
@@ -207,6 +212,7 @@ W_PAREN
 ; FIG:
 ;      *             n1  n2  ---  prod                       L0
 ;               Leave the signed product of two signed numbers.
+
         +WORD "*"
 W_STAR
         !word *+2
@@ -247,6 +253,7 @@ W_STAR
 ;;                                       */
 ;;                                       SCREEN 57 LINE 13
 ;;
+
 !if 0 {
         +WORD "*/"
 W_SSLASH
@@ -272,6 +279,7 @@ W_SSLASH
 ;;                                       */MOD
 ;;                                       SCREEN 57 LINE 11
 ;;
+
 !if 0 {
         +WORD "*/mod"
 W_SSMOD
@@ -291,6 +299,7 @@ W_SSMOD
 ; FIG:
 ;      +             n1  n2  ---  sum                        L0
 ;               Leave the sum of n1+n2.
+
         +WORD "+"
 W_PLUS
         !word *+2
@@ -312,6 +321,7 @@ W_PLUS
 ;      +!            n  addr  ---                            L0
 ;               Add n to the value at the address.  Pronounced "plus-
 ;               store".
+
         +WORD "+!"
 W_PSTORE
         !word *+2
@@ -358,6 +368,7 @@ W_PSTORE
 ;;
 ;;                                       +LOOP
 ;;                                       SCREEN 73 LINE 13
+
 !if 0 {
         +WORD_IMM "+loop"
 W_PLUS_LOOP
@@ -418,6 +429,7 @@ W_PPLOOP
 ;      ,             n  ---                                  L0
 ;               Store n into the next available dictionary memory cell, 
 ;               advancing the dictionary pointer.  (comma)
+
         +WORD ","
 W_COMMA
         !word DO_COLON
@@ -435,6 +447,7 @@ W_COMMA
 ; FIG:
 ;      -             n1  n2  ---  diff                       L0
 ;               Leave the difference of n1-n2.
+
         +WORD "-"
 W_SUB
         !word *+2
@@ -457,6 +470,7 @@ W_SUB
 ;               Print a number from a signed 16 bit two's complement 
 ;               value, converted according to the numeric BASE.  A 
 ;               trailing blank follows.  Pronounced "dot".
+
         +WORD "."
 W_DOT
 !if 0 {
@@ -493,6 +507,7 @@ W_DOT
 ;;                                       ."
 ;;                                       SCREEN 44 LINE12
 ;;
+
 !if 0 {
         +WORD_IMM ".\""
 W_DOTQUOTE
@@ -548,6 +563,7 @@ W_PDOTQ
 ; FIG:
 ;      /             n1  n2  ---  quot                       L0
 ;               Leave the signed quotient of n1/n2.
+
         +WORD "/"
 W_SLASH
         !word *+2
@@ -588,6 +604,7 @@ W_SLASH
 ;;                                       /MOD
 ;;                                       SCREEN 57 LINE 8
 ;;
+
 !if 0 {
         +WORD "/mod"
 W_SLMOD
@@ -608,6 +625,7 @@ W_SLMOD
 ;      0<            n  ---  f                               L0
 ;               Leave a true flag if the number is less than zero 
 ;               (negative), otherwise leave a false flag.
+
         +WORD "0<"
 W_ZLESS
         !word *+2
@@ -628,6 +646,7 @@ W_ZLESS
 ;      0=            n  ---  f                               L0
 ;               Leave a true flag if the number is equal to zero, 
 ;               otherwise leave a false flag.
+
         +WORD "0="
 W_ZEQUALS
         !word *+2
@@ -648,6 +667,7 @@ W_ZEQUALS
 ; FIG:
 ;      1+            n1  ---  n2                             L1
 ;               Increment n1 by 1.
+
         +WORD "1+"
 W_1PLUS
         !word *+2
@@ -660,6 +680,7 @@ W_1PLUS
 ; 1- 
 ; (n_1 -- n_2)
 ; ANSI 6.1.0300
+
         +WORD "1-"
 W_1MINUS
         !word *+2
@@ -673,6 +694,7 @@ W_1MINUS
 ; 2! 
 ; (x_1 x_2 a-addr --)
 ; ANSI 6.1.0310
+
 !if 0 {
         +WORD "2!"
 W_2STORE
@@ -683,6 +705,7 @@ W_2STORE
 ; ****************************************************************************
 ; 2* (x_1 -- x_2)
 ; ANSI 6.1.0320
+
         +WORD "2*"
 W_2STAR
         !word *+2
@@ -694,6 +717,7 @@ W_2STAR
 ; 2/ 
 ; (x_1 -- x_2)
 ; ANSI 6.1.0330
+
         +WORD "2/"
 W_2SLASH
         !word *+2
@@ -705,6 +729,7 @@ W_2SLASH
 ; 2@ 
 ; (a-addr -- x_1 x_1)
 ; ANSI 6.1.0350
+
 !if 0 {
         +WORD "2@"
         !word *+2
@@ -715,6 +740,7 @@ W_2SLASH
 ; 2DROP 
 ; (x_1 x_2 --)
 ; ANSI 6.1.0370
+
         +WORD "2drop"
 W_2DROP
         !word *+2
@@ -738,6 +764,7 @@ W_2DUP
 ; 2OVER 
 ; (x_1 x_2 x_3 x_4 -- x_1 x_2 x_3 x_4 x_1 x_2)
 ; ANSI 6.1.0400
+
 !if 0 {
         +WORD "2over"
 W_2OVER
@@ -749,6 +776,7 @@ W_2OVER
 ; 2SWAP 
 ; (x_1 x_2 x_3 x_4 -- x_3 x_4 x_1 x_2)
 ; ANSI 6.1.0430
+
 !if 0 {
         +WORD "2swap"
 W_2SWAP
@@ -776,6 +804,7 @@ W_2SWAP
 ;;
 ;;                                       :
 ;;                                       SCREEN 33 LINE 2
+
 !if 0 {
         +WORD_IMM ":"
 W_COLON
@@ -813,6 +842,7 @@ W_COLON
 ;;
 ;;                                       ;
 ;;                                       SCREEN 33 LINE 9
+
 !if 0 {
         +WORD_IMM ";"
 W_SEMI_FOO        
@@ -858,6 +888,7 @@ W_SEMI ; ????
 ;      <             n1  n2  ---  f                          L0
 ;               Leave a true flag if n1 is less than n2; otherwise leave a 
 ;               false flag.
+
         +WORD "<"
 W_LESS
         !word *+2
@@ -893,6 +924,7 @@ W_LESS
 ;;                                       <#
 ;;                                       SCREEN 75 LINE 3
 ;;
+
 !if 0 {
         +WORD "<#"
 W_BDIGS
@@ -911,6 +943,7 @@ W_BDIGS
 ; FIG:
 ;      =             n1  n2  ---  f                          L0
 ;               Leave a true flag if n1=n2; otherwise leave a false flag.
+
         +WORD "="
 W_EQUAL
         !word *+2
@@ -938,6 +971,7 @@ W_EQUAL
 ;      >             n1  n2  ---  f                          L0
 ;               Leave a true flag if n1 is greater than n2; otherwise a 
 ;               false flag.
+
         +WORD ">"
 W_GREATER
         !word DO_COLON
@@ -949,11 +983,12 @@ W_GREATER
 ; >BODY 
 ; (xt -- a-addr)
 ; ANSI 6.1.0550
-!if 0 {
+
         +WORD ">body"
-        !word *+2
-        rts
-}
+W_TOBODY
+        !word DO_COLON
+        !word W_2PLUS   ; skip code field
+        !word W_SEMI
 
 ; ****************************************************************************
 ; >IN 
@@ -966,43 +1001,22 @@ W_GREATER
 ;               current input text buffer (terminal or disc) from which 
 ;               the next text will be accepted.  WORD uses and moves the 
 ;               value of IN.
+
         +WORD ">in"
 W_IN
-!if 0 {
-        !word DO_USER
-        !byte U_IN
-} else {
         !word DO_COLON
         +LITERAL &IN
         !word W_SEMI
-}
 
 ; ****************************************************************************
 ; >NUMBER 
 ; (ud_1 c-addr_1 u_1 -- ud_2 c-addr_2 u_2)
 ; ANSI 6.1.0570
-!if 0 {
+
         +WORD ">number"
-        !word *+2
-        rts
-}
-
-;      NUMBER        addr  ---  d
-;               Convert a character string left at addr with a preceding 
-;               count, to a signed double number, using the current base.  
-;               If a decimal point is encountered in the text, its 
-;               position will be given in DPL, but no other effect occurs.  
-;               If numeric conversion is not possible, an error message 
-;               will be given.
-
-;;
-;;                                       NUMBER
-;;                                       SCREEN 48 LINE 6
-;;
-!if 0 {
-;        +WORD "number"
-W_NUMBER
+W_TONUMBER
         !word DO_COLON
+!if 0 {
 ;          !word ZERO
 ;          !word ZERO
 ;          !word ROT
@@ -1040,8 +1054,18 @@ W_NUMBER
 ;          !word ZBRAN
 ;L2045:    !word 4        ; L2047-L2045
 ;          !word DMINU
-        !word W_SEMI
+
 }
+        !word W_SEMI
+
+;      NUMBER        addr  ---  d
+;               Convert a character string left at addr with a preceding 
+;               count, to a signed double number, using the current base.  
+;               If a decimal point is encountered in the text, its 
+;               position will be given in DPL, but no other effect occurs.  
+;               If numeric conversion is not possible, an error message 
+;               will be given.
+
 
 ;      (NUMBER)      d1  addr1  ---  d2  addr2
 ;               Convert the ascii text beginning at addr1+1 with regard to 
@@ -1101,6 +1125,7 @@ W_PNUMBER
 ;               Remove a number from the computation stack and place as 
 ;               the most accessable on the return stack.  Use should be 
 ;               balanced with R> in the same definition.
+
         +WORD ">r"
 W_TOR
         !word *+2
@@ -1122,14 +1147,18 @@ W_TOR
 ;               Reproduce n1 only if it is non-zero.  This is usually used 
 ;               to copy a value just before IF, to eliminate the need for 
 ;               an ELSE part to drop it.
+
         +WORD "?dup"
 W_QDUP
-        ; TODO native implementation?
-        !word DO_COLON
-        !word W_DUP
-        +ZBRANCH +
-        !word W_DUP
-+       !word W_SEMI
+        !word *+2
+        lda 0,x
+        ora 1,x
+        bne +
+        jmp NEXT
++       lda 0,x
+        pha
+        lda 1,x
+        jmp PUSH
 
 ; ****************************************************************************
 ; @ 
@@ -1139,6 +1168,7 @@ W_QDUP
 ; FIG:
 ;      @             addr  ---  n                            L0
 ;               Leave the 16 bit contents of address.
+
         +WORD "@"
 W_AT
         !word *+2
@@ -1204,6 +1234,7 @@ W_PABORT
 ; ABORT" 
 ; (???)
 ; ANSI 6.1.0680
+
 !if 0 {
         +WORD "abort\""
         !word *+2
@@ -1281,18 +1312,15 @@ W_ERROR
 ; FIG:
 ;      ABS           n  ---  u                               L0
 ;               Leave the absolute value of n as u.
-;;
-;;                                       ABS
-;;                                       SCREEN 56 LINE 9
-;;
-!if 0 {
+
         +WORD "abs"
 W_ABS
         !word DO_COLON
-;          !word DUP
-;          !word PM
-        !word W_SEMI
-}
+        !word W_DUP
+        !word W_ZLESS
+        +ZBRANCH +
+        !word W_NEGATE
++       !word W_SEMI
 
 ; ****************************************************************************
 ; ACCEPT 
@@ -1335,7 +1363,7 @@ _accept_loop
 
         !word W_KEY
 
-        ; $64, $69, $72, $0d, $6c (dir\nl)
+        ; $64, $69, $72, $0d, $6c (dir\nl) ????
 
 !if 0 {
         +CLITERAL '!'
@@ -1443,23 +1471,33 @@ _accept_after_loop ; TODO remove
 ; ALIGN 
 ; (--)
 ; ANSI 6.1.0705
-!if 0 {
+
         +WORD "align"
 W_ALIGN
         !word *+2
-        rts
-}
+        bbr0 <HERE, +
+        inc <HERE
+        beq +
+        inc <HERE+1
++
+        jmp NEXT
 
 ; ****************************************************************************
 ; ALIGNED 
 ; (addr -- a-addr)
 ; ANSI 6.1.0706
-!if 0 {
+
         +WORD "aligned"
 W_ALIGNED
         !word *+2
-        rts
-}
+        lda 0,x
+        and #1
+        beq +
+        inc 0,x
+        beq +
+        inc 1,x
++
+        jmp NEXT
 
 ; ****************************************************************************
 ; ALLOT 
@@ -1471,6 +1509,7 @@ W_ALIGNED
 ;               Add the signed number to the dictionary pointer DP.  May 
 ;               be used to reserve dictionary space or re-origin memory.  
 ;               n is with regard to computer address type (byte or word).
+
         +WORD "allot"
 W_ALLOT
         !word DO_COLON
@@ -1486,6 +1525,7 @@ W_ALLOT
 ; FIG:
 ;      AND           n1  n2  ---  n3                         L0
 ;               Leave the bitwise logical and of n1 and n2 as n3.
+
         +WORD "and"
 W_AND
         !word *+2
@@ -1507,6 +1547,7 @@ W_AND
       ;BASE          ---  addr                               U,L0
       ;         A user variable containing the current number base used 
       ;         for input and output conversion.
+
         +WORD "base"
 W_BASE
         !word DO_USER
@@ -1538,6 +1579,7 @@ W_BASE
 ;;
 ;;                                       BEGIN
 ;;                                       SCREEN 73 LINE 3
+
 !if 0 {
         +WORD_IMM "begin"
 W_BEGIN
@@ -1558,10 +1600,10 @@ W_BEGIN
 ;
 ;      BL            ---  c
 ;               A constant that leaves the ascii value for "blank".
+
         +WORD "bl"
 W_BL
         !word DO_CONSTANT
-        ; TODO !convtab ...
         !word ' '
 
 ; ****************************************************************************
@@ -1575,6 +1617,7 @@ W_BL
 ;               Store 8 bits at address.  On word addressing computers, 
 ;               further specification is necessary regarding byte 
 ;               addressing.
+
         +WORD "c!"
 W_CSTORE
         !word *+2
@@ -1594,6 +1637,7 @@ W_CSTORE
 ;               advancing the dictionary pointer.  This is only available 
 ;               on byte addressing computers, and should be used with 
 ;               caution on byte addressing minicomputers.
+
         +WORD "c,"
 W_CCOMM
         !word DO_COLON
@@ -1614,14 +1658,13 @@ W_CCOMM
 ;               Leave the 8 bit contents of memory address.  On word 
 ;               addressing computers, further specification is needed 
 ;               regarding byte addressing.
+
         +WORD "c@"
 W_CAT
         !word *+2
         ; ldy #0 ; TODO
         lda (0,x)
         sta 0,x
-        ;tya
-        ;sta 1,x
         sty 1,x
         jmp NEXT
 
@@ -1629,6 +1672,7 @@ W_CAT
 ; CELL+ 
 ; (a-addr_1 -- a-addr_2)
 ; ANSI 6.1.0880
+
         +WORD "cell+"
 W_CELLP
         !word DO_COLON
@@ -1639,6 +1683,7 @@ W_CELLP
 ; CELLS 
 ; (n_1 -- n_2)
 ; ANSI 6.1.0890
+
         +WORD "cells"
 W_CELLS        
         !word DO_COLON
@@ -1649,16 +1694,21 @@ W_CELLS
 ; CHAR 
 ; ("text" -- char)
 ; ANSI 6.1.0895
-!if 0 {
-        +WORD "char"
-        !word *+2
-        rts
-}
+
+        +WORD_IMM "char"
+W_CHAR
+        !word DO_COLON
+        !word W_PARSE_NAME
+        ; TODO what if length is 0?
+        !word W_DROP
+        !word W_CAT
+        !word W_SEMI
 
 ; ****************************************************************************
 ; CHAR+ 
 ; (c-addr_1 -- c-addr_2)
 ; ANSI 6.1.0897
+
         +WORD "char+"
 W_CHARP
         !word DO_COLON
@@ -1669,9 +1719,10 @@ W_CHARP
 ; CHARS 
 ; (n_1 -- n_2)
 ; ANSI 6.1.0898
+
         +WORD "chars"
 W_CHARS
-        !word DO_COLON
+        !word DO_COLON  ; no-op
         !word W_SEMI
 
 ; ****************************************************************************
@@ -1692,6 +1743,7 @@ W_CHARS
 ;;                                       CONSTANT
 ;;                                       SCREEN 34 LINE 1
 ;;
+
 !if 0 {
         +WORD "constant"
 W_CONSTANT
@@ -1719,6 +1771,7 @@ W_CONSTANT
 ;               byte at addr1 contains the text byte count and the actual 
 ;               text starts with the second byte.  Typically COUNT is 
 ;               followed by TYPE.
+
         +WORD "count"
 W_COUNT
         !word DO_COLON
@@ -1738,6 +1791,7 @@ W_COUNT
 ;      CR                                                    L0
 ;               Transmit a carriage return and line feed to the selected 
 ;               output device.
+
         +WORD "cr"
 W_CR
         !word *+2
@@ -1763,6 +1817,7 @@ W_CR
 ;;                                       CREATE
 ;;                                       SCREEN 50 LINE 2
 ;;
+
 !if 0 {
         +WORD "create"
 W_CREATE
@@ -1829,6 +1884,7 @@ W_CREATE
 ;
 ;      DECIMAL                                               L0
 ;               Set the numeric conversion BASE for decimal input-output.
+
         +WORD "decimal"
 W_DECIMAL
         !word DO_COLON
@@ -1841,16 +1897,18 @@ W_DECIMAL
 ; DEPTH 
 ; (-- +n)
 ; ANSI 6.1.1200
+
         +WORD "depth"
 W_DEPTH
         !word *+2
+        ; ldy #0 ; TODO
         lda #TOS
         stx <XSAVE
         sec
         sbc XSAVE
         lsr
         pha
-        lda #0
+        tya
         jmp PUSH
 
 ; ****************************************************************************
@@ -1886,6 +1944,7 @@ W_DEPTH
 ;;
 ;;                                       DO
 ;;                                       SCREEN 73 LINE 9
+
 !if 0 {
         +WORD_IMM "do"
 W_DO
@@ -1936,6 +1995,7 @@ W_PDO
 ;;                                       DOES>
 ;;                                       SCREEN 43 LINE 4
 ;;
+
 !if 0 {
         +WORD "does>"
 W_DOES
@@ -1959,6 +2019,7 @@ W_DOES
 ;
 ;      DROP          n  ---                                  L0
 ;               Drop the number from the stack.
+
         +WORD "drop"
 W_DROP
         !word *+2
@@ -1973,6 +2034,7 @@ W_DROP
 ;
 ;      DUP           n  ---  n  n                            L0
 ;               Duplicate the value on the stack.
+
         +WORD "dup"
 W_DUP
         !word *+2
@@ -2021,6 +2083,7 @@ W_DUP
 ;;
 ;;                                       ELSE
 ;;                                       SCREEN 74 LINE 10
+
 !if 0 {
         +WORD_IMM "else"
 W_ELSE
@@ -2049,6 +2112,7 @@ W_ELSE
 ;      EMIT          c  ---                                  L0
 ;               Transmit ascii character c to the selected output device.  
 ;               OUT is incremented for each character output.
+
         +WORD "emit"
 W_EMIT
         !word *+2
@@ -2060,6 +2124,7 @@ W_EMIT
 ; ENVIRONMENT? 
 ; (c-addr u -- false | i*x true)
 ; ANSI 6.1.1345
+
 !if 0 {
         +WORD "environment?"
         !word *+2
@@ -2240,6 +2305,7 @@ W_INTERPRET
 ;               Execute the definition whose code field address is on the 
 ;               stack.  The code field address is also called the 
 ;               compilation address.
+
         +WORD "execute"
 W_EXECUTE
         !word *+2
@@ -2255,6 +2321,7 @@ W_EXECUTE
 ; EXIT 
 ; (???)
 ; ANSI 6.1.1380
+
 !if 0 {
         +WORD "exit"
         !word *+2
@@ -2277,6 +2344,7 @@ W_EXECUTE
 ;;
 ;;
 ; TODO DMA?
+
 !if 0 {
         +WORD "fill"
 W_FILL
@@ -2298,6 +2366,7 @@ W_FILL
 ; FIND 
 ; (c-addr -- c-addr 0 | xt 1 | xt -1)
 ; ANSI 6.1.1550
+
         +WORD "find"
 W_FIND
         !word DO_COLON
@@ -2397,6 +2466,7 @@ W_PFIND
 ; FM/MOD 
 ; (d_1 n_1 -- n_2 n_3)
 ; ANSI 6.1.1561
+
 !if 0 {
         +WORD "fm/mod"
         !word *+2
@@ -2465,6 +2535,7 @@ W_HERE
 ;;                                       HOLD
 ;;                                       SCREEN 46 LINE 10
 ;;
+
 !if 0 {
         +WORD "hold"
 W_HOLD
@@ -2488,11 +2559,7 @@ W_HOLD
 ;      I             ---  n                                  C,L0
 ;               Used within a DO-LOOP to copy the loop index to the stack.  
 ;               Other use is implementation dependent.  See R.
-;
-;;
-;;                                       I
-;;                                       SCREEN 17 LINE 9
-;;
+
         +WORD "i"
 W_I
 !if 1 { 
@@ -2500,7 +2567,7 @@ W_I
         !word W_RAT+2      ; share the code for R
 } else {
         !word DO_COLON
-        !word W_RAT
+        !word W_RAT ; 2RAT,DROP?
         !word W_SEMI
 }
 
@@ -2542,6 +2609,7 @@ W_I
 ;;
 ;;                                       IF
 ;;                                       SCREEN 74 LINE 8
+
 !if 1 {
         +WORD_IMM "if"
 W_IF
@@ -2577,6 +2645,7 @@ W_IF
 ;;                                       IMMEDIATE
 ;;                                       SCREEN 53 LINE 1
 ;;
+
 !if 0 {
         +WORD "immediate"
 W_IMMEDIATE
@@ -2592,6 +2661,7 @@ W_IMMEDIATE
 ; (x_1 -- x_2)
 ; ANSI 6.1.1720
 ; flip all bits
+
         +WORD "invert"
         !word *+2
         lda 0,x
@@ -2606,6 +2676,7 @@ W_IMMEDIATE
 ; J 
 ; (???)
 ; ANSI 6.1.1730
+
 !if 0 {
         +WORD "j"
         !word *+2
@@ -2620,6 +2691,7 @@ W_IMMEDIATE
 ; FIG:
 ;      KEY           ---  c                                  L0
 ;               Leave the ascii value of the next terminal key struck.
+
         +WORD "key"
 W_KEY
         !word *+2
@@ -2650,6 +2722,7 @@ W_KEY
 ;               setting the loop limit to the current value of the index.  
 ;               The index itself remains unchanged, and execution proceeds 
 ;               normally until LOOP or +LOOP is encountered.
+
         +WORD "leave"
 W_LEAVE
         !word *+2
@@ -2679,6 +2752,7 @@ W_LEAVE
 ;;
 ;;                                       LITERAL
 ;;                                       SCREEN 51 LINE 2
+
 !if 0 {
         +WORD_IMM "literal"
 W_LITERAL
@@ -2716,6 +2790,7 @@ W_LITERAL
 ;;
 ;;                                       LOOP
 ;;                                       SCREEN 73 LINE 11
+
 !if 0 {
         +WORD_IMM "loop"
 W_LOOP
@@ -2772,6 +2847,7 @@ W_PLOOP
 ; LSHIFT 
 ; (x_1 u -- x_2)
 ; ANSI 6.1.1805
+
 !if 0 {
         +WORD "lshift"
         !word *+2
@@ -2793,6 +2869,7 @@ W_PLOOP
 ;;                                       M*
 ;;                                       SCREEN 57 LINE 1
 ;;
+
 !if 0 {
         +WORD "m*"
 W_MSTAR
@@ -2838,6 +2915,7 @@ W_DPM
 ;
 ;      MAX           n1  n2  ---  max                        L0
 ;               Leave the greater of two numbers.
+
         +WORD "max"
 W_MAX
         !word DO_COLON
@@ -2857,6 +2935,7 @@ W_MAX
 ;
 ;      MIN           n1  n2  ---  min                        L0
 ;               Leave the smaller of two numbers.
+
         +WORD "min"
 W_MIN
         !word DO_COLON
@@ -2881,6 +2960,7 @@ W_MIN
 ;;                                       MOD
 ;;                                       SCREEN 57 LINE 10
 ;;
+
 !if 0 {
         +WORD "mod"
 W_MOD
@@ -2905,6 +2985,7 @@ W_MOD
 ;               appropriate on word addressing computers.
 ;
 ; TODO DMA?
+
 !if 0 {
         +WORD "move"
         !word *+2
@@ -2942,6 +3023,7 @@ W_NEGATE
 ;
 ;      OR            n1  n2  ---  or                         L0
 ;               Leave the bit-wise logical or of two 16 bit values.
+
         +WORD "or"
 W_OR
         !word *+2
@@ -2963,6 +3045,7 @@ W_OR
 ;
 ;      OVER          n1  n2  ---  n1  n2  n1                 L0
 ;               Copy the second stack value, placing it as the new top.
+
         +WORD "over"
 W_OVER
         !word *+2
@@ -2975,6 +3058,7 @@ W_OVER
 ; POSTPONE
 ; ("text" --)
 ; ANSI 6.1.2033
+
 !if 0 {
         +WORD "postpone"
         !word *+2
@@ -3028,11 +3112,7 @@ W_COMPILE
 ;      QUIT                                                  L1
 ;               Clear the return stack, stop compilation, and return 
 ;               control to the operators terminal.  No message is given.
-;
-;;
-;;                                       QUIT
-;;                                       SCREEN 54 LINE 2
-;;
+
         +WORD "quit"
 W_QUIT
         !word DO_COLON
@@ -3137,6 +3217,7 @@ _test_string ; TODO REMOVE
 ;      R>            ---  n                                  L0
 ;               Remove the top value from the return stack and leave it on 
 ;               the computation stack.  See >R and R.
+
         +WORD "r>"
 W_RFROM
         !word *+2
@@ -3173,6 +3254,7 @@ W_RAT ; TODO rename to W_RFETCH?
 ; RECURSE
 ; (--)
 ; ANSI 6.1.2120
+
 !if 0 {
         +WORD "recurse"
         !word *+2
@@ -3203,6 +3285,7 @@ W_RAT ; TODO rename to W_RFETCH?
 ;;
 ;;                                       REPEAT
 ;;                                       SCREEN 74 LINE 5
+
 !if 0 {
         +WORD_IMM "repeat"
 W_REPEAT
@@ -3242,6 +3325,7 @@ W_ROT
 ; RSHIFT
 ; (x_1 u -- x_2)
 ; ANSI 6.1.2162
+
 !if 0 {
         +WORD "rshift"
         !word *+2
@@ -3252,10 +3336,17 @@ W_ROT
 ; S"
 ; (???)
 ; ANSI 6.1.2165
+
 !if 0 {
-        +WORD "s\""
-        !word *+2
-        rts
+        +WORD_IMM "s\""
+W_SQUOTE
+        !word DO_COLON
+!if 0 {
+        +CLITERAL '"'  ; for colourization ... "
+        !word W_PARSE
+        ; TODO ...
+}
+        !word W_SEMI
 }
 
 ; ****************************************************************************
@@ -3302,6 +3393,7 @@ W_SIGN
 ; SM/REM
 ; (d_1 n_1 -- n_2 n_3)
 ; ANSI 6.1.2214
+
 !if 0 {
         +WORD "sm/rem"
         !word *+2
@@ -3312,6 +3404,7 @@ W_SIGN
 ; SOURCE
 ; (-- c-addr u)
 ; ANSI 6.1.2216
+
         +WORD "source"
 W_SOURCE
         !word DO_COLON
@@ -3331,6 +3424,7 @@ W_SOURCE
 ;
 ;      SPACE                                                 L0
 ;               Transmit an ascii blank to the output device.
+
         +WORD "space"
 W_SPACE
         !word DO_COLON
@@ -3400,6 +3494,7 @@ W_STATE
 ;
 ;      SWAP          n1  n2  ---  n2  n1                     L0
 ;               Exchange the top two values on the stack.
+
         +WORD "swap"
 W_SWAP
         !word *+2
@@ -3434,6 +3529,7 @@ W_SWAP
 ;;
 ;;                                       THEN
 ;;                                       SCREEN 73 LINE 7
+
 !if 0 {
         +WORD_IMM "then"
 W_THEN
@@ -3460,6 +3556,7 @@ W_THEN
 ;;                                       ENDIF
 ;;                                       SCREEN 73 LINE 5
 ;;
+
 !if 0 {
 ;        +WORD "endif"
 W_ENDIF
@@ -3491,29 +3588,31 @@ W_ENDIF
 ;;                                       TYPE
 ;;                                       SCREEN 44 LINE 2
 ;;
+
         +WORD "type"
 W_TYPE
         !word DO_COLON
         !word W_QDUP
-        +ZBRANCH L1651
+        +ZBRANCH +
         !word W_OVER
         !word W_PLUS
         !word W_SWAP
         !word W_PDO
-L1644   !word W_I
+_type_loop
+        !word W_I
         !word W_CAT
         !word W_EMIT
         !word W_PLOOP
-        !word L1644-*  ; $FFF8    ; L1644-L1648
-        +BRANCH +
-L1651   !word W_DROP
-+
-        !word W_SEMI
+        !word _type_loop-*
+        +BRANCH ++
++       !word W_DROP
+++      !word W_SEMI
 
 ; ****************************************************************************
 ; U.
 ; (u --)
 ; ANSI 6.1.2320
+
 !if 0 {
         +WORD "u."
         !word *+2
@@ -3530,6 +3629,7 @@ L1651   !word W_DROP
 ;;                                       U<
 ;;                                       Unsigned less than
 ;;
+
 !if 0 {
         +WORD "u<"
 W_ULESS
@@ -3543,6 +3643,7 @@ W_ULESS
 ; UM*
 ; (u_1 u_2 -- ud)
 ; ANSI 6.1.2360
+
 !if 0 {
         +WORD "um*"
         !word *+2
@@ -3557,6 +3658,7 @@ W_ULESS
 ;;                                       U*
 ;;                                       SCREEN 23 LINE 1
 ;;
+
 !if 0 {
         +WORD "u*"
 W_USTAR
@@ -3593,6 +3695,7 @@ W_USTAR
 ; UM/MOD
 ; (ud u_1 -- u_2 u_3)
 ; ANSI 6.1.2370
+
 !if 0 {
         +WORD "um/mod"
         !word *+2
@@ -3609,6 +3712,7 @@ W_USTAR
 ;;                                       U/
 ;;                                       SCREEN 24 LINE 1
 ;;
+
 !if 0 {
         +WORD "u/"
 W_USLASH
@@ -3649,6 +3753,7 @@ W_USLASH
 ;               An unsigned mixed magnitude math operation which leaves a 
 ;               double quotient ud4 and remainder u3, from a double 
 ;               dividend ud1 and single divisor u2.
+
 !if 0 {
         +WORD "m/mod"
 W_MSMOD
@@ -3669,6 +3774,7 @@ W_MSMOD
 ; UNLOOP
 ; (???)
 ; ANSI 6.1.2380
+
 !if 0 {
         +WORD "unloop"
         !word *+2
@@ -3697,6 +3803,7 @@ W_MSMOD
 ;;
 ;;                                       UNTIL
 ;;                                       SCREEN 73 LINE 15
+
 !if 0 {
         +WORD_IMM "until"
 W_UNTIL
@@ -3730,10 +3837,11 @@ W_UNTIL
 ;;                                       VARIABLE
 ;;                                       SCREEN 34 LINE 5
 ;;
+
 !if 0 {
         +WORD "variable"
 W_VARIABLE    
-;       !word DOCOL
+;       !word DO_COLON
         !word W_CONSTANT
 ;          !word PSCOD
 }
@@ -3771,6 +3879,7 @@ W_VARIABLE
 ;;
 ;;                                       WHILE
 ;;                                       SCREEN 74 LINE 13
+
 !if 0 {
         +WORD_IMM "while"
 W_WHILE
@@ -3896,6 +4005,7 @@ W_ENCLOSE
 ;
 ;      XOR           n1  n2  ---  xor                        L1
 ;               Leave the bitwise logical exclusive-or of two values.
+
         +WORD "xor"
 W_XOR
         !word *+2
@@ -3922,6 +4032,7 @@ W_XOR
 ;               compiled.  This allows calculation or compilation 
 ;               exceptions before resuming compilation with ].  See 
 ;               LITERAL, ].
+
         +WORD_IMM "["
 W_LBRACKET
         !word DO_COLON
@@ -3934,8 +4045,9 @@ W_LBRACKET
 ; [']
 ; (???)
 ; ANSI 6.1.2510
+
 !if 0 {
-        +WORD "[']"
+        +WORD_IMM "[']"
         !word *+2
         rts
 }
@@ -3948,9 +4060,9 @@ W_LBRACKET
 ;       Skip leading space delimiters.  Parse name delimited by a space.
 ; Run-time (-- char):
 ;       Place char, the first character of name, on the stack
-
 ;
-        +WORD "[char]"
+
+        +WORD_IMM "[char]"
 W_BCHARB
         !word *+2
         jmp NEXT
@@ -3964,6 +4076,7 @@ W_BCHARB
 ;      ]                                                     L1
 ;               Resume compilation, to the completion of a colon-
 ;               definition.  See [.
+
         +WORD "]"
 W_RBRACKET
         !word DO_COLON
