@@ -1210,7 +1210,7 @@ W_ABORT
 !if 1 {        
         ; !word W_CR
         !word W_PDOTQ
-        +STRING "mega65-forth 0.1" ; TODO
+        +STRING "mega65-forth 0.1" ; TODO print this before ABORT
         !word W_CR
 }
 ;          !word FORTH ; from search-ext
@@ -3120,6 +3120,11 @@ W_COMPILE
         +WORD "quit"
 W_QUIT
         !word DO_COLON
+
+        !word W_PDOTQ
+        +STRING "<quit>"
+        !word W_DOTS
+
 !if ENABLE_BLOCK {
         !word W_ZERO
         !word W_BLK
