@@ -102,7 +102,7 @@ W_CURRENT
 W_SEARCH_WORDLIST
         !word DO_COLON
 
-!if 1 {
+!if 0 {
         !word W_ROT
         !word W_ROT
         !word W_PDOTQ
@@ -202,7 +202,7 @@ _psearch_wordlist_found
         +ZBRANCH _psearch_wordlist_nonimmediate
 
         ; an immediate word
-        !word W_NAME_TO_COMPILE
+        !word W_NAME_TO_COMPILE ; TODO NOT RIGHT - SHOULD PICK BASED ON STATE
         !word W_ONE
         !word W_FALSE   ; stop
         !word W_DOTS ; TODO 
@@ -210,7 +210,7 @@ _psearch_wordlist_found
 
 _psearch_wordlist_nonimmediate
 
-        !word W_NAME_TO_INTERPRET
+        !word W_NAME_TO_INTERPRET ; TODO NOT RIGHT - SHOULD PICK BASED ON STATE
         !word W_TRUE    ; -1
         !word W_FALSE   ; stop
         ; +BRANCH _psearch_wordlist_done

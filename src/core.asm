@@ -1117,6 +1117,7 @@ W_TOR
 ;               an ELSE part to drop it.
         +WORD "?dup"
 W_QDUP
+        ; TODO native implementation?
         !word DO_COLON
         !word W_DUP
         +ZBRANCH +
@@ -2067,60 +2068,100 @@ W_EMIT
 W_EVALUATE        
         !word DO_COLON
 
+!if 1 {
         !word W_PDOTQ
         +STRING "<evaluate>"
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_2DUP
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT        
         !word W_DOTS
+}
 
-!if 1 {
         ; TODO setup SOURCE
-        ; !word W_2DUP ; TODO remove???
         +LITERAL &INPUT_LEN
         !word W_STORE
         +LITERAL &INPUT_BUFFER
         !word W_STORE
-}
 
         !word W_ZERO
         !word W_IN
         !word W_STORE
 
-
-        ; TODO LOOP !!!!!!!!!!!!!!!
-
-!if 1 {
+_evaluate_loop
         !word W_PARSE_NAME
 
         ; (c-addr u)
 
-        ; TODO check for zero length
+        !word W_QDUP
+        +ZBRANCH _evaluate_done_loop
 
+!if 1 {
         !word W_PDOTQ
-        +STRING "evaluate-pre"
+        +STRING "evaluate-name"
         +CLITERAL '['
         !word W_EMIT
         !word W_2DUP
         !word W_TYPE
         +CLITERAL ']'
         !word W_EMIT
-        !word W_DOTS
+        ; !word W_DOTS
+}
 
-        !word W_2DUP ; TODO we likely want to do this in case we need to fall back to >NUMBER
+        !word W_2TOR    
+        
+        ; () (R: c-addr u)
+
+        !word W_2RAT
         !word W_FORTH_WORDLIST
         !word W_SEARCH_WORDLIST
 
+        ; (0)     (R: c-addr u) - not found
+        ; (xt 1)  (R: c-addr u) - immediate
+        ; (xt -1) (R: c-addr u) - non-immediate
+
+        !word W_QDUP
+        +ZBRANCH _evaluate_word_not_found
+        
+        ; TODO clean up the immediate/non-immediate handling
+
+        !word W_1MINUS
+        +ZBRANCH _evaluate_immediate
+
+        ; non-immediate
+        ; TODO execute if interpreting, move to definition if compiling
         !word W_PDOTQ
-        +STRING "evaluate-post"
+        +STRING "<non-immediate>"
         !word W_DOTS
+        !word W_EXECUTE
+        +BRANCH _evaluate_done_word
 
-        ; TODO check result - this assumes just "0"
-        !word W_DROP
+_evaluate_immediate
+        ; TODO always execute
+        !word W_PDOTQ
+        +STRING "<immediate>"
+        !word W_DOTS
+        !word W_EXECUTE
+        +BRANCH _evaluate_done_word
 
+_evaluate_word_not_found
 
-        !word W_2DROP
+        ; TODO try >NUMBER
+        !word W_PDOTQ
+        +STRING "<not found>"
+        ; jmp _evaluate_done_word
+
+_evaluate_done_word
+        !word W_2RFROM,W_2DROP
+!if 0 {
+        !word W_DOTS
 }
+        +BRANCH _evaluate_loop
 
-        ; TODO END LOOP !!!!!!!!!!
-
+_evaluate_done_loop
+        !word W_DROP ; (c-addr) was left on stack
         !word W_SEMI
 
 ; FIG
@@ -3072,8 +3113,10 @@ _quit_read_loop
         !word W_SEMI ; TODO REMOVE
 }
 
-_test_string
-        +STRING "  .s 123 2 3 + .s" ; TODO REMOVE
+_test_string ; TODO REMOVE
+;        +STRING "           " ; test end of input handling
+        +STRING "  bl true .s + .s" ; doesn't depend on >NUMBER
+;        +STRING "  .s 123 2 3 + .s" ; TODO REMOVE
 
 ; ****************************************************************************
 ; R>
@@ -3263,12 +3306,12 @@ W_SIGN
         +WORD "source"
 W_SOURCE
         !word DO_COLON
-        +LITERAL _source_test
-        !word W_COUNT
+        +LITERAL &INPUT_BUFFER
+        !word W_AT
+        +LITERAL &INPUT_LEN
+        !word W_AT
+        ; TODO should we ripping of >IN leading chars?
         !word W_SEMI
-
-_source_test
-        +STRING "<some input>"
 
 ; ****************************************************************************
 ; SPACE

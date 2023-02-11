@@ -578,7 +578,7 @@ W_DFIND
 ;          !word PFIND
 ;          !word DUP
 ;          !word ZEQU
-;          !word ZBRAN
+;          !word ZBRANCH
 ;L2068:    !word $A       ; L2073-L2068
 ;          !word DROP
 ;          !word HERE
