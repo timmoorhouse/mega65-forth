@@ -1488,7 +1488,7 @@ _accept_loop
 
         ; Check for and handle delete
         !word W_DUP
-        +CLITERAL $14 ; petscii delete TODO K-DELETE from facility-ext
+        !word W_K_DELETE
         !word W_EQUAL
 
         +ZBRANCH _accept_not_delete
@@ -1518,7 +1518,7 @@ _accept_not_delete
 
         ; Check for and handle return
         !word W_DUP
-        +CLITERAL $0d ; petscii return TODO
+        !word W_K_RETURN
         !word W_EQUAL
         !word W_ZBRANCH
         !word _accept_not_return-*
