@@ -2347,6 +2347,7 @@ _evaluate_word_not_found
         !word W_DROP
 
         ; TODO error
+        ; TODO change colour to red?
 !if DEBUG {
         !word W_PDOTQ
         +STRING "<not found>"

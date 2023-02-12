@@ -7,6 +7,8 @@ COLOUR_RAM_32 = $0ff80000
 COLOUR_USER  = $42; 42
 COLOUR_DEBUG = $40
 
+; TODO blink cursor position
+
 console_init
         lda #COLOUR_USER
         sta <COLOUR
@@ -115,7 +117,13 @@ put_char
         bne +
         jmp CR
 +        
+
+        cmp #$14 ; delete
+        bne +
+
         ; TODO delete
++
+
         ; TODO home
 
         jsr petscii_to_screencode
