@@ -2330,9 +2330,30 @@ _evaluate_immediate
         !word W_EXECUTE
         +BRANCH _evaluate_done_word
 
+_evaluate_number
+        ; (ud_2 c-addr_2) (R: c-addr u)
+-!ifdef DEBUG {
+        !word W_PDOTQ
+        +STRING "<number>"
+        !word W_DOTS
+}
+        !word W_2DROP
+        +BRANCH _evaluate_done_word
+
 _evaluate_word_not_found
 
+        ; (R: c-addr u)
+!if 1 {
         ; TODO try >NUMBER
+        ; TODO this just does unsigned single precision so far!!!!!
+        !word W_ZERO
+        !word W_ZERO
+        !word W_2RAT
+        !word W_TONUMBER
+        +ZBRANCH _evaluate_number
+}
+
+        ; TODO error
         !word W_PDOTQ
         +STRING "<not found>"
         !word W_DOTS
@@ -3289,7 +3310,8 @@ _quit_read_loop
 _test_string ; TODO REMOVE
 ;        +STRING "           " ; test end of input handling
 ;        +STRING "  bl true .s + .s" ; doesn't depend on >NUMBER
-        +STRING "  bl true ( a b c) .s + .s 2drop" ; doesn't depend on >NUMBER
+        ; +STRING "  bl true ( a b c) .s + .s drop" ; doesn't depend on >NUMBER
+        +STRING "  bl 123 ( a b c) .s + .s drop" ; doesn't depend on >NUMBER
 ;        +STRING "  .s 123 2 3 + .s" ; TODO REMOVE
 
 ; ****************************************************************************

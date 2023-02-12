@@ -603,9 +603,13 @@ W_PARSE
 
         ; ldy #0 ; TODO
 
+        ; hold char in TEMP1
+        lda 0,x
+        sta <TEMP1
+
         ; initialize addr
-        dex
-        dex
+        ; dex
+        ; dex
         clc
         lda <INPUT_BUFFER
         adc <IN
@@ -652,7 +656,8 @@ _parse_loop
         ; not at the end yet ...
         ; check for terminator
         lda (0,x)
-        cmp 8,x
+        ; cmp 8,x
+        cmp <TEMP1
         beq _parse_found_terminator
 
         ; advance the current position ...
