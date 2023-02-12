@@ -205,7 +205,7 @@ _psearch_wordlist_found
         !word W_NAME_TO_COMPILE ; TODO NOT RIGHT - SHOULD PICK BASED ON STATE
         !word W_ONE
         !word W_FALSE   ; stop
-        !word W_DOTS ; TODO 
+        ; !word W_DOTS ; TODO 
         +BRANCH _psearch_wordlist_done
 
 _psearch_wordlist_nonimmediate

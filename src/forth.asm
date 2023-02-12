@@ -511,7 +511,7 @@ WARM
 W_TEST  !word DO_COLON
 ;TEST
         ;!word W_CR
-!if 1 {
+!if DEBUG {
         !word W_WORDS
         !word W_CR
 }
@@ -522,12 +522,10 @@ W_TEST  !word DO_COLON
 !if 0 {
         !word W_COMPARE_TEST
 }
-!if 1 {
+!if DEBUG {
         !word W_TONUMBER_TEST
 }
-!if 1 {
         !word W_ABORT
-}
         !word W_SEMI
 
         ; TODO get here after bootstrap ends

@@ -192,7 +192,7 @@ W_PAREN
         !word DO_COLON
         +CLITERAL ')'
         !word W_PARSE
-!if 1 {
+!if DEBUG {
         !word W_PDOTQ
         +STRING "<comment>"
         +CLITERAL '['
@@ -865,7 +865,7 @@ W_SEMI_FOO
 W_SEMI ; ????
         !word *+2
 
-!ifdef DEBUG {
+!if DEBUG {
         ; lda #' '
         ; jsr put_char_screencode
         ; lda #';'
@@ -1324,12 +1324,10 @@ W_ABORT
 !if ENABLE_BLOCK {
 ;          !word DR0 ; from fig
 }
-!if 1 {        
         ; !word W_CR
         !word W_PDOTQ
         +STRING "mega65-forth 0.1" ; TODO print this before ABORT
         !word W_CR
-}
 ;          !word FORTH ; from search-ext
 ;          !word DEFIN ; from search
         !word W_QUIT
@@ -1463,7 +1461,6 @@ W_ACCEPT
         !word W_OVER
         !word W_PLUS
         !word W_OVER
-        ; !word W_DOTS
         !word W_PDO
 
         !word W_DROP 
@@ -1471,29 +1468,17 @@ W_ACCEPT
         
         ; (0)
 
-        ; !word W_DOTS
-
 _accept_loop
 
         ; (index)
-
-!if 0 {
-        +CLITERAL '?'
-        !word W_EMIT
-}
 
         !word W_KEY
 
         ; $64, $69, $72, $0d, $6c (dir\nl) ????
 
-!if 0 {
-        +CLITERAL '!'
-        !word W_EMIT
-}
-
         ; (index key)
 
-!if 1 {
+!if DEBUG {
         !word W_SPACE,W_DUP,W_DOT,W_SPACE
         ; !word W_DOTS
 }
@@ -1580,7 +1565,7 @@ _accept_do_emit
         !word _accept_loop-*
 _accept_after_loop ; TODO remove        
 
-!if 1 {
+!if DEBUG {
         !word W_CR
 }
 
@@ -2261,7 +2246,7 @@ W_EMIT
 W_EVALUATE        
         !word DO_COLON
 
-!if 1 {
+!if DEBUG {
         !word W_PDOTQ
         +STRING "<evaluate>"
         +CLITERAL '['
@@ -2291,7 +2276,7 @@ _evaluate_loop
         !word W_QDUP
         +ZBRANCH _evaluate_done_loop
 
-!if 1 {
+!if DEBUG {
         !word W_PDOTQ
         +STRING "evaluate-name"
         +CLITERAL '['
@@ -2325,17 +2310,21 @@ _evaluate_loop
 
         ; non-immediate
         ; TODO execute if interpreting, move to definition if compiling
+!if DEBUG {
         !word W_PDOTQ
         +STRING "<non-immediate>"
         !word W_DOTS
+}
         !word W_EXECUTE
         +BRANCH _evaluate_done_word
 
 _evaluate_immediate
         ; TODO always execute
+!if DEBUG {
         !word W_PDOTQ
         +STRING "<immediate>"
         !word W_DOTS
+}
         !word W_EXECUTE
         +BRANCH _evaluate_done_word
 
@@ -2349,9 +2338,6 @@ _evaluate_word_not_found
 
 _evaluate_done_word
         !word W_2RFROM,W_2DROP
-!if 0 {
-        !word W_DOTS
-}
         +BRANCH _evaluate_loop
 
 _evaluate_done_loop
@@ -3213,9 +3199,11 @@ W_COMPILE
 W_QUIT
         !word DO_COLON
 
+!if DEBUG {
         !word W_PDOTQ
         +STRING "<quit>"
         !word W_DOTS
+}
 
 !if ENABLE_BLOCK {
         !word W_ZERO
@@ -3229,8 +3217,7 @@ _quit_read_loop
 
         ; !word W_RPSTORE
 
-!if 1 {
-!if 1 {
+!if DEBUG {
         ; !word W_DOTS
         +CLITERAL '['
         !word W_EMIT
@@ -3259,10 +3246,7 @@ _quit_read_loop
         +CLITERAL '"'
         !word W_EMIT
 
-
         !word W_DROP
-
-}       
 
 !if 1 {
 
@@ -3284,7 +3268,10 @@ _quit_read_loop
         !word W_CR
 }
 
+!if DEBUG {
         !word W_DOTS
+}
+
 }
 
         !word W_STATE
@@ -3295,12 +3282,7 @@ _quit_read_loop
         !word W_PDOTQ
         +STRING "ok"
 +
-
-!if 1 {
         +BRANCH _quit_read_loop
-} else {
-        !word W_SEMI ; TODO REMOVE
-}
 
 _test_string ; TODO REMOVE
 ;        +STRING "           " ; test end of input handling
