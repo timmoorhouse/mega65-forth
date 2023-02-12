@@ -162,7 +162,7 @@ WORDS
 
         lda #' '
         jsr put_char
-        jsr put_string
+        jsr put_name
 
         ldy #0
         lda (<WORDP),y

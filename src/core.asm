@@ -1329,11 +1329,6 @@ W_ABORT
 !if ENABLE_BLOCK {
 ;          !word DR0 ; from fig
 }
-        ; !word W_CR
-        !word W_PDOTQ
-        +STRING "mega65-forth 0.1" ; TODO print this before ABORT
-        !word W_CR
-        !word W_CR
 ;          !word FORTH ; from search-ext
 ;          !word DEFIN ; from search
 !if 0 {

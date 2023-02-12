@@ -413,7 +413,15 @@ COLD
 
         jsr console_init
 
+
+        lda #<_startup_text
+        sta <STRING
+        lda #>_startup_text
+        sta <STRING+1
+        jsr put_string
+
         ; jsr flush_keyboard ; TODO why do we need this?????
+
 
 
 ; rest of cold stuff from FIG ...
@@ -539,6 +547,9 @@ W_TEST
         !word W_TONUMBER_TEST
 }
         !word W_ABORT
+
+_startup_text
+        +STRING "mega65-forth 0.1\rbye will exit to basic\r\r"
 
 !src "internals.asm"
 

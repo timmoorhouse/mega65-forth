@@ -113,9 +113,7 @@ _255
 put_char
         cmp #$0d ; return
         bne +
-        pha
         jmp CR
-        pla
 +        
         ; TODO delete
         ; TODO home
@@ -363,15 +361,21 @@ put_char_xy
         ; TODO
         rts        
 
-      
+; TODO remove this once WORDS has been rewritten!!
+put_name
+        phx
+        ldy #0
+        lda (<STRING),y
+        and #$1f
+        bra +
+
 put_string
         ; TODO
         ; STRING points to string to print
         phx
         ldy #0
         lda (<STRING),y
-        and #$1f ; TODO just for the case of printing names where we need to mask off control bits! - split into 7 and 8 bit versions?
-        taz
++       taz
 
         beq +
 
