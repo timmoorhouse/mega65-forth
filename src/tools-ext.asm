@@ -33,6 +33,7 @@
 ;;                                       SCREEN 42 LINE 6
 
 !if ENABLE_TOOLS_EXT {
+!if 0 {
         +WORD_IMM ";code"
 W_SCODE
         !word DO_COLON
@@ -42,6 +43,7 @@ W_SCODE
 ;          !word LBRAC
 ;          !word SMUDG
         !word W_SEMI
+}
 
 ; (;CODE)
 
@@ -205,7 +207,7 @@ W_FORGET
 ; Forth 2012 15.6.2.1909.10
 
 !if ENABLE_TOOLS_EXT {
-        +word "name>compile"
+        +WORD "name>compile"
 }
 W_NAME_TO_COMPILE
         !word DO_COLON
@@ -218,7 +220,7 @@ W_NAME_TO_COMPILE
 ; Forth 2012 15.6.2.1909.20
 
 !if ENABLE_TOOLS_EXT {
-        +word "name>interpret"
+        +WORD "name>interpret"
 }
 W_NAME_TO_INTERPRET
         !word DO_COLON
