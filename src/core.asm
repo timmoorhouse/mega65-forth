@@ -1456,6 +1456,7 @@ W_ACCEPT
 
 _accept_loop
 
+        ; TODO get rid of index on stack and use OUT?
         ; (index)
 
         !word W_KEY
@@ -1482,6 +1483,13 @@ _accept_loop
         !word W_EMIT
 }
 
+!if 0 {
+        ; TODO subtract 2 from loop index
+        ; TODO change put_char to handle backspace
+        ; TODO subtract 1 from index
+}
+
+
 ;          !word DROP
 ;          !word CLITERAL
 ;          !byte 08
@@ -1495,6 +1503,7 @@ _accept_loop
 ;          !word PLUS
 ;          !word TOR
 ;          !word SUB
+
         +BRANCH _accept_do_emit
 _accept_not_delete
 
