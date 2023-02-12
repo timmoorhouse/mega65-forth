@@ -194,57 +194,42 @@ _inc_I_PUSH
 ;               stack pointer from user variable R0.
 ;        +WORD "rp!"
 
-; TODO clean up the duplication here !!!!!!
-
 W_RPSTORE
         !word *+2
-        ; We need to save the old return pointer so the return from RPSTORE
-        ; goes to the right place
-        pla
-        sta <TEMP1
-        pla
-        sta <TEMP1+1
-        ; Now reset the SPH & SPL from R0
-        stx <XSAVE      
-        ldy #U_R0       
-        lda (<U),y      
-        tax
-        txs
-!if 0 {
-        ; TODO SPH
-        lda (<U+1),y
-        tay
-        tys
-}
-        ldx <XSAVE
-        ; And finally put the original return pointer onto the new stack
-        lda <TEMP1+1
-        pha
-        lda <TEMP1
-        pha
+        jsr _RPSTORE
         jmp NEXT
 
 RPSTORE
-        ; We need to save the old return pointer so the return from RPSTORE
+        jsr _RPSTORE
+        rts
+
+_RPSTORE
+        ; We need to save two levels of return pointer so the return from RPSTORE
         ; goes to the right place
         pla
         sta <TEMP1
         pla
         sta <TEMP1+1
+        pla
+        sta <TEMP2
+        pla
+        sta <TEMP2+1
         ; Now reset the SPH & SPL from R0
         stx <XSAVE      
         ldy #U_R0       
         lda (<U),y      
         tax
         txs
-!if 0 {
-        ; TODO SPH
-        lda (<U+1),y
+        iny
+        lda (<U),y
         tay
         tys
-}
         ldx <XSAVE
         ; And finally put the original return pointer onto the new stack
+        lda <TEMP2+1
+        pha
+        lda <TEMP2
+        pha
         lda <TEMP1+1
         pha
         lda <TEMP1
