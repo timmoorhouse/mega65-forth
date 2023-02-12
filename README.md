@@ -9,11 +9,12 @@ by the Forth Interest Group,
 P. O. box 1105,  San Carlos, CA 94070
 ```
 
+![screenshot](doc/screenshot.png)
+
 This is *very* much in the early stages of developement:
 
-- The inner interpreter is pretty much working, so I can execute words that are hardcoded in.
-- The outer interpreter is partially working, but missing support for numeric literals (which is the next priority).
-- There is no file input or support for defining functions yet.  Those will be the priority once the outer interpreter is working so we can start running unit tests, and do most of the remainder of the implementation in Forth.
+- The interpreter is working well enough to support development, but is still pretty minimal.  It needs command line editing features, better error handling, etc.
+- There is no file input or support for defining functions yet.  Those are the next priorities so we can start running unit tests, and do most of the remainder of the implementation in Forth.
 
 An attempt will be made to:
 

@@ -40,7 +40,7 @@ declare -A opt=(
 
 [ -r "${opt[rom]}" ] || unset opt[rom]
 
-ARGS=$(getopt -o fhnqv -l acme:,build,builddir:,c1541:,debug,dry-run,force,help,m65:,m65dbg:,mega65_ftp:,quiet,rom:,test,verbose,xmega65: -n $(basename "$0") -- "$@") || ARGS='-?'
+ARGS=$(getopt -o fhnqv -l acme:,build,builddir:,c1541:,debug,dry-run,force,help,m65:,m65dbg:,mega65_ftp:,quiet,rom:,screenshot,test,verbose,xmega65: -n $(basename "$0") -- "$@") || ARGS='-?'
 eval set -- "$ARGS"
 
 while [ $# -gt 0 ]; do
@@ -51,7 +51,7 @@ while [ $# -gt 0 ]; do
         shift 2
         ;;
 
-    --build|--test)
+    --build|--screenshot|--test)
         opt[${1#--}]=1
         unset opt[all]
         shift
@@ -132,6 +132,14 @@ do_build() {
     cmd ls -l "${opt[builddir]}/forth.prg"
 }
 
+do_screenshot() {
+    if [ -n "${opt[emulate]}" ]; then
+        :
+    else
+        "${opt[m65]}" --quiet --screenshot="${opt[builddir]}/screenshot.png"
+    fi
+}
+
 do_test() {
     local -a m65opts
     local -a m65dbgopts
@@ -157,9 +165,10 @@ do_test() {
         # TODO
         # "${opt[m65dbg]}" load "${opt[builddir]}/forth.prg"
 
-        # "${opt[m65]}" --quiet --screenshot="${opt[builddir]}/screenshot.png"
     fi
 }
 
-[ -z "${opt[all]}" -a -z "${opt[build]}" ] || do_build
-[ -z "${opt[all]}" -a -z "${opt[test]}"  ] || do_test
+[ -z "${opt[all]}" -a -z "${opt[build]}"       ] || do_build
+[ -z "${opt[all]}" -a -z "${opt[test]}"        ] || do_test
+
+[ -z "${opt[all]}" -a -z "${opt[screenshot]}"  ] || do_screenshot

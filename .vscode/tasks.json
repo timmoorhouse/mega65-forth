@@ -29,7 +29,18 @@
 		},
 		{
 			"type": "shell",
-			"label": "Run",
+			"label": "Screenshot",
+			"linux": {
+				"command": "./bin/build.sh",
+				"args": ["--screenshot"]
+			},
+			"windows": {
+				"command": "./bin/test.cmd"
+			}
+		},		
+		{
+			"type": "shell",
+			"label": "Test",
 			"linux": {
 				"command": "./bin/build.sh",
 				"args": ["--test"]
@@ -38,7 +49,6 @@
 				"command": "./bin/test.cmd"
 			},
 			"group": "test"
-			// "key": "ctrl+shift+t"
 		}
 
     ]
