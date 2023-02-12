@@ -21,6 +21,9 @@ W_FILE_STATUS
         !word W_2DROP
         !word W_ZERO
         !word W_ZERO
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
 
@@ -41,6 +44,9 @@ W_FLUSH_FILE
         ; TODO
         !word W_DROP
         !word W_ZERO
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI    
 }
 
@@ -61,6 +67,9 @@ W_INCLUDE
         ; TODO
         !word W_PARSE_NAME
         !word W_2DROP
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI     
 }
 
@@ -80,7 +89,10 @@ W_REFILL
         !word W_DOTS
 }       
         ; TODO
-        !word W_ZERO       
+        !word W_ZERO  
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI    
 }
 
@@ -101,7 +113,10 @@ W_RENAME_FILE
         ; TODO
         !word W_2DROP        
         !word W_2DROP
-        !word W_ZERO        
+        !word W_ZERO    
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI    
 }
 
@@ -121,7 +136,10 @@ W_REQUIRE
 }       
         ; TODO
         !word W_PARSE_NAME
-        !word W_2DROP        
+        !word W_2DROP    
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI    
 }
 
@@ -140,7 +158,10 @@ W_REQUIRED
         !word W_DOTS
 }       
         ; TODO
-        !word W_2DROP          
+        !word W_2DROP 
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI    
 }
 

@@ -7,8 +7,45 @@ W_FILE_TEST
         !word W_PDOTQ
         +STRING "<file-test>"
         !word W_CR
+
+        +LITERAL _test_filename
+        !word W_COUNT
+        !word W_RSLO
+        !word W_OPEN_FILE
+
+        !word W_DROP ; TODO check status?
+
+        !word W_TOR
+
+        !word W_PAD
+        !word W_DUP
+        +CLITERAL 80
+        !word W_RAT
+
+        !word W_READ_LINE
+
+        !word W_DROP ; TODO check status?
+        !word W_DROP ; TODO check flag
+
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
+
+        !word W_RFROM,W_DROP
+
+        !word W_DOTS,W_CR
         !word W_CR
         !word W_PSEMI
+
+_test_filename
+        +STRING "bootstrap.f"
+
+FAM_BIN = 4
+FAM_RO  = 1
+FAM_WO  = 2
+FAM_RW  = (FAM_RO|FAM_WO)
 
 ; ****************************************************************************
 ; (
@@ -31,7 +68,11 @@ W_BIN
         +STRING "<bin>"
         !word W_DOTS
 }
-        ; TODO
+        +LITERAL FAM_BIN
+        !word W_OR
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
 
@@ -51,7 +92,10 @@ W_CLOSE_FILE
 }
         ; TODO
         !word W_DROP
-        !word W_ZERO        
+        !word W_ZERO      
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
 
@@ -74,6 +118,9 @@ W_CREATE_FILE
         !word W_2DROP
         !word W_ZERO
         !word W_ZERO
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
 
@@ -93,7 +140,10 @@ W_DELETE_FILE
 }        
         ; TODO
         !word W_2DROP
-        !word W_ZERO        
+        !word W_ZERO    
+!if DEBUG {
+        !word W_DOTS,W_CR
+}    
         !word W_PSEMI
 }
 
@@ -115,7 +165,10 @@ W_FILE_POSITION
         !word W_DROP
         !word W_ZERO          
         !word W_ZERO          
-        !word W_ZERO          
+        !word W_ZERO   
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
 
@@ -137,7 +190,10 @@ W_FILE_SIZE
         !word W_DROP
         !word W_ZERO          
         !word W_ZERO          
-        !word W_ZERO          
+        !word W_ZERO 
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
 
@@ -156,7 +212,10 @@ W_INCLUDE_FILE
         !word W_DOTS
 }
         ; TODO
-        !word W_DROP         
+        !word W_DROP     
+!if DEBUG {
+        !word W_DOTS,W_CR
+}    
         !word W_PSEMI
 }
 
@@ -176,6 +235,9 @@ W_INCLUDED
 }      
         ; TODO
         !word W_2DROP
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
 
@@ -191,13 +253,28 @@ W_OPEN_FILE
 !if DEBUG {
         !word W_PDOTQ
         +STRING "<open-file>"
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_TOR
+        !word W_2DUP
+        !word W_TYPE
+        +CLITERAL ','
+        !word W_EMIT
+        !word W_RFROM
+        !word W_DUP
+        !word W_DOT
+        +CLITERAL ']'
+        !word W_EMIT
         !word W_DOTS
 }         
         ; TODO
         !word W_DROP
         !word W_2DROP
+        !word W_ONE
         !word W_ZERO
-        !word W_ZERO
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
 
@@ -209,15 +286,8 @@ W_OPEN_FILE
 !if ENABLE_FILE {
         +WORD "r/o"
 W_RSLO
-        !word DO_COLON
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<r/o>"
-        !word W_DOTS
-}       
-        ; TODO
-        !word W_ZERO
-        !word W_PSEMI
+        !word DO_CONSTANT
+        !word FAM_RO
 }
 
 ; ****************************************************************************
@@ -242,15 +312,8 @@ W_RSLO
 !if ENABLE_FILE {
         +WORD "r/w"
 W_RSLW
-        !word DO_COLON
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<r/w>"
-        !word W_DOTS
-}       
-        ; TODO
-        !word W_ZERO        
-        !word W_PSEMI
+        !word DO_CONSTANT
+        !word FAM_RW
 }
 !if 0 {
         +WORD "r/w"
@@ -291,6 +354,9 @@ W_READ_FILE
         !word W_2DROP
         !word W_ZERO
         !word W_ZERO
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
 
@@ -312,8 +378,11 @@ W_READ_LINE
         !word W_DROP
         !word W_2DROP
         !word W_ZERO
+        !word W_TRUE
         !word W_ZERO
-        !word W_ZERO
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
 
@@ -335,6 +404,9 @@ W_REPOSITION_FILE
         !word W_DROP
         !word W_2DROP
         !word W_ZERO
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
 
@@ -356,6 +428,9 @@ W_RESIZE_FILE
         !word W_DROP
         !word W_2DROP
         !word W_ZERO
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
 
@@ -382,15 +457,8 @@ W_RESIZE_FILE
 !if ENABLE_FILE {
         +WORD "w/o"
 W_WSLO
-        !word DO_COLON
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<w/o>"
-        !word W_DOTS
-}       
-        ; TODO
-        !word W_ZERO          
-        !word W_PSEMI
+        !word DO_CONSTANT
+        !word FAM_WO
 }
 
 ; ****************************************************************************
@@ -410,7 +478,10 @@ W_WRITE_FILE
         ; TODO
         !word W_DROP
         !word W_2DROP
-        !word W_ZERO          
+        !word W_ZERO   
+!if DEBUG {
+        !word W_DOTS,W_CR
+}       
         !word W_PSEMI
 }
 
@@ -431,6 +502,9 @@ W_WRITE_LINE
         ; TODO
         !word W_DROP
         !word W_2DROP
-        !word W_ZERO          
+        !word W_ZERO  
+!if DEBUG {
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 }
