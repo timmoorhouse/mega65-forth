@@ -361,14 +361,6 @@ put_char_xy
         ; TODO
         rts        
 
-; TODO remove this once WORDS has been rewritten!!
-put_name
-        phx
-        ldy #0
-        lda (<STRING),y
-        and #$1f
-        bra +
-
 put_string
         ; TODO
         ; STRING points to string to print

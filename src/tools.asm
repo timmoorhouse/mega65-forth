@@ -113,66 +113,23 @@ W_SEE
 ; (--)
 ; ANSI 15.6.1.2465
 
-; TODO rewrite in FORTH using NAME>STRING, TYPE, TRAVERSE-WORDLIST
-
 !if ENABLE_TOOLS {
         +WORD "words"
 W_WORDS
-        !word *+2
+        !word DO_COLON
+        !word W_CR
+        +LITERAL W_PRINT_NAME
+        !word W_FORTH_WORDLIST
+        !word W_TRAVERSE_WORDLIST
+        !word W_PSEMI
 
-WORDS
-        lda FORTH_WORDLIST   ; TODO 
-        sta <WORDP
-        lda FORTH_WORDLIST+1
-        sta <WORDP+1
-
-        jsr CR
-
--       lda <WORDP
-        ora <WORDP+1
-        bne +
-
-        ; +TRACE
-        ; brk ; TODO
-        jmp NEXT
-
-        ; we've got a word
-
-+       clc
-        lda #2
-        adc <WORDP
-        sta <STRING
-        lda #0
-        adc <WORDP+1
-        sta <STRING+1
-
-        ; lda #' '
-        ; jsr put_char_screencode
-        ; lda <WORDP+1
-        ; jsr put_hex
-        ; lda <WORDP
-        ; jsr put_hex
-
-        ; lda #' '
-        ; jsr put_char_screencode
-        ; lda <STRING+1
-        ; jsr put_hex
-        ; lda <STRING
-        ; jsr put_hex
-
-        lda #' '
-        jsr put_char
-        jsr put_name
-
-        ldy #0
-        lda (<WORDP),y
-        taz
-        iny
-        lda (<WORDP),y
-        stz <WORDP
-        sta <WORDP+1
-
-        jmp -
+W_PRINT_NAME
+        !word DO_COLON
+        !word W_SPACE
+        !word W_NAME_TO_STRING
+        !word W_TYPE
+        !word W_TRUE
+        !word W_PSEMI
 
 ; FIG
 ;      VLIST
