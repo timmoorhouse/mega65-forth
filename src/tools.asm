@@ -126,6 +126,7 @@ WORDS
         lda FORTH_WORDLIST+1
         sta <WORDP+1
 
+        jsr CR
 
 -       lda <WORDP
         ora <WORDP+1
@@ -159,10 +160,8 @@ WORDS
         ; lda <STRING
         ; jsr put_hex
 
-!convtab scr {
         lda #' '
-        jsr put_char_screencode
-}
+        jsr put_char
         jsr put_string
 
         ldy #0
