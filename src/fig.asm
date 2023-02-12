@@ -210,12 +210,10 @@ W_BUILD
 ;;                                       SCREEN 35 LINE 5
 ;;                                       Characters per line
 
-!if 0 {
         +WORD "c/l"
 W_CSLL
         !word DO_CONSTANT
         !word 64
-}
 
 ; ****************************************************************************
 ; CFA
@@ -929,16 +927,11 @@ W_OFFSET
 ;               The user may alter and examine OUT to control display 
 ;               formatting.
 
-;;
-;;                                       OUT
-;;                                       SCREEN 36 LINE 12
-;;
-!if 0 {
+
         +WORD "out"
 W_OUT
-        !word DO_USER
-;          !byte $1A
-}
+        !word DO_CONSTANT
+        !word &SCREEN_X
 
 ; ****************************************************************************
 ; ?PAIRS

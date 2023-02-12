@@ -125,8 +125,16 @@ W_WORDS
 
 W_PRINT_NAME
         !word DO_COLON
+        !word W_OUT
+        !word W_CAT
+        !word W_DUP
+        +ZBRANCH +
         !word W_SPACE
-        !word W_NAME_TO_STRING
++       !word W_CSLL
+        !word W_GREATER
+        +ZBRANCH +
+        !word W_CR
++       !word W_NAME_TO_STRING
         !word W_TYPE
         !word W_TRUE
         !word W_PSEMI

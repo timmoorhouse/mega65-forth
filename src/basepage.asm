@@ -39,7 +39,7 @@ TEMP3           !word 0
 WORDP           !word 0 ; temporary pointer to iterate over words TODO REMOVE
 STRING          !word 0 ; pointer to string to print, etc TODO REMOVE
 
-SCREEN_X        !byte 0
+SCREEN_X        !byte 0 ; TODO make these words?
 SCREEN_Y        !byte 0
 
 BASE            !word 10
