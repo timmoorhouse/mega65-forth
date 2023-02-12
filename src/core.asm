@@ -197,11 +197,13 @@ W_PAREN
         +STRING "<comment>"
         +CLITERAL '['
         !word W_EMIT
+        !word W_2DUP
         !word W_TYPE
         +CLITERAL ']'
         !word W_EMIT
         !word W_DOTS
 }
+        !word W_2DROP
         !word W_SEMI
 
 ; ****************************************************************************
@@ -3287,7 +3289,7 @@ _quit_read_loop
 _test_string ; TODO REMOVE
 ;        +STRING "           " ; test end of input handling
 ;        +STRING "  bl true .s + .s" ; doesn't depend on >NUMBER
-        +STRING "  bl true ( a b c) .s + .s" ; doesn't depend on >NUMBER
+        +STRING "  bl true ( a b c) .s + .s 2drop" ; doesn't depend on >NUMBER
 ;        +STRING "  .s 123 2 3 + .s" ; TODO REMOVE
 
 ; ****************************************************************************

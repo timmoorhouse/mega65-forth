@@ -31,7 +31,7 @@ ENABLE_TOOLS_EXT     = 0
 ENABLE_XCHAR         = 0
 ENABLE_XCHAR_EXT     = 0
 
-DEBUG = 1
+DEBUG = 0
 
 !source "util.asm"
 !source "dma.asm"
@@ -522,7 +522,7 @@ W_TEST  !word DO_COLON
 !if 0 {
         !word W_COMPARE_TEST
 }
-!if DEBUG {
+!if 0 {
         !word W_TONUMBER_TEST
 }
         !word W_ABORT
