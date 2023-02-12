@@ -1,7 +1,6 @@
 
 ; FIG-specific stuff
 
-
 !if ENABLE_FIG {
 
 ; ****************************************************************************
@@ -696,28 +695,6 @@ W_LATEST
 }
 
 ; ****************************************************************************
-; LFA
-
-;      LFA           pfa  ---  lfa
-;               Convert the parameter field address of a dictionary 
-;               definition to its link field address.
-
-;;
-;;
-;;                                       LFA
-;;                                       SCREEN 39 LINE 11
-;;
-!if 0 {
-        +WORD "lfa"
-W_LFA
-        !word DO_COLON
-;          !word CLIT
-;          !byte 4
-;          !word SUB
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; LIMIT
 
 ;      LIMIT         ---  n
@@ -1214,31 +1191,6 @@ W_UPPER
 W_USE
         !word DO_VARIABLE
 ;          !word DAREA
-}
-
-; ****************************************************************************
-; USER
-
-;      USER          n  ---                                  L0
-;               A defining word used in the form:
-;                         n  USER  cccc
-;               which creates a user variable cccc.  The parameter field 
-;               of cccc contains n as a fixed offset relative to the user 
-;               pointer register UP for this user variable.  When cccc is 
-;               later executed, it places the sum of its offset and the 
-;               user area base address on the stack as the storage address 
-;               of that particular variable.
-
-;;
-;;                                       USER
-;;                                       SCREEN 34 LINE 10
-;;
-!if 0 {
-        +WORD "user"
-W_USER
-        !word DO_COLON
-;           !word W_CONSTANT
-;          !word PSCOD
 }
 
 ; ****************************************************************************
