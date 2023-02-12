@@ -2350,11 +2350,20 @@ _evaluate_word_not_found
         !word W_2RAT
         !word W_TONUMBER
         +ZBRANCH _evaluate_number
+        !word W_2DROP
+        !word W_DROP
 
         ; TODO error
+!if DEBUG {
         !word W_PDOTQ
         +STRING "<not found>"
         !word W_DOTS
+}
+        !word W_SPACE
+        !word W_2RAT
+        !word W_TYPE
+        !word W_PDOTQ
+        +STRING "  ? "
         ; jmp _evaluate_done_word
 
 _evaluate_done_word
@@ -3259,6 +3268,7 @@ _quit_read_loop
         !word W_CR
 }
 
+!if DEBUG {
         +CLITERAL '"'
         !word W_EMIT
         !word W_TIB
@@ -3267,6 +3277,7 @@ _quit_read_loop
         !word W_TYPE
         +CLITERAL '"'
         !word W_EMIT
+}
 
 !if 0 {
         ; replace input from terminal with test string ...
@@ -3281,7 +3292,7 @@ _quit_read_loop
 
         !word W_EVALUATE
 
-!if 1 {
+!if DEBUG {
         !word W_SOURCE
         !word W_TYPE
         !word W_CR
@@ -3291,14 +3302,14 @@ _quit_read_loop
         !word W_DOTS
 }
 
-
         !word W_STATE
         !word W_AT
         !word W_ZEQUALS
         +ZBRANCH +
 
         !word W_PDOTQ
-        +STRING "ok"
+        +STRING " ok"
+        !word W_CR
 +
         +BRANCH _quit_read_loop
 

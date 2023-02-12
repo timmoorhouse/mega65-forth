@@ -15,6 +15,8 @@
 W_DOTS
         !word *+2
 
+        lda #' '
+        jsr put_char
         lda #'<'
         jsr put_char
         stx <XSAVE
@@ -26,22 +28,6 @@ W_DOTS
         lda #'>'
         jsr put_char
 
-!if 0 {
--       cpx #TOS
-        beq +
-
-        lda #' '
-        jsr put_char
-        lda 1,x
-        jsr put_hex
-        lda 0,x
-        jsr put_hex
-        inx
-        inx
-        jmp -
-
-+       ldx <XSAVE
-} else {
         ldx #TOS
 
 -       cpx <XSAVE
@@ -56,12 +42,7 @@ W_DOTS
         lda 0,x
         jsr put_hex
         jmp -
-
-
 +        
-}
-
-        jsr CR
 
         jmp NEXT
 }
