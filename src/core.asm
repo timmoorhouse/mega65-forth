@@ -1331,24 +1331,7 @@ W_ABORT
 }
 ;          !word FORTH ; from search-ext
 ;          !word DEFIN ; from search
-!if 0 {
-        !word W_QUIT
-        ; QUIT will never return, so skip the PSEMI
-} else {
         +BRANCH QUIT
-}
-
-; TODO remove this!
-;      (ABORT)
-;               Executes after an error when WARNING is -1.  This word 
-;               normally executes ABORT, but may be altered (with care) to 
-;               a user's alternative procedure.
-
-;       +WORD "(abort)"
-W_PABORT
-        !word DO_COLON
-        !word W_ABORT
-        !word W_PSEMI
 
 ; ****************************************************************************
 ; ABORT" 
@@ -1406,7 +1389,7 @@ W_ERROR
 ;          !word ZLESS
 ;          !word ZBRAN
 ;L2094:    !word $4       ; L2096-L2094
-;          !word W_PABORT
+;          !word W_ABORT
 ;L2096:    !word HERE
 ;          !word COUNT
 ;          !word TYPE
