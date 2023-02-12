@@ -27,13 +27,15 @@ K_RETURN     =  13
 K_TAB        =   9
 K_UP         = 145   
 
+; TODO - lookup table of KEY/EKEY to handler?  could then swap it out in a visual editor
+
 ; TODO !!!!!
 !if ENABLE_FACILITY {
         +WORD "k-clear"
 W_K_CLEAR
         !word DO_CONSTANT
         !word K_CLEAR
-        
+
         +WORD "k-f13"
 W_K_F13
         !word DO_CONSTANT
@@ -89,6 +91,7 @@ W_K_RETURN
 ; (-- u)
 ; ANSI 10.6.2.1305
 
+; TODO MSB=modifier bits, LSB=ASCII? keyboard matrix?
 !if ENABLE_FACILITY {
 }
 
