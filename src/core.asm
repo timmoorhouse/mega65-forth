@@ -1324,7 +1324,7 @@ W_AT
         +WORD "abort"
 W_ABORT
         !word DO_COLON
-        ; !word W_SPSTORE
+        !word W_SPSTORE
         !word W_DECIMAL
 !if ENABLE_BLOCK {
 ;          !word DR0 ; from fig
@@ -1336,9 +1336,11 @@ W_ABORT
         !word W_CR
 ;          !word FORTH ; from search-ext
 ;          !word DEFIN ; from search
+!if 0 {
         !word W_QUIT
-!if 1 {
-        !word W_PSEMI ; TODO REMOVE
+        ; QUIT will never return, so skip the PSEMI
+} else {
+        +BRANCH QUIT
 }
 
 ; TODO remove this!
@@ -3232,7 +3234,7 @@ W_COMPILE
         +WORD "quit"
 W_QUIT
         !word DO_COLON
-
+QUIT
 !if DEBUG {
         !word W_PDOTQ
         +STRING "<quit>"
@@ -3249,7 +3251,7 @@ W_QUIT
 
 _quit_read_loop
 
-        ; !word W_RPSTORE
+        !word W_RPSTORE ; TODO HOW???
 
 !if DEBUG {
         ; !word W_DOTS,W_CR

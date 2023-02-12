@@ -100,20 +100,16 @@ W_PSCODE
 ; Return control to the host operating system
 
 !if ENABLE_TOOLS_EXT {
-!if 0 {
+        !word W_BYE
         +WORD "bye"
 W_BYE
         !word *+2
-        jmp NEXT
-} else {
-        ; TODO get here after bootstrap ends
-FOO_BYE
-        !word *+2
-W_BYE
-        !word *+2
+        jsr CR
+        lda #'p'
+        jsr put_char
 
-BYE
-        ; TODO restore stack
+        ; Restore the hardware stack ... an RTS should then return to basic
+        jsr RPSTORE
 
         jsr CR
         lda #'p'
@@ -124,11 +120,9 @@ BYE
         lda #0
         tab
 
-
         ; TODO copy out cursor position?
 
         rts
-}
 }
 
 ; ****************************************************************************

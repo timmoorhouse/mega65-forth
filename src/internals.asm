@@ -193,16 +193,63 @@ _inc_I_PUSH
 ;               A computer dependent procedure to initialise the return 
 ;               stack pointer from user variable R0.
 ;        +WORD "rp!"
+
+; TODO clean up the duplication here !!!!!!
+
 W_RPSTORE
         !word *+2
-        stx <XSAVE      ; load return stack pointer (machine
-        ldy #U_R0       ; stack pointer) from silent user
-        lda (<U),y      ; variable R0
+        ; We need to save the old return pointer so the return from RPSTORE
+        ; goes to the right place
+        pla
+        sta <TEMP1
+        pla
+        sta <TEMP1+1
+        ; Now reset the SPH & SPL from R0
+        stx <XSAVE      
+        ldy #U_R0       
+        lda (<U),y      
         tax
         txs
+!if 0 {
         ; TODO SPH
+        lda (<U+1),y
+        tay
+        tys
+}
         ldx <XSAVE
+        ; And finally put the original return pointer onto the new stack
+        lda <TEMP1+1
+        pha
+        lda <TEMP1
+        pha
         jmp NEXT
+
+RPSTORE
+        ; We need to save the old return pointer so the return from RPSTORE
+        ; goes to the right place
+        pla
+        sta <TEMP1
+        pla
+        sta <TEMP1+1
+        ; Now reset the SPH & SPL from R0
+        stx <XSAVE      
+        ldy #U_R0       
+        lda (<U),y      
+        tax
+        txs
+!if 0 {
+        ; TODO SPH
+        lda (<U+1),y
+        tay
+        tys
+}
+        ldx <XSAVE
+        ; And finally put the original return pointer onto the new stack
+        lda <TEMP1+1
+        pha
+        lda <TEMP1
+        pha
+        rts
 
 ; ****************************************************************************
 ;      SP! (from FIG)
@@ -211,6 +258,7 @@ W_RPSTORE
 ;        +WORD "sp!"
 W_SPSTORE
         !word *+2
+SPSTORE
         ldy #U_S0
         lda (<U),y      ; load data stack pointer (X reg) from
         tax             ; silent user variable S0.

@@ -507,15 +507,11 @@ WARM
         ; An attempt at bootstrapping ...
 
 
+        ; TODO just do W_ABORT
         lda #<W_TEST
         sta <W
         lda #>W_TEST
         sta <W+1
-
-        lda #<FOO_BYE
-        sta <I
-        lda #>FOO_BYE
-        sta <I+1
 
         ldy #0
 
@@ -543,7 +539,6 @@ W_TEST
         !word W_TONUMBER_TEST
 }
         !word W_ABORT
-        !word W_BYE
 
 !src "internals.asm"
 
