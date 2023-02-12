@@ -28,9 +28,14 @@
 ; ****************************************************************************
 ; REFILL
 ; (-- flag)
+; ANSI 7.6.2.2125
 ; ANSI 11.6.2.2125
 
 !if ENABLE_FILE {
+        +WORD "refill"
+W_REFILL
+        !word DO_COLON
+        !word W_PSEMI    
 }
 
 ; ****************************************************************************
@@ -39,6 +44,10 @@
 ; ANSI 11.6.2.2130
 
 !if ENABLE_FILE {
+        +WORD "rename-file"
+W_RENAME_FILE
+        !word DO_COLON
+        !word W_PSEMI    
 }
 
 ; ****************************************************************************
@@ -46,6 +55,10 @@
 ; Forth 2012 11.6.2.2144.10
 
 !if ENABLE_FILE {
+        +WORD "require"
+W_REQUIRE
+        !word DO_COLON
+        !word W_PSEMI    
 }
 
 ; ****************************************************************************
@@ -53,11 +66,14 @@
 ; Forth 2012 11.6.2.2144.50
 
 !if ENABLE_FILE {
+        +WORD "required"
+W_REQUIRED
+        !word DO_COLON
+        !word W_PSEMI    
 }
 
 ; ****************************************************************************
 ; S\"
 ; Forth 2012 11.6.2.2266
 
-!if ENABLE_FILE {
-}
+; See core-ext

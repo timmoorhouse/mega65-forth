@@ -25,14 +25,14 @@ declare -A opt=(
     [acme]=$(realpath -m "$topdir/../../build/src/acme")
     [all]=1
     # [build]
-    # [builddir]="$topdir/build"
-    [builddir]="$topdir/src"
+    [builddir]="$topdir/build"
     [c1541]=c1541
     # [debug]=1 # TODO
     # [emulate]=1
     [m65]=$(realpath -m "$topdir/../../build/bin/m65")
     [m65dbg]=$(realpath -m "$topdir/../m65dbg/m65dbg")
     [mega65_ftp]=$(realpath -m "$topdir/../../build/bin/mega65_ftp")
+    [petcat]=petcat
     [rom]=$(realpath -m "$topdir/../../MEGA65.ROM")
     # [test]
     [xmega65]=$(realpath -m "$topdir/../xemu/build/bin/xmega65.native")
@@ -107,6 +107,17 @@ done
 
 set -e
 
+add_text_files() {
+    local image="$1"
+    shift
+    for src; do
+        local name=$(basename "$src")
+        cmd dd if="$src" of="${opt[builddir]}/$name.lc" conv=lcase
+        cmd "${opt[petcat]}" -text -w10 -o "${opt[builddir]}/$name" -- "${opt[builddir]}/$name.lc"
+        cmd "${opt[c1541]}" "$image" -write "${opt[builddir]}/$name"
+    done
+}
+
 do_build() {
     # ls -l ${ACME}
     # ${ACME} -h
@@ -117,16 +128,19 @@ do_build() {
     ACMEOPTS+=(-I src)
     ACMEOPTS+=(-f cbm)
     ACMEOPTS+=(--msvc)
+
+    # TODO we put the .sym and .rep files into the source dir
+    # (at least temporarily) to make it easier to use m65dbg
     cmd "${opt[acme]}" "${ACMEOPTS[@]}" \
-        -l "${opt[builddir]}/forth.sym" \
+        -l "$topdir/src/forth.sym" \
         -o "${opt[builddir]}/forth.prg" \
-        -r "${opt[builddir]}/forth.rep" \
+        -r "$topdir/src/forth.rep" \
         src/forth.asm # 2>&1 | tee build/forth.log
 
     # TODO generate d81 image with everything
     cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "${opt[builddir]}/mega65-forth.d81"
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" autoboot.c65
-    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write src/bootstrap.f # TODO not a prg - usr? seq?
+    add_text_files "${opt[builddir]}/mega65-forth.d81" src/bootstrap.f "$topdir/test/forth2012-test-suite/src/prelimtest.fth"
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -dir > "${opt[builddir]}/mega65-forth.txt"
 
     cmd ls -l "${opt[builddir]}/forth.prg"

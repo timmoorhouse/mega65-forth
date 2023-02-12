@@ -33,6 +33,8 @@ ENABLE_XCHAR_EXT     = 0
 
 DEBUG = 0
 
+; TODO flags to enable runtime checks?
+
 !source "util.asm"
 !source "dma.asm"
 !source "vic4.asm"
@@ -522,11 +524,14 @@ W_TEST  !word DO_COLON
 !if 0 {
         !word W_COMPARE_TEST
 }
+!if ENABLE_FILE {
+        !word W_FILE_TEST
+}
 !if 0 {
         !word W_TONUMBER_TEST
 }
         !word W_ABORT
-        !word W_SEMI
+        !word W_PSEMI
 
         ; TODO get here after bootstrap ends
 FOO_BYE

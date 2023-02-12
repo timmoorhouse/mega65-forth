@@ -103,7 +103,7 @@ W_DDOT
         !word W_ZERO
         !word W_DDOTR
         !word W_SPACE
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; D.R
@@ -140,7 +140,7 @@ W_DDOTR
         !word W_SUB
         !word W_SPACES
         !word W_TYPE
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; D0<
@@ -223,7 +223,7 @@ W_DABS
         !word W_ZLESS
         +ZBRANCH +
         !word W_DNEGATE
-+       !word W_SEMI
++       !word W_PSEMI
 
 ; ****************************************************************************
 ; DMAX

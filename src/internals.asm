@@ -96,7 +96,7 @@ W_2PLUS
         !word DO_COLON
         !word W_TWO
         !word W_PLUS
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; 0BRANCH

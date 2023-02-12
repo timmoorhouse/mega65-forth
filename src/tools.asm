@@ -70,7 +70,7 @@ W_QUES
         !word DO_COLON
 ;          !word AT
 ;          !word DOT
-        !word W_SEMI
+        !word W_PSEMI
 }
 }
 
@@ -224,6 +224,6 @@ W_VLIST
 ;L3728:    !word $FFD4    ; L3706-L3728
 
 ;          !word DROP
-        !word W_SEMI
+        !word W_PSEMI
 }
 }

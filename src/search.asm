@@ -31,7 +31,7 @@ W_DEFINITIONS
 ;          !word AT
 ;          !word CURR
 ;          !word STORE
-        !word W_SEMIS
+        !word W_PSEMIS
 }
 }
 
@@ -148,7 +148,7 @@ _search_wordlist_not_found
         !word W_ZERO
 
 _search_wordlist_done
-        !word W_SEMI
+        !word W_PSEMI
 
 W_PSEARCH_WORDLIST 
         ; (c-addr u 0 nt -- c-addr u 0 true) if not found
@@ -217,7 +217,7 @@ _psearch_wordlist_nonimmediate
 
 _psearch_wordlist_done
         
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; SET-CURRENT
@@ -282,6 +282,6 @@ W_VOCABULARY
 ;DOVOC:    !word TWOP
 ;          !word CON
 ;          !word STORE
-        !word W_SEMI
+        !word W_PSEMI
 }
 }

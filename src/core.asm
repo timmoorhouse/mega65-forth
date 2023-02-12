@@ -70,7 +70,7 @@ W_DIG
 ;          !word PLUS
 ;          !word HOLD
 ;          !word SEMIS
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -100,7 +100,7 @@ W_EDIGS
 ;          !word PAD
 ;          !word OVER
 ;          !word SUB
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -132,7 +132,7 @@ W_DIGS
 ;          !word ZEQU
 ;          !word ZBRANCH
 ;L3535:    !word $FFF4    ; L3529-L3535
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -170,13 +170,16 @@ W_TICK
 ;          !word QERR
 ;          !word DROP
 ;          !word LITERAL
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
 ; ( 
 ; ("text" --)
 ; ANSI 6.1.0080
+; ANSI 11.6.1.0080 (extensions in FILE)
+
+; TODO allow multiline comment blocks when parsing from a file
 
 ; FIG:
 ;      (                                                      P,L0
@@ -204,7 +207,7 @@ W_PAREN
         !word W_DOTS
 }
         !word W_2DROP
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; * 
@@ -263,7 +266,7 @@ W_SSLASH
 ;          !word SSMOD
 ;          !word SWAP
 ;          !word DROP
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -290,7 +293,7 @@ W_SSMOD
 ;          !word MSTAR
 ;          !word RFROM
 ;          !word MSLAS
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -380,7 +383,7 @@ W_PLUS_LOOP
 ;          !word COMPILE
 ;          !word PPLOO
 ;          !word BACK
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ;      (+LOOP)       n  ---                                  C2
@@ -439,7 +442,7 @@ W_COMMA
         !word W_STORE
         !word W_TWO ; TODO W_ONE,W_CELLS?
         !word W_ALLOT
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; - 
@@ -479,7 +482,7 @@ W_DOT
         !word DO_COLON
         !word W_STOD
         !word W_DDOT
-        !word W_SEMI
+        !word W_PSEMI
 } else {
         !word *+2
         lda 1,x
@@ -533,7 +536,7 @@ W_DOTQUOTE
 ;          !word HERE
 ;          !word COUNT
 ;          !word TYPE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; (.")
@@ -555,7 +558,7 @@ W_PDOTQ
         !word W_PLUS
         !word W_TOR
         !word W_TYPE
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; / 
@@ -615,7 +618,7 @@ W_SLMOD
 ;          !word STOD
 ;          !word RFROM
 ;          !word MSLAS
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -761,7 +764,7 @@ W_2DUP
         !word DO_COLON
         !word W_OVER
         !word W_OVER
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; 2OVER 
@@ -848,14 +851,14 @@ W_COLON
 
 !if 0 {
         +WORD_IMM ";"
-W_SEMI_FOO        
+W_SEMI 
         !word DO_COLON
 ;          !word QCSP
 ;          !word COMPILE
 ;          !word SEMIS
 ;          !word SMUDG
 ;          !word LBRAC
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; TODO RENAME TO "(;)", W_PSEMI ?
@@ -864,7 +867,7 @@ W_SEMI_FOO
 ;;                                       SCREEN 26 LINE 12
 ;;
         +WORD ";s"
-W_SEMI ; ????
+W_PSEMI ; ????
         !word *+2
 
 !if DEBUG {
@@ -935,7 +938,7 @@ W_BDIGS
 ;          !word PAD
 ;          !word HLD
 ;          !word STORE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -981,7 +984,7 @@ W_GREATER
         !word DO_COLON
         !word W_SWAP
         !word W_LESS
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; >BODY 
@@ -992,7 +995,7 @@ W_GREATER
 W_TOBODY
         !word DO_COLON
         !word W_2PLUS   ; skip code field
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; >IN 
@@ -1010,7 +1013,7 @@ W_TOBODY
 W_IN
         !word DO_COLON
         +LITERAL &IN
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; >NUMBER 
@@ -1063,7 +1066,7 @@ W_TONUMBER_TEST
         !word W_EMIT
         !word W_DOTS
 }
-        !word W_SEMI
+        !word W_PSEMI
 
 _tonumber_test
         ;+STRING "1xyz"
@@ -1138,7 +1141,7 @@ _tonumber_done_1drop
 _tonumber_done_0drop
         ; (ud) (R: c-addr u)
         !word W_2RFROM
-        !word W_SEMI
+        !word W_PSEMI
 
 
 ;      NUMBER_FOO        addr  ---  d
@@ -1195,7 +1198,7 @@ L2042
         ; !word W_DMINUS
 L2047
 }
-        !word W_SEMI
+        !word W_PSEMI
 
 
 ;      DIGIT         (c -- n 1)    if ok
@@ -1335,7 +1338,7 @@ W_ABORT
 ;          !word DEFIN ; from search
         !word W_QUIT
 !if 1 {
-        !word W_SEMI ; TODO REMOVE
+        !word W_PSEMI ; TODO REMOVE
 }
 
 ; TODO remove this!
@@ -1348,7 +1351,7 @@ W_ABORT
 W_PABORT
         !word DO_COLON
         !word W_ABORT
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; ABORT" 
@@ -1379,7 +1382,7 @@ W_QERROR
 ;          !word BRANCH
 ;L1405:    !word 4        ; L1407-L1405
 ;L1406:    !word DROP
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ;      ERROR         line  ---  in  blk
@@ -1420,7 +1423,7 @@ W_ERROR
 ;          !word BLK
 ;          !word AT
 ;          !word QUIT
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -1440,7 +1443,7 @@ W_ABS
         !word W_ZLESS
         +ZBRANCH +
         !word W_NEGATE
-+       !word W_SEMI
++       !word W_PSEMI
 
 ; ****************************************************************************
 ; ACCEPT 
@@ -1574,7 +1577,7 @@ _accept_after_loop ; TODO remove
 
         ; left with index (ie final count)
 
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; ALIGN 
@@ -1624,7 +1627,7 @@ W_ALLOT
         !word DO_COLON
         +LITERAL &HERE
         !word W_PSTORE
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; AND 
@@ -1696,7 +1699,7 @@ W_BEGIN
 ;          !word QCOMP
 ;          !word HERE
 ;          !word ONE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -1754,7 +1757,7 @@ W_CCOMM
         !word W_CSTORE
         !word W_ONE
         !word W_ALLOT
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; C@ 
@@ -1786,7 +1789,7 @@ W_CAT
 W_CELLP
         !word DO_COLON
         !word W_2PLUS
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; CELLS 
@@ -1797,7 +1800,7 @@ W_CELLP
 W_CELLS        
         !word DO_COLON
         !word W_2STAR
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; CHAR 
@@ -1811,7 +1814,7 @@ W_CHAR
         ; TODO what if length is 0?
         !word W_DROP
         !word W_CAT
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; CHAR+ 
@@ -1822,7 +1825,7 @@ W_CHAR
 W_CHARP
         !word DO_COLON
         !word W_1PLUS
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; CHARS 
@@ -1832,7 +1835,7 @@ W_CHARP
         +WORD "chars"
 W_CHARS
         !word DO_COLON  ; no-op
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; CONSTANT 
@@ -1888,7 +1891,7 @@ W_COUNT
         !word W_1PLUS
         !word W_SWAP
         !word W_CAT
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; CR 
@@ -1981,7 +1984,7 @@ W_CREATE
 ;          !word HERE
 ;          !word TWOP
 ;          !word COMMA
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -2000,7 +2003,7 @@ W_DECIMAL
         +CLITERAL 10
         !word W_BASE
         !word W_STORE
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; DEPTH 
@@ -2062,7 +2065,7 @@ W_DO
 ;          !word PDO
 ;          !word HERE
 ;          !word THREE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ;      (DO)                                                   C
@@ -2208,7 +2211,7 @@ W_ELSE
 ;          !word TWO
 ;          !word ENDIF
 ;          !word TWO
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -2373,7 +2376,7 @@ _evaluate_done_word
 
 _evaluate_done_loop
         !word W_DROP ; (c-addr) was left on stack
-        !word W_SEMI
+        !word W_PSEMI
 
 ; FIG
 ;      INTERPRET
@@ -2497,7 +2500,7 @@ W_FILL
 ;          !word ONE
 ;          !word SUB
 ;          !word CMOVE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -2522,7 +2525,7 @@ W_FIND
         +ZBRANCH +
         !word W_NIP
 +
-        !word W_SEMI
+        !word W_PSEMI
 
 ; FIG
 ;      (FIND)        addr1  addr2  ---  pfa  b  tf      (ok)
@@ -2641,7 +2644,7 @@ W_MSLASH
 ;          !word RFROM
 ;          !word PM
 ;          !word SWAP
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -2684,7 +2687,7 @@ W_HOLD
 ;          !word HLD
 ;          !word AT
 ;          !word CSTOR
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -2706,7 +2709,7 @@ W_I
 } else {
         !word DO_COLON
         !word W_RAT ; 2RAT,DROP?
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -2758,7 +2761,7 @@ W_IF
 ;          !word ZERO
 ;          !word COMMA
 ;          !word TWO
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -2791,7 +2794,7 @@ W_IMMEDIATE
 ;          !word LATES
         +CLITERAL F_IMMEDIATE
 ;          !word TOGGL
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -2902,7 +2905,7 @@ W_LITERAL
 ;          !word COMPILE
 ;          !word LIT
 ;          !word COMMA
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -2938,7 +2941,7 @@ W_LOOP
 ;          !word COMPILE
 ;          !word PLOOP
 ;          !word BACK
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ;      (LOOP)                                                 C2
@@ -3017,7 +3020,7 @@ W_MSTAR
         !word W_ZLESS
         +ZBRANCH +
         !word W_DNEGATE
-+       !word W_SEMI
++       !word W_PSEMI
 
 ; ****************************************************************************
 ; MAX 
@@ -3037,7 +3040,7 @@ W_MAX
         +ZBRANCH +
         !word W_SWAP
 +       !word W_DROP
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; MIN 
@@ -3057,7 +3060,7 @@ W_MIN
         +ZBRANCH +
         !word W_SWAP
 +       !word W_DROP
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; MOD 
@@ -3080,7 +3083,7 @@ W_MOD
         !word DO_COLON
 ;          !word SLMOD
 ;          !word DROP
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -3204,7 +3207,7 @@ W_COMPILE
 ;          !word TOR
 ;          !word AT
 ;          !word COMMA
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -3412,7 +3415,7 @@ W_REPEAT
 ;          !word TWO
 ;          !word SUB
 ;          !word ENDIF
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -3433,7 +3436,7 @@ W_ROT
         !word W_SWAP
         !word W_RFROM
         !word W_SWAP
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; RSHIFT
@@ -3450,6 +3453,7 @@ W_ROT
 ; S"
 ; (???)
 ; ANSI 6.1.2165
+; ANSI 11.6.1.2165
 
 !if 0 {
         +WORD_IMM "s\""
@@ -3460,7 +3464,7 @@ W_SQUOTE
         !word W_PARSE
         ; TODO ...
 }
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -3477,7 +3481,7 @@ W_STOD
         !word W_DUP
         !word W_ZLESS
         !word W_NEGATE
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; SIGN
@@ -3501,7 +3505,7 @@ W_SIGN
 ;L3492:    !word $7       ; L3496-L3492
         +CLITERAL '-'
 ;          !word HOLD
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; SM/REM
@@ -3527,7 +3531,7 @@ W_SOURCE
         +LITERAL &INPUT_LEN
         !word W_AT
         ; TODO should we ripping of >IN leading chars?
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; SPACE
@@ -3544,7 +3548,7 @@ W_SPACE
         !word DO_COLON
         !word W_BL
         !word W_EMIT
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; SPACES
@@ -3575,7 +3579,7 @@ _spaces_loop
         !word _spaces_loop-*
 
 _spaces_done
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; STATE
@@ -3649,7 +3653,7 @@ W_SWAP
 W_THEN
         !word DO_COLON
 ;          !word ENDIF
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ;      ENDIF         addr1  n  ---       (compile)           P,C0,L0
@@ -3683,7 +3687,7 @@ W_ENDIF
 ;          !word SUB
 ;          !word SWAP
 ;          !word STORE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -3720,7 +3724,7 @@ _type_loop
         !word _type_loop-*
         +BRANCH ++
 +       !word W_DROP
-++      !word W_SEMI
+++      !word W_PSEMI
 
 ; ****************************************************************************
 ; U.
@@ -3750,7 +3754,7 @@ W_ULESS
         !word DO_COLON
 ;          !word SUB      ; subtract two values
 ;          !word ZLESS    ; test sign
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -3866,7 +3870,7 @@ W_MSMOD
 ;          !word TOR
 ;          !word USLAS
 ;          !word RFROM
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -3912,7 +3916,7 @@ W_UNTIL
 ;          !word COMPILE
 ;          !word W_ZBRANCH
 ;          !word BACK
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -3985,7 +3989,7 @@ W_WHILE
         !word DO_COLON
 ;          !word IF
 ;          !word TWOP
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -4046,7 +4050,7 @@ W_WORD
 ;          !word 1PLUS
 ;          !word RFROM
 ;          !word CMOVE
-        !word W_SEMI
+        !word W_PSEMI
 
 ;      ENCLOSE       addr1  c  ---  addr1  n1  n2  n3
 ;               The text scanning primitive used by WORD.  From the text 
@@ -4138,7 +4142,7 @@ W_LBRACKET
         !word W_ZERO
         !word W_STATE
         !word W_STORE
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; [']
@@ -4182,4 +4186,4 @@ W_RBRACKET
         +CLITERAL $C0 ; TODO ??????????????
         !word W_STATE
         !word W_STORE
-        !word W_SEMI
+        !word W_PSEMI

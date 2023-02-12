@@ -39,7 +39,7 @@ that the build process will get more involved:
 
 ## Recommendations
 
-- [Vice](https://vice-emu.sourceforge.io/) for c1541 to manipulate d81 images
+- [Vice](https://vice-emu.sourceforge.io/) for c1541 and petcat to manipulate d81 images
 - m65, mega65_ftp from [mega65-tools](https://github.com/MEGA65/mega65-tools)
 - [m65dbg](https://github.com/MEGA65/m65dbg)
 - [xemu](https://github.com/lgblgblgb/xemu)
@@ -51,3 +51,9 @@ that the build process will get more involved:
 - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
 - [ ] get rid of the user area
 - [ ] Some sort of RPICK (like PICK but for the return stack) for J, I, LEAVE, PLOOP, PPLOOP
+
+# CREDITS
+
+- Lots of the implementation comes from [FIG FORTH release 1.1](https://github.com/ptorric/figforth)
+- Paul Gardner-Stephen for the [floppy handling code](https://github.com/MEGA65/mega65-tools/blob/master/src/utilities/fastload_demo.asm)
+- [Test suite](https://github.com/gerryjackson/forth2012-test-suite)

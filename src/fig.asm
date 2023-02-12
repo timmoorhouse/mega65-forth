@@ -22,7 +22,7 @@ W_PM
 ;          !word ZBRAN
 ;L2469:    !word 4
 ;          !word MINUS
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -51,7 +51,7 @@ W_DASHDASH
 ;          !word SUB
 ;          !word BLK
 ;          !word PSTOR
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -73,7 +73,7 @@ W_BACK
 ;          !word HERE
 ;          !word SUB
 ;          !word COMMA
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -92,7 +92,7 @@ W_DBCD
 ;          !word USLAS,CLIT
 ;          !byte 16
 ;          !word STAR,OR
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -167,7 +167,7 @@ W_PBUF
 ;          !word PREV
 ;          !word AT
 ;          !word SUB
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -199,7 +199,7 @@ W_BUILD
         !word DO_COLON
 ;          !word ZERO
 ;          !word W_CONSTANT
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -234,7 +234,7 @@ W_CFA
         !word DO_COLON
 ;          !word TWO
 ;          !word SUB
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -257,7 +257,7 @@ W_QCOMP
 ;          !word CLIT
 ;          !byte $11
 ;          !word QERR
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -298,7 +298,7 @@ W_SCSP
 ;          !word SPAT
 ;          !word CSP
 ;          !word STORE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -323,7 +323,7 @@ W_QCSP
 ;          !word CLIT
 ;          !byte $14
 ;          !word QERR
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -371,7 +371,7 @@ W_DLITERAL
 ;          !word SWAP
 ;          !word LITER
 ;          !word LITER
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -443,7 +443,7 @@ W_DR0
 ;          !word W_ZERO
 ;          !word W_OFFSET
 ;          !word W_STORE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -460,7 +460,7 @@ W_DR1
 ;          !word LIT,SECTR ; sectors per drive
 ;          !word W_OFFSET
 ;          !word STORE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -482,7 +482,7 @@ W_QEXEC
 ;          !word CLIT
 ;          !byte $12
 ;          !word QERR
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -542,7 +542,7 @@ W_DFIND
 ;          !word HERE
 ;          !word LATES
 ;          !word PFIND
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -632,7 +632,7 @@ W_IDDOT
 ;          !word ANDD
 ;          !word TYPE
 ;          !word SPACE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -673,7 +673,7 @@ W_INDEX
 ;          !byte $0A      ; PT WAS HERE
 ;;          !byte $0C      ; form feed for printer
 ;          !word EMIT
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -694,7 +694,7 @@ W_LATEST
 ;          !word CURR
 ;          !word AT
 ;          !word AT
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -716,7 +716,7 @@ W_LFA
 ;          !word CLIT
 ;          !byte 4
 ;          !word SUB
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -767,7 +767,7 @@ W_PLINE
 ;          !word BLOCK
 ;          !word PLUS
 ;          !word CSLL
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -789,7 +789,7 @@ W_DLINE
 ;          !word PLINE
 ;          !word DTRAI
 ;          !word TYPE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -812,7 +812,7 @@ W_QLOAD
 ;          !word CLIT
 ;          !byte $16
 ;          !word QERR
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -853,7 +853,7 @@ W_MESSAGE
 ;L2888:    !word PDOTQ
 ;          !byte 6,"MSG # "
 ;          !word DOT
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -876,7 +876,7 @@ W_NFA
 ;          !word SUB
 ;          !word LIT,$FFFF
 ;          !word W_TRAVERSE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -898,7 +898,7 @@ W_PORIGIN
         !word DO_COLON
 ;          !word LIT,ORIG
 ;          !word PLUS
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -959,7 +959,7 @@ W_QPAIR
 ;          !word CLIT
 ;          !byte $13
 ;          !word QERR
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -983,7 +983,7 @@ W_PFA
 ;          !word CLIT
 ;          !byte 5
 ;          !word PLUS
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -1044,7 +1044,7 @@ W_SMUDGE
         !word W_CLITERAL
         !byte F_HIDDEN
 ;          !word TOGGL
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -1099,7 +1099,7 @@ W_QSTACK
 ;          !word CLIT
 ;          !byte 7
 ;          !word QERR
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -1171,7 +1171,7 @@ W_TRAVERSE
 ;L1320:    !word $FFF1    ; L1312-L1320
 ;          !word SWAP
 ;          !word DROP
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -1202,7 +1202,7 @@ W_UPPER
 ;          !word TOGGL
 ;L1961:    !word PLOOP
 ;L1962:    !word $FFEA    ; L1950-L1962
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -1357,7 +1357,7 @@ W_X
 ;L1829:    !word 6        ; L1832-L1829
 ;L1830:    !word RFROM
 ;          !word DROP
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 }

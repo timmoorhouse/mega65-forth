@@ -2,13 +2,20 @@
 ; ****************************************************************************
 ; FILE
 
+W_FILE_TEST
+        !word DO_COLON
+        !word W_PDOTQ
+        +STRING "<file-test>"
+        !word W_CR
+        !word W_CR
+        !word W_PSEMI
+
 ; ****************************************************************************
 ; (
 ; ("text" --)
 ; ANSI 11.6.1.0080
 
-!if ENABLE_FILE {
-}
+; See core
 
 ; ****************************************************************************
 ; BIN
@@ -16,6 +23,10 @@
 ; ANSI 11.6.1.0765
 
 !if ENABLE_FILE {
+        +WORD "bin"
+W_BIN
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -24,6 +35,10 @@
 ; ANSI 11.6.1.0900
 
 !if ENABLE_FILE {
+        +WORD "close-file"
+W_CLOSE_FILE
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -32,6 +47,11 @@
 ; ANSI 11.6.1.1010
 
 !if ENABLE_FILE {
+        +WORD "create-file"
+W_CREATE_FILE
+        !word DO_COLON
+        !word W_PSEMI
+
 }
 
 ; ****************************************************************************
@@ -40,6 +60,10 @@
 ; ANSI 11.6.1.1190
 
 !if ENABLE_FILE {
+        +WORD "delete-file"
+W_DELETE_FILE
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -48,6 +72,10 @@
 ; ANSI 11.6.1.1520
 
 !if ENABLE_FILE {
+        +WORD "file-position"
+W_FILE_POSITION
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -56,6 +84,10 @@
 ; ANSI 11.6.1.1522
 
 !if ENABLE_FILE {
+        +WORD "file-size"
+W_FILE_SIZE
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -64,6 +96,10 @@
 ; ANSI 11.6.1.1717
 
 !if ENABLE_FILE {
+        +WORD "include-file"
+W_INCLUDE_FILE
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -72,6 +108,10 @@
 ; ANSI 11.6.1718
 
 !if ENABLE_FILE {
+        +WORD "included"
+W_INCLUDED
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -80,6 +120,10 @@
 ; ANSI 11.6.1.1970
 
 !if ENABLE_FILE {
+        +WORD "open-file"
+W_OPEN_FILE
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -88,6 +132,10 @@
 ; ANSI 11.6.1.2054
 
 !if ENABLE_FILE {
+        +WORD "r/o"
+W_RSLO
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -128,7 +176,7 @@ W_RSLW
 ;          !word DBCD,DDISC,CLIT
 ;          !byte 8
 ;          !word QERR
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -137,6 +185,11 @@ W_RSLW
 ; ANSI 11.6.1.2080
 
 !if ENABLE_FILE {
+        +WORD "read-file"
+W_READ_FILE
+        !word DO_COLON
+        !word W_PSEMI
+
 }
 
 ; ****************************************************************************
@@ -145,6 +198,10 @@ W_RSLW
 ; ANSI 11.6.1.2090
 
 !if ENABLE_FILE {
+        +WORD "read-line"
+W_READ_LINE
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -153,6 +210,10 @@ W_RSLW
 ; ANSI 11.6.1.2142
 
 !if ENABLE_FILE {
+        +WORD "reposition-file"
+W_REPOSITION_FILE
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -161,28 +222,38 @@ W_RSLW
 ; ANSI 11.6.1.2147
 
 !if ENABLE_FILE {
+        +WORD "resize-file"
+W_RESIZE_FILE
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
 ; S"
 ; (???)
+; ANSI 6.1.2165
 ; ANSI 11.6.1.2165
 
-!if ENABLE_FILE {
-}
+; See core
 
 ; ****************************************************************************
 ; SOURCE-ID
 ; (-- 0|-1|fileid)
 ; ANSI 11.6.1.2218
 
-!if ENABLE_FILE {
-}
+; See core-ext
 
 ; ****************************************************************************
 ; W/O
 ; (-- fam)
 ; ANSI 11.6.1.2425
+
+!if ENABLE_FILE {
+        +WORD "w/o"
+W_WSLO
+        !word DO_COLON
+        !word W_PSEMI
+}
 
 ; ****************************************************************************
 ; WRITE-FILE
@@ -190,6 +261,10 @@ W_RSLW
 ; ANSI 11.6.1.2480
 
 !if ENABLE_FILE {
+        +WORD "write-file"
+W_WRITE_FILE
+        !word DO_COLON
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -198,4 +273,8 @@ W_RSLW
 ; ANSI 11.6.1.2485
 
 !if ENABLE_FILE {
+        +WORD "write-line"
+W_WRITE_LINE
+        !word DO_COLON
+        !word W_PSEMI
 }

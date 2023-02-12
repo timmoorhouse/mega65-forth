@@ -90,7 +90,7 @@ W_BLOCK
 ;L2830:    !word RFROM
 ;          !word DROP
 ;          !word TWOP
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; BUFFER
@@ -142,7 +142,7 @@ W_BUFFER
 ;          !word STORE
 ;          !word RFROM
 ;          !word TWOP
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; EVALUATE
@@ -168,7 +168,7 @@ W_FLUSH
 ;L2835:    !word LIT,$7FFF,BUFFR
 ;          !word DROP,PLOOP
 ;L2839:    !word $FFF6    ; L2835-L2839
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; LOAD
@@ -207,7 +207,7 @@ W_LOAD
 ;          !word RFROM
 ;          !word BLK
 ;          !word STORE
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; SAVE-BUFFERS
@@ -241,6 +241,6 @@ W_UPDATE
 ;          !word PREV
 ;          !word AT
 ;          !word STORE
-        !word W_SEMI
+        !word W_PSEMI
 
 }

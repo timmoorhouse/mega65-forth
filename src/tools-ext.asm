@@ -39,7 +39,7 @@ W_SCODE
 ;          !word PSCOD
 ;          !word LBRAC
 ;          !word SMUDG
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; (;CODE)
@@ -63,7 +63,7 @@ W_PSCODE
 ;          !word PFA
 ;          !word CFA
 ;          !word STORE
-        !word W_SEMI
+        !word W_PSEMI
 }
 }
 
@@ -187,7 +187,7 @@ W_FORGET
 ;          !word AT,DDUP,ZEQU
 ;          !word ZBRAN,$FFFF-39+1 ; L3225-*
 ;          !word RFROM,DP,STORE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -210,7 +210,7 @@ W_NAME_TO_COMPILE
         !word DO_COLON
         !word W_NAME_TO_STRING  ; immediately after the name
         !word W_PLUS
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; NAME>INTERPRET
@@ -223,7 +223,7 @@ W_NAME_TO_INTERPRET
         !word DO_COLON
         !word W_NAME_TO_STRING  ; immediately after the name
         !word W_PLUS
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; NAME>STRING
@@ -242,7 +242,7 @@ W_NAME_TO_STRING
         !word W_COUNT
         +CLITERAL $1f ; mask off the control bits
         !word W_AND
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; NR>
@@ -308,7 +308,7 @@ _traverse_done
 
         !word W_2RFROM,W_2DROP ; (ix) (R:)
 
-        !word W_SEMI
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; [DEFINED]

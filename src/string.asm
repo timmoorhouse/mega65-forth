@@ -43,7 +43,7 @@ W_DTRAILING
 ;          !word SUB
 ;L1678:    !word PLOOP
 ;L1679:    !word $FFE0    ; L1663-L1679
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -76,7 +76,7 @@ W_BLANK
         !word DO_COLON
         !word W_BL
         !word W_FILL
-        !word W_SEMI
+        !word W_PSEMI
 }
 }
 
@@ -162,7 +162,7 @@ W_COMPARE_TEST
         !word W_EMIT
         !word W_COMPARE
         !word W_DOTS
-        !word W_SEMI
+        !word W_PSEMI
 
 str1    +STRING "foocar"
 str2    +STRING "foobar"

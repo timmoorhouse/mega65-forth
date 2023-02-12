@@ -46,7 +46,7 @@ W_DOTR
 ;          !word STOD
 ;          !word RFROM
 ;          !word DDOTR
-        !word W_SEMI
+        !word W_PSEMI
 }
 }
 
@@ -261,7 +261,7 @@ W_AGAIN
 ;          !word COMP
 ;          !word BRANCH
 ;          !word BACK
-        !word W_SEMI
+        !word W_PSEMI
 }
 }
 
@@ -375,7 +375,7 @@ W_ERASE
         !word DO_COLON
         !word W_ZERO
         !word W_FILL
-        !word W_SEMI
+        !word W_PSEMI
 }
 }
 
@@ -471,7 +471,7 @@ W_EXPECT
 ;L1781:    !word $FFA9
 ;          !word DROP      ; L1736-L1781
 }
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -502,7 +502,7 @@ W_HEX
         +CLITERAL 16
         !word W_BASE
         !word W_STORE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -583,7 +583,7 @@ W_PAD
         !word W_CLITERAL
         !byte 68        ; PAD is 68 bytes above here. TODO ????????????
         !word W_PLUS
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -885,7 +885,7 @@ W_QUERY
         !word W_ZERO
         !word W_IN 
         !word W_STORE
-        !word W_SEMI
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -917,6 +917,7 @@ W_QUERY
 ; ****************************************************************************
 ; S\"
 ; Forth 2012 6.2.2266
+; Forth 2012 11.6.2.2266
 
 ; Needs to handle escape sequences:
 ; \a    BEL     7                               ?? use 20 (delete)
@@ -952,8 +953,12 @@ W_QUERY
 ; SOURCE-ID
 ; (-- 0|-1)
 ; ANSI 6.2.2218
+; (-- 0|-1|fileid)
+; ANSI 11.6.1.2218
 
 ; TODO always enable?
+
+; TODO extension to allow fileid if FILE enabled
 
 !if ENABLE_CORE_EXT {
         +WORD "source-id"
@@ -1093,7 +1098,7 @@ W_BCOMPILE
 ;          !word DROP
 ;          !word CFA
 ;          !word COMMA
-        !word W_SEMI
+        !word W_PSEMI
 }
 }
 
@@ -1101,6 +1106,7 @@ W_BCOMPILE
 ; \
 ; ("text" --)
 ; ANSI 6.2.2535
+; ANSI 7.6.2.2535
 
 !if ENABLE_CORE_EXT {
         +WORD_IMM "\\" ; TODO \ is not in petscii
@@ -1118,5 +1124,5 @@ W_BACKSLASH
         !word W_EMIT
         !word W_DOTS
 }
-        !word W_SEMI
+        !word W_PSEMI
 }
