@@ -3246,6 +3246,7 @@ _quit_read_loop
 
         !word W_TIB
         !word W_AT
+        !word W_DUP
         +CLITERAL 80
         !word W_ACCEPT
 
@@ -3267,21 +3268,18 @@ _quit_read_loop
         +CLITERAL '"'
         !word W_EMIT
 
-        !word W_DROP
-
-!if 1 {
-
+!if 0 {
+        ; replace input from terminal with test string ...
+        !word W_2DROP
         +LITERAL _test_string
-
         !word W_COUNT
-
         !word W_CR
         !word W_2DUP
         !word W_TYPE
         !word W_CR
+}
 
         !word W_EVALUATE
-
 
 !if 1 {
         !word W_SOURCE
@@ -3293,7 +3291,6 @@ _quit_read_loop
         !word W_DOTS
 }
 
-}
 
         !word W_STATE
         !word W_AT
