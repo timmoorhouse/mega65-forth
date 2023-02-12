@@ -16,6 +16,8 @@ This is *very* much in the early stages of developement:
 - The interpreter is working well enough to support development, but is still pretty minimal.  It needs command line editing features, better error handling, etc.
 - There is no file input or support for defining functions yet.  Those are the next priorities so we can start running unit tests, and do most of the remainder of the implementation in Forth.
 
+My apologies if this isn't the greatest Forth implementation.  I don't really have much experience with Forth.  I'm doing this because I've always been intrigued by Forth, and with a new MEGA65 sitting on the dining room table, it seemed the perfect project to learn about Forth, shake decades of dust off my 6502 programming skills, and learn about some of the MEGA65-specific features.
+
 An attempt will be made to:
 
 - Be more ANS FORTH (94) compliant, and hopefully [Forth 2012](http://www.forth200x.org/documents/forth-2012.pdf)
