@@ -2332,7 +2332,7 @@ _evaluate_immediate
 
 _evaluate_number
         ; (ud_2 c-addr_2) (R: c-addr u)
--!ifdef DEBUG {
+!if DEBUG {
         !word W_PDOTQ
         +STRING "<number>"
         !word W_DOTS
@@ -2343,15 +2343,13 @@ _evaluate_number
 _evaluate_word_not_found
 
         ; (R: c-addr u)
-!if 1 {
-        ; TODO try >NUMBER
+
         ; TODO this just does unsigned single precision so far!!!!!
         !word W_ZERO
         !word W_ZERO
         !word W_2RAT
         !word W_TONUMBER
         +ZBRANCH _evaluate_number
-}
 
         ; TODO error
         !word W_PDOTQ
