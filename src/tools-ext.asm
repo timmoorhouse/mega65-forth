@@ -105,6 +105,29 @@ W_PSCODE
 W_BYE
         !word *+2
         jmp NEXT
+} else {
+        ; TODO get here after bootstrap ends
+FOO_BYE
+        !word *+2
+W_BYE
+        !word *+2
+
+BYE
+        ; TODO restore stack
+
+        jsr CR
+        lda #'p'
+        jsr put_char
+        ; brk
+
+        ; restore base page
+        lda #0
+        tab
+
+
+        ; TODO copy out cursor position?
+
+        rts
 }
 }
 

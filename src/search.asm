@@ -112,7 +112,7 @@ W_SEARCH_WORDLIST
         +CLITERAL ']'
         !word W_EMIT
         !word W_ROT
-        !word W_DOTS
+        !word W_DOTS,W_CR
 }
 
         ; this zero is the default return value
@@ -180,7 +180,7 @@ W_PSEARCH_WORDLIST
         !word W_COMPARE ; (c-addr u flag) (R: nt)
 
 !if 0 {
-        !word W_DOTS
+        !word W_DOTS,W_CR
 }
 
         +ZBRANCH _psearch_wordlist_found
@@ -205,7 +205,7 @@ _psearch_wordlist_found
         !word W_NAME_TO_COMPILE ; TODO NOT RIGHT - SHOULD PICK BASED ON STATE
         !word W_ONE
         !word W_FALSE   ; stop
-        ; !word W_DOTS ; TODO 
+        ; !word W_DOTS,W_CR ; TODO 
         +BRANCH _psearch_wordlist_done
 
 _psearch_wordlist_nonimmediate

@@ -74,15 +74,6 @@ W_TWO
         !word DO_CONSTANT
         !word 2
 
-!if 0 {
-; ****************************************************************************
-; 3
-;        +WORD "3"
-W_THREE
-        !word DO_CONSTANT
-        !word 3
-}
-
 ; ****************************************************************************
 ; 2+
 
@@ -209,6 +200,7 @@ W_RPSTORE
         lda (<U),y      ; variable R0
         tax
         txs
+        ; TODO SPH
         ldx <XSAVE
         jmp NEXT
 
@@ -221,5 +213,5 @@ W_SPSTORE
         !word *+2
         ldy #U_S0
         lda (<U),y      ; load data stack pointer (X reg) from
-        TAX             ; silent user variable S0.
+        tax             ; silent user variable S0.
         jmp NEXT

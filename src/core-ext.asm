@@ -1122,7 +1122,7 @@ W_BACKSLASH
         !word W_TYPE
         +CLITERAL ']'
         !word W_EMIT
-        !word W_DOTS
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }

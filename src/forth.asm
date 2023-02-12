@@ -429,19 +429,32 @@ WARM
 ;          LDY #$0F
 ;+
 
+        ; Set up user area
         lda #<UAREA
         sta <U
         lda #>UAREA
         sta <U+1
 
-        ; TODO set S0
-        ; TODO set R0
+        ; Reposition data stack
+        ldx #TOS
+
+        ; Save data stack pointer in S0
+        stx UAREA+U_S0
+        ; TODO UAREA+U_S0+1 !!!!!!!!!
+
+        ; Save return stack pointer in R0
+        stx <XSAVE
+        tsx
+        stx UAREA+U_R0
+        ldx <XSAVE
+        tsy
+        sty UAREA+U_R0+1
+
 
         lda #<TIBX
         sta UAREA+U_TIB
         lda #>TIBX
         sta UAREA+U_TIB+1
-        ; TODO set TIB
 
         lda INITIAL_FORTH_WORDLIST
         sta FORTH_WORDLIST
@@ -493,7 +506,7 @@ WARM
 
         ; An attempt at bootstrapping ...
 
-        ldx #TOS
+
         lda #<W_TEST
         sta <W
         lda #>W_TEST
@@ -504,16 +517,15 @@ WARM
         lda #>FOO_BYE
         sta <I+1
 
-        ; +TRACE
+        ldy #0
+
         jmp DO_COLON
         ; jmp NEXT
 
-; I_TEST  !word W_TEST
-
-W_TEST  !word DO_COLON
+W_TEST  
+        !word DO_COLON
 ;TEST
-        ;!word W_CR
-!if DEBUG {
+!if 0 {
         !word W_WORDS
         !word W_CR
 }
@@ -531,29 +543,7 @@ W_TEST  !word DO_COLON
         !word W_TONUMBER_TEST
 }
         !word W_ABORT
-        !word W_PSEMI
-
-        ; TODO get here after bootstrap ends
-FOO_BYE
-        !word *+2
-W_BYE
-        !word *+2
-
-BYE
-        ; TODO restore stack
-
-        jsr CR
-        lda #'p'
-        jsr put_char
-        ; brk
-
-        ; restore base page
-        lda #0
-        tab
-
-        ; TODO copy out cursor position?
-
-        rts
+        !word W_BYE
 
 !src "internals.asm"
 

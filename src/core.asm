@@ -204,7 +204,7 @@ W_PAREN
         !word W_TYPE
         +CLITERAL ']'
         !word W_EMIT
-        !word W_DOTS
+        !word W_DOTS,W_CR
 }
         !word W_2DROP
         !word W_PSEMI
@@ -1031,7 +1031,7 @@ W_TONUMBER_TEST
         +STRING "<base>"
         !word W_BASE
         !word W_AT
-        !word W_DOTS
+        !word W_DOTS,W_CR
         !word W_DROP
 }
 
@@ -1041,7 +1041,7 @@ W_TONUMBER_TEST
         !word W_DUP
         !word W_EMIT
         !word W_DIGIT
-        !word W_DOTS
+        !word W_DOTS,W_CR
         !word W_2DROP
 
 !if 1 {
@@ -1064,7 +1064,7 @@ W_TONUMBER_TEST
         !word W_TYPE
         +CLITERAL ']'        
         !word W_EMIT
-        !word W_DOTS
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 
@@ -1486,7 +1486,7 @@ _accept_loop
 
 !if DEBUG {
         !word W_SPACE,W_DUP,W_DOT,W_SPACE
-        ; !word W_DOTS
+        ; !word W_DOTS,W_CR
 }
 
         ; Check for and handle delete
@@ -2261,7 +2261,7 @@ W_EVALUATE
         !word W_TYPE
         +CLITERAL ']'
         !word W_EMIT        
-        !word W_DOTS
+        !word W_DOTS,W_CR
 }
 
         ; TODO setup SOURCE
@@ -2291,7 +2291,7 @@ _evaluate_loop
         !word W_TYPE
         +CLITERAL ']'
         !word W_EMIT
-        ; !word W_DOTS
+        ; !word W_DOTS,W_CR
 }
 
         !word W_2TOR    
@@ -2319,7 +2319,7 @@ _evaluate_loop
 !if DEBUG {
         !word W_PDOTQ
         +STRING "<non-immediate>"
-        !word W_DOTS
+        !word W_DOTS,W_CR
 }
         !word W_EXECUTE
         +BRANCH _evaluate_done_word
@@ -2329,7 +2329,7 @@ _evaluate_immediate
 !if DEBUG {
         !word W_PDOTQ
         +STRING "<immediate>"
-        !word W_DOTS
+        !word W_DOTS,W_CR
 }
         !word W_EXECUTE
         +BRANCH _evaluate_done_word
@@ -2339,7 +2339,7 @@ _evaluate_number
 !if DEBUG {
         !word W_PDOTQ
         +STRING "<number>"
-        !word W_DOTS
+        !word W_DOTS,W_CR
 }
         !word W_2DROP
         +BRANCH _evaluate_done_word
@@ -2361,7 +2361,7 @@ _evaluate_word_not_found
 !if DEBUG {
         !word W_PDOTQ
         +STRING "<not found>"
-        !word W_DOTS
+        !word W_DOTS,W_CR
 }
         !word W_SPACE
         !word W_2RAT
@@ -3236,7 +3236,7 @@ W_QUIT
 !if DEBUG {
         !word W_PDOTQ
         +STRING "<quit>"
-        !word W_DOTS
+        !word W_DOTS,W_CR
 }
 
 !if ENABLE_BLOCK {
@@ -3252,7 +3252,7 @@ _quit_read_loop
         ; !word W_RPSTORE
 
 !if DEBUG {
-        ; !word W_DOTS
+        ; !word W_DOTS,W_CR
         +CLITERAL '['
         !word W_EMIT
 }
@@ -3267,7 +3267,7 @@ _quit_read_loop
         +CLITERAL ']'
         !word W_EMIT
         !word W_CR
-        ; !word W_DOTS
+        ; !word W_DOTS,W_CR
         !word W_CR
         !word W_CR
 }
@@ -3303,7 +3303,7 @@ _quit_read_loop
 }
 
 !if DEBUG {
-        !word W_DOTS
+        !word W_DOTS,W_CR
 }
 
         !word W_STATE
