@@ -453,18 +453,13 @@ WARM
 ;          LDY #$0F
 ;+
 
+!if 1 { ; TODO REMOVE
         ; Set up user area
         lda #<UAREA
         sta <U
         lda #>UAREA
         sta <U+1
-
-        ; Reposition data stack
-        ldx #TOS
-
-        ; Save data stack pointer in S0
-        stx UAREA+U_S0
-        ; TODO UAREA+U_S0+1 !!!!!!!!!
+}
 
         ; Save return stack pointer in R0
         stx <XSAVE
@@ -474,6 +469,13 @@ WARM
         tsy
         sty UAREA+U_R0+1
 
+        ; Reposition data stack
+        ldx #TOS
+
+        ; Save data stack pointer in S0
+        stx UAREA+U_S0
+        ldy #0
+        sty UAREA+U_S0+1
 
         lda #<TIBX
         sta UAREA+U_TIB
@@ -512,35 +514,26 @@ WARM
         ; TODO set R#
         ; TODO set HLD
 
-        lda #0
-        sta <SOURCE_ID
-        sta <SOURCE_ID+1
+        ; ldy #0 ; still 0 from above
+        sty <SOURCE_ID
+        sty <SOURCE_ID+1
 
 ;-         LDA ORIG+$0C,Y
 ;          STA (UP),Y
 ;          DEY
 ;          BPL  -
 
-;          LDA #>ABORT    ; actually #>(ABORT+2)
-;          STA IP+1
-;          LDA #<ABORT+2
-;          STA IP
-;          CLD
-;          JMP RPSTO+2    ; And off we go !
-
-        ; An attempt at bootstrapping ...
-
+        cld
 
         ; TODO just do W_ABORT
-        lda #<W_TEST
-        sta <W
-        lda #>W_TEST
-        sta <W+1
+        lda #<W_TEST+2
+        sta <I
+        lda #>W_TEST+2
+        sta <I+1
 
-        ldy #0
+        ; ldy #0
 
-        jmp DO_COLON
-        ; jmp NEXT
+        jmp NEXT
 
 W_TEST  
         !word DO_COLON
