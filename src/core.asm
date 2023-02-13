@@ -1465,7 +1465,7 @@ _accept_loop
 
         ; (index key)
 
-!if DEBUG {
+!if 0 {
         !word W_SPACE,W_DUP,W_DOT,W_SPACE
         ; !word W_DOTS,W_CR
 }
@@ -2218,7 +2218,22 @@ W_ELSE
 W_EMIT
         !word *+2
         lda 0,x
+!if USE_KERNEL {
+        cli
+        stx <XSAVE
+        pha
+        lda #0
+        tab
+        pla
+        ; TODO
+        jsr $ffd2 ; $3ffd2 ???
+        lda #>base_page
+        tab
+        ldx <XSAVE
+        sei
+} else {
         jsr put_char
+}
         jmp POP
 
 ; ****************************************************************************
@@ -3241,37 +3256,16 @@ _quit_read_loop
 
         !word W_RPSTORE ; TODO HOW???
 
-!if DEBUG {
-        ; !word W_DOTS,W_CR
+!if 0 {
         +CLITERAL '['
         !word W_EMIT
 }
 
-        !word W_TIB
+        +LITERAL UAREA+U_TIB ; TODO !!!!!!!!!!!!!!
         !word W_AT
         !word W_DUP
         +CLITERAL 80
         !word W_ACCEPT
-
-!if 0 {
-        +CLITERAL ']'
-        !word W_EMIT
-        !word W_CR
-        ; !word W_DOTS,W_CR
-        !word W_CR
-        !word W_CR
-}
-
-!if DEBUG {
-        +CLITERAL '"'
-        !word W_EMIT
-        !word W_TIB
-        !word W_AT
-        !word W_OVER
-        !word W_TYPE
-        +CLITERAL '"'
-        !word W_EMIT
-}
 
 !if 0 {
         ; replace input from terminal with test string ...

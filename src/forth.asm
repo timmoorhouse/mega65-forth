@@ -2,45 +2,52 @@
 !cpu m65
 !convtab pet
 
-!ifndef ENABLE_BLOCK            { ENABLE_BLOCK         = 0 }
-!ifndef ENABLE_BLOCK_EXT        { ENABLE_BLOCK_EXT     = 0 }
-!if 1                           { ENABLE_CORE          = 1 } ; Required
-!ifndef ENABLE_CORE_EXT         { ENABLE_CORE_EXT      = 1 }
-!ifndef ENABLE_DOUBLE           { ENABLE_DOUBLE        = 1 }
-!ifndef ENABLE_DOUBLE_EXT       { ENABLE_DOUBLE_EXT    = 1 }
-!ifndef ENABLE_EXCEPTION        { ENABLE_EXCEPTION     = 0 }
-!ifndef ENABLE_EXCEPTION_EXT    { ENABLE_EXCEPTION_EXT = 0 }
-!ifndef ENABLE_FACILITY         { ENABLE_FACILITY      = 1 }
-!ifndef ENABLE_FACILITY_EXT     { ENABLE_FACILITY_EXT  = 1 }
-!ifndef ENABLE_FIG              { ENABLE_FIG           = 1 } ; TODO remove
-!ifndef ENABLE_FILE             { ENABLE_FILE          = 1 }
-!ifndef ENABLE_FILE_EXT         { ENABLE_FILE_EXT      = 1 }
-!ifndef ENABLE_FLOATING         { ENABLE_FLOATING      = 0 }
-!ifndef ENABLE_FLOATING_EXT     { ENABLE_FLOATING_EXT  = 0 }
-!ifndef ENABLE_LOCAL            { ENABLE_LOCAL         = 0 }
-!ifndef ENABLE_LOCAL_EXT        { ENABLE_LOCAL_EXT     = 0 }
-!ifndef ENABLE_MEGA65           { ENABLE_MEGA65        = 1 }
-!ifndef ENABLE_MEMORY           { ENABLE_MEMORY        = 0 }
-!ifndef ENABLE_MEMORY_EXT       { ENABLE_MEMORY_EXT    = 0 }
-!ifndef ENABLE_SEARCH           { ENABLE_SEARCH        = 1 }
-!ifndef ENABLE_SEARCH_EXT       { ENABLE_SEARCH_EXT    = 1 }
-!ifndef ENABLE_STRING           { ENABLE_STRING        = 1 }
-!ifndef ENABLE_STRING_EXT       { ENABLE_STRING_EXT    = 1 }
-!ifndef ENABLE_TOOLS            { ENABLE_TOOLS         = 1 } ; for words, .s, etc
-!ifndef ENABLE_TOOLS_EXT        { ENABLE_TOOLS_EXT     = 1 }
-!ifndef ENABLE_XCHAR            { ENABLE_XCHAR         = 0 }
-!ifndef ENABLE_XCHAR_EXT        { ENABLE_XCHAR_EXT     = 0 }
+!ifndef ENABLE_BLOCK                    { ENABLE_BLOCK                 = 0 }
+!ifndef ENABLE_BLOCK_EXT                { ENABLE_BLOCK_EXT             = 0 }
+!if 1                                   { ENABLE_CORE                  = 1 } ; Required
+!ifndef ENABLE_CORE_EXT                 { ENABLE_CORE_EXT              = 1 }
+!ifndef ENABLE_CORE_EXT_OBSOLESCENT     { ENABLE_CORE_EXT_OBSOLESCENT  = 0 }
+!ifndef ENABLE_DOUBLE                   { ENABLE_DOUBLE                = 1 }
+!ifndef ENABLE_DOUBLE_EXT               { ENABLE_DOUBLE_EXT            = 1 }
+!ifndef ENABLE_EXCEPTION                { ENABLE_EXCEPTION             = 0 }
+!ifndef ENABLE_EXCEPTION_EXT            { ENABLE_EXCEPTION_EXT         = 0 }
+!ifndef ENABLE_FACILITY                 { ENABLE_FACILITY              = 1 }
+!ifndef ENABLE_FACILITY_EXT             { ENABLE_FACILITY_EXT          = 1 }
+!ifndef ENABLE_FIG                      { ENABLE_FIG                   = 1 } ; TODO remove
+!ifndef ENABLE_FILE                     { ENABLE_FILE                  = 1 }
+!ifndef ENABLE_FILE_EXT                 { ENABLE_FILE_EXT              = 1 }
+!ifndef ENABLE_FLOATING                 { ENABLE_FLOATING              = 0 }
+!ifndef ENABLE_FLOATING_EXT             { ENABLE_FLOATING_EXT          = 0 }
+!ifndef ENABLE_GFORTH                   { ENABLE_GFORTH                = 0 } ; useful things following gforth's extensions
+!ifndef ENABLE_LOCAL                    { ENABLE_LOCAL                 = 0 }
+!ifndef ENABLE_LOCAL_EXT                { ENABLE_LOCAL_EXT             = 0 }
+!ifndef ENABLE_LOCAL_EXT_OBSOLESCENT    { ENABLE_LOCAL_EXT_OBSOLESCENT = 0 }
+!ifndef ENABLE_MEGA65                   { ENABLE_MEGA65                = 1 }
+!ifndef ENABLE_MEMORY                   { ENABLE_MEMORY                = 0 }
+!ifndef ENABLE_MEMORY_EXT               { ENABLE_MEMORY_EXT            = 0 }
+!ifndef ENABLE_SEARCH                   { ENABLE_SEARCH                = 1 }
+!ifndef ENABLE_SEARCH_EXT               { ENABLE_SEARCH_EXT            = 1 }
+!ifndef ENABLE_STRING                   { ENABLE_STRING                = 1 }
+!ifndef ENABLE_STRING_EXT               { ENABLE_STRING_EXT            = 1 }
+!ifndef ENABLE_TOOLS                    { ENABLE_TOOLS                 = 1 } ; for words, .s, etc
+!ifndef ENABLE_TOOLS_EXT                { ENABLE_TOOLS_EXT             = 1 }
+!ifndef ENABLE_TOOLS_EXT_OBSOLESCENT    { ENABLE_TOOLS_EXT_OBSOLESCENT = 0 }
+!ifndef ENABLE_XCHAR                    { ENABLE_XCHAR                 = 0 }
+!ifndef ENABLE_XCHAR_EXT                { ENABLE_XCHAR_EXT             = 0 }
 
-!ifndef DEBUG                   { DEBUG=0 }
+!ifndef DEBUG                           { DEBUG                        = 0 }
+!ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS        = 1 } ; not yet used
+!ifndef USE_BASIC                       { USE_BASIC                    = 0 } ; not used - REMOVE?
+!ifndef USE_KERNEL                      { USE_KERNEL                   = 0 } ; not yet used
 
-; TODO flags to enable runtime checks?
+; C64 jump table https://sta.c64.org/cbm64krnfunc.html
+; C128 jump table
+; MEGA65 jump table https://mega65.atlassian.net/wiki/spaces/MEGA65/pages/6619137/Kernel+Jump+Table
 
 !source "util.asm"
 !source "dma.asm"
 !source "vic4.asm"
 !source "gpio.asm"
-
-false = 0 ; TODO remove
 
 * = $2001
         +upstart entry
@@ -284,6 +291,7 @@ NEXT
         bcc +
         inc <I+1
 +
+
         ; After the jmp:
         ; - X contains the data stack pointer (this should always be preserved)
         ; - Y contains 0 (this can be trashed) TODO should we depend on this?
@@ -383,6 +391,8 @@ DO_DOES
 ;       ADC #0
         jmp PUSH
 
+!src "internals.asm"
+
 ; ****************************************************************************
 ; COLD
 
@@ -397,7 +407,12 @@ COLD
 ;               and restart.
 
         +map_reset ; TODO why do we need this for the dma fill in clear_screen to work?
-
+!if USE_KERNEL {
+        ; TODO
+}        
+!if USE_BASIC {
+        ; TODO
+}
         +vic4_enable
         +enable40MHz
         ; TODO bank I/O in
@@ -412,32 +427,6 @@ COLD
         tab
 
         jsr console_init
-
-
-        lda #<_startup_text1
-        sta <STRING
-        lda #>_startup_text1
-        sta <STRING+1
-        jsr put_string
-!ifdef HAVE_REVISION {
-        lda #'-'
-        jsr put_char
-        lda #<_revision
-        sta <STRING
-        lda #>_revision
-        sta <STRING+1
-        jsr put_string
-}
-        lda #<_startup_text2
-        sta <STRING
-        lda #>_startup_text2
-        sta <STRING+1
-        jsr put_string
-
-        jsr flush_keyboard
-
-        ; jsr flush_keyboard ; TODO why do we need this?????
-
 
 
 ; rest of cold stuff from FIG ...
@@ -518,24 +507,45 @@ WARM
         sty <SOURCE_ID
         sty <SOURCE_ID+1
 
-;-         LDA ORIG+$0C,Y
-;          STA (UP),Y
-;          DEY
-;          BPL  -
-
         cld
 
-        ; TODO just do W_ABORT
-        lda #<W_TEST+2
+!if DEBUG {
+W_STARTUP = W_STARTUP_DEBUG
+} else {
+W_STARTUP = W_ABORT
+}
+
+        ; TODO just do W_ABORT directly ...
+        lda #<W_STARTUP+2
         sta <I
-        lda #>W_TEST+2
+        lda #>W_STARTUP+2
         sta <I+1
 
+        lda #<_startup_text1
+        sta <STRING
+        lda #>_startup_text1
+        sta <STRING+1
+        jsr put_string
+!ifdef HAVE_REVISION {
+        lda #'-'
+        jsr put_char
+        lda #<_revision
+        sta <STRING
+        lda #>_revision
+        sta <STRING+1
+        jsr put_string
+}
+        lda #<_startup_text2
+        sta <STRING
+        lda #>_startup_text2
+        sta <STRING+1
+        jsr put_string
         ; ldy #0
 
         jmp NEXT
 
-W_TEST  
+!if DEBUG {
+W_STARTUP_DEBUG
         !word DO_COLON
 ;TEST
 !if 0 {
@@ -549,13 +559,18 @@ W_TEST
 !if 0 {
         !word W_COMPARE_TEST
 }
+        +CLITERAL '>'
+        !word W_EMIT
 !if ENABLE_FILE {
         !word W_FILE_TEST
 }
 !if 0 {
         !word W_TONUMBER_TEST
 }
+        +CLITERAL '>'
+        !word W_EMIT
         !word W_ABORT
+}
 
 _startup_text1
         +STRING "mega65-forth 0.1"
@@ -565,12 +580,12 @@ _startup_text2
 !src "revision.asm"
 }
 
-!src "internals.asm"
 
 !src "block.asm"
 !src "block-ext.asm"
 !src "core.asm"
 !src "core-ext.asm"
+!src "core-ext-obsolescent.asm"
 !src "double.asm"
 !src "double-ext.asm"
 !src "exception.asm"
@@ -584,6 +599,7 @@ _startup_text2
 !src "floating-ext.asm"
 !src "local.asm"
 !src "local-ext.asm"
+!src "local-ext-obsolescent.asm"
 !src "mega65.asm"
 !src "memory.asm"
 !src "memory-ext.asm"
@@ -593,6 +609,7 @@ _startup_text2
 !src "string-ext.asm"
 !src "tools.asm"
 !src "tools-ext.asm"
+!src "tools-ext-obsolescent.asm"
 !src "xchar.asm"
 !src "xchar-ext.asm"
 

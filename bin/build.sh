@@ -33,32 +33,24 @@ declare -A opt=(
     [m65dbg]=$(realpath -m "$topdir/../m65dbg/m65dbg")
     [mega65_ftp]=$(realpath -m "$topdir/../../build/bin/mega65_ftp")
     [petcat]=petcat
-    [rom]=$(realpath -m "$topdir/../../MEGA65.ROM")
     # [test]
     [xmega65]=$(realpath -m "$topdir/../xemu/build/bin/xmega65.native")
 )
 
-[ -r "${opt[rom]}" ] || unset opt[rom]
-
-ARGS=$(getopt -o fhnqv -l acme:,build,builddir:,c1541:,debug,dry-run,force,help,m65:,m65dbg:,mega65_ftp:,quiet,rom:,screenshot,test,verbose,xmega65: -n $(basename "$0") -- "$@") || ARGS='-?'
+ARGS=$(getopt -o fhnqv -l acme:,build,builddir:,c1541:,debug,dry-run,force,help,m65:,m65dbg:,mega65_ftp:,quiet,screenshot,test,verbose,xmega65: -n $(basename "$0") -- "$@") || ARGS='-?'
 eval set -- "$ARGS"
 
 while [ $# -gt 0 ]; do
     case "$1" in
 
-    --acme|--builddir|--c1541|--m65|--m65dbg|--mega65_ftp|--rom|--xmega65)
+    --acme|--builddir|--c1541|--m65|--m65dbg|--mega65_ftp|--xmega65)
         opt[${1#--}]=${2}
         shift 2
         ;;
 
-    --build|--screenshot|--test)
+    --build|--debug|--screenshot|--test)
         opt[${1#--}]=1
         unset opt[all]
-        shift
-        ;;
-
-    --debug)
-        opt[debug]=1
         shift
         ;;
 
@@ -105,6 +97,25 @@ done
 
 "${opt[m65]}" --quiet --autodiscover 2>/dev/null || opt[emulate]=1
 
+declare -a acmeopts
+acmeopts+=(--color)
+# acmeopts+=(-DDEBUG=1)
+acmeopts+=(-f cbm)
+acmeopts+=(--msvc)
+# acmeopts+=(-I include/acme)
+acmeopts+=(-I src)
+acmeopts+=(-I "${opt[builddir]}")
+
+declare -a m65dbgopts
+[ -z "${opt[emulate]}" ] || m65dbgopts+=(-l tcp)
+
+declare -a m65opts
+[ -z "${opt[emulate]}" ] || m65opts+=(-l tcp)
+
+declare -a xmega65opts
+xmega65opts+=(-uartmon :4510)
+xmega65opts+=(-autoload 1)
+
 set -e
 
 add_text_files() {
@@ -119,17 +130,6 @@ add_text_files() {
 }
 
 do_build() {
-    # ls -l ${ACME}
-    # ${ACME} -h
-    # TODO --color?
-    declare -a ACMEOPTS
-    ACMEOPTS+=(--color)
-    # ACMEOPTS+=(-I include/acme)
-    ACMEOPTS+=(-I src)
-    # ACMEOPTS+=(-DDEBUG=1)
-    [ -z "${opt[builddir]}" ] || ACMEOPTS+=(-I "${opt[builddir]}")
-    ACMEOPTS+=(-f cbm)
-    ACMEOPTS+=(--msvc)
 
     local rev=$(git show-ref --head -s --abbrev | head -n1)
     if [ -n "$rev" -a -z "${opt[dryrun]}" ]; then
@@ -137,11 +137,11 @@ do_build() {
 _revision +STRING "$rev"
 EOF
     fi
-    [ -z "$rev" ] || ACMEOPTS+=(-DHAVE_REVISION=1)
+    [ -z "$rev" ] || acmeopts+=(-DHAVE_REVISION=1)
 
     # TODO we put the .sym and .rep files into the source dir
     # (at least temporarily) to make it easier to use m65dbg
-    cmd "${opt[acme]}" "${ACMEOPTS[@]}" \
+    cmd "${opt[acme]}" "${acmeopts[@]}" \
         -l "$topdir/src/forth.sym" \
         -o "${opt[builddir]}/forth.prg" \
         -r "$topdir/src/forth.rep" \
@@ -149,7 +149,8 @@ EOF
 
     # TODO generate d81 image with everything
     cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "${opt[builddir]}/mega65-forth.d81"
-    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" autoboot.c65
+    # cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" autoboot.c65
+    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" mega65-forth
     add_text_files "${opt[builddir]}/mega65-forth.d81" src/bootstrap.f "$topdir/test/forth2012-test-suite/src/prelimtest.fth"
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -dir > "${opt[builddir]}/mega65-forth.txt"
 
@@ -157,24 +158,13 @@ EOF
 }
 
 do_screenshot() {
-    if [ -n "${opt[emulate]}" ]; then
-        :
-    else
-        "${opt[m65]}" --quiet --screenshot="${opt[builddir]}/screenshot.png"
-    fi
+    "${opt[m65]}" "${m65opts[@]}" --quiet --screenshot="${opt[builddir]}/screenshot.png"
 }
 
 do_test() {
-    local -a m65opts
-    local -a m65dbgopts
-
     if [ -n "${opt[emulate]}" ]; then
-        cmd "${opt[xmega65]}" \
-            ${opt[rom]:+-besure -rom "${opt[rom]}"} \
-            -uartmon :4510 \
-            -prg "${opt[builddir]}/forth.prg"
-        m65dbgopts+=(-l tcp)
-        # "C:\Users\timmo\OneDrive\MEGA65\mega65r3-release-0.95\sdcard-files\MEGA65.ROM"
+        cmd "${opt[xmega65]}" "${xmega65opts[@]}" -8 "${opt[builddir]}/mega65-forth.d81"
+        # -prg "${opt[builddir]}/forth.prg"
     else
         # "${opt[m65]}" --quiet --reset
 
@@ -183,8 +173,9 @@ do_test() {
         #     -c "mount mega65-forth.d81" \
         #     -c quit
 
-        [ -n "${opt[debug]}" ] || m65opts+=(--run)
-        cmd "${opt[m65]}" --quiet "${m65opts[@]}" "${opt[builddir]}/forth.prg"
+        local -a m65opts_
+        [ -n "${opt[debug]}" ] || m65opts_+=(--run)
+        cmd "${opt[m65]}" "${m65opts[@]}" "${m65opts_[@]}" --quiet "${opt[builddir]}/forth.prg"
 
         # TODO
         # "${opt[m65dbg]}" load "${opt[builddir]}/forth.prg"
@@ -192,7 +183,12 @@ do_test() {
     fi
 }
 
+do_debug() {
+    cmd "${opt[m65dbg]}" "${m65dbgopts[@]}"
+}
+
 [ -z "${opt[all]}" -a -z "${opt[build]}"       ] || do_build
 [ -z "${opt[all]}" -a -z "${opt[test]}"        ] || do_test
 
-[ -z "${opt[all]}" -a -z "${opt[screenshot]}"  ] || do_screenshot
+[ -z "${opt[debug]}"       ] || do_debug
+[ -z "${opt[screenshot]}"  ] || do_screenshot

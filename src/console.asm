@@ -189,6 +189,14 @@ put_char_screencode
         rts
 
 
+_move_right
+        lda <SCREEN_X
+        cmp CHRCOUNT
+        bpl +
+        inc <SCREEN_X
++       rts
+
+
 CR
         ldy #0
         sty <SCREEN_X
@@ -226,6 +234,12 @@ _move_down
         jmp _scroll_up
 +       rts
 
+_move_up
+        lda <SCREEN_Y
+        beq +
+        dec <SCREEN_Y
+        ; TODO update SCREEN_LINE
++       rts
 
 _scroll_up
         ; TODO this doesn't look to be working correctly
@@ -238,13 +252,13 @@ _scroll_up
         ; Move lines [1,24] to [0,23]
 +       +dma_options $00, $00
         +dma_options_end
-        +dma_job_copy SCREEN_RAM+80, SCREEN_RAM, 2000-80, false, false
+        +dma_job_copy SCREEN_RAM+80, SCREEN_RAM, 2000-80, 0, 0
 ++      +dma_options $00, $00
         +dma_options_end
-        +dma_job_fill $20, SCREEN_RAM+24*80, 80, false ; TODO use SCRNPTR
+        +dma_job_fill $20, SCREEN_RAM+24*80, 80, 0 ; TODO use SCRNPTR
 ;+++      +dma_options $00, $00
 ;        +dma_options_end
-;        +dma_job_fill $42, COLOUR_RAM, 2000, false ; TODO reg
+;        +dma_job_fill $42, COLOUR_RAM, 2000, 0 ; TODO reg
 
 _recalc_screen_line
         ; TODO this assumes bank 0
@@ -306,10 +320,10 @@ clear_screen
         ; TODO use registers
 +       +dma_options $00, $00
         +dma_options_end
-        +dma_job_fill $20, SCREEN_RAM, 2000, false ; TODO use SCRNPTR
+        +dma_job_fill $20, SCREEN_RAM, 2000, 0 ; TODO use SCRNPTR
 ++      +dma_options $00, $00
         +dma_options_end
-        +dma_job_fill $42, COLOUR_RAM, 2000, false ; TODO reg
+        +dma_job_fill $42, COLOUR_RAM, 2000, 0 ; TODO reg
 
 flush_keyboard
 -       lda ASCIIKEY
