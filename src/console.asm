@@ -312,9 +312,8 @@ clear_screen
         +dma_job_fill $42, COLOUR_RAM, 2000, false ; TODO reg
 
 flush_keyboard
-        ldy #0
 -       lda ASCIIKEY
-        sty ASCIIKEY
+        sta ASCIIKEY
         bne -
         rts
 
@@ -355,9 +354,7 @@ get_char
         beq -
         ; modifiers in $d611 (0=rshift,1=lshift,2=ctrl,3=mega,4=alt,5=noscroll,6=capslock,7=reserved)
         ; lda PETSCIIKEY
-        ldy #0
-        sty ASCIIKEY
-        ; lda #40
+        sta ASCIIKEY
         ; TODO this is a bit of a mess - should we just read scan codes and then a look up table?
         jsr ascii_to_petscii
         ; TODO if conversion fails, loop?
