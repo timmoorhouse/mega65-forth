@@ -16,7 +16,7 @@ console_init
         sta <SCREEN_X
         sta <SCREEN_Y
         jsr _recalc_screen_line
-        jsr clear_screen
+        ; jsr clear_screen
         jsr flush_keyboard
 !ifdef DEBUG {
         ; lda <SCREEN_LINE+3
@@ -111,24 +111,6 @@ _255
         lda #94
         rts
 
-        ; TODO EMIT
-put_char
-        cmp #$0d ; return
-        bne +
-        jmp CR
-+        
-
-        cmp #$14 ; delete
-        bne +
-
-        ; TODO delete
-+
-
-        ; TODO home
-
-        jsr petscii_to_screencode
-        jmp put_char_screencode
-
 put_hex
         ; A: value to output
         ; TODO X,Y,Z: preserved
@@ -147,11 +129,31 @@ put_hex_digit
         and #$0f
         cmp #10
         bmi +
-!convtab scr {
         adc #('a'-2-'9') ; cmp will have set C so -2 instead of -1
 +       adc #'0'
-}
+        ; jmp put_char
+        ; TODO EMIT
+put_char
+!if USE_KERNEL {
+        +KERNEL_CALL $ffd2
+        rts
+} else {
+        cmp #$0d ; return
+        bne +
+        jmp CR
++        
+
+        cmp #$14 ; delete
+        bne +
+
+        ; TODO delete
++
+
+        ; TODO home
+
+        jsr petscii_to_screencode
         ; jmp put_char_screencode
+
 
 put_char_screencode
         ; A: character to output
@@ -187,7 +189,7 @@ put_char_screencode
         ; TODO color ???
         inc <SCREEN_X
         rts
-
+}
 
 _move_right
         lda <SCREEN_X
@@ -198,6 +200,10 @@ _move_right
 
 
 CR
+!if USE_KERNEL {
+        lda #K_RETURN
+        jsr put_char
+} else {
         ldy #0
         sty <SCREEN_X
         ldy <SCREEN_Y
@@ -222,6 +228,7 @@ CR
         sta <COLOUR_LINE+1
         ; pla
         rts
+}
 
 _move_down
         ; trashes A, preserves others
@@ -353,6 +360,7 @@ _7b
         rts        
 
 get_char
+        ; sei
         ; TO DO:
         ; - make sure MEGA65 I/O context is activated ??? (see F-12)
         ;   - think this is being done at the start of COLD
@@ -373,6 +381,7 @@ get_char
         jsr ascii_to_petscii
         ; TODO if conversion fails, loop?
         beq -
+        ; cli
         rts
 
 

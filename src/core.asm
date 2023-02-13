@@ -1895,9 +1895,10 @@ W_COUNT
 
         +WORD "cr"
 W_CR
-        !word *+2
-        jsr CR
-        jmp NEXT
+        !word DO_COLON
+        +CLITERAL K_RETURN
+        !word W_EMIT
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; CREATE 
@@ -2217,20 +2218,10 @@ W_ELSE
         +WORD "emit"
 W_EMIT
         !word *+2
+EMIT
         lda 0,x
 !if USE_KERNEL {
-        cli
-        stx <XSAVE
-        pha
-        lda #0
-        tab
-        pla
-        ; TODO
-        jsr $ffd2 ; $3ffd2 ???
-        lda #>base_page
-        tab
-        ldx <XSAVE
-        sei
+        +KERNEL_CALL $ffd2
 } else {
         jsr put_char
 }

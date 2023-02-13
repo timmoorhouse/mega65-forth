@@ -15,11 +15,11 @@
 W_DOTS
         !word *+2
 
+        stx <XSAVE
         lda #' '
         jsr put_char
         lda #'<'
         jsr put_char
-        stx <XSAVE
         lda #TOS
         sec
         sbc XSAVE
@@ -28,18 +28,22 @@ W_DOTS
         lda #'>'
         jsr put_char
 
-        ldx #TOS
+        lda #TOS
+        sta <TEMP1
 
--       cpx <XSAVE
+-       lda <TEMP1
+        cmp <XSAVE
         beq +
 
         lda #' '
         jsr put_char
-        dex
-        dex
-        lda 1,x
+        dec <TEMP1
+        dec <TEMP1
+        ldy <TEMP1
+        lda base_page+1,y
         jsr put_hex
-        lda 0,x
+        ldy <TEMP1
+        lda base_page,y
         jsr put_hex
         jmp -
 +        
