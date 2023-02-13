@@ -31,7 +31,7 @@ ENABLE_TOOLS_EXT     = 1
 ENABLE_XCHAR         = 0
 ENABLE_XCHAR_EXT     = 0
 
-DEBUG = 0
+DEBUG = 1
 
 ; TODO flags to enable runtime checks?
 
@@ -414,11 +414,27 @@ COLD
         jsr console_init
 
 
-        lda #<_startup_text
+        lda #<_startup_text1
         sta <STRING
-        lda #>_startup_text
+        lda #>_startup_text1
         sta <STRING+1
         jsr put_string
+!ifdef HAVE_REVISION {
+        lda #'-'
+        jsr put_char
+        lda #<_revision
+        sta <STRING
+        lda #>_revision
+        sta <STRING+1
+        jsr put_string
+}
+        lda #<_startup_text2
+        sta <STRING
+        lda #>_startup_text2
+        sta <STRING+1
+        jsr put_string
+
+        jsr flush_keyboard
 
         ; jsr flush_keyboard ; TODO why do we need this?????
 
@@ -548,8 +564,13 @@ W_TEST
 }
         !word W_ABORT
 
-_startup_text
-        +STRING "mega65-forth 0.1\rbye will exit to basic\r\r"
+_startup_text1
+        +STRING "mega65-forth 0.1"
+_startup_text2
+        +STRING "\rbye will exit to basic\r\r"
+!ifdef HAVE_REVISION {
+!src "revision.asm"
+}
 
 !src "internals.asm"
 
