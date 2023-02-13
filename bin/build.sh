@@ -126,8 +126,17 @@ do_build() {
     ACMEOPTS+=(--color)
     # ACMEOPTS+=(-I include/acme)
     ACMEOPTS+=(-I src)
+    [ -z "${opt[builddir]}" ] || ACMEOPTS+=(-I "${opt[builddir]}")
     ACMEOPTS+=(-f cbm)
     ACMEOPTS+=(--msvc)
+
+    local rev=$(git show-ref --head -s --abbrev | head -n1)
+    if [ -n "$rev" -a -z "${opt[dryrun]}"]; then
+        cat <<EOF > "${opt[builddir]}/revision.asm"
+_revision +STRING "$rev"
+EOF
+    fi
+    [ -z "$rev" ] || ACMEOPTS+=(-DHAVE_REVISION=1)
 
     # TODO we put the .sym and .rep files into the source dir
     # (at least temporarily) to make it easier to use m65dbg
