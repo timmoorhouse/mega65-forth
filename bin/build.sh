@@ -132,7 +132,7 @@ do_build() {
     ACMEOPTS+=(--msvc)
 
     local rev=$(git show-ref --head -s --abbrev | head -n1)
-    if [ -n "$rev" -a -z "${opt[dryrun]}"]; then
+    if [ -n "$rev" -a -z "${opt[dryrun]}" ]; then
         cat <<EOF > "${opt[builddir]}/revision.asm"
 _revision +STRING "$rev"
 EOF
