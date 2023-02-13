@@ -779,16 +779,16 @@ _parse_name_all_done
 ; Forth 2012 11.6.2.2266
 
 ; Needs to handle escape sequences:
-; \a    BEL     7                               ?? use 20 (delete)
-; \b    BS      8                               ??
+; \a    BEL     7                               OK
+; \b    BS      8                               OK use 20 (delete)
 ; \e    ESC     27                              OK
 ; \f    FF      12                              OK
-; \l    LF      10                              ??
-; \m    CR/LF   13 10                           ??
-; \n    newline (implementation dependent)      ??
+; \l    LF      10                              OK
+; \m    CR/LF   13 10                           OK just use 13
+; \n    newline (implementation dependent)      OK just use 13
 ; \q            34 (quote)                      OK
 ; \r    CR      13                              OK
-; \t    HT      9 (horizontal tab)              ??
+; \t    HT      9 (horizontal tab)              OK
 ; \v    VT      11 (vertical tab)               ??
 ; \z    NUL     0                               OK
 ; \"            34 (quote)                      OK
