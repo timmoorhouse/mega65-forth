@@ -2,36 +2,36 @@
 !cpu m65
 !convtab pet
 
-ENABLE_BLOCK         = 0
-ENABLE_BLOCK_EXT     = 0
-ENABLE_CORE          = 1 ; Required
-ENABLE_CORE_EXT      = 1
-ENABLE_DOUBLE        = 1
-ENABLE_DOUBLE_EXT    = 1
-ENABLE_EXCEPTION     = 0
-ENABLE_EXCEPTION_EXT = 0
-ENABLE_FACILITY      = 1
-ENABLE_FACILITY_EXT  = 1
-ENABLE_FIG           = 1 ; TODO remove
-ENABLE_FILE          = 1
-ENABLE_FILE_EXT      = 1
-ENABLE_FLOATING      = 0
-ENABLE_FLOATING_EXT  = 0
-ENABLE_LOCAL         = 0
-ENABLE_LOCAL_EXT     = 0
-ENABLE_MEGA65        = 1
-ENABLE_MEMORY        = 0
-ENABLE_MEMORY_EXT    = 0
-ENABLE_SEARCH        = 1
-ENABLE_SEARCH_EXT    = 1
-ENABLE_STRING        = 1
-ENABLE_STRING_EXT    = 1
-ENABLE_TOOLS         = 1 ; for words, .s, etc
-ENABLE_TOOLS_EXT     = 1
-ENABLE_XCHAR         = 0
-ENABLE_XCHAR_EXT     = 0
+!ifndef ENABLE_BLOCK            { ENABLE_BLOCK         = 0 }
+!ifndef ENABLE_BLOCK_EXT        { ENABLE_BLOCK_EXT     = 0 }
+!if 1                           { ENABLE_CORE          = 1 } ; Required
+!ifndef ENABLE_CORE_EXT         { ENABLE_CORE_EXT      = 1 }
+!ifndef ENABLE_DOUBLE           { ENABLE_DOUBLE        = 1 }
+!ifndef ENABLE_DOUBLE_EXT       { ENABLE_DOUBLE_EXT    = 1 }
+!ifndef ENABLE_EXCEPTION        { ENABLE_EXCEPTION     = 0 }
+!ifndef ENABLE_EXCEPTION_EXT    { ENABLE_EXCEPTION_EXT = 0 }
+!ifndef ENABLE_FACILITY         { ENABLE_FACILITY      = 1 }
+!ifndef ENABLE_FACILITY_EXT     { ENABLE_FACILITY_EXT  = 1 }
+!ifndef ENABLE_FIG              { ENABLE_FIG           = 1 } ; TODO remove
+!ifndef ENABLE_FILE             { ENABLE_FILE          = 1 }
+!ifndef ENABLE_FILE_EXT         { ENABLE_FILE_EXT      = 1 }
+!ifndef ENABLE_FLOATING         { ENABLE_FLOATING      = 0 }
+!ifndef ENABLE_FLOATING_EXT     { ENABLE_FLOATING_EXT  = 0 }
+!ifndef ENABLE_LOCAL            { ENABLE_LOCAL         = 0 }
+!ifndef ENABLE_LOCAL_EXT        { ENABLE_LOCAL_EXT     = 0 }
+!ifndef ENABLE_MEGA65           { ENABLE_MEGA65        = 1 }
+!ifndef ENABLE_MEMORY           { ENABLE_MEMORY        = 0 }
+!ifndef ENABLE_MEMORY_EXT       { ENABLE_MEMORY_EXT    = 0 }
+!ifndef ENABLE_SEARCH           { ENABLE_SEARCH        = 1 }
+!ifndef ENABLE_SEARCH_EXT       { ENABLE_SEARCH_EXT    = 1 }
+!ifndef ENABLE_STRING           { ENABLE_STRING        = 1 }
+!ifndef ENABLE_STRING_EXT       { ENABLE_STRING_EXT    = 1 }
+!ifndef ENABLE_TOOLS            { ENABLE_TOOLS         = 1 } ; for words, .s, etc
+!ifndef ENABLE_TOOLS_EXT        { ENABLE_TOOLS_EXT     = 1 }
+!ifndef ENABLE_XCHAR            { ENABLE_XCHAR         = 0 }
+!ifndef ENABLE_XCHAR_EXT        { ENABLE_XCHAR_EXT     = 0 }
 
-DEBUG = 1
+!ifndef DEBUG                   { DEBUG=0 }
 
 ; TODO flags to enable runtime checks?
 

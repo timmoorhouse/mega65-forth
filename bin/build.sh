@@ -126,6 +126,7 @@ do_build() {
     ACMEOPTS+=(--color)
     # ACMEOPTS+=(-I include/acme)
     ACMEOPTS+=(-I src)
+    # ACMEOPTS+=(-DDEBUG=1)
     [ -z "${opt[builddir]}" ] || ACMEOPTS+=(-I "${opt[builddir]}")
     ACMEOPTS+=(-f cbm)
     ACMEOPTS+=(--msvc)
