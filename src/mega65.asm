@@ -4,7 +4,6 @@
 ; - take a pass over the BASIC keywords and make equivalents? (will want DIR, etc)
 ; - look at C64 forth implementations (eg superFORTH)
 
-!if ENABLE_MEGA65 {
 
 ; ****************************************************************************
 ; MON
@@ -13,19 +12,16 @@
 ;               Exit to the system monitor, leaving a re-entry to Forth, 
 ;               if possible.
 
-;;
-;;                                       MON
-;;                                       SCREEN 79 LINE 3
-;;
-!if 0 {
-;NTOP ???????
+!if ENABLE_MEGA65 {
         +WORD "mon"
 W_MON
         !word *+2
-;          STX XSAVE
-;          BRK       ; break to monitor which is assumed
-;          LDX XSAVE ; to save this as reentry point
+        jsr MON
         jmp NEXT
-}
 
+MON
+        ; TODO exiting the monitor will return to basic
+        ; set monexit (ffa2) vector first?
+        +KERNEL_CALL $ff56
+        rts
 }

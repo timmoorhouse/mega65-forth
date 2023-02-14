@@ -1,5 +1,5 @@
 
-; TODO blink cursor position
+; TODO remove this stuff
 
 console_init
         lda #158
