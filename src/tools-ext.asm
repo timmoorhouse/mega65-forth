@@ -104,20 +104,9 @@ W_PSCODE
         +WORD "bye"
 W_BYE
         !word *+2
-!if DEBUG {
-        jsr CR
-        lda #'p'
-        jsr put_char
-}
 
         ; Restore the hardware stack ... an RTS should then return to basic
         jsr RPSTORE
-
-!if DEBUG {
-        jsr CR
-        lda #'p'
-        jsr put_char
-}
 
         ; restore base page
         lda #0

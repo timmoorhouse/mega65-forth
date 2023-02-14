@@ -54,8 +54,10 @@ isspace
         pla
 }
 !macro KERNEL_POST {
+        pha
         lda #>base_page
         tab
+        pla
         ldx <XSAVE
 }
 !macro KERNEL_CALL .tgt {

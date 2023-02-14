@@ -908,11 +908,7 @@ W_OFFSET
         +WORD "out"
 W_OUT
         !word DO_CONSTANT
-!if USE_KERNEL {
-        !word $00ec ; pntr
-} else {
-        !word &SCREEN_X
-}
+        !word $00ec ; pntr TODO symbol?
 
 ; ****************************************************************************
 ; ?PAIRS

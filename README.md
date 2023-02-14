@@ -57,5 +57,4 @@ that the build process will get more involved:
 # CREDITS
 
 - Lots of the implementation comes from [FIG FORTH release 1.1](https://github.com/ptorric/figforth)
-- Paul Gardner-Stephen for the [floppy handling code](https://github.com/MEGA65/mega65-tools/blob/master/src/utilities/fastload_demo.asm)
 - [Test suite](https://github.com/gerryjackson/forth2012-test-suite)

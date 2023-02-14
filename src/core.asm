@@ -1450,7 +1450,7 @@ W_ACCEPT
         !word W_PDO
 
         !word W_DROP 
-        !word W_ZERO        
+        !word W_ZERO
         
         ; (0)
 
@@ -1546,7 +1546,11 @@ _accept_do_emit
         !word W_EMIT
 }
 
+!if 0 {
         !word W_EMIT 
+} else {
+        !word W_DROP
+}
 
         ; (index)
 
@@ -1560,7 +1564,7 @@ _accept_do_emit
         !word _accept_loop-*
 _accept_after_loop ; TODO remove        
 
-!if DEBUG {
+!if 0 {
         !word W_CR
 }
 
@@ -1895,10 +1899,13 @@ W_COUNT
 
         +WORD "cr"
 W_CR
-        !word DO_COLON
-        +CLITERAL K_RETURN
-        !word W_EMIT
-        !word W_PSEMI
+        !word *+2
+        jsr CR
+        jmp NEXT
+
+CR
+        lda #K_RETURN
+        jmp EMIT
 
 ; ****************************************************************************
 ; CREATE 
@@ -2218,14 +2225,13 @@ W_ELSE
         +WORD "emit"
 W_EMIT
         !word *+2
-EMIT
         lda 0,x
-!if USE_KERNEL {
-        +KERNEL_CALL $ffd2
-} else {
-        jsr put_char
-}
+        jsr EMIT
         jmp POP
+
+EMIT
+        +KERNEL_CALL $ffd2
+        rts
 
 ; ****************************************************************************
 ; ENVIRONMENT? 
@@ -2833,11 +2839,15 @@ W_IMMEDIATE
 W_KEY
         !word *+2
         ; ldy #0 ; TODO
-        sei ; TODO
-        jsr get_char
+        ; sei ; TODO
+        jsr KEY
         pha
         lda #0
         jmp PUSH
+
+KEY
+        +KERNEL_CALL $ffcf
+        rts
 
 ; ****************************************************************************
 ; LEAVE 
@@ -3247,35 +3257,37 @@ _quit_read_loop
 
         !word W_RPSTORE ; TODO HOW???
 
-!if 0 {
-        +CLITERAL '['
-        !word W_EMIT
-}
-
         +LITERAL UAREA+U_TIB ; TODO !!!!!!!!!!!!!!
         !word W_AT
         !word W_DUP
         +CLITERAL 80
-        !word W_ACCEPT
-
-!if 0 {
-        ; replace input from terminal with test string ...
-        !word W_2DROP
-        +LITERAL _test_string
-        !word W_COUNT
-        !word W_CR
-        !word W_2DUP
-        !word W_TYPE
-        !word W_CR
-}
-
-        !word W_EVALUATE
-
 !if DEBUG {
-        !word W_SOURCE
+        !word W_PDOTQ
+        +STRING "<quit-pre-accept>"
+        !word W_DOTS,W_CR
+}        
+        !word W_ACCEPT
+!if DEBUG {
+        !word W_PDOTQ
+        +STRING "<quit-post-accept>"
+        !word W_DOTS,W_CR
+}    
+!if 1 {
+        !word W_EVALUATE
+} else {
+!if 0 {
+        +CLITERAL '['
+        !word W_EMIT
         !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
         !word W_CR
+} else {
+        !word W_2DROP
 }
+        !word W_DOTS,W_CR
+}
+
 
 !if DEBUG {
         !word W_DOTS,W_CR

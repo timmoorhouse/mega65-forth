@@ -38,7 +38,6 @@
 !ifndef DEBUG                           { DEBUG                        = 0 }
 !ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS        = 1 } ; not yet used
 !ifndef USE_BASIC                       { USE_BASIC                    = 0 } ; not used - REMOVE?
-!ifndef USE_KERNEL                      { USE_KERNEL                   = 0 }
 
 ; C64 jump table https://sta.c64.org/cbm64krnfunc.html
 ; C128 jump table
@@ -407,7 +406,7 @@ COLD
 ;               and restart.
 
         +map_reset ; TODO why do we need this for the dma fill in clear_screen to work?
-!if USE_KERNEL {
+
         ; E000-FFFF     3E000   KERNAL
         ; C000-DFFF
         ; A000-BFFF
@@ -421,7 +420,7 @@ COLD
         lda #$00
         ldx #$00
         map
-}        
+
 !if USE_BASIC {
         ; TODO
 }
@@ -439,7 +438,6 @@ COLD
         tab
 
         jsr console_init
-        jsr clear_screen
         
 ; rest of cold stuff from FIG ...
 ;          LDA ORIG+$0C   ; from cold start area
@@ -540,7 +538,7 @@ W_STARTUP = W_ABORT
         jsr put_string
 !ifdef HAVE_REVISION {
         lda #'-'
-        jsr put_char
+        jsr EMIT
         lda #<_revision
         sta <STRING
         lda #>_revision
@@ -571,16 +569,12 @@ W_STARTUP_DEBUG
 !if 0 {
         !word W_COMPARE_TEST
 }
-        +CLITERAL '>'
-        !word W_EMIT
 !if ENABLE_FILE {
         !word W_FILE_TEST
 }
 !if 0 {
         !word W_TONUMBER_TEST
 }
-        +CLITERAL '>'
-        !word W_EMIT
         !word W_ABORT
 }
 

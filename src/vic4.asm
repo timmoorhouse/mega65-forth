@@ -1,7 +1,7 @@
 
 
 !address {
-KEY             = $d02f
+vic4_KEY             = $d02f
 LINESTEPLSB     = $d058 
 LINESTEPMSB     = $d059
 CHRCOUNT        = $d05e ; LSB, MSB in SCRNPTR+3 (D063)
@@ -16,9 +16,9 @@ DISPROWS        = $d07b ; TODO name? book has just "number"
 
 !macro vic4_enable {
         lda #$47	            
-        sta KEY
+        sta vic4_KEY
         lda #$53
-        sta KEY
+        sta vic4_KEY
 }
 
 ;.macro VIC4_SetCharLocation(addr) {

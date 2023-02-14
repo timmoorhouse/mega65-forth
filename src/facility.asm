@@ -11,10 +11,12 @@
         +WORD "at-xy"
 W_AT_XY
         !word *+2
+!if 0 {
         lda 0,x
         jsr goto_x
         lda 2,x
         jsr goto_y
+}
         jmp NEXT
 }
 
@@ -35,10 +37,11 @@ W_AT_XY
         +WORD "page"
 W_PAGE
         !word *+2
-        jsr clear_screen
-        lda #0
-        jsr goto_x
-        lda #0
-        jsr goto_y
+        jsr PAGE
         jmp NEXT
 }
+
+PAGE
+        lda #147
+        +KERNEL_CALL $ffd2
+        rts

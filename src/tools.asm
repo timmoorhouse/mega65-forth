@@ -17,16 +17,16 @@ W_DOTS
 
         stx <XSAVE
         lda #' '
-        jsr put_char
+        jsr EMIT
         lda #'<'
-        jsr put_char
+        jsr EMIT
         lda #TOS
         sec
         sbc XSAVE
         lsr
         jsr put_hex
         lda #'>'
-        jsr put_char
+        jsr EMIT
 
         lda #TOS
         sta <TEMP1
@@ -36,7 +36,7 @@ W_DOTS
         beq +
 
         lda #' '
-        jsr put_char
+        jsr EMIT
         dec <TEMP1
         dec <TEMP1
         ldy <TEMP1
