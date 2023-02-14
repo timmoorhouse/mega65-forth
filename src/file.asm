@@ -223,6 +223,8 @@ W_INCLUDE_FILE
         !word W_DOTS
 }
 
+        ; TODO need to set SOURCE-ID
+
         !word W_TOR
 
 _include_read_loop
@@ -254,7 +256,7 @@ _include_ior_ok
 
         ; (c-addr u)
 
-        !word W_EVALUATE
+        !word W_EVALUATE ; TODO this sets SOURCE-ID to -1 !!!!!!!!!
 
         +BRANCH _include_read_loop
 _include_after_loop
