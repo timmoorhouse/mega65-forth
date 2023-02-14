@@ -99,10 +99,8 @@ done
 
 declare -a acmeopts
 acmeopts+=(--color)
-# acmeopts+=(-DDEBUG=1)
 acmeopts+=(-f cbm)
 acmeopts+=(--msvc)
-# acmeopts+=(-I include/acme)
 acmeopts+=(-I src)
 acmeopts+=(-I "${opt[builddir]}")
 
@@ -115,6 +113,8 @@ declare -a m65opts
 declare -a xmega65opts
 xmega65opts+=(-uartmon :4510)
 xmega65opts+=(-autoload 1)
+
+acmeopts+=(-DDEBUG=1)
 
 set -e
 

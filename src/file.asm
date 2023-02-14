@@ -2,6 +2,8 @@
 ; ****************************************************************************
 ; FILE
 
+; TODO separate kernel stuff into separate file
+
 W_FILE_TEST
         !word DO_COLON
         !word W_PDOTQ
@@ -267,16 +269,108 @@ W_OPEN_FILE
         !word W_EMIT
         !word W_DOTS
 }         
-        ; TODO
-        !word W_DROP
-        !word W_2DROP
-        !word W_ONE
+        !word W_DROP    ; TODO use fam?
+
+        !word W_SETNAM
+
+        +LITERAL 1      ; TODO find unused fileid
+
+        !word W_DUP
+        +LITERAL 8
         !word W_ZERO
+        !word W_SETLFS
+
+        !word W_OPEN
+
+        !word W_READST
+
 !if DEBUG {
         !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
+
+W_SETLFS        ; (logical device secondary --)
+        !word *+2
+        stx <TEMP1
+        lda 4,x
+        pha
+        lda 2,x
+        tax
+        ldy 0,x
+        pla
+        jsr SETLFS
+        ldx <TEMP1
+        inx
+        inx
+        jmp POPTWO
+
+; $FFBA	
+; SETLFS. Set file parameters.
+; Input: A = Logical number; X = Device number; Y = Secondary address.
+; Output: –
+; Used registers: –
+; Real address: $FE00.
+SETLFS
+        +KERNEL_CALL $ffba
+        rts
+
+W_SETNAM        ; (c-addr u --)
+        !word *+2
+        stx <TEMP1
+        lda 0,x
+        pha
+        ldy 3,x ; TODO check order of x & y
+        lda 2,x
+        tax
+        pla
+        jsr SETNAM
+        ldx <TEMP1
+        jmp POPTWO
+
+; $FFBD	
+; SETNAM. Set file name parameters.
+; Input: A = File name length; X/Y = Pointer to file name.
+; Output: –
+; Used registers: –
+; Real address: $FDF9.
+SETNAM
+        +KERNEL_CALL $ffbd
+        rts
+
+W_OPEN          ; (--)
+        !word *+2
+        jsr OPEN
+        jmp NEXT
+
+; $FFC0	
+; OPEN. Open file. (Must call SETLFS and SETNAM beforehands.)
+; Input: –
+; Output: –
+; Used registers: A, X, Y.
+; Real address: ($031A), $F34A.
+
+OPEN
+        +KERNEL_CALL $ffc0
+        rts
+
+W_READST        ; (-- ior)
+        !word *+2
+        jsr READST
+        pha
+        lda #0
+        jmp PUSH
+
+; $FFB7	
+; READST. Fetch status of current input/output device, value of ST variable. (For RS232, status is cleared.)
+; Input: –
+; Output: A = Device status.
+; Used registers: A.
+; Real address: $FE07.
+READST 
+        +KERNEL_CALL $ffb7
+        rts
+
 
 ; ****************************************************************************
 ; R/O
@@ -350,6 +444,14 @@ W_READ_FILE
         !word W_DOTS
 }           
         ; TODO       
+
+        ; $FFD5	
+        ; LOAD. Load or verify file. (Must call SETLFS and SETNAM beforehands.)
+        ; Input: A: 0 = Load, 1-255 = Verify; X/Y = Load address (if secondary address = 0).
+        ; Output: Carry: 0 = No errors, 1 = Error; A = KERNAL error code (if Carry = 1); X/Y = Address of last byte loaded/verified (if Carry = 0).
+        ; Used registers: A, X, Y.
+        ; Real address: $F49E.
+
         !word W_DROP
         !word W_2DROP
         !word W_ZERO
@@ -375,16 +477,64 @@ W_READ_LINE
         !word W_DOTS
 }           
         ; TODO
+
+        !word W_CHKIN
+
         !word W_DROP
-        !word W_2DROP
-        !word W_ZERO
+        !word W_CHRIN
+        !word W_SWAP
+        !word W_CSTORE
+        !word W_ONE
         !word W_TRUE
+
+        ; restore default input
         !word W_ZERO
+        !word W_CHKIN
+
+        !word W_READST
+
 !if DEBUG {
         !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
+
+W_CHKIN         ; (u --)
+        !word *+2
+        stx <TEMP1
+        lda 0,x
+        tax
+        jsr CHKIN
+        ldx <TEMP1
+        jmp POP
+
+; $FFC6	
+; CHKIN. Define file as default input. (Must call OPEN beforehands.)
+; Input: X = Logical number.
+; Output: –
+; Used registers: A, X.
+; Real address: ($031E), $F20E.
+
+CHKIN
+        +KERNEL_CALL $ffc6
+        rts
+
+; $FFCF	
+; CHRIN. Read byte from default input (for keyboard, read a line from the screen). (If not keyboard, must call OPEN and CHKIN beforehands.)
+; Input: –
+; Output: A = Byte read.
+; Used registers: A, Y.
+; Real address: ($0324), $F157.
+
+W_CHRIN         ; (-- c)
+        !word *+2
+        phy
+        jsr CHRIN
+        jmp PUSH
+
+CHRIN
+        +KERNEL_CALL $ffcf
+        rts
 
 ; ****************************************************************************
 ; REPOSITION-FILE
@@ -476,6 +626,14 @@ W_WRITE_FILE
         !word W_DOTS
 }       
         ; TODO
+
+        ; $FFD8	
+        ; SAVE. Save file. (Must call SETLFS and SETNAM beforehands.)
+        ; Input: A = Address of zero page register holding start address of memory area to save; X/Y = End address of memory area plus 1.
+        ; Output: Carry: 0 = No errors, 1 = Error; A = KERNAL error code (if Carry = 1).
+        ; Used registers: A, X, Y.
+        ; Real address: $F5DD.
+
         !word W_DROP
         !word W_2DROP
         !word W_ZERO   
@@ -500,6 +658,21 @@ W_WRITE_LINE
         !word W_DOTS
 }       
         ; TODO
+
+        ; $FFC9	
+        ; CHKOUT. Define file as default output. (Must call OPEN beforehands.)
+        ; Input: X = Logical number.
+        ; Output: –
+        ; Used registers: A, X.
+        ; Real address: ($0320), $F250.
+
+        ; $FFD2	
+        ; CHROUT. Write byte to default output. (If not screen, must call OPEN and CHKOUT beforehands.)
+        ; Input: A = Byte to write.
+        ; Output: –
+        ; Used registers: –
+        ; Real address: ($0326), $F1CA.
+
         !word W_DROP
         !word W_2DROP
         !word W_ZERO  
