@@ -57,16 +57,8 @@ FAM_RW  = (FAM_RO|FAM_WO)
         +WORD "bin"
 W_BIN
         !word DO_COLON
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<bin>"
-        !word W_DOTS
-}
         +LITERAL FAM_BIN
         !word W_OR
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
         !word W_PSEMI
 }
 
@@ -253,6 +245,7 @@ _include_after_loop
         +STRING "<include-file-end>"        
         !word W_DOTS,W_CR
 }    
+
         !word W_PSEMI
 }
 

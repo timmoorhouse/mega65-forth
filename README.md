@@ -49,6 +49,7 @@ that the build process will get more involved:
 # RANDOM TODOs
 
 - [ ] Basic file reading (in progress)
+- [ ] SAVE-INPUT, RESTORE-INPUT, stack of parse inputs
 - [ ] Defining words
 - [ ] Saving a snapshot
 - [ ] Bootstrapping with portions of the library written in Forth using the above features

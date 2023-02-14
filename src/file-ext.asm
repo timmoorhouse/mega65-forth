@@ -7,7 +7,7 @@
 ; (c-addr u -- x ior)
 ; ANSI 11.6.2.1524
 
-!if ENABLE_FILE {
+!if ENABLE_FILE_EXT {
         +WORD "file-status"
 W_FILE_STATUS
         !word DO_COLON
@@ -32,7 +32,7 @@ W_FILE_STATUS
 ; (fileid -- ior)
 ; ANSI 11.6.2.1560
 
-!if ENABLE_FILE {
+!if ENABLE_FILE_EXT {
         +WORD "flush-file"
 W_FLUSH_FILE
         !word DO_COLON
@@ -55,7 +55,7 @@ W_FLUSH_FILE
 ; (i*x "name" -- j*x)
 ; Forth 2012 11.6.2.1714
 
-!if ENABLE_FILE {
+!if ENABLE_FILE_EXT {
         +WORD_IMM "include"
 W_INCLUDE
         !word DO_COLON
@@ -63,10 +63,29 @@ W_INCLUDE
         !word W_PDOTQ
         +STRING "<include>"
         !word W_DOTS
-}       
+}
         ; TODO
         !word W_PARSE_NAME
-        !word W_2DROP
+
+!if 1 {
+        !word W_2DUP
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
+}
+
+        !word W_RSLO
+        !word W_OPEN_FILE
+        !word W_DROP ; TODO check status
+        !word W_TOR ; need to move to return stack since include-file can do arbitrary things to the data stack
+        !word W_RAT
+        !word W_INCLUDE_FILE
+        !word W_RFROM
+        !word W_CLOSE_FILE
+        !word W_DROP ; TODO check status
+
 !if DEBUG {
         !word W_DOTS,W_CR
 }
@@ -79,7 +98,7 @@ W_INCLUDE
 ; ANSI 7.6.2.2125
 ; ANSI 11.6.2.2125
 
-!if ENABLE_FILE {
+!if ENABLE_FILE_EXT {
         +WORD "refill"
 W_REFILL
         !word DO_COLON
@@ -101,7 +120,7 @@ W_REFILL
 ; (c-addr_1 u_1 c-addr_2 u_2 -- ior)
 ; ANSI 11.6.2.2130
 
-!if ENABLE_FILE {
+!if ENABLE_FILE_EXT {
         +WORD "rename-file"
 W_RENAME_FILE
         !word DO_COLON
@@ -125,7 +144,7 @@ W_RENAME_FILE
 ; (i*x "name" -- i*x)
 ; Forth 2012 11.6.2.2144.10
 
-!if ENABLE_FILE {
+!if ENABLE_FILE_EXT {
         +WORD_IMM "require"
 W_REQUIRE
         !word DO_COLON
@@ -148,10 +167,17 @@ W_REQUIRE
         !word W_RSLO
         !word W_OPEN_FILE
         !word W_DROP ; TODO check status
+        !word W_TOR
+
 !if 0 {
+        !word W_RAT
         !word W_INCLUDE_FILE
 }
-        ; !word W_CLOSE_FILE ; TODO !!!!!!!!!!!!
+!if 0 {
+        !word W_RFROM
+        !word W_CLOSE_FILE ; TODO !!!!!!!!!!!!
+        !word W_DROP ; TODO check status
+}
 !if 1 {
         !word W_DOTS,W_CR
 }
@@ -163,7 +189,7 @@ W_REQUIRE
 ; (i*x c-addr u -- i*x)
 ; Forth 2012 11.6.2.2144.50
 
-!if ENABLE_FILE {
+!if ENABLE_FILE_EXT {
         +WORD_IMM "required"
 W_REQUIRED
         !word DO_COLON
