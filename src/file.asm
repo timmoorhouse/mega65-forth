@@ -19,6 +19,12 @@ W_FILE_TEST
 
         !word W_TOR     ; (R: fileid)
 
+!if 1 {
+        !word W_RAT
+        !word W_INCLUDE_FILE
+}
+
+!if 0 {
         !word W_PAD
         !word W_DUP
         +CLITERAL 90
@@ -34,6 +40,7 @@ W_FILE_TEST
         !word W_TYPE
         +CLITERAL ']'
         !word W_EMIT
+}
 
         !word W_RFROM,W_DROP
 
@@ -204,6 +211,8 @@ W_FILE_SIZE
 ; (i*x fileid -- j*x)
 ; ANSI 11.6.1.1717
 
+; TODO lots of duplication with QUIT ...
+
 !if ENABLE_FILE {
         +WORD "include-file"
 W_INCLUDE_FILE
@@ -213,8 +222,78 @@ W_INCLUDE_FILE
         +STRING "<include-file>"
         !word W_DOTS
 }
-        ; TODO
-        !word W_DROP     
+
+!if 1 {
+        +LITERAL 3
+        +LITERAL 0
+        !word W_PDO
+}
+
+_include_read_loop
+
+
+        !word W_DUP
+        !word W_TOR
+
+        !word W_PAD ; TODO NEED TO USE A BUFFER NEAR END OF MEM SINCE THE EVALUATE CAN ALLOT !!!!!!!!!!!!
+
+        !word W_DUP
+        +CLITERAL 90
+        !word W_RFROM
+        !word W_READ_LINE
+
+        ; (c-addr u_w flag ior)
+
+        +ZBRANCH _include_no_error
+
+        !word W_DROP ; drop flag
+        !word W_DROP ; drop u2
+        !word W_DROP ; drop buffer address
+
+        !word W_PDOTQ
+        +STRING "<include-error>"
+        !word W_DOTS,W_CR
+        !word W_LEAVE
+        !word _include_after_loop-*
+
+_include_no_error
+        !word W_DROP ; TODO look at flag
+
+!if 1 {
+        !word W_2DUP
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
+}        
+
+!if DEBUG {
+        !word W_PDOTQ
+        +STRING "<include-file>"
+        !word W_DOTS,W_CR
+}
+
+!if 1 {
+        !word W_EVALUATE
+} else {
+        !word W_2DROP
+}
+
+!if 1 {
+        !word W_DOTS
+        !word W_CR
+}
+
+!if 1 {
+        !word W_PLOOP
+        !word _include_read_loop-*
+}
+_include_after_loop
+        ; +BRANCH _include_read_loop
+
+        !word W_DROP ; drop fileid
+
 !if DEBUG {
         !word W_DOTS,W_CR
 }    
@@ -377,8 +456,6 @@ W_READ_FILE
 ; A line ending is reached, u_2 does not include the line ending.
 ; If u_2 < u_1 the line ending has been reached.  If u_2 = u_1, the line ending has not been reached.
 
-READ_LINE_DO_LOOP = 1
-
 !if ENABLE_FILE {
         +WORD "read-line"
 W_READ_LINE
@@ -427,6 +504,8 @@ _read_line_not_return
 _read_line_after_loop
 
         !word W_TRUE
+
+        ; TODO need to bump up file position counter?  or does the kernel track this?
 
         ; restore default input
         !word W_ZERO
