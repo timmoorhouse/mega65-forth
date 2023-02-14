@@ -325,24 +325,7 @@ W_OPEN_FILE
         !word W_SETBANK
 
         !word W_SETNAM
-!if 1 {
-        +CLITERAL '<'
-        !word W_EMIT
-        +LITERAL 189
-        !word W_CAT
-        !word W_DOT
-        +CLITERAL '>'
-        !word W_EMIT
-}
-!if 1 {
-        +CLITERAL '<'
-        !word W_EMIT
-        +LITERAL 190
-        !word W_CAT
-        !word W_DOT
-        +CLITERAL '>'
-        !word W_EMIT
-}
+
         ; TODO in BASIC for DOPEN#, channel numbers in [1,127] use CR, [128,255] use CR LF
         ; TODO DOPEN# has a ,W flag for write access
 

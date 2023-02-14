@@ -136,7 +136,11 @@ W_REQUIRE
 }       
         ; TODO
         !word W_PARSE_NAME
-        !word W_2DROP    
+        !word W_RSLO
+        !word W_OPEN_FILE
+        !word W_DROP ; TODO check status
+        !word W_INCLUDE_FILE
+
 !if DEBUG {
         !word W_DOTS,W_CR
 }
