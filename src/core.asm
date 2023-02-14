@@ -2226,12 +2226,8 @@ W_ELSE
 W_EMIT
         !word *+2
         lda 0,x
-        jsr EMIT
+        jsr BASOUT
         jmp POP
-
-EMIT
-        +KERNEL_CALL $ffd2
-        rts
 
 ; ****************************************************************************
 ; ENVIRONMENT? 
@@ -2838,16 +2834,11 @@ W_IMMEDIATE
         +WORD "key"
 W_KEY
         !word *+2
-        ; ldy #0 ; TODO
         ; sei ; TODO
-        jsr KEY
+        jsr BASIN ; TODO switch to GETIN for getting an individual keypress?
         pha
         lda #0
         jmp PUSH
-
-KEY
-        +KERNEL_CALL $ffcf
-        rts
 
 ; ****************************************************************************
 ; LEAVE 

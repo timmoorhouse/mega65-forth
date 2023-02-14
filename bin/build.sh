@@ -114,7 +114,7 @@ declare -a xmega65opts
 xmega65opts+=(-uartmon :4510)
 xmega65opts+=(-autoload 1)
 
-acmeopts+=(-DDEBUG=1)
+# acmeopts+=(-DDEBUG=1)
 
 set -e
 
@@ -123,9 +123,10 @@ add_text_files() {
     shift
     for src; do
         local name=$(basename "$src")
+        # TODO this uses $0a for line ending, want $0d
         cmd dd if="$src" of="${opt[builddir]}/$name.lc" conv=lcase
         cmd "${opt[petcat]}" -text -w10 -o "${opt[builddir]}/$name" -- "${opt[builddir]}/$name.lc"
-        cmd "${opt[c1541]}" "$image" -write "${opt[builddir]}/$name"
+        cmd "${opt[c1541]}" "$image" -write "${opt[builddir]}/$name" "$name,s"
     done
 }
 

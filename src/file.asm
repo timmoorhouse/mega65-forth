@@ -17,11 +17,11 @@ W_FILE_TEST
 
         !word W_DROP ; TODO check status?
 
-        !word W_TOR
+        !word W_TOR     ; (R: fileid)
 
         !word W_PAD
         !word W_DUP
-        +CLITERAL 80
+        +CLITERAL 90
         !word W_RAT
 
         !word W_READ_LINE
@@ -271,105 +271,49 @@ W_OPEN_FILE
 }         
         !word W_DROP    ; TODO use fam?
 
-        !word W_SETNAM
+        !word W_ZERO
+        !word W_DUP
+        !word W_SETBANK
 
-        +LITERAL 1      ; TODO find unused fileid
+        !word W_SETNAM
+!if 1 {
+        +CLITERAL '<'
+        !word W_EMIT
+        +LITERAL 189
+        !word W_CAT
+        !word W_DOT
+        +CLITERAL '>'
+        !word W_EMIT
+}
+!if 1 {
+        +CLITERAL '<'
+        !word W_EMIT
+        +LITERAL 190
+        !word W_CAT
+        !word W_DOT
+        +CLITERAL '>'
+        !word W_EMIT
+}
+        ; TODO in BASIC for DOPEN#, channel numbers in [1,127] use CR, [128,255] use CR LF
+        ; TODO DOPEN# has a ,W flag for write access
+
+        +LITERAL 50      ; TODO find unused fileid
 
         !word W_DUP
         +LITERAL 8
-        !word W_ZERO
+        ;!word W_ZERO
+        +LITERAL 5
         !word W_SETLFS
 
         !word W_OPEN
 
-        !word W_READST
+        !word W_READSS
 
 !if DEBUG {
         !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
-
-W_SETLFS        ; (logical device secondary --)
-        !word *+2
-        stx <TEMP1
-        lda 4,x
-        pha
-        lda 2,x
-        tax
-        ldy 0,x
-        pla
-        jsr SETLFS
-        ldx <TEMP1
-        inx
-        inx
-        jmp POPTWO
-
-; $FFBA	
-; SETLFS. Set file parameters.
-; Input: A = Logical number; X = Device number; Y = Secondary address.
-; Output: –
-; Used registers: –
-; Real address: $FE00.
-SETLFS
-        +KERNEL_CALL $ffba
-        rts
-
-W_SETNAM        ; (c-addr u --)
-        !word *+2
-        stx <TEMP1
-        lda 0,x
-        pha
-        ldy 3,x ; TODO check order of x & y
-        lda 2,x
-        tax
-        pla
-        jsr SETNAM
-        ldx <TEMP1
-        jmp POPTWO
-
-; $FFBD	
-; SETNAM. Set file name parameters.
-; Input: A = File name length; X/Y = Pointer to file name.
-; Output: –
-; Used registers: –
-; Real address: $FDF9.
-SETNAM
-        +KERNEL_CALL $ffbd
-        rts
-
-W_OPEN          ; (--)
-        !word *+2
-        jsr OPEN
-        jmp NEXT
-
-; $FFC0	
-; OPEN. Open file. (Must call SETLFS and SETNAM beforehands.)
-; Input: –
-; Output: –
-; Used registers: A, X, Y.
-; Real address: ($031A), $F34A.
-
-OPEN
-        +KERNEL_CALL $ffc0
-        rts
-
-W_READST        ; (-- ior)
-        !word *+2
-        jsr READST
-        pha
-        lda #0
-        jmp PUSH
-
-; $FFB7	
-; READST. Fetch status of current input/output device, value of ST variable. (For RS232, status is cleared.)
-; Input: –
-; Output: A = Device status.
-; Used registers: A.
-; Real address: $FE07.
-READST 
-        +KERNEL_CALL $ffb7
-        rts
 
 
 ; ****************************************************************************
@@ -389,44 +333,11 @@ W_RSLO
 ; (-- fam)
 ; ANSI 11.6.1.2056
 
-; FIG:
-;      R/W           addr  blk  f  ---
-;               The fig-FORTH standard disc read-write linkage.  addr 
-;               specifies the source or destination block buffer, blk is 
-;               the sequential number of the referenced block; and f is a 
-;               flag for f=0 write and f=1 for read.  R/W determines the 
-;               location on mass storage, performs the read-write and 
-;               performs any error checking.
-;
-;;
-;;                                       R/W
-;;                              Read or write one sector
-;;
-
 !if ENABLE_FILE {
         +WORD "r/w"
 W_RSLW
         !word DO_CONSTANT
         !word FAM_RW
-}
-!if 0 {
-        +WORD "r/w"
-W_RSLW
-        !word DO_COLON
-;          !word ZEQU,LIT,$C4DA,CSTOR
-;          !word SWAP,ZERO,STORE
-;          !word ZERO,OVER,GREAT,OVER
-;          !word LIT,SECTL-1,GREAT,OR,CLIT
-;          !byte 6
-;          !word QERR
-;          !word ZERO,LIT,SECTR,USLAS,1PLUS
-;          !word SWAP,ZERO,CLIT
-;          !byte $12
-;          !word USLAS,DBCD,SWAP,1PLUS
-;          !word DBCD,DDISC,CLIT
-;          !byte 8
-;          !word QERR
-        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -445,12 +356,6 @@ W_READ_FILE
 }           
         ; TODO       
 
-        ; $FFD5	
-        ; LOAD. Load or verify file. (Must call SETLFS and SETNAM beforehands.)
-        ; Input: A: 0 = Load, 1-255 = Verify; X/Y = Load address (if secondary address = 0).
-        ; Output: Carry: 0 = No errors, 1 = Error; A = KERNAL error code (if Carry = 1); X/Y = Address of last byte loaded/verified (if Carry = 0).
-        ; Used registers: A, X, Y.
-        ; Real address: $F49E.
 
         !word W_DROP
         !word W_2DROP
@@ -467,6 +372,13 @@ W_READ_FILE
 ; (c-addr u_1 fileid -- u_2 flag ior)
 ; ANSI 11.6.1.2090
 
+; Stops at line ending
+; Buffer should be at least u_1+2 characters long.
+; A line ending is reached, u_2 does not include the line ending.
+; If u_2 < u_1 the line ending has been reached.  If u_2 = u_1, the line ending has not been reached.
+
+READ_LINE_DO_LOOP = 1
+
 !if ENABLE_FILE {
         +WORD "read-line"
 W_READ_LINE
@@ -480,61 +392,53 @@ W_READ_LINE
 
         !word W_CHKIN
 
-        !word W_DROP
-        !word W_CHRIN
-        !word W_SWAP
+        ; Loop index is a pointer to the buffer entry
+        !word W_OVER
+        !word W_PLUS
+        !word W_OVER
+        !word W_PDO
+
+        !word W_DROP ; drop the original c-addr
+        !word W_ZERO ; initial value for u2
+
+_read_line_loop
+
+        !word W_BASIN
+
+        ; Check for return
+        !word W_DUP
+        +LITERAL 13 ; TODO should be CR???
+        !word W_EQUAL
+        +ZBRANCH _read_line_not_return
+
+        !word W_DROP ; drop the CR
+        !word W_LEAVE
+        !word _read_line_after_loop-*
+
+_read_line_not_return
+        ; A normal character, add it to the buffer        
+
+        !word W_I
         !word W_CSTORE
-        !word W_ONE
+
+        !word W_1PLUS
+        !word W_PLOOP
+        !word _read_line_loop-*
+_read_line_after_loop
+
         !word W_TRUE
 
         ; restore default input
         !word W_ZERO
         !word W_CHKIN
 
-        !word W_READST
+        !word W_READSS
 
 !if DEBUG {
         !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
-
-W_CHKIN         ; (u --)
-        !word *+2
-        stx <TEMP1
-        lda 0,x
-        tax
-        jsr CHKIN
-        ldx <TEMP1
-        jmp POP
-
-; $FFC6	
-; CHKIN. Define file as default input. (Must call OPEN beforehands.)
-; Input: X = Logical number.
-; Output: –
-; Used registers: A, X.
-; Real address: ($031E), $F20E.
-
-CHKIN
-        +KERNEL_CALL $ffc6
-        rts
-
-; $FFCF	
-; CHRIN. Read byte from default input (for keyboard, read a line from the screen). (If not keyboard, must call OPEN and CHKIN beforehands.)
-; Input: –
-; Output: A = Byte read.
-; Used registers: A, Y.
-; Real address: ($0324), $F157.
-
-W_CHRIN         ; (-- c)
-        !word *+2
-        phy
-        jsr CHRIN
-        jmp PUSH
-
-CHRIN
-        +KERNEL_CALL $ffcf
-        rts
 
 ; ****************************************************************************
 ; REPOSITION-FILE

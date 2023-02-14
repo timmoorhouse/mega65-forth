@@ -4,6 +4,39 @@
 
 !if ENABLE_BLOCK {
 
+; FIG:
+;      R/W           addr  blk  f  ---
+;               The fig-FORTH standard disc read-write linkage.  addr 
+;               specifies the source or destination block buffer, blk is 
+;               the sequential number of the referenced block; and f is a 
+;               flag for f=0 write and f=1 for read.  R/W determines the 
+;               location on mass storage, performs the read-write and 
+;               performs any error checking.
+;
+;;
+;;                                       R/W
+;;                              Read or write one sector
+;;
+!if 0 {
+        +WORD "r/w"
+W_RSLW
+        !word DO_COLON
+;          !word ZEQU,LIT,$C4DA,CSTOR
+;          !word SWAP,ZERO,STORE
+;          !word ZERO,OVER,GREAT,OVER
+;          !word LIT,SECTL-1,GREAT,OR,CLIT
+;          !byte 6
+;          !word QERR
+;          !word ZERO,LIT,SECTR,USLAS,1PLUS
+;          !word SWAP,ZERO,CLIT
+;          !byte $12
+;          !word USLAS,DBCD,SWAP,1PLUS
+;          !word DBCD,DDISC,CLIT
+;          !byte 8
+;          !word QERR
+        !word W_PSEMI
+}
+
 ; ****************************************************************************
 ; BLK
 ; (-- a-addr)

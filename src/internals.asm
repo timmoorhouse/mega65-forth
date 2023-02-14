@@ -48,25 +48,6 @@ isspace
         cmp #' '
         rts
 
-!macro KERNEL_PRE {
-        stx <XSAVE
-        pha
-        lda #0
-        tab
-        pla
-}
-!macro KERNEL_POST {
-        pha
-        lda #>base_page
-        tab
-        pla
-        ldx <XSAVE
-}
-!macro KERNEL_CALL .tgt {
-        +KERNEL_PRE
-        jsr .tgt
-        +KERNEL_POST
-}
 
 
 ; ****************************************************************************

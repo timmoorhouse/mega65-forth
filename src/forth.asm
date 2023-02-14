@@ -39,9 +39,15 @@
 !ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS        = 1 } ; not yet used
 !ifndef USE_BASIC                       { USE_BASIC                    = 0 } ; not used - REMOVE?
 
-; C64 jump table https://sta.c64.org/cbm64krnfunc.html
-; C128 jump table
-; MEGA65 jump table https://mega65.atlassian.net/wiki/spaces/MEGA65/pages/6619137/Kernel+Jump+Table
+; TODO does it make sense to use the basic rom at all? I'm wondering about math routines in particular, but there
+; may not be a good way to use them (no jump vectors to them so they could move) - might be able to execute a token for them
+
+; TODO inw/dew to increment/decrement words!
+; TODO asw for asl on a word!
+; TODO row for rol on a word!
+; TODO neg for xor $ff
+; TODO phw to push a word? only out of memory (maybe not so useful) or immediate (could be useful)
+; TODO quad stuff for double precision things
 
 !source "util.asm"
 !source "dma.asm"
@@ -389,6 +395,7 @@ DO_DOES
 ;       ADC #0
         jmp PUSH
 
+!src "kernel.asm"
 !src "internals.asm"
 !source "console.asm"
 
@@ -405,21 +412,30 @@ COLD
 ;               called from the terminal to remove application programs
 ;               and restart.
 
-        +map_reset ; TODO why do we need this for the dma fill in clear_screen to work?
+!if 1 {
+        +map_reset
 
         ; E000-FFFF     3E000   KERNAL
         ; C000-DFFF
         ; A000-BFFF
-        ; 8000-9FFF
+        ; 8000-9FFF     20000   DOS ?
         ; 6000-7FFF
         ; 4000-5FFF
         ; 0000-1FFF
 
-        ldy #$00
+        ldy #$00        ; Map in KERNAL
         ldz #$83
         lda #$00
         ldx #$00
         map
+
+!if 0 {
+        ldx #$80        ; Map in DOS
+        ldz #$11
+        lda #$00
+        ldx #$00
+        map
+}
 
 !if USE_BASIC {
         ; TODO
@@ -432,6 +448,7 @@ COLD
         ; +dma_enable_f018b ; TODO not needed?
 
         eom
+}
 
         ; set our base page
         lda #>base_page
