@@ -129,19 +129,30 @@ W_RENAME_FILE
         +WORD_IMM "require"
 W_REQUIRE
         !word DO_COLON
-!if DEBUG {
+!if 1 {
         !word W_PDOTQ
         +STRING "<require>"
         !word W_DOTS
 }       
         ; TODO
         !word W_PARSE_NAME
+!if 1 {
+        !word W_2DUP
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
+}
+
         !word W_RSLO
         !word W_OPEN_FILE
         !word W_DROP ; TODO check status
+!if 0 {
         !word W_INCLUDE_FILE
-
-!if DEBUG {
+}
+        ; !word W_CLOSE_FILE ; TODO !!!!!!!!!!!!
+!if 1 {
         !word W_DOTS,W_CR
 }
         !word W_PSEMI    

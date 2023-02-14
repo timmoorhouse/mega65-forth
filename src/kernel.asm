@@ -193,8 +193,22 @@ OPEN
         rts
 
 ; ****************************************************************************
+; $FFC3	
+; CLOSE. Close file.
+; Input: A = Logical number.
+; Output: –
+; Used registers: A, X, Y.
+; Real address: ($031C), $F291.
 
-; TODO ffc3 close
+W_CLOSE         ; (fileid --)
+        !word *+2
+        lda 0,x
+        jsr CLOSE
+        jmp POP
+
+CLOSE
+        +KERNEL_CALL $ffc3
+        rts
 
 ; ****************************************************************************
 ; $FFC6	

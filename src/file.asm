@@ -24,25 +24,10 @@ W_FILE_TEST
         !word W_INCLUDE_FILE
 }
 
-!if 0 {
-        !word W_PAD
-        !word W_DUP
-        +CLITERAL 90
-        !word W_RAT
-
-        !word W_READ_LINE
-
+        ; TODO this isn't getting done if we include!
+        !word W_RFROM
+        !word W_CLOSE_FILE
         !word W_DROP ; TODO check status?
-        !word W_DROP ; TODO check flag
-
-        +CLITERAL '['
-        !word W_EMIT
-        !word W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT
-}
-
-        !word W_RFROM,W_DROP
 
         !word W_DOTS,W_CR
         !word W_CR
@@ -99,9 +84,8 @@ W_CLOSE_FILE
         +STRING "<close-file>"
         !word W_DOTS
 }
-        ; TODO
-        !word W_DROP
-        !word W_ZERO      
+        !word W_CLOSE
+        !word W_READSS
 !if DEBUG {
         !word W_DOTS,W_CR
 }
@@ -217,7 +201,7 @@ W_FILE_SIZE
         +WORD "include-file"
 W_INCLUDE_FILE
         !word DO_COLON
-!if DEBUG {
+!if 1 {
         !word W_PDOTQ
         +STRING "<include-file>"
         !word W_DOTS
@@ -245,9 +229,11 @@ _include_flag_bad
         !word W_DROP ; drop u2
         !word W_DROP ; drop buffer address
 
+!if 1 {
         !word W_PDOTQ
         +STRING "<include-file-error>"
         !word W_DOTS,W_CR
+}
         !word W_LEAVE
         !word _include_after_loop-*
 
@@ -262,7 +248,7 @@ _include_ior_ok
 _include_after_loop
         !word W_RFROM,W_DROP ; drop fileid
 
-!if DEBUG {
+!if 1 {
         !word W_PDOTQ
         +STRING "<include-file-end>"        
         !word W_DOTS,W_CR
