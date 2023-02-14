@@ -48,11 +48,12 @@ that the build process will get more involved:
 
 # RANDOM TODOs
 
-- [ ] Should we make use of the kernel?  So far I've been keeping things completely independent of the kernel so we'll be able to bank it out (though that's not currently being done).
-- [ ] get monitor working via brk and mon/monitor word
+- [ ] Basic file reading
+- [ ] Defining words
+- [ ] Saving a snapshot
+- [ ] Bootstrapping with portions of the library written in Forth using the above features
 - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
-- [ ] get rid of the user area
-- [ ] Some sort of RPICK (like PICK but for the return stack) for J, I, LEAVE, PLOOP, PPLOOP
+- [ ] Lots more ...
 
 # CREDITS
 

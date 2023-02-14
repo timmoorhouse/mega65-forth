@@ -6,6 +6,8 @@
 ;
 ;
 
+; TODO some sort of RPICK (like PICK but for the return stack) for J, I, LEAVE, PLOOP, PPLOOP
+
 ; from FIG ...
 ; used by (find), enclose, cmove
 ;
