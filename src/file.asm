@@ -223,78 +223,46 @@ W_INCLUDE_FILE
         !word W_DOTS
 }
 
-!if 1 {
-        +LITERAL 3
-        +LITERAL 0
-        !word W_PDO
-}
+        !word W_TOR
 
 _include_read_loop
-
-
-        !word W_DUP
-        !word W_TOR
 
         !word W_PAD ; TODO NEED TO USE A BUFFER NEAR END OF MEM SINCE THE EVALUATE CAN ALLOT !!!!!!!!!!!!
 
         !word W_DUP
         +CLITERAL 90
-        !word W_RFROM
+        !word W_RAT
         !word W_READ_LINE
 
-        ; (c-addr u_w flag ior)
+        ; (c-addr u flag ior) (R: fileid)
 
-        +ZBRANCH _include_no_error
-
+        +ZBRANCH _include_ior_ok
+        ; ior bad ...
         !word W_DROP ; drop flag
+_include_flag_bad
         !word W_DROP ; drop u2
         !word W_DROP ; drop buffer address
 
         !word W_PDOTQ
-        +STRING "<include-error>"
+        +STRING "<include-file-error>"
         !word W_DOTS,W_CR
         !word W_LEAVE
         !word _include_after_loop-*
 
-_include_no_error
-        !word W_DROP ; TODO look at flag
+_include_ior_ok
+        +ZBRANCH _include_flag_bad
 
-!if 1 {
-        !word W_2DUP
-        +CLITERAL '['
-        !word W_EMIT
-        !word W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT
-}        
+        ; (c-addr u)
+
+        !word W_EVALUATE
+
+        +BRANCH _include_read_loop
+_include_after_loop
+        !word W_RFROM,W_DROP ; drop fileid
 
 !if DEBUG {
         !word W_PDOTQ
-        +STRING "<include-file>"
-        !word W_DOTS,W_CR
-}
-
-!if 1 {
-        !word W_EVALUATE
-} else {
-        !word W_2DROP
-}
-
-!if 1 {
-        !word W_DOTS
-        !word W_CR
-}
-
-!if 1 {
-        !word W_PLOOP
-        !word _include_read_loop-*
-}
-_include_after_loop
-        ; +BRANCH _include_read_loop
-
-        !word W_DROP ; drop fileid
-
-!if DEBUG {
+        +STRING "<include-file-end>"        
         !word W_DOTS,W_CR
 }    
         !word W_PSEMI
