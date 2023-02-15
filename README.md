@@ -10,6 +10,7 @@ P. O. box 1105,  San Carlos, CA 94070
 ```
 
 ![screenshot](doc/screenshot.png)
+Note that we have actually switched to font A (the ASCII font).  The '\\' word shows up correctly on screen but the screenshot from m65 assumes the default font.
 
 This is *very* much in the early stages of developement:
 
