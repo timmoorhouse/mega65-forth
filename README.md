@@ -4,7 +4,8 @@
 An attempt at [Forth](https://forth-standard.org/standard/words) for the [MEGA65](https://mega65.org/).  This is heavily influenced by [FIG FORTH release 1.1](https://github.com/ptorric/figforth)
 
 ```
-This publication has been made available by the Forth Interest Group, P. O. box 1105, San Carlos, CA 94070
+This publication has been made available by the 
+Forth Interest Group, P. O. box 1105, San Carlos, CA 94070
 ```
 
 ![screenshot](doc/screenshot.png)
@@ -13,8 +14,11 @@ Note that we have actually switched to font A (the ASCII font).  The '\\' word s
 
 This is *very* much in the early stages of developement:
 
-- The interpreter is working well enough to support development, but is still pretty minimal.  It needs command line editing features, better error handling, etc.
-- There is no file input or support for defining functions yet.  Those are the next priorities so we can start running unit tests, and do most of the remainder of the implementation in Forth.
+- The interpreter is working well enough to support development, but is still pretty minimal.  It needs better error handling, etc.
+- File input is partially there.  We can include a file, but nested includes won't work yet (we need a stack of parse states).
+- Work is starting on defining words, but nothing is usable yet.
+
+File input and definig words are the current priorities.  Once these are in resonable shape, we can start running unit tests and do most of the remainder of the implementation in Forth.
 
 My apologies if this isn't the greatest Forth implementation.  I don't really have much experience with Forth.  I'm doing this because I've always been intrigued by Forth, and with a new MEGA65 sitting on the dining room table, it seemed the perfect project to learn about Forth, shake decades of dust off my 6502 programming skills, and learn about some of the MEGA65-specific features.
 
