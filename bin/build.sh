@@ -167,12 +167,12 @@ do_test() {
         cmd "${opt[xmega65]}" "${xmega65opts[@]}" -8 "${opt[builddir]}/mega65-forth.d81"
         # -prg "${opt[builddir]}/forth.prg"
     else
-        # "${opt[m65]}" --quiet --reset
+        "${opt[m65]}" --quiet --reset
 
-        # cmd "${opt[mega65_ftp]}" \
-        #     -c "put ${opt[builddir]}/mega65-forth.d81" \
-        #     -c "mount mega65-forth.d81" \
-        #     -c quit
+        cmd "${opt[mega65_ftp]}" \
+            -c "put ${opt[builddir]}/mega65-forth.d81" \
+            -c "mount mega65-forth.d81" \
+            -c quit
 
         local -a m65opts_
         [ -n "${opt[debug]}" ] || m65opts_+=(--run)
