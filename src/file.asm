@@ -193,7 +193,7 @@ W_FILE_SIZE
         +WORD "include-file"
 W_INCLUDE_FILE
         !word DO_COLON
-!if 1 {
+!if DEBUG {
         !word W_PDOTQ
         +STRING "<include-file>"
         !word W_DOTS
@@ -221,7 +221,7 @@ _include_flag_bad
         !word W_DROP ; drop u2
         !word W_DROP ; drop buffer address
 
-!if 1 {
+!if DEBUG {
         !word W_PDOTQ
         +STRING "<include-file-error>"
         !word W_DOTS,W_CR
@@ -239,7 +239,7 @@ _include_ior_ok
 _include_after_loop
         !word W_RFROM,W_DROP ; drop fileid
 
-!if 1 {
+!if DEBUG {
         !word W_PDOTQ
         +STRING "<include-file-end>"        
         !word W_DOTS,W_CR

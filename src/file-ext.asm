@@ -67,7 +67,7 @@ W_INCLUDE
         ; TODO
         !word W_PARSE_NAME
 
-!if 1 {
+!if DEBUG {
         !word W_2DUP
         +CLITERAL '['
         !word W_EMIT
@@ -155,7 +155,7 @@ W_REQUIRE
 }       
         ; TODO
         !word W_PARSE_NAME
-!if 1 {
+!if DEBUG {
         !word W_2DUP
         +CLITERAL '['
         !word W_EMIT
