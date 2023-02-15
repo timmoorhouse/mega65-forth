@@ -1405,7 +1405,7 @@ _accept_loop
 
 !if 0 {
         !word W_SPACE,W_DUP,W_DOT,W_SPACE
-        ; !word W_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
 
         ; Check for and handle delete
@@ -1450,8 +1450,7 @@ _accept_not_delete
         !word W_DUP
         !word W_K_RETURN
         !word W_EQUAL
-        !word W_ZBRANCH
-        !word _accept_not_return-*
+        +ZBRANCH _accept_not_return
 
 !if 0 {
         +CLITERAL 'r'
@@ -1505,7 +1504,11 @@ _accept_after_loop ; TODO remove
 !if 0 {
         !word W_CR
 }
-
+!if DEBUG {
+        !word W_PDOTQ
+        +STRING "<accept-done>"
+        !word W_DOTS,W_CR
+}
         ; left with index (ie final count)
 
         !word W_PSEMI
