@@ -793,7 +793,7 @@ _parse_name_all_done
 ; \z    NUL     0                               OK
 ; \"            34 (quote)                      OK
 ; \xNN          hex digit NN                    OK?
-; \\            92 (backslash)                  OK?
+; \\            92 (backslash)                  OK
 
 !if ENABLE_CORE_EXT {
 }
@@ -904,7 +904,7 @@ W_TRUE
 ; ANSI 7.6.2.2535
 
 !if ENABLE_CORE_EXT {
-        +WORD_IMM "\\" ; TODO \ is not in petscii
+        +WORD_IMM "\\"
 W_BACKSLASH
         !word DO_COLON
         +CLITERAL '\r' ; TODO

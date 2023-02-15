@@ -5,6 +5,37 @@
 ; - look at C64 forth implementations (eg superFORTH)
 
 
+!ifdef ENABLE_MEGA65 {
+        +WORD "background"
+}
+W_BACKGROUND
+        !word *+2       ; (c --)
+        lda 0,x
+        sta $d021
+        jmp POP
+
+!ifdef ENABLE_MEGA65 {
+        +WORD "border"
+}
+W_BORDER                ; (c --)
+        !word *+2
+        lda 0,x
+        sta $d020
+        jmp POP
+
+!ifdef ENABLE_MEGA65 {
+        +WORD "foreground"
+}
+W_FOREGROUND            ; (c --)
+        !word *+2
+        lda 0,x
+        jsr FOREGROUND
+        jmp POP
+
+FOREGROUND
+        sta $00f1
+        rts
+
 ; ****************************************************************************
 ; MON
 

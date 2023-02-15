@@ -54,14 +54,15 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] CLOSE-FILE
   - [x] READ-LINE
   - [x] INCLUDE
-  - [ ] WRITE-FILE
-  - [ ] SAVESYSTEM (gforth extension)
+  - [x] WRITE-FILE
+  - [x] SAVESYSTEM (gforth extension)
   - [ ] Automatic selection of appropriate channel numbers and secondary addresses (first address will be hardcoded as 8 for now)
   - [ ] Automatic selection of disk buffer
   - [ ] Handle file access modes (skip for now?)
   - [ ] REQUIRE (skip for now?)
   - [ ] Fix I/O status handling (when is status from READSS reset?) (skip for now?)
   - [ ] Fix handling of I/O error cases (skip for now?)
+  - [ ] Move basepage to top of memory so it's not in the region from $2001 to HERE (ie we don't have to deal with it in SAVESYSTEM and the results will be deterministic)
 - [ ] SAVE-INPUT, RESTORE-INPUT, stack of parse inputs
   - [ ] Get SOURCE-ID and SOURCE right during all of this
 - [ ] Defining words

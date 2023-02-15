@@ -192,6 +192,7 @@ _inc_I_PUSH
         !word .word
 }
 
+; TODO change to gforth variants (sp0, sp!, rp0, rp!, etc)
 ; ****************************************************************************
 ;      RP! (from FIG)
 ;               A computer dependent procedure to initialise the return 

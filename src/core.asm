@@ -1377,6 +1377,11 @@ W_ACCEPT
         
         ; (0)
 
+!ifdef COLOUR_INPUT {
+        +CLITERAL COLOUR_INPUT
+        !word W_FOREGROUND
+}
+
 _accept_loop
 
         ; TODO get rid of index on stack and use OUT?
@@ -1464,6 +1469,11 @@ _accept_after_loop ; TODO remove
 
 !if 0 { ; will already have been printed
         !word W_CR
+}
+
+!ifdef COLOUR_OUTPUT {
+        +CLITERAL COLOUR_OUTPUT
+        !word W_FOREGROUND
 }
 
         ; left with index (ie final count)
@@ -2259,11 +2269,16 @@ _evaluate_word_not_found
         +STRING "<not found>"
         !word W_DOTS,W_CR
 }
+
+!ifdef COLOUR_ERROR {
+        +CLITERAL COLOUR_ERROR
+        !word W_FOREGROUND
+}
         !word W_SPACE
         !word W_2RAT
         !word W_TYPE
         !word W_PDOTQ
-        +STRING "  ? "
+        +STRING "? "
         ; jmp _evaluate_done_word
 
 _evaluate_done_word
@@ -3171,6 +3186,11 @@ _quit_read_loop
         !word W_AT
         !word W_ZEQUALS
         +ZBRANCH +
+
+!ifdef COLOUR_PROMPT {
+        +CLITERAL COLOUR_PROMPT
+        !word W_FOREGROUND
+}
 
         !word W_PDOTQ
         +STRING " ok"

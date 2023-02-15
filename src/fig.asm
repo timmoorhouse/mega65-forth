@@ -1018,30 +1018,6 @@ W_SMUDGE
 }
 
 ; ****************************************************************************
-; SP@
-
-;      SP@           ---  addr
-;               A computer dependent procedure to return the address of 
-;               the stack position to the top of the stack, as it was 
-;               before SP@ was executed.  (e.g. 1 2 SP@ @ . . . would type 
-;               2 2 1 )
-
-;;
-;;                                       SP@
-;;                                       SCREEN 26 LINE 1
-;;
-!if 0 {
-        +WORD "sp@"
-W_SPAT
-        !word *+2
-;          TXA
-;;
-;PUSHOA:   PHA
-;          LDA #0
-        jmp PUSH
-}
-
-; ****************************************************************************
 ; ?STACK
 
 ;      ?STACK

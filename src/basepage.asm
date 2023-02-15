@@ -19,6 +19,7 @@ W               !word 0
 U               !word 0
 ; floating point stack?
 
+; TODO use a word for this? (turn it into S)
 ; X holds the stack pointer (S)
 ;      XSAVE    address of a temporary register for X in zero-page.
 XSAVE           !byte 0 ; temporary to save S when we need to reuse X
@@ -40,9 +41,6 @@ TEMP3           !word 0
 WORDP           !word 0 ; temporary pointer to iterate over words TODO REMOVE
 STRING          !word 0 ; pointer to string to print, etc TODO REMOVE
 
-SCREEN_X        !byte 0 ; TODO make these words?
-SCREEN_Y        !byte 0
-
 BASE            !word 10
 ; TODO STATE? or turn it into a normal variable
 
@@ -50,12 +48,6 @@ BASE            !word 10
 ;XW        =$12           ; scratch reg. to next code field add
 ;NP        =$14           ; scratch reg. pointing to name field
 }
-
-; TODO make these 32-bit (or at least 28)
-SCREEN_LINE     !32 0 ; start of line at SCREEN_Y
-COLOUR_LINE     !32 0 ; start of colour at SCREEN_Y
-COLOUR          !byte 0
-        ; !word 0
 
 ; BOS       = $20                         ; bottom of data stack, in zero-page.
 ; TOS       = $9E                         ; top of data stack, in zero-page.

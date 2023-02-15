@@ -7,7 +7,6 @@
 ; (--)
 ; ANSI 15.6.0220
 
-; TODO flip the order around!!!!!!
 ; TODO rewrite in FORTH using DEPTH, ., DO, LOOP
 
 !if ENABLE_TOOLS {

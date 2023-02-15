@@ -39,6 +39,18 @@
 !ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS        = 1 } ; not yet used
 !ifndef USE_BASIC                       { USE_BASIC                    = 0 } ; not used - REMOVE?
 
+
+;
+; Colour scheme
+; These are indexes into the colour pallen (see docs for BACKGROUND for a table)
+;
+
+COLOUR_OUTPUT =   1 ; white
+COLOUR_INPUT  =   7 ; yellow
+COLOUR_PROMPT =  14 ; lt blue
+COLOUR_ERROR  =   4 ; purple
+
+;
 ; TODO does it make sense to use the basic rom at all? I'm wondering about math routines in particular, but there
 ; may not be a good way to use them (no jump vectors to them so they could move) - might be able to execute a token for them
 
@@ -48,6 +60,7 @@
 ; TODO neg for xor $ff
 ; TODO phw to push a word? only out of memory (maybe not so useful) or immediate (could be useful)
 ; TODO quad stuff for double precision things
+
 
 !source "util.asm"
 !source "dma.asm"
@@ -422,14 +435,6 @@ COLD
         ldx #$00
         map
 
-!if 0 {
-        ldx #$80        ; Map in DOS
-        ldz #$11
-        lda #$00
-        ldx #$00
-        map
-}
-
 !if USE_BASIC {
         ; TODO
 }
@@ -446,8 +451,6 @@ COLD
         ; set our base page
         lda #>base_page
         tab
-
-        jsr console_init
         
 ; rest of cold stuff from FIG ...
 ;          LDA ORIG+$0C   ; from cold start area
@@ -541,6 +544,18 @@ W_STARTUP = W_ABORT
         lda #>W_STARTUP+2
         sta <I+1
 
+        lda #14 ; Lower case
+        jsr EMIT
+        lda #11 ; Disable shift-mega case changes
+        jsr EMIT
+
+        ; TODO a FONT word that switches font
+        +dma_run _install_font
+
+        jsr PAGE
+
+        lda #3 ; cyan
+        jsr FOREGROUND
         lda #<_startup_text1
         sta <STRING
         lda #>_startup_text1
@@ -555,11 +570,22 @@ W_STARTUP = W_ABORT
         sta <STRING+1
         jsr put_string
 }
+        jsr CR
+
+        lda #14 ; lt blue
+        jsr FOREGROUND
+
         lda #<_startup_text2
         sta <STRING
         lda #>_startup_text2
         sta <STRING+1
         jsr put_string
+        jsr CR
+
+        ; just in case the colour scheme is disabled ...
+        lda #1 ; white
+        jsr FOREGROUND
+
         ; ldy #0
 
         jmp NEXT
@@ -589,12 +615,19 @@ W_STARTUP_DEBUG
 }
 
 _startup_text1
-        +STRING "mega65-forth 0.1"
+        +STRING "MEGA65-Forth 0.1"
 _startup_text2
-        +STRING "\rbye will exit to basic\r\r"
+        +STRING "bye will exit to BASIC\r"
 !ifdef HAVE_REVISION {
 !src "revision.asm"
 }
+_install_font 
+        +dma_options $00, $ff
+        +dma_options_end
+        +dma_job_copy $0029000, $ff7e000, $1000, 0, 0
+; A: 029000
+; B: 03D000
+; C: 02D000
 
 
 !src "block.asm"

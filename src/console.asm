@@ -1,12 +1,6 @@
 
 ; TODO remove this stuff
 
-console_init
-        lda #158
-        jsr EMIT
-        jsr PAGE
-        rts
-
 
 petscii_to_screencode
         ; TODO this is a bit of a mess
@@ -76,6 +70,8 @@ _255
         ; 255           to 94?
         lda #94
         rts
+
+; TODO looks like the kernel has an equivalent?
 
 put_hex
         ; A: value to output
