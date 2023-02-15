@@ -7,6 +7,7 @@
 ; TODO zero page symbols
 ; TODO pntr = $00ec (used by OUT in fig)
 ; TODO interrupt vectors
+; TODO some of these can be implemented ourselves without much risk of future compatability problems (SETBANK, etc)
 
 ; C64 jump table https://sta.c64.org/cbm64krnfunc.html
 ; C128 jump table
@@ -232,8 +233,28 @@ CHKIN
         rts
 
 ; ****************************************************************************
+; $FFC9	
+; CHKOUT. Define file as default output. (Must call OPEN beforehands.)
+; Input: X = Logical number.
+; Output: –
+; Used registers: A, X.
+; Real address: ($0320), $F250.
 
-; TODO ffc9 chkout
+W_CHKOUT        ; (u --)
+        !word *+2
+        stx <TEMP1
+        lda 0,x
+        tax
+        jsr CHKOUT
+        ldx <TEMP1
+        jmp POP
+
+CHKOUT
+        +KERNEL_CALL $ffc9
+        rts
+
+; ****************************************************************************
+
 ; TODO ffcc clrch
 
 ; ****************************************************************************
@@ -264,7 +285,7 @@ BASIN
 ; Used registers: –
 ; Real address: ($0326), $F1CA.
 
-!if 0 { ; skipping this ... it's the same as W_EMIT
+!if 0 { ; TODO skip this? ... it's the same as W_EMIT
 W_BASOUT       ; (c --)
         !word *+2
         lda 0,x
@@ -272,10 +293,13 @@ W_BASOUT       ; (c --)
         jmp POP
 }
 
-EMIT
+W_BASOUT = W_EMIT
+
 BASOUT
         +KERNEL_CALL $ffd2
         rts
+
+EMIT = BASOUT
 
 ; ****************************************************************************
 
@@ -289,6 +313,14 @@ BASOUT
         ; Real address: $F49E.
 
 ; TODO ffd8 save ; savesp?
+
+        ; $FFD8	
+        ; SAVE. Save file. (Must call SETLFS and SETNAM beforehands.)
+        ; Input: A = Address of zero page register holding start address of memory area to save; X/Y = End address of memory area plus 1.
+        ; Output: Carry: 0 = No errors, 1 = Error; A = KERNAL error code (if Carry = 1).
+        ; Used registers: A, X, Y.
+        ; Real address: $F5DD.
+
 ; TODO ffdb set_time
 ; TODO ffde read_time
 ; TODO ffe1 stop

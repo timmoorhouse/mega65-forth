@@ -56,7 +56,7 @@ W_FLUSH_FILE
 ; Forth 2012 11.6.2.1714
 
 !if ENABLE_FILE_EXT {
-        +WORD_IMM "include"
+        +WORD "include"
 W_INCLUDE
         !word DO_COLON
 !if DEBUG {
@@ -64,7 +64,6 @@ W_INCLUDE
         +STRING "<include>"
         !word W_DOTS
 }
-        ; TODO
         !word W_PARSE_NAME
 
 !if DEBUG {
@@ -145,7 +144,7 @@ W_RENAME_FILE
 ; Forth 2012 11.6.2.2144.10
 
 !if ENABLE_FILE_EXT {
-        +WORD_IMM "require"
+        +WORD "require"
 W_REQUIRE
         !word DO_COLON
 !if 1 {
@@ -190,7 +189,7 @@ W_REQUIRE
 ; Forth 2012 11.6.2.2144.50
 
 !if ENABLE_FILE_EXT {
-        +WORD_IMM "required"
+        +WORD "required"
 W_REQUIRED
         !word DO_COLON
 !if DEBUG {

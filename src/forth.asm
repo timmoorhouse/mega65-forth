@@ -18,7 +18,7 @@
 !ifndef ENABLE_FILE_EXT                 { ENABLE_FILE_EXT              = 1 }
 !ifndef ENABLE_FLOATING                 { ENABLE_FLOATING              = 0 }
 !ifndef ENABLE_FLOATING_EXT             { ENABLE_FLOATING_EXT          = 0 }
-!ifndef ENABLE_GFORTH                   { ENABLE_GFORTH                = 0 } ; useful things following gforth's extensions
+!ifndef ENABLE_GFORTH                   { ENABLE_GFORTH                = 1 } ; useful things following gforth's extensions
 !ifndef ENABLE_LOCAL                    { ENABLE_LOCAL                 = 0 }
 !ifndef ENABLE_LOCAL_EXT                { ENABLE_LOCAL_EXT             = 0 }
 !ifndef ENABLE_LOCAL_EXT_OBSOLESCENT    { ENABLE_LOCAL_EXT_OBSOLESCENT = 0 }
@@ -613,6 +613,7 @@ _startup_text2
 !src "file-ext.asm"
 !src "floating.asm"
 !src "floating-ext.asm"
+!src "gforth.asm"
 !src "local.asm"
 !src "local-ext.asm"
 !src "local-ext-obsolescent.asm"

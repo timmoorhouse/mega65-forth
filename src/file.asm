@@ -539,18 +539,32 @@ W_WRITE_FILE
         +STRING "<write-file>"
         !word W_DOTS
 }       
-        ; TODO
 
-        ; $FFD8	
-        ; SAVE. Save file. (Must call SETLFS and SETNAM beforehands.)
-        ; Input: A = Address of zero page register holding start address of memory area to save; X/Y = End address of memory area plus 1.
-        ; Output: Carry: 0 = No errors, 1 = Error; A = KERNAL error code (if Carry = 1).
-        ; Used registers: A, X, Y.
-        ; Real address: $F5DD.
+        !word W_CHKOUT
 
-        !word W_DROP
-        !word W_2DROP
-        !word W_ZERO   
+        ; (c-addr u)
+
+        ; Loop index is a pointer to the buffer entry
+        !word W_OVER
+        !word W_PLUS
+        !word W_SWAP
+        !word W_PDO
+
+_write_file_loop
+
+        !word W_I
+        !word W_CAT
+        !word W_BASOUT
+
+        !word W_PLOOP
+        !word _write_file_loop-*
+
+        ; restore default output
+        !word W_ZERO
+        !word W_CHKOUT
+
+        !word W_READSS
+
 !if DEBUG {
         !word W_DOTS,W_CR
 }       
@@ -571,25 +585,36 @@ W_WRITE_LINE
         +STRING "<write-line>"
         !word W_DOTS
 }       
-        ; TODO
+        ; TODO rewrite using WRITE-FILE
 
-        ; $FFC9	
-        ; CHKOUT. Define file as default output. (Must call OPEN beforehands.)
-        ; Input: X = Logical number.
-        ; Output: –
-        ; Used registers: A, X.
-        ; Real address: ($0320), $F250.
+        !word W_CHKOUT
 
-        ; $FFD2	
-        ; CHROUT. Write byte to default output. (If not screen, must call OPEN and CHKOUT beforehands.)
-        ; Input: A = Byte to write.
-        ; Output: –
-        ; Used registers: –
-        ; Real address: ($0326), $F1CA.
+        ; (c-addr u)
 
-        !word W_DROP
-        !word W_2DROP
-        !word W_ZERO  
+        ; Loop index is a pointer to the buffer entry
+        !word W_OVER
+        !word W_PLUS
+        !word W_SWAP
+        !word W_PDO
+
+_write_line_loop
+
+        !word W_I
+        !word W_CAT
+        !word W_BASOUT
+
+        !word W_PLOOP
+        !word _write_line_loop-*
+
+        !word W_CR
+        !word W_BASOUT
+
+        ; restore default output
+        !word W_ZERO
+        !word W_CHKOUT
+
+        !word W_READSS
+
 !if DEBUG {
         !word W_DOTS,W_CR
 }

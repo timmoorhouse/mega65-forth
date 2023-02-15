@@ -54,16 +54,25 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] CLOSE-FILE
   - [x] READ-LINE
   - [x] INCLUDE
-  - [ ] WRITE-LINE
+  - [ ] WRITE-FILE
   - [ ] SAVESYSTEM (gforth extension)
   - [ ] Automatic selection of appropriate channel numbers and secondary addresses (first address will be hardcoded as 8 for now)
   - [ ] Automatic selection of disk buffer
+  - [ ] Handle file access modes (skip for now?)
+  - [ ] REQUIRE (skip for now?)
+  - [ ] Fix I/O status handling (when is status from READSS reset?) (skip for now?)
+  - [ ] Fix handling of I/O error cases (skip for now?)
 - [ ] SAVE-INPUT, RESTORE-INPUT, stack of parse inputs
+  - [ ] Get SOURCE-ID and SOURCE right during all of this
 - [ ] Defining words
 - [ ] Bootstrapping with portions of the library written in Forth using the above features
-  - [ ] Benchmark this process?
 - Tests
   - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
+- Benchmarks
+  - [ ] Compiling the dictionary?
+  - [ ] Something without I/O?
+
+
 
 There'll be lots more to do after that.
 
