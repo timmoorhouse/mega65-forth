@@ -226,8 +226,7 @@ _include_flag_bad
         +STRING "<include-file-error>"
         !word W_DOTS,W_CR
 }
-        !word W_LEAVE
-        !word _include_after_loop-*
+        +BRANCH _include_after_loop
 
 _include_ior_ok
         +ZBRANCH _include_flag_bad
