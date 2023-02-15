@@ -48,13 +48,24 @@ that the build process will get more involved:
 
 # RANDOM TODOs
 
-- [ ] Basic file reading (in progress)
+These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
+- Basic file reading (just enough to get by for now)
+  - [x] OPEN-FILE
+  - [x] CLOSE-FILE
+  - [x] READ-LINE
+  - [x] INCLUDE
+  - [ ] WRITE-LINE
+  - [ ] SAVESYSTEM (gforth extension)
+  - [ ] Automatic selection of appropriate channel numbers and secondary addresses (first address will be hardcoded as 8 for now)
+  - [ ] Automatic selection of disk buffer
 - [ ] SAVE-INPUT, RESTORE-INPUT, stack of parse inputs
 - [ ] Defining words
-- [ ] Saving a snapshot
 - [ ] Bootstrapping with portions of the library written in Forth using the above features
-- [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
-- [ ] Lots more ...
+  - [ ] Benchmark this process?
+- Tests
+  - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
+
+There'll be lots more to do after that.
 
 # CREDITS
 
