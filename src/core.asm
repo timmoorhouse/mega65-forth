@@ -861,28 +861,13 @@ W_SEMI
         !word W_PSEMI
 }
 
-; TODO RENAME TO "(;)", W_PSEMI ?
-;;
-;;                                       ;S
-;;                                       SCREEN 26 LINE 12
-;;
         +WORD ";s"
-W_PSEMI ; ????
+W_PSEMI
         !word *+2
-
-!if DEBUG {
-        ; lda #' '
-        ; jsr put_char_screencode
-        ; lda #';'
-        ; jsr put_char_screencode
-}
-
         pla
         sta <I
         pla
         sta <I+1
-        ; +TRACE
-        ; brk
         jmp NEXT
 
 ; ****************************************************************************
@@ -1399,14 +1384,14 @@ _accept_loop
 
         !word W_KEY
 
-        ; $64, $69, $72, $0d, $6c (dir\nl) ????
-
         ; (index key)
 
 !if 0 {
         !word W_SPACE,W_DUP,W_DOT,W_SPACE
         !word W_DOTS,W_CR
 }
+
+!if 0 { ; don't need any of this if using BASIN (line buffered)...
 
         ; Check for and handle delete
         !word W_DUP
@@ -1417,16 +1402,10 @@ _accept_loop
         ; It's a delete ...
 
 !if 0 {
-        +CLITERAL 'd'
-        !word W_EMIT
-}
-
-!if 0 {
         ; TODO subtract 2 from loop index
         ; TODO change put_char to handle backspace
         ; TODO subtract 1 from index
 }
-
 
 ;          !word DROP
 ;          !word CLITERAL
@@ -1444,7 +1423,7 @@ _accept_loop
 
         +BRANCH _accept_do_emit
 _accept_not_delete
-
+}
 
         ; Check for and handle return
         !word W_DUP
@@ -1452,24 +1431,14 @@ _accept_not_delete
         !word W_EQUAL
         +ZBRANCH _accept_not_return
 
-!if 0 {
-        +CLITERAL 'r'
-        !word W_EMIT
-}
-
         !word W_DROP ; drop the CR
         !word W_LEAVE
         !word _accept_after_loop-*
 _accept_not_return
 
-
         ; (index key)
 
         ; A normal character, add it to the buffer
-!if 0 {
-        +CLITERAL 'n'
-        !word W_EMIT
-}
 
         !word W_DUP
         !word W_I
@@ -1478,12 +1447,8 @@ _accept_not_return
         ; (index key)
 
 _accept_do_emit
-!if 0 {
-        +CLITERAL 'e'
-        !word W_EMIT
-}
 
-!if 0 {
+!if 0 { ; will already have been printed
         !word W_EMIT 
 } else {
         !word W_DROP
@@ -1493,22 +1458,14 @@ _accept_do_emit
 
         !word W_1PLUS
 
-!if 0 {
-        !word W_CR
-}
-
         !word W_PLOOP
         !word _accept_loop-*
 _accept_after_loop ; TODO remove        
 
-!if 0 {
+!if 0 { ; will already have been printed
         !word W_CR
 }
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<accept-done>"
-        !word W_DOTS,W_CR
-}
+
         ; left with index (ie final count)
 
         !word W_PSEMI
@@ -3204,22 +3161,7 @@ _quit_read_loop
         +STRING "<quit-post-accept>"
         !word W_DOTS,W_CR
 }    
-!if 1 {
         !word W_EVALUATE
-} else {
-!if 0 {
-        +CLITERAL '['
-        !word W_EMIT
-        !word W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT
-        !word W_CR
-} else {
-        !word W_2DROP
-}
-        !word W_DOTS,W_CR
-}
-
 
 !if DEBUG {
         !word W_DOTS,W_CR
@@ -3235,13 +3177,6 @@ _quit_read_loop
         !word W_CR
 +
         +BRANCH _quit_read_loop
-
-_test_string ; TODO REMOVE
-;        +STRING "           " ; test end of input handling
-;        +STRING "  bl true .s + .s" ; doesn't depend on >NUMBER
-        ; +STRING "  bl true ( a b c) .s + .s drop" ; doesn't depend on >NUMBER
-        +STRING "  bl 123 ( a b c) .s + .s drop" ; doesn't depend on >NUMBER
-;        +STRING "  .s 123 2 3 + .s" ; TODO REMOVE
 
 ; ****************************************************************************
 ; R>

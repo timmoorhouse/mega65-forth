@@ -132,13 +132,6 @@ F_HIDDEN     = $20
 ; !word <code field> - DO_COLON, DO_CONSTANT, DO_USER
 ; [!word <parameter>...]
 
-
-!macro TRACE {
-!ifdef DEBUG {
-        jsr TRACE
-}
-}
-
 !ifdef DEBUG                { !src "debug.asm"         }
 
 ; Dictionary entries
