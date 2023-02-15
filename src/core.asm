@@ -1476,6 +1476,14 @@ _accept_after_loop ; TODO remove
         !word W_FOREGROUND
 }
 
+!if 1 {
+        ; TODO this is a hack - why do we need to do this???
+        +CLITERAL 29
+        !word W_EMIT
+        +CLITERAL 29
+        !word W_EMIT
+}
+
         ; left with index (ie final count)
 
         !word W_PSEMI
