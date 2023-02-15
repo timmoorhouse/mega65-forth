@@ -112,7 +112,6 @@ W_BYE
         lda #0
         tab
 
-        ; TODO copy out cursor position?
         ; TODO restore memory map?
         rts
 }

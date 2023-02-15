@@ -562,7 +562,7 @@ _parse_loop
 +
 
         ; ... and increment IN
-        clc
+        clc   ; TODO inw
         inc <IN
         bne +
         inc <IN+1
@@ -573,7 +573,7 @@ _parse_loop
 _parse_found_terminator
 
         ; and increment IN
-        clc
+        clc ; TODO inw
         inc <IN
         bne +
         inc <IN+1
@@ -675,7 +675,7 @@ _parse_name_skip_whitespace_loop
 +
 
         ; ... and increment IN
-        clc
+        clc   ; TODO inw
         inc <IN
         bne +
         inc <IN+1
@@ -718,7 +718,7 @@ _parse_name_skip_nonwhitespace_loop
 +
 
         ; ... and increment IN
-        clc
+        clc ; TODO inw
         inc <IN
         bne +
         inc <IN+1
@@ -729,7 +729,7 @@ _parse_name_skip_nonwhitespace_loop
 _parse_name_found_ending_whitespace
 
         ; increment IN
-        clc
+        clc ; TODO inw
         inc <IN
         bne +
         inc <IN+1

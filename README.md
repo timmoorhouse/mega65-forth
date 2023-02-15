@@ -18,7 +18,7 @@ This is *very* much in the early stages of developement:
 - File input is partially there.  We can include a file, but nested includes won't work yet (we need a stack of parse states).
 - Work is starting on defining words, but nothing is usable yet.
 
-File input and definig words are the current priorities.  Once these are in resonable shape, we can start running unit tests and do most of the remainder of the implementation in Forth.
+File input and defining words are the current priorities.  Once these are in resonable shape, we can start running unit tests and do most of the remainder of the implementation in Forth.
 
 My apologies if this isn't the greatest Forth implementation.  I don't really have much experience with Forth.  I'm doing this because I've always been intrigued by Forth, and with a new MEGA65 sitting on the dining room table, it seemed the perfect project to learn about Forth, shake decades of dust off my 6502 programming skills, and learn about some of the MEGA65-specific features.
 

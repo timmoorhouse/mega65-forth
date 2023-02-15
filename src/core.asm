@@ -2572,6 +2572,7 @@ W_MSLASH
         +WORD "here"
 W_HERE
         !word *+2
+        ; TODO phw HERE
         lda <HERE
         pha
         lda <HERE+1
@@ -2723,10 +2724,10 @@ W_IMMEDIATE
         +WORD "invert"
         !word *+2
         lda 0,x
-        eor #$ff
+        eor #$ff ; TODO neg
         sta 0,x
         lda 1,x
-        eor #$ff
+        eor #$ff ; TODO neg
         sta 1,x
         jmp NEXT
 
@@ -2784,7 +2785,7 @@ W_KEY
 W_LEAVE
         !word *+2
         ; TODO
-        pla
+        pla ; TODO 
         pla
         pla
         pla
@@ -3083,7 +3084,7 @@ W_OVER
         !word *+2
         lda 2,x
         pha
-        lda 3,X
+        lda 3,x
         jmp PUSH
 
 ; ****************************************************************************
@@ -3228,7 +3229,7 @@ W_RFROM
         dex
         dex
         pla
-        sta 0,x
+        sta 0,x ; TODO can we use PUSH and avoid some dex's here?  would save a bit of code size
         pla
         sta 1,x
         jmp NEXT

@@ -55,6 +55,7 @@ COLOUR_ERROR  =   4 ; purple
 ; may not be a good way to use them (no jump vectors to them so they could move) - might be able to execute a token for them
 
 ; TODO inw/dew to increment/decrement words!
+; TODO inq/deq for quads
 ; TODO asw for asl on a word!
 ; TODO row for rol on a word!
 ; TODO neg for xor $ff
@@ -294,13 +295,8 @@ NEXT
         lda (<I),y
         sta <W
 
-        clc            ; Increment IP by two.
-        lda <I
-        adc #2
-        sta <I
-        bcc +
-        inc <I+1
-+
+        inw I           ; Increment I by two
+        inw I
 
         ; After the jmp:
         ; - X contains the data stack pointer (this should always be preserved)
@@ -313,10 +309,14 @@ DO_COLON
 
         ; Start executing the word with the code field pointed to by W
         ; (in a new stack frame)
+!if 1 {
         lda <I+1 ; push I
         pha
         lda <I
         pha
+} else {
+        phw &I ; TODO why doesn't this work?
+}
 
         clc ; ???
         lda <W ; I = W + 2
