@@ -811,7 +811,6 @@ W_2SWAP
 ;;                                       :
 ;;                                       SCREEN 33 LINE 2
 
-!if 0 {
         +WORD_IMM ":"
 W_COLON
         !word DO_COLON
@@ -819,15 +818,13 @@ W_COLON
 ;          !word SCSP
 ;          !word CURR
 ;          !word AT
-;          !word CON
+;          !word CON ; context? change to get-current?
 ;          !word STORE
-;          !word CREAT
-;          !word RBRAC
+        !word W_CREATE
+        !word W_RBRACKET
 ;          !word PSCOD
 ; !word SEMIS?
-        !word *+2
-        rts
-}
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; ; 
@@ -849,19 +846,17 @@ W_COLON
 ;;                                       ;
 ;;                                       SCREEN 33 LINE 9
 
-!if 0 {
         +WORD_IMM ";"
 W_SEMI 
         !word DO_COLON
 ;          !word QCSP
-;          !word COMPILE
-;          !word SEMIS
-;          !word SMUDG
-;          !word LBRAC
+        !word W_POSTPONE
         !word W_PSEMI
-}
+;          !word SMUDG
+        !word W_LBRACKET
+        !word W_PSEMI
 
-        +WORD ";s"
+        +WORD ";s" ; TODO
 W_PSEMI
         !word *+2
         pla
@@ -1843,7 +1838,6 @@ CR
 ;;                                       SCREEN 50 LINE 2
 ;;
 
-!if 0 {
         +WORD "create"
 W_CREATE
         !word DO_COLON
@@ -1898,7 +1892,6 @@ W_CREATE
 ;          !word TWOP
 ;          !word COMMA
         !word W_PSEMI
-}
 
 ; ****************************************************************************
 ; DECIMAL 
@@ -2254,6 +2247,7 @@ _evaluate_number
         +STRING "<number>"
         !word W_DOTS,W_CR
 }
+        ; TODO if compiling postpone a pliteral, then the number
         !word W_2DROP
         +BRANCH _evaluate_done_word
 
@@ -2287,6 +2281,10 @@ _evaluate_word_not_found
         !word W_TYPE
         !word W_PDOTQ
         +STRING "? "
+!ifdef COLOUR_ERROR {
+        +CLITERAL COLOUR_OUTPUT
+        !word W_FOREGROUND
+}
         ; jmp _evaluate_done_word
 
 _evaluate_done_word
@@ -3093,11 +3091,17 @@ W_OVER
 ; ("text" --)
 ; ANSI 6.1.2033
 
-!if 0 {
         +WORD "postpone"
-        !word *+2
-        rts
-}
+W_POSTPONE
+        !word DO_COLON
+        ; !word QCOMP
+        !word W_RFROM
+        !word W_DUP
+        !word W_2PLUS
+        !word W_TOR
+        !word W_AT
+        !word W_COMMA
+        !word W_PSEMI
 
 ;FIG
 

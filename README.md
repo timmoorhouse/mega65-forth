@@ -4,12 +4,11 @@
 An attempt at [Forth](https://forth-standard.org/standard/words) for the [MEGA65](https://mega65.org/).  This is heavily influenced by [FIG FORTH release 1.1](https://github.com/ptorric/figforth)
 
 ```
-This publication has been made available 
-by the Forth Interest Group, 
-P. O. box 1105,  San Carlos, CA 94070
+This publication has been made available by the Forth Interest Group, P. O. box 1105, San Carlos, CA 94070
 ```
 
 ![screenshot](doc/screenshot.png)
+
 Note that we have actually switched to font A (the ASCII font).  The '\\' word shows up correctly on screen but the screenshot from m65 assumes the default font.
 
 This is *very* much in the early stages of developement:
@@ -67,6 +66,12 @@ These should get us to the point of bootstrapping with a dictionary written in f
 - [ ] SAVE-INPUT, RESTORE-INPUT, stack of parse inputs
   - [ ] Get SOURCE-ID and SOURCE right during all of this
 - [ ] Defining words
+  - [x] ,
+  - [ ] :
+  - [ ] ;
+  - [ ] CREATE
+  - [x] POSTPONE
+  - [ ] Changes to EVALUATE for compilation state
 - [ ] Bootstrapping with portions of the library written in Forth using the above features
 - Tests
   - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
