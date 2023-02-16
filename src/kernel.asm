@@ -51,6 +51,7 @@
 ; SETBANK
 ; A = bank for file data, X = bank for filename
 
+        +NONAME
 W_SETBANK       ; (data filename --)
         !word *+2
         stx <TEMP1
@@ -112,6 +113,7 @@ SETBANK
 ; $40 end of file
 ; $80 device not present
 
+        +NONAME
 W_READSS        ; (-- ior)
         !word *+2
         jsr READSS
@@ -131,6 +133,7 @@ READSS
 ; Used registers: –
 ; Real address: $FE00.
 
+        +NONAME
 W_SETLFS        ; (logical device secondary --)
         !word *+2
         stx <TEMP1
@@ -159,6 +162,7 @@ SETLFS
 ; Used registers: –
 ; Real address: $FDF9.
 
+        +NONAME
 W_SETNAM        ; (c-addr u --)
         !word *+2
         stx <TEMP1
@@ -184,6 +188,7 @@ SETNAM
 ; Used registers: A, X, Y.
 ; Real address: ($031A), $F34A.
 
+        +NONAME
 W_OPEN          ; (--)
         !word *+2
         jsr OPEN
@@ -201,6 +206,7 @@ OPEN
 ; Used registers: A, X, Y.
 ; Real address: ($031C), $F291.
 
+        +NONAME
 W_CLOSE         ; (fileid --)
         !word *+2
         lda 0,x
@@ -219,6 +225,7 @@ CLOSE
 ; Used registers: A, X.
 ; Real address: ($031E), $F20E.
 
+        +NONAME
 W_CHKIN         ; (u --)
         !word *+2
         stx <TEMP1
@@ -240,6 +247,7 @@ CHKIN
 ; Used registers: A, X.
 ; Real address: ($0320), $F250.
 
+        +NONAME
 W_CHKOUT        ; (u --)
         !word *+2
         stx <TEMP1
@@ -266,6 +274,8 @@ CHKOUT
 ; Real address: ($0324), $F157.
 
 ; TODO duplication with W_KEY
+
+        +NONAME
 W_BASIN         ; (-- c)
         !word *+2
         jsr BASIN
@@ -286,6 +296,7 @@ BASIN
 ; Real address: ($0326), $F1CA.
 
 !if 0 { ; TODO skip this? ... it's the same as W_EMIT
+        +NONAME
 W_BASOUT       ; (c --)
         !word *+2
         lda 0,x

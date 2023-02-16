@@ -97,6 +97,8 @@ W_BLANK
 ; TODO DMA
 !if ENABLE_STRING {
         +WORD "cmove"
+} else {
+        +NONAME
 }
 W_CMOVE
         !word *+2
@@ -231,6 +233,8 @@ str2    +STRING "foobar"
 
 !if ENABLE_STRING {
         +WORD "compare"
+} else {
+        +NONAME
 }
 W_COMPARE
         !word *+2

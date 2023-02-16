@@ -48,7 +48,31 @@ isspace
         cmp #' '
         rts
 
-
+!if ENABLE_RUNTIME_CHECKS {
+fail_runtime_check
+        jsr CR
+        lda #'w'
+        jsr EMIT
+        lda <W+1
+        jsr put_hex
+        lda <W
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+        lda #'i'
+        jsr EMIT
+        lda <I+1
+        jsr put_hex
+        lda <I
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+        jsr DOTS
+        lda #' '
+        jsr EMIT
+        jsr RDUMP
+        brk
+}
 
 ; ****************************************************************************
 ; 0
@@ -60,6 +84,8 @@ isspace
 ;               attractive to define them by name in the dictionary as 
 ;               constants.
 ;        +WORD "0"
+
+        +NONAME
 W_ZERO
         !word DO_CONSTANT
         !word 0
@@ -67,6 +93,8 @@ W_ZERO
 ; ****************************************************************************
 ; 1
 ;        +WORD "1"
+
+        +NONAME
 W_ONE
         !word DO_CONSTANT
         !word 1
@@ -74,6 +102,8 @@ W_ONE
 ; ****************************************************************************
 ; 2
 ;        +WORD "2"
+
+        +NONAME
 W_TWO
         !word DO_CONSTANT
         !word 2
@@ -87,6 +117,7 @@ W_TWO
 ; TODO native implementation?
 
 ;        +WORD "2+"
+        +NONAME
 W_2PLUS
         !word DO_COLON
         !word W_TWO
@@ -102,6 +133,8 @@ W_2PLUS
 ;               the interpretive pointer to branch ahead or back.  
 ;               Compiled by IF, UNTIL, and WHILE.
 ;        +WORD "0branch"
+
+        +NONAME
 W_ZBRANCH
         !word *+2
         inx
@@ -131,6 +164,8 @@ BUMP             ; used by (loop) and LEAVE  TODO MESSY !!!!!!!!!!!!!!
 ;               branch ahead or back.  BRANCH is compiled by ELSE, AGAIN, 
 ;               REPEAT.
 ;        +WORD "branch"
+
+        +NONAME
 W_BRANCH
         !word *+2
 BRANCH  ; used by (loop)  TODO MESSY !!!!!!!!
@@ -155,6 +190,8 @@ BRANCH  ; used by (loop)  TODO MESSY !!!!!!!!
 ;    CLITERAL pushes the next inline byte to data stack
 ;
 ;        +WORD "cliteral"
+
+        +NONAME
 W_CLITERAL
         !word *+2
         ; ldy #0 ; TODO
@@ -173,6 +210,8 @@ W_CLITERAL
 ;
 ;    LITERAL pushes the next inline word to data stack
 ;
+
+        +NONAME
 W_LITERAL:
         !word *+2
         ; ldy #0 ; TODO
@@ -212,6 +251,7 @@ W_OUT
 ;               stack pointer from user variable R0.
 ;        +WORD "rp!"
 
+        +NONAME
 W_RPSTORE
         !word *+2
         jsr _RPSTORE
@@ -259,6 +299,8 @@ _RPSTORE
 ;               A computer dependent procedure to initialise the stack 
 ;               pointer from S0.
 ;        +WORD "sp!"
+
+        +NONAME
 W_SPSTORE
         !word *+2
 SPSTORE

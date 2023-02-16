@@ -78,6 +78,8 @@ W_ZNOTEQUALS
 
 !if ENABLE_CORE_EXT {
         +WORD "2>r"
+} else {
+        +NONAME
 }
 W_2TOR
         !word *+2
@@ -101,6 +103,8 @@ W_2TOR
 
 !if ENABLE_CORE_EXT {
         +WORD "2r>"
+} else {
+        +NONAME
 }
 W_2RFROM
         !word *+2
@@ -128,6 +132,8 @@ W_2RFROM
 
 !if ENABLE_CORE_EXT {
         +WORD "2r@"
+} else {
+        +NONAME
 }
 W_2RAT
         !word *+2
@@ -423,6 +429,8 @@ W_HEX
 
 !if ENABLE_CORE_EXT {
         +WORD "nip"
+} else {
+        +NONAME
 }
 W_NIP
         !word *+2
@@ -484,6 +492,8 @@ W_PAD
 
 !if ENABLE_CORE_EXT {
         +WORD "parse"
+} else {
+        +NONAME
 }
 W_PARSE
         !word *+2
@@ -602,6 +612,8 @@ _parse_done
 
 !if ENABLE_CORE_EXT {
         +WORD "parse-name"
+} else {
+        +NONAME
 }
 W_PARSE_NAME
         !word *+2
@@ -844,6 +856,8 @@ W_SOURCE_ID
 
 !if ENABLE_CORE_EXT {
         +WORD "true"
+} else {
+        +NONAME
 }
 W_TRUE
         !word DO_CONSTANT

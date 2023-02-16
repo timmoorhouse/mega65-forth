@@ -44,6 +44,8 @@
 
 !if ENABLE_DOUBLE {
         +WORD "d+"
+} else {
+        +NONAME
 }
 W_DPLUS
         !word *+2
@@ -97,6 +99,8 @@ W_DMINUS
 
 !if ENABLE_DOUBLE {
         +WORD "d."
+} else {
+        +NONAME
 }
 W_DDOT
         !word DO_COLON
@@ -124,6 +128,8 @@ W_DDOT
 
 !if ENABLE_DOUBLE {
         +WORD "d.r"
+} else {
+        +NONAME
 }
 W_DDOTR
         !word DO_COLON
@@ -216,6 +222,8 @@ W_DDOTR
 
 !if ENABLE_DOUBLE {
         +WORD "dabs"
+} else {
+        +NONAME
 }
 W_DABS
         !word DO_COLON
@@ -250,6 +258,8 @@ W_DABS
 
 !if ENABLE_DOUBLE {
         +WORD "dnegate"
+} else {
+        +NONAME
 }
 W_DNEGATE
         !word *+2

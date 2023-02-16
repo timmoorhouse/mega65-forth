@@ -60,6 +60,8 @@ W_K_TAB
 ; TODO !!!!!
 !if ENABLE_FACILITY {
         +WORD "k-return"
+} else {
+        +NONAME
 }
 W_K_RETURN
         !word DO_CONSTANT

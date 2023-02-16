@@ -7,6 +7,8 @@
 
 !ifdef ENABLE_MEGA65 {
         +WORD "background"
+} else {
+        +NONAME
 }
 W_BACKGROUND
         !word *+2       ; (c --)
@@ -16,6 +18,8 @@ W_BACKGROUND
 
 !ifdef ENABLE_MEGA65 {
         +WORD "border"
+} else {
+        +NONAME
 }
 W_BORDER                ; (c --)
         !word *+2
@@ -25,6 +29,8 @@ W_BORDER                ; (c --)
 
 !ifdef ENABLE_MEGA65 {
         +WORD "foreground"
+} else {
+        +NONAME
 }
 W_FOREGROUND            ; (c --)
         !word *+2

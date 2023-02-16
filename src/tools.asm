@@ -13,7 +13,10 @@
         +WORD ".s"
 W_DOTS
         !word *+2
+        jsr DOTS
+        jmp NEXT
 
+DOTS
         stx <XSAVE
         lda #' '
         jsr EMIT
@@ -46,8 +49,7 @@ W_DOTS
         jsr put_hex
         jmp -
 +        
-
-        jmp NEXT
+        rts
 }
 
 ; ****************************************************************************

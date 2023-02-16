@@ -1,8 +1,12 @@
 
-
 ; Dump return stack
+        +NONAME
 W_RDUMP
         !word *+2
+        jsr RDUMP
+        jmp NEXT
+
+RDUMP
         stx <XSAVE
         lda #'r'
         jsr EMIT
@@ -45,4 +49,4 @@ W_RDUMP
         ; jsr put_hex        
         jsr CR
         ldx <XSAVE
-        jmp NEXT
+        rts

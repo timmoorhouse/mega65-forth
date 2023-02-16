@@ -13,12 +13,18 @@
         +WORD "!"
 W_STORE
         !word *+2
-        lda 2,x
-        sta (0,x)
 
 !if ENABLE_RUNTIME_CHECKS {
         ; TODO check alignment
+        lda 0,x
+        ror
+        bcc+
+        jmp fail_runtime_check
++
 }
+
+        lda 2,x
+        sta (0,x)
 
         ; TODO we don't really need to do this since we've got an aligned address ..
         ; just in case address is ??ff ...
@@ -1284,12 +1290,18 @@ W_QDUP
         +WORD "@"
 W_AT
         !word *+2
-        lda (0,x)
-        pha
 
 !if ENABLE_RUNTIME_CHECKS {
         ; TODO check alignment
+        lda 0,x
+        ror
+        bcc+
+        jmp fail_runtime_check
++
 }
+
+        lda (0,x)
+        pha
 
         ; TODO like for ! can we skip this since we have an aligned address?
         ; in case address is ??ff ...
@@ -2455,6 +2467,16 @@ W_INTERPRET
         +WORD "execute"
 W_EXECUTE
         !word *+2
+
+!if ENABLE_RUNTIME_CHECKS {
+        ; TODO check alignment
+        lda 0,x
+        ror
+        bcc+
+        jmp fail_runtime_check
++
+}
+
         lda 0,x
         sta <W
         lda 1,x
@@ -3115,6 +3137,17 @@ W_MOD
 !if 0 {
         +WORD "move"
         !word *+2
+
+
+; !if ENABLE_RUNTIME_CHECKS {
+;         ; TODO check alignment
+;         lda 0,x
+;         ror
+;         bcc+
+;         jmp fail_runtime_check
+; +
+; }
+
         rts
 }
 

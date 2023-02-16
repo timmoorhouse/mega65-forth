@@ -38,7 +38,7 @@
 !ifndef ENABLE_XCHAR_EXT                { ENABLE_XCHAR_EXT             = 0 }
 
 !ifndef DEBUG                           { DEBUG                        = 0 }
-!ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS        = 1 } ; not yet used
+!ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS        = 0 } ; TODO lots of things are triggering this - need to clean them up before enabling
 !ifndef USE_BASIC                       { USE_BASIC                    = 0 } ; not used - REMOVE?
 
 
@@ -64,6 +64,10 @@ COLOUR_ERROR  =   4 ; purple
 ; TODO phw to push a word? only out of memory (maybe not so useful) or immediate (could be useful)
 ; TODO quad stuff for double precision things
 
+; Alignment:
+; - VARIABLEs must be aligned
+; - CREATE must give an aligned data field?
+; - After definitions are compled the data-space pointer must be aligned
 
 !source "util.asm"
 !source "dma.asm"
@@ -119,21 +123,25 @@ F_END_MARKER = $80
 F_IMMEDIATE  = $40
 F_HIDDEN     = $20
 
+!macro ALIGN {
+  !if *&1 {
+        !byte 0
+  }
+}
+
+!macro NONAME {
+        +ALIGN
+}
+
 !set _here = $0
+
 !macro WORD2 .name, .flags {
         ; TODO align so that code field never straddles a page
+        +ALIGN
         !word _here
         !set _here = *-2
         !byte len(.name) | F_END_MARKER | .flags ; TODO control bits
-        ; TODO if we mark the last byte, we'll need to fix NAME>STRING and CREATE
-!if 1 {
         !text .name
-} else {
-        !for i, 0, len(.name)-2 {
-                !byte .name[i]
-        }
-        !byte .name[len(.name)-1] | F_END_MARKER
-}
 }
 
 !macro WORD .name {
@@ -538,6 +546,7 @@ W_STARTUP = W_ABORT
         jmp NEXT
 
 !if DEBUG {
+        +NONAME
 W_STARTUP_DEBUG
         !word DO_COLON
 ;TEST

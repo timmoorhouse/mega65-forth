@@ -52,6 +52,8 @@ W_DEFINITIONS
 
 !if ENABLE_SEARCH {
         +WORD "forth-wordlist"
+} else {
+        +NONAME
 }
 W_FORTH_WORDLIST
         !word DO_VARIABLE
@@ -104,6 +106,8 @@ W_GET_CURRENT
 
 !if ENABLE_SEARCH {
         +WORD "search-wordlist"
+} else {
+        +NONAME
 }
 W_SEARCH_WORDLIST
         !word DO_COLON

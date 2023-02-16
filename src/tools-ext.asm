@@ -168,6 +168,8 @@ W_BYE
 
 !if ENABLE_TOOLS_EXT {
         +WORD "name>compile"
+} else {
+        +NONAME
 }
 W_NAME_TO_COMPILE
         !word DO_COLON
@@ -181,6 +183,8 @@ W_NAME_TO_COMPILE
 
 !if ENABLE_TOOLS_EXT {
         +WORD "name>interpret"
+} else {
+        +NONAME
 }
 W_NAME_TO_INTERPRET
         !word DO_COLON
@@ -197,6 +201,8 @@ W_NAME_TO_INTERPRET
 
 !if ENABLE_TOOLS_EXT {
         +WORD "name>string"
+} else {
+        +NONAME
 }
 W_NAME_TO_STRING
         !word DO_COLON
@@ -240,6 +246,8 @@ W_NAME_TO_STRING
 
 !if ENABLE_TOOLS_EXT {
         +WORD "traverse-wordlist"
+} else {
+        +NONAME
 }
 W_TRAVERSE_WORDLIST
         !word DO_COLON
