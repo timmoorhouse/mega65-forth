@@ -158,48 +158,114 @@ F_HIDDEN     = $20
 
 !ifdef DEBUG                { !src "debug.asm"         }
 
-; Dictionary entries
-;   FIG:
-;     - count of name with high order bits for control bits
-;     - name string with last byte having MSB set
-;     - link
-;     - code address
-;       - DO_USER for words in user area
-;         - byte $nn
-;       - DO_CONSTANT for constants
-;         - !word $nnnn
-;       - DO_COLON ???
-;         - ...
-;         - SEMIS | PSCOD | QUIT
-;         - weird cases: INTERPRET (fig)
-;       - DO_DOES - FORTH in search-ext
-;       - XCR (for CR in core)
-;       - XQTER (for ?TERMINAL in fig)
-;       - .word $*+2 for ML
-;         - word *+2
-;         - ...
-;         - JMP POPTWO/POP/PUSH/PUT/NEXT | BUMP (see 0BRANCH) | PL2 (see (LOOP))
-;         - weird cases: AND, EXECUTE, D-, BRANCH, COLD
-;     - parameter field
 
+; MEMORY MAP
+; THIS IS STILL EVOLVING
+; 
+; 
+; FFFF +-----------------------------
+;      | Kernel
+; E000 +----------------------------- 
+; 
+; DFFF +-----------------------------
+;      | I/O
+; D000 +-----------------------------
+; 
+; CFFF +-----------------------------
+;      | Interface 
+; C000 +-----------------------------   <--- LIMIT
+;
+;      +-----------------------------
+;      | User area (to be removed)
+;      +-----------------------------   <--- UAREA
+; 
+;      +-----------------------------
+;      | TODO move basepage here?
+;      +-----------------------------
+; 
+;      +-----------------------------   
+;      | File buffers
+;      | (put terminal buffer here)
+;      +-----------------------------    <--- DAREA
+; 
+; 
+; 
+;      |
+;      | Transient workspace
+;      +-----------------------------    <--- PAD 
+;          gap?  
+;      +-----------------------------    <--- HERE
+;      |
+;      | Dictionary
+;      |
+;      | predefined words
+; 2200 +-----------------------------
+; 
+; 21ff +-----------------------------
+;      |               Data stack       TODO move this region
+;      |                    |
+;      |                    V
+;      |
+;      | Basepage data - W, I, etc
+; 2100 +-----------------------------
+; 
+; 20ff +-----------------------------
+;      | some unused space here
+;      | basic stub
+; 2001 +-----------------------------
+; 
+; 2000 +-----------------------------
+;      | likely some space we could use for small things
+;      |
+;      |
+; 0200 +----------------------------
+; 
+; 01ff +----------------------------     
+;      |  return stack
+;      |       |          
+;      |       V           ^
+;      |                   |
+;      |           terminal buffer    TODO move
+; 0100 +-----------------------------
+; 
+; 00ff +-----------------------------
+;      | basic/kernel stuff
+; 0000 +-----------------------------
 
-;SSIZE     = 128                         ; sector size in bytes
-;NBUF      = 8                           ; number of buffers desired in RAM
-;                                        ; (SSIZE*NBUF >= 1024 bytes)
-;SECTR     = 800                         ; sector per drive
-;                                        ; forcing high drive to zero
-;SECTL     = 1600                        ; sector limit for two drives
-;                                        ; of 800 per drive.
-;BMAG      = 1056                        ; total buffer magnitude, in bytes
-;                                        ; expressed by (SSIZE+4)*NBUF
-;DAREA     = UAREA-BMAG                  ; disk buffer space.
+;
+; DICTIONARY ENTRY
+;
+;      +---------------     <--- preceeding link points here - aligned
+;      | Link (2 bytes)  
+;      |
+;      |
+;      +-------+-------
+;      | Flags | name length (5 bits)      this is still present for unnamed words?
+;      +-------+-------
+;      | Name (0-31 bytes)
+;      | 
+;      |             last byte of name could be 0 for alignment (this will be included in the length field?)
+;      |             TODO would need to account for the null byte when comparing names
+;      |             (alternatively the code would have to round up when moving past the name - just have to or with $01)
+;      |
+;      +---------------     <--- aligned
+;      | data field (2 bytes) DO_COLON, DO_VARIABLE, DO_CONSTANT, *+2, etc
+;      +---------------
+;      | parameter field
+;      |
+;      |
+;      |
+;      |
+;      +---------------
 
 TIBX      = $0100                       ; terminal input buffer of 84 bytes.
-;ORIG      = $0300                       ; origin of FORTH's Dictionary.
 
 ; TODO sort out memory layout, what ROM bits we need, etc
-UAREA_LEN  = 128 ; TODO shrink this?
-UAREA      = $8000 - UAREA_LEN
+LIMIT      = $C000 ; TODO
+UAREA_LEN  = 128 ; TODO remove this region
+UAREA      = LIMIT - UAREA_LEN
+DAREA_LEN  = MAX_OPEN_FILES * FILE_BUFFER_SIZE ; TODO add terminal buffer?
+DAREA      = UAREA - DAREA_LEN
 
 ;    From DAREA downward to the top of the dictionary is free
 ;    space where the user's applications are compiled.

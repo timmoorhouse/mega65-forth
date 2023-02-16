@@ -2,6 +2,9 @@
 ; ****************************************************************************
 ; FILE
 
+FILE_BUFFER_SIZE = 128 ; should be long enough for a line
+MAX_OPEN_FILES   = 10  ; kernel limit
+
 ; TODO separate kernel stuff into separate file
 
 W_FILE_TEST
