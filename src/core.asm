@@ -1247,7 +1247,7 @@ _digit_bad
         +WORD ">r"
 W_TOR
         !word *+2
-        ; see also 2>r (core-ext)
+        ; see also 2>r (core-ext), n>r (tools-ext)
         lda 1,x
         pha
         lda 0,x
@@ -3351,7 +3351,7 @@ _quit_read_loop
         +WORD "r>"
 W_RFROM
         !word *+2
-        ; see also 2r> (core-ext)
+        ; see also 2r> (core-ext), nr> (tools-ext)
         dex
         dex
         pla

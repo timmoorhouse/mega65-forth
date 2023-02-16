@@ -315,7 +315,14 @@ W_OPEN_FILE
         +LITERAL 5
         !word W_SETLFS
 
-        !word W_OPEN
+        !word W_OPEN 
+        ; max 10 channels open
+        ; $98  ldtnd = # open channels
+        ; $35a lat   = logical channel table
+        ; $364 fat   = device number table
+        ; $36e sat   = secondary table
+        ; use lower nibble of logical channel as buffer index
+        ; so save-input needs logical channel (0=keyboard) + position into buffer (>IN) - all fits in one word?
 
         !word W_READSS
 

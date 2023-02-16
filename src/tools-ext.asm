@@ -156,11 +156,36 @@ W_BYE
 ; ****************************************************************************
 ; N>R
 ; Forth 2012 15.6.2.1908
+; (i*n +n --) (R: -- j*x +n)
 
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
 
 !if ENABLE_TOOLS_EXT {
+        +WORD "n>r"
+} else {
+        +NONAME
 }
+W_NTOR
+        !word *+2
+        ; see also >r (core), 2>r (core-ext)
+        lda 0,x
+        tay
+        taz
+        beq +
+
+-       lda 3,x
+        pha
+        lda 2,x
+        pha
+        inx
+        inx
+
+        dey
+        bne -
+
++       phy
+        phz
+        jmp POP
 
 ; ****************************************************************************
 ; NAME>COMPILE
@@ -217,8 +242,38 @@ W_NAME_TO_STRING
 ; NR>
 ; Forth 2012 15.6.2.1940
 
+; (-- i*x +n) (R: j*x +n --)
+
 !if ENABLE_TOOLS_EXT {
+        +WORD "nr>"
+} else {
+        +NONAME
 }
+W_NRFROM
+        !word *+2
+        ; see also r> (core), 2r> (core-ext)
+        ; TODO
+        pla
+        tay
+        taz
+        pla
+
+        tya
+        beq +
+
+-       dex
+        dex
+        pla
+        sta 0,x
+        pla
+        sta 1,x
+
+        dez
+        bne -
+
++       phy
+        lda #0
+        jmp PUSH
 
 ; ****************************************************************************
 ; STATE
