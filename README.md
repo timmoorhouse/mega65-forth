@@ -58,25 +58,40 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] CLOSE-FILE
   - [x] READ-LINE
   - [x] INCLUDE
+  - [ ] INCLUDED
   - [x] WRITE-FILE
   - [x] SAVESYSTEM (gforth extension)
   - [ ] Automatic selection of appropriate channel numbers and secondary addresses (first address will be hardcoded as 8 for now)
   - [ ] Automatic selection of disk buffer
   - [ ] Handle file access modes (skip for now?)
-  - [ ] REQUIRE (skip for now?)
+  - [ ] REQUIRE, REQUIRED (skip for now?)
   - [ ] Fix I/O status handling (when is status from READSS reset?) (skip for now?)
   - [ ] Fix handling of I/O error cases (skip for now?)
-  - [ ] Move basepage to top of memory so it's not in the region from $2001 to HERE (ie we don't have to deal with it in SAVESYSTEM and the results will be deterministic)
-- [ ] SAVE-INPUT, RESTORE-INPUT, stack of parse inputs
-  - [ ] Get SOURCE-ID and SOURCE right during all of this
-- [ ] Defining words
+- Defining words
   - [x] ,
   - [ ] :
   - [ ] ;
   - [ ] CREATE
   - [x] POSTPONE
   - [ ] Changes to EVALUATE for compilation state
-- [ ] Bootstrapping with portions of the library written in Forth using the above features
+  - [ ] Get the alignment right in CREATE, etc
+  - [ ] Get the alignment right for builtin words
+- Parse state stack
+  - [ ] SAVE-INPUT
+  - [ ] RESTORE-INPUT
+  - [ ] Update to EVALUATE
+  - [ ] Update to INCLUDE-FILE
+  - [ ] Sort out the buffer to use in QUIT
+  - [ ] REFILL (skip for now?)
+  - [ ] Get rid of TIB, TIB# uses
+  - [ ] Get SOURCE-ID and SOURCE right during all of this
+- Bootstrapping with portions of the library written in Forth
+  - [ ] A "minimal" configuration
+  - [ ] A "complete" configuration
+  - [ ] Move things we can from assembler to Forth
+- Making SAVESYSTEM deterministic? (it might not make sense to do this)
+  - [ ] Move basepage to top of memory?
+  - [ ] What to do about DMA lists?
 - Tests
   - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
 - Benchmarks
