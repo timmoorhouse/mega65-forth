@@ -2,6 +2,8 @@
 !cpu m65
 !convtab pet
 
+; TODO clean up the symbol names - what does acme allow?
+
 !ifndef ENABLE_BLOCK                    { ENABLE_BLOCK                 = 0 }
 !ifndef ENABLE_BLOCK_EXT                { ENABLE_BLOCK_EXT             = 0 }
 !if 1                                   { ENABLE_CORE                  = 1 } ; Required
@@ -123,7 +125,7 @@ F_HIDDEN     = $20
         !word _here
         !set _here = *-2
         !byte len(.name) | F_END_MARKER | .flags ; TODO control bits
-        ; TODO will need to fix NAME>STRING if we mark the last byte
+        ; TODO if we mark the last byte, we'll need to fix NAME>STRING and CREATE
 !if 1 {
         !text .name
 } else {

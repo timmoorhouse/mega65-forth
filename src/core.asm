@@ -16,6 +16,10 @@ W_STORE
         lda 2,x
         sta (0,x)
 
+!if ENABLE_RUNTIME_CHECKS {
+        ; TODO check alignment
+}
+
         ; TODO we don't really need to do this since we've got an aligned address ..
         ; just in case address is ??ff ...
 !if 1 {        
@@ -334,7 +338,11 @@ W_PSTORE
         lda (0,x)
         adc 2,x
         sta (0,x)
-        
+
+!if ENABLE_RUNTIME_CHECKS {
+        ; TODO check alignment
+}
+
         ; TODO Like for ! do we need to do this when we have an aligned address? 
         ; in case address is ??ff ...
         inc 0,x
@@ -439,7 +447,7 @@ W_PPLOOP
 W_COMMA
         !word DO_COLON
         !word W_HERE
-        !word W_STORE
+        !word W_STORE   ; TODO check if aligned?
         !word W_TWO ; TODO W_ONE,W_CELLS?
         !word W_ALLOT
         !word W_PSEMI
@@ -1279,6 +1287,10 @@ W_AT
         lda (0,x)
         pha
 
+!if ENABLE_RUNTIME_CHECKS {
+        ; TODO check alignment
+}
+
         ; TODO like for ! can we skip this since we have an aligned address?
         ; in case address is ??ff ...
         inc 0,x
@@ -1852,6 +1864,37 @@ W_CREATE
 
 !if 1 {
         !word W_PARSE_NAME
+
+        ; TODO look for an existing definition
+
+        ; TODO ALIGN
+
+        ; TODO link into wordlist of GET-CURRENT
+
+        +CLITERAL 31            ; limit the length
+        !word W_MIN
+        ; TODO adjust length for alignment of data field?
+
+        ; (c-addr u)
+
+        !word W_DUP             ; store name len | flags
+        +CLITERAL F_END_MARKER | F_HIDDEN
+        !word W_OR
+        !word W_HERE
+        !word W_CSTORE
+        !word W_ONE
+        !word W_ALLOT
+
+        ; (c-addr u)
+
+        !word W_HERE            ; store the name itself
+        !word W_SWAP            
+        !word W_DUP            
+        !word W_ALLOT
+        !word W_CMOVE
+
+        ; ()
+
 } else {
 ;          !word DFIND  ; store next word at HERE, search for match in dictionary
 }
@@ -2495,8 +2538,8 @@ W_FIND
         !word W_PSEMI
 
 ; FIG
-;      (FIND)        addr1  addr2  ---  pfa  b  tf      (ok)
-;                    addr1  addr2  ---  ff              (bad)
+;      (FIND)        addr1  addr2  ---  pfa  b  true    (ok)
+;                    addr1  addr2  ---  0               (bad)
 ;               Searches the dictionary starting at the name field address 
 ;               addr2, matching to the text at addr1.  Returns parameter 
 ;               field address, length byte of name field and boolean true 

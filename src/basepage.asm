@@ -10,6 +10,7 @@ base_page
 ;      IP       address of the Interpretive Pointer in zero-page.
 I               !word 0
 
+; TODO alignment
 DO_JUMP_W
                 !byte $6c       ; jmp (W)
 ;      W        address of the code field pointer in zero-page.
@@ -25,6 +26,7 @@ U               !word 0
 XSAVE           !byte 0 ; temporary to save S when we need to reuse X
 ; TODO separate XSAVE for kernel calls
 
+; TODO alignment
 ; TODO input buffer stack (need to support depth of 8)
 ; TODO open file info
 SOURCE_ID       !word 0
