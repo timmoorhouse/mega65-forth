@@ -815,11 +815,11 @@ W_2SWAP
 W_COLON
         !word DO_COLON
 ;          !word QEXEC
-;          !word SCSP
-;          !word CURR
+;          !word SCSP  ; !csp
+;          !word CURRENT
 ;          !word AT
-;          !word CON ; context? change to get-current?
-;          !word STORE
+        ; !word W_GET_CURRENT ; context - change to get-current?
+        ; !word W_STORE
         !word W_CREATE
         !word W_RBRACKET
 ;          !word PSCOD
@@ -1849,43 +1849,45 @@ W_CREATE
 ;          !word ULESS    ;|
 ;          !word TWO      ;|
 ;          !word QERR     ;)
-;          !word DFIND
-;          !word ZBRANCH
-;L2155:    !word $0F
+
+;          !word DFIND  ; store next word at HERE, search for match in dictionary
+
+;          +ZBRANCH L2163
 ;          !word DROP
 ;          !word NFA
 ;          !word IDDOT
-;          !word CLITERAL
-;          !byte 4
-;          !word MESS
+;          +CLITERAL 4
+;          !word MESSAGE
 ;          !word SPACE
+
 ;L2163:    !word HERE
 ;          !word DUP
-;          !word CAT
+;          !word CAT    ; get string len
 ;          !word WIDTH
 ;          !word AT
-;          !word MIN
-;          !word 1PLUS
-;          !word ALLOT
+;          !word MIN    ; limit symbol length to at most WIDTH
+;          !word 1PLUS  ; add 1 for the length
+;          !word ALLOT  ; allocate space for the counted string symbol name
+
+                ; TODO can we just align to take care of this?
 ;          !word DP       ;)
 ;          !word CAT      ;| 6502 only. The code field
 ;          !word CLIT     ;| must not straddle page
 ;          !byte $FD      ;| boundaries
 ;          !word EQUAL    ;|
 ;          !word ALLOT    ;)
+
 ;          !word DUP
-;          !word CLIT
-;          !byte $A0
-;          !word TOGGL
+;          +CLITERAL $a0 ; F_END_MARKER | F_HIDDEN
+;          !word TOGGLE
 ;          !word HERE
 ;          !word ONE
 ;          !word SUB
-;          !word CLITERAL
-;          !byte $80
-;          !word TOGGL
-;          !word LATES
+;          +CLITERAL $80
+;          !word TOGGLE  ; set $80 on end of string - we can skip this?
+;          !word LATEST
 ;          !word COMMA
-;          !word CURR
+;          !word CURRENT
 ;          !word AT
 ;          !word STORE
 ;          !word HERE

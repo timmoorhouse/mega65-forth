@@ -504,8 +504,8 @@ W_FENCE
 ; ****************************************************************************
 ; -FIND
 
-;      -FIND         ---  pfa  b  tf     (found)
-;                    ---  ff             (not found)
+;      -FIND         ---  pfa  b  true     (found)
+;                    ---  0                (not found)
 ;               Accepts the next text word (delimited by blanks) in the 
 ;               input stream to HERE, and searches the CONTEXT and then 
 ;               CURRENT vocabularies for a matching entry.  If found, the 

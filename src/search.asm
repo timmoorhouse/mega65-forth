@@ -68,14 +68,20 @@ FORTH_WORDLIST
 ;;                                       SCREEN 37 LINE 3
 ;;
 
-!if ENABLE_SEARCH {
+;!if ENABLE_SEARCH {
 !if 0 {
-;        +WORD "current"
-W_CURRENT
+         +WORD "get-current"
+W_GET_CURRENT
+!if 0 {
         !word DO_USER
 ;          !byte $22
+} else {
+        !word DO_COLON    ; TODO change this to a variable
+        !word W_FORTH_WORDLIST
+        !word W_PSEMI
 }
 }
+;}
 
 ; ****************************************************************************
 ; GET-ORDER
