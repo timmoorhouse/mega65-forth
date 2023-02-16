@@ -158,6 +158,11 @@ EOF
     cmd ls -l "${opt[builddir]}/forth.prg"
 }
 
+# TODO build_minimal
+# TODO build_full
+# TODO run various unit tests ...
+# TODO run various benchmarks ...
+
 do_screenshot() {
     "${opt[m65]}" "${m65opts[@]}" --quiet --screenshot="${opt[builddir]}/screenshot.png"
 }

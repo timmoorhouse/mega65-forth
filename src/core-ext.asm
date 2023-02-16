@@ -90,7 +90,7 @@ W_2TOR
         pha
         lda 0,x
         pha
-        jmp POPTWO
+        jmp POP2
 
 ; ****************************************************************************
 ; 2R>
@@ -582,7 +582,7 @@ _parse_found_terminator
 
 _parse_done
 
-        jmp POPTWO
+        jmp POP2
 
 ; ****************************************************************************
 ; PARSE-NAME
@@ -737,7 +737,7 @@ _parse_name_found_ending_whitespace
 
 _parse_name_all_done
 
-        jmp POPTWO
+        jmp POP2
 
 ; ****************************************************************************
 ; PICK

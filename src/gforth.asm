@@ -42,6 +42,8 @@ W_SAVESYSTEM
         ; It would be very nice to have a savesystem on an unmodified dictionary give something identical to the
         ; original prg
 
+        ; TODO inline dmalists will also have this issue
+
         !word W_DUP
         !word W_HERE
         !word W_SWAP

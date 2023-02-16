@@ -92,37 +92,98 @@ W_BLANK
 ;               from to address to.  The contents of address from is moved 
 ;               first proceeding toward high memory.  Further 
 ;               specification is necessary on word addressing computers.
-;
-;;
-;;                                       CMOVE
-;;                                       SCREEN 22 LINE 1
 
+; we need this for CREATE
+; TODO DMA
 !if ENABLE_STRING {
         +WORD "cmove"
+}
 W_CMOVE
         !word *+2
-;          LDA #3
-;          JSR SETUP
-;L370:     CPY N
-;          BNE L375
-;          DEC N+1
-;          BPL L375
-;          JMP NEXT
-;L375:     LDA (N+4),Y
-;          STA (N+2),Y
-;          INY
-;          BNE L370
-;          INC N+5
-;          INC N+3
-;          JMP L370
-}
+        lda 0,x
+        sta _cmove_count
+        lda 1,x
+        sta _cmove_count+1
+
+        lda 2,x
+        sta _cmove_dst
+        lda 3,x
+        sta _cmove_dst+1
+
+        lda 4,x
+        sta _cmove_src
+        lda 5,x
+        sta _cmove_src+1
+
+        +dma_inline
+        +dma_options_end
+        !byte dma_cmd_copy
+_cmove_count
+        !word 0
+_cmove_src
+        !word 0
+        !byte 0         ; src bank/flags
+_cmove_dst
+        !word 0
+        !byte 0         ; dst bank/flags
+        !byte 0         ; cmd msb
+        !word 0         ; modulo
+        jmp POP3
 
 ; ****************************************************************************
 ; CMOVE>
 ; (c-addr_1 c-addr_2 u --)
 ; ANSI 17.6.1.0920
 
+; TODO DMA
 !if ENABLE_STRING {
+        +WORD "cmove>"
+W_CMOVEG
+        !word *+2
+        ; TODO add len - 1 to src, dst
+        lda 0,x
+        sta _cmoveg_count
+        lda 1,x
+        sta _cmoveg_count+1
+
+        clc
+        lda 0,x
+        adc 2,x
+        sta _cmoveg_dst
+        lda 1,x
+        adc 3,x
+        sta _cmoveg_dst+1
+        dec _cmoveg_dst
+        bne +
+        dec _cmoveg_dst+1
++
+
+        clc
+        lda 0,x
+        adc 4,x
+        sta _cmoveg_src
+        lda 1,x
+        adc 5,x
+        sta _cmoveg_src+1
+        dec _cmoveg_src
+        bne +
+        dec _cmoveg_src+1
++
+
+        +dma_inline
+        +dma_options_end
+        !byte dma_cmd_copy
+_cmoveg_count
+        !word 0
+_cmoveg_src
+        !word 0
+        !byte $60       ; src bank/flags - backwards
+_cmoveg_dst
+        !word 0
+        !byte $60       ; dst bank/flags - backwards
+        !byte 0         ; cmd msb
+        !word 0         ; modulo        
+        jmp POP3
 }
 
 ; ****************************************************************************

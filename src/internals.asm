@@ -192,6 +192,19 @@ _inc_I_PUSH
         !word .word
 }
 
+; ****************************************************************************
+; OUT   (from FIG)
+
+;      OUT           ---  addr                               U
+;               A user variable that contains a value incremented by EMIT.  
+;               The user may alter and examine OUT to control display 
+;               formatting.
+
+        +WORD "out"
+W_OUT
+        !word DO_CONSTANT
+        !word $00ec ; pntr TODO symbol?
+
 ; TODO change to gforth variants (sp0, sp!, rp0, rp!, etc)
 ; ****************************************************************************
 ;      RP! (from FIG)

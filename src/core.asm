@@ -29,7 +29,7 @@ W_STORE
         lda 3,x
         sta (1,x)
 }        
-        jmp POPTWO
+        jmp POP2
 
 ; ****************************************************************************
 ; # 
@@ -344,7 +344,7 @@ W_PSTORE
 +       lda (0,x)
         adc 3,x
         sta (0,x)
-        jmp POPTWO
+        jmp POP2
 
 ; ****************************************************************************
 ; +LOOP 
@@ -750,7 +750,7 @@ W_2SLASH
         +WORD "2drop"
 W_2DROP
         !word *+2
-        jmp POPTWO
+        jmp POP2
 
 ; ****************************************************************************
 ; 2DUP 
@@ -1639,7 +1639,7 @@ W_CSTORE
         !word *+2
         lda 2,x
         sta (0,x)
-        jmp POPTWO
+        jmp POP2
 
 ; ****************************************************************************
 ; C, 
@@ -1850,7 +1850,11 @@ W_CREATE
 ;          !word TWO      ;|
 ;          !word QERR     ;)
 
+!if 1 {
+        !word W_PARSE_NAME
+} else {
 ;          !word DFIND  ; store next word at HERE, search for match in dictionary
+}
 
 ;          +ZBRANCH L2163
 ;          !word DROP
@@ -1894,6 +1898,45 @@ W_CREATE
 ;          !word TWOP
 ;          !word COMMA
         !word W_PSEMI
+
+; FIG
+;      -FIND         ---  pfa  b  true     (found)
+;                    ---  0                (not found)
+;               Accepts the next text word (delimited by blanks) in the 
+;               input stream to HERE, and searches the CONTEXT and then 
+;               CURRENT vocabularies for a matching entry.  If found, the 
+;               dictionary entry's parameter field address, its length 
+;               byte, and a boolean true is left.  Otherwise, only a 
+;               boolean false is left.
+
+;;
+;;                                       -FIND
+;;                                       SCREEN 48 LINE 12
+;;
+!if 0 {
+        +WORD "-find"
+W_DFIND
+        !word DO_COLON
+;          !word BL
+;          !word WORD
+;          !word HERE     ; )
+;          !word COUNT    ; |- Optional allowing free use of low
+;          !word UPPER    ; )  case from terminal
+;          !word HERE
+;          !word CON
+;          !word AT
+;          !word AT
+;          !word PFIND
+;          !word DUP
+;          !word ZEQU
+;          !word ZBRANCH
+;L2068:    !word $A       ; L2073-L2068
+;          !word DROP
+;          !word HERE
+;          !word LATES
+;          !word PFIND
+        !word W_PSEMI
+}
 
 ; ****************************************************************************
 ; DECIMAL 
@@ -1990,7 +2033,7 @@ W_PDO
         pha
         lda 0,x
         pha
-        jmp POPTWO
+        jmp POP2
 
 ; ****************************************************************************
 ; DOES> 
@@ -2398,29 +2441,34 @@ W_EXECUTE
 ;      FILL          addr  quan  b  ---
 ;               Fill memory at the address with the specified quantity of 
 ;               bytes b.
-;
-;;;                                       FILL
-;;                                       SCREEN 46 LINE 1
-;;
-;;
-; TODO DMA?
 
-!if 0 {
         +WORD "fill"
 W_FILL
-        !word DO_COLON
-;          !word SWAP
-;          !word TOR
-;          !word OVER
-;          !word CSTOR
-;          !word DUP
-;          !word 1PLUS
-;          !word RFROM
-;          !word ONE
-;          !word SUB
-;          !word CMOVE
-        !word W_PSEMI
-}
+        !word *+2
+        lda 0,x
+        sta _fill_value
+        lda 2,x
+        sta _fill_count
+        lda 3,x
+        sta _fill_count+1
+        lda 4,x
+        sta _fill_dst
+        lda 5,x
+        sta _fill_dst+1
+        +dma_inline
+        +dma_options_end
+        !byte dma_cmd_fill      ; cmd
+_fill_count
+        !word 0                 ; count
+_fill_value
+        !byte 0                 ; src
+        !word 0                 ; 
+_fill_dst
+        !word 0                 ; dst
+        !byte 0                 ; dst bank/flags
+        !byte 0                 ; cmd msb
+        !word 0                 ; modulo
+        jmp POP3
 
 ; ****************************************************************************
 ; FIND 

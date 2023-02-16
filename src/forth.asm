@@ -197,34 +197,17 @@ UAREA      = $8000 - UAREA_LEN
 ;    Boot up parameters. This area provides jump vectors
 ;    to Boot up  code, and parameters describing the system.
 
+;POP4
+;        inx
+;        inx
+;        ; jmp POP3
 
-;	  .ORG ORIG
-;                         ; User cold entry point
-;ENTER:    NOP            ; [0] Vector to COLD entry
-;          JMP COLD+2     ; [1]
+POP3
+        inx
+        inx
+        ; jmp POP2
 
-;REENTR:   NOP            ; [4] User Warm entry point
-;          JMP WARM       ; [5] Vector to WARM entry
-;          !word $0004    ; [8] 6502 in radix-36  ????
-;          !word $5ED2    ; [a]    ????
-;          !word NTOP     ; [c] Name address of MON (latest???)              [00?]
-;          !word $08      ; [e] Backspace Character                         [02?]
-;          !word UAREA    ; [10] Initial User Area                           [04?]
-;          !word TOS      ; [12] Initial Top of Stack                        [06=S0?]
-;          !word $1FF     ; [14] Initial Top of Return Stack                 [08=R0?]
-;          !word TIBX     ; [16] Initial terminal input buffer               [0A=TIB?]
-
-
-;          !word 31       ; [18] Initial name field width                    [0C=WIDTH?]
-;          !word 0        ; [1a] 0=nod disk, 1=disk                          [0E=WARNING?]
-;          !word TOP      ; [1c] Initial fence address                       [10=FENCE?]
-;          !word TOP      ; [1e] Initial top of dictionary                   [12=DP?]
-;          !word VL0      ; [20] Initial Vocabulary link ptr.                [14=VOC-LINK?]
-
-
-;      POP  POPTWO   address of routine to remove one or two 16-bit
-;                   items from computation stack.
-POPTWO
+POP2
         inx
         inx
         ; jmp POP
@@ -234,60 +217,22 @@ POP
         inx
         jmp NEXT
 
-
         ; A + top of stack is the 16-bit value
 PUSH
-;      PUSH     address of routine to repeat PUT but creating a new
-;                   bottom item on the computation stack.
-;
-;               This code sequence pushes machine registers to the
-;               computation stack and returns to NEXT.  It is not directly
-;               executable, but is a Forth re-entry point after machine
-;               code.
         dex
         dex
         ; jmp PUT
 
 PUT
-;      PUT      address of routine to replace the present computation
-;                   stack high byte from accumulator, and put from
-;                   the machine stack one byte which replaces the
-;                   present low stack byte; continue on to NEXT.
-;
-;               This code sequence stores machine register contents over
-;               the topmost computation stack value and returns to NEXT.
-;               It is not directly executable, but is a Forth re-entry
-;               point after machine code.
 
         sta 1,x
         pla
         sta 0,x
         ; jmp NEXT
 
-;;      NEXT is the address interpreter that moves from machine
-;;      level word to word.
 NEXT
         ; Execute the word with the code field pointed to by I
         ; (in the current stack frame)
-
-;      NEXT     address of the inner-interpreter, to which all
-;                   code routines must return.  NEXT fetches
-;                   indirectly referred to IP the next compiled
-;                   FORTH word address.  It then jumps indirectly
-;                   to pointed machine code.
-;
-;      NEXT
-;               This is the inner interpreter that uses the interpretive
-;               pointer IP to execute compiled Forth definitions.  It is
-;               not directly executed but is the return point for all code
-;               procedures.  It acts by fetching the address pointed by
-;               IP, storing this value in register W.  It then jumps to
-;               the address pointed to by W.  W points to the code field
-;               of a definition which contains the address of the code
-;               which executes for that definition.  This usage of
-;               indirect threaded code is a major contributor to the
-;               power, portability, and extensibility of forth.  Locations
-;               of IP and W are computer specific.
         ldy #1
         lda (<I),y     ; Fetch code field address pointed
         sta <W+1        ; to by IP.
@@ -550,7 +495,7 @@ W_STARTUP = W_ABORT
         jsr EMIT
 
         ; TODO a FONT word that switches font
-        +dma_run _install_font
+        +dma_run _install_font_dmalist
 
         jsr PAGE
 
@@ -621,7 +566,7 @@ _startup_text2
 !ifdef HAVE_REVISION {
 !src "revision.asm"
 }
-_install_font 
+_install_font_dmalist
         +dma_options $00, $ff
         +dma_options_end
         +dma_job_copy $0029000, $ff7e000, $1000, 0, 0

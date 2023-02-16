@@ -13,6 +13,7 @@
 ;;                                       +-
 ;;                                       SCREEN 56 LINE 4
 ;;
+
 !if 0 {
         +WORD "+-"
 W_PM
@@ -34,6 +35,7 @@ W_PM
 ;;                                       -->
 ;;                                       SCREEN 62 LINE 6
 ;;
+
 !if 0 {
         +WORD "-->"
 W_DASHDASH
@@ -65,6 +67,7 @@ W_DASHDASH
 ;;                                       BACK
 ;;                                       SCREEN 73 LINE 1
 ;;
+
 !if 0 {
         +WORD "back"
 W_BACK
@@ -82,6 +85,7 @@ W_BACK
 ;;                                       -BCD
 ;;                             Convert binary value to BCD
 ;;
+
 !if 0 {
         +WORD "-bcd"
 W_DBCD
@@ -106,6 +110,7 @@ W_DBCD
 ;;                                       SCREEN 35 LINE 9
 ;;                                       Bytes per Buffer
 ;;
+
 !if 0 {
         +WORD "b/buf"
 W_BBUF
@@ -126,6 +131,7 @@ W_BBUF
 ;;                                       SCREEN 35 LINE 10
 ;;                                       Blocks per screen
 ;;
+
 !if 0 {
         +WORD "b/scr"
 W_BSCR
@@ -148,6 +154,7 @@ W_BSCR
 ;;                                       SCREEN 58 LINE 4
 ;;
 ;;
+
 !if 0 {
         +WORD "+buf"
 W_PBUF
@@ -192,6 +199,7 @@ W_PBUF
 ;;                                       <BUILDS
 ;;                                       SCREEN 43 LINE 2
 ;;
+
 !if 0 {
         +WORD "<builds"
 W_BUILD
@@ -225,6 +233,7 @@ W_CSLL
 ;;                                       CFA
 ;;                                       SCREEN 39 LINE 12
 ;;
+
 !if 0 {
         +WORD "cfa"
 W_CFA
@@ -244,6 +253,7 @@ W_CFA
 ;;                                       ?COMP
 ;;                                       SCREEN 40 LINE 6
 ;;
+
 !if 0 {
         +WORD "?comp"
 W_QCOMP
@@ -268,6 +278,7 @@ W_QCOMP
 ;;                                       CONTEXT
 ;;                                       SCREEN 37 LINE 2
 ;;
+
 !if 0 {
         +WORD "context"
 W_CONTEXT
@@ -288,6 +299,7 @@ W_CONTEXT
 ;;                                       !CSP
 ;;                                       SCREEN 40 LINE 1
 ;;
+
 !if 0 {
         +WORD "!csp"
 W_SCSP
@@ -309,6 +321,7 @@ W_SCSP
 ;;                                       ?CSP
 ;;                                       SCREEN 40 LINE 12
 ;;
+
 !if 0 {
         +WORD "?csp"
 W_QCSP
@@ -336,6 +349,7 @@ W_QCSP
 ;;                                       CSP
 ;;                                       SCREEN 37 LINE 8
 ;;
+
 !if 0 {
         +WORD "csp"
 W_CSP
@@ -357,6 +371,7 @@ W_CSP
 ;;                                       DLITERAL
 ;;                                       SCREEN 51 LINE 8
 ;;
+
 !if 0 {
         +WORD "dliteral"
 W_DLITERAL
@@ -378,6 +393,7 @@ W_DLITERAL
 ;;                                       -DISC
 ;;                                       machine level sector R/W
 ;;
+
 !if 0 {
         +WORD "-disc"
 W_DDISC
@@ -413,6 +429,7 @@ W_DDISC
 ;               be used to hold output column location of a decimal point, 
 ;               in user generated formatting.  The default value on single 
 ;               number input is -1.
+
 !if 0 {
         +WORD "dpl"
 W_DPL
@@ -433,6 +450,7 @@ W_DPL
 ;;                                       DR0
 ;;                                       SCREEN 58 LINE 14
 ;;
+
 !if 0 {
         +WORD "dr0"
 W_DR0
@@ -450,6 +468,7 @@ W_DR0
 ;;                                       DR1
 ;;                                       SCREEN 58 LINE 15
 ;;
+
 !if 0 {
         +WORD "dr1"
 W_DR1
@@ -470,6 +489,7 @@ W_DR1
 ;;                                       ?EXEC
 ;;                                       SCREEN 40 LINE 8
 ;;
+
 !if 0 {
         +WORD "?exec"
 W_QEXEC
@@ -494,52 +514,12 @@ W_QEXEC
 ;;                                       FENCE
 ;;                                       SCREEN 36 LINE 7
 ;;
+
 !if 0 {
         +WORD "fence"
 W_FENCE
         !word DO_USER
         !byte U_FENCE
-}
-
-; ****************************************************************************
-; -FIND
-
-;      -FIND         ---  pfa  b  true     (found)
-;                    ---  0                (not found)
-;               Accepts the next text word (delimited by blanks) in the 
-;               input stream to HERE, and searches the CONTEXT and then 
-;               CURRENT vocabularies for a matching entry.  If found, the 
-;               dictionary entry's parameter field address, its length 
-;               byte, and a boolean true is left.  Otherwise, only a 
-;               boolean false is left.
-
-;;
-;;                                       -FIND
-;;                                       SCREEN 48 LINE 12
-;;
-!if 0 {
-        +WORD "-find"
-W_DFIND
-        !word DO_COLON
-;          !word BL
-;          !word WORD
-;          !word HERE     ; )
-;          !word COUNT    ; |- Optional allowing free use of low
-;          !word UPPER    ; )  case from terminal
-;          !word HERE
-;          !word CON
-;          !word AT
-;          !word AT
-;          !word PFIND
-;          !word DUP
-;          !word ZEQU
-;          !word ZBRANCH
-;L2068:    !word $A       ; L2073-L2068
-;          !word DROP
-;          !word HERE
-;          !word LATES
-;          !word PFIND
-        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -552,6 +532,7 @@ W_DFIND
 ;;
 ;;                                       FIRST
 ;;                                       SCREEN 35 LINE 7
+
 !if 0 {
         +WORD "first"
 W_FIRST
@@ -569,6 +550,7 @@ W_FIRST
 ;;
 ;;                                       FLD
 ;;                                       SCREEN 37 LINE 7
+
 !if 0 {
         +WORD "fld"
 W_FLD
@@ -587,6 +569,7 @@ W_FLD
 ;;                                       HLD
 ;;                                       SCREEN 37 LINE 10
 ;;
+
 !if 0 {
         +WORD "hld"
 W_HLD
@@ -604,6 +587,7 @@ W_HLD
 ;;                                       ID.
 ;;                                       SCREEN 49 LINE 9
 ;;
+
 !if 0 {
         +WORD "id."
 W_IDDOT
@@ -644,6 +628,7 @@ W_IDDOT
 ;;                                       INDEX
 ;;                                       SCREEN 77 LINE 7
 ;;
+
 !if 0 {
         +WORD "index"
 W_INDEX
@@ -684,6 +669,7 @@ W_INDEX
 ;;                                       LATEST
 ;;                                       SCREEN 39 LINE 6
 ;;
+
 !if 0 {
         +WORD "latest"
 W_LATEST
@@ -706,6 +692,7 @@ W_LATEST
 ;;                                       LIMIT
 ;;                                       SCREEN 35 LINE 8
 ;;
+
 !if 0 {
         +WORD "limit"
 W_LIMIT
@@ -727,6 +714,7 @@ W_LIMIT
 ;;                                       (LINE)
 ;;                                       SCREEN 61 LINE 2
 ;;
+
 !if 0 {
         +WORD "(line)"
 W_PLINE
@@ -757,6 +745,7 @@ W_PLINE
 ;;                                       .LINE
 ;;                                       SCREEN 61 LINE 6
 ;;
+
 !if 0 {
         +WORD ".line"
 W_DLINE
@@ -777,6 +766,7 @@ W_DLINE
 ;;                                       ?LOADING
 ;;                                       SCREEN 40 LINE 14
 ;;
+
 !if 0 {
         +WORD "?loading"
 W_QLOAD
@@ -804,6 +794,7 @@ W_QLOAD
 ;;                                       MESSAGE
 ;;                                       SCREEN 61 LINE 9
 ;;
+
 !if 0 {
         +WORD "message"
 W_MESSAGE
@@ -842,6 +833,7 @@ W_MESSAGE
 ;;                                       NFA
 ;;                                       SCREEN 39 LIINE 13
 ;;
+
 !if 0 {
         +WORD "nfa"
 W_NFA
@@ -867,6 +859,7 @@ W_NFA
 ;;                                       +ORIGIN
 ;;                                       SCREEN 35 LINE 12
 ; TODO only used by EXPECT
+
 !if 0 {
         +WORD "+origin"
 W_PORIGIN
@@ -889,26 +882,13 @@ W_PORIGIN
 ;;                                       OFFSET
 ;;                                       SCREEN 37 LINE 1
 ;;
+
 !if 0 {
         +WORD "offset"
 W_OFFSET
         !word DO_USER
 ;          !byte $1E
 }
-
-; ****************************************************************************
-; OUT
-
-;      OUT           ---  addr                               U
-;               A user variable that contains a value incremented by EMIT.  
-;               The user may alter and examine OUT to control display 
-;               formatting.
-
-
-        +WORD "out"
-W_OUT
-        !word DO_CONSTANT
-        !word $00ec ; pntr TODO symbol?
 
 ; ****************************************************************************
 ; ?PAIRS
@@ -921,6 +901,7 @@ W_OUT
 ;;                                       ?PAIRS
 ;;                                       SCREEN 40 LINE 10
 ;;
+
 !if 0 {
         +WORD "?pairs"
 W_QPAIR
@@ -939,11 +920,11 @@ W_QPAIR
 ;               Convert the name field address of a compiled definition to 
 ;               its parameter field address.
 
-
 ;;
 ;;                                       PFA
 ;;                                       SCREEN 39 LINE 14
 ;;
+
 !if 0 {
         +WORD "pfa"
 W_PFA
@@ -968,6 +949,7 @@ W_PFA
 ;;                                       PREV
 ;;                                       SCREEN 58 LINE 2
 ;;
+
 !if 0 {
         +WORD "prev"
 W_PREV
@@ -986,6 +968,7 @@ W_PREV
 ;;                                       R#
 ;;                                       SCREEN 37  LINE 9
 ;;
+
 !if 0 {
         +WORD "r#"
 W_RNUM
@@ -1006,6 +989,7 @@ W_RNUM
 ;;                                       SMUDGE
 ;;                                       SCREEN 41 LINE 9
 ;;
+
 !if 0 {
         +WORD "smudge"
 W_SMUDGE
@@ -1028,6 +1012,7 @@ W_SMUDGE
 ;;                                       ?STACK
 ;;                                       SCREEN 51 LINE 13
 ;;
+
 !if 0 {
         +WORD "?stack"
 W_QSTACK
@@ -1060,6 +1045,7 @@ W_QSTACK
 ;;                                       ?TERMINAL
 ;;                                       SCREEN 21 LINE 9
 ;;
+
 !if 0 {
         +WORD "?terminal"
 W_QTERMINAL
@@ -1076,6 +1062,7 @@ W_QTERMINAL
 ;;                                       TOGGLE
 ;;                                       SCREEN 31 LINE 7
 ;;
+
 !if 0 {
         +WORD "toggle"
 W_TOGGLE
@@ -1101,6 +1088,7 @@ W_TOGGLE
 ;;                                       TRAVERSE
 ;;                                       SCREEN 39 LINE 14
 ;;
+
 !if 0 {
         +WORD "traverse"
 W_TRAVERSE
@@ -1127,6 +1115,7 @@ W_TRAVERSE
 ;;                                       UPPER
 ;;                                       SCREEN 47 LINE 12
 ;;
+
 !if 0 {
         +WORD "upper"
 W_UPPER
@@ -1162,6 +1151,7 @@ W_UPPER
 ;;                                       USE
 ;;                                       SCREEN 58 LINE 1
 ;;
+
 !if 0 {
         +WORD "use"
 W_USE
@@ -1182,6 +1172,7 @@ W_USE
 ;;                                       VOC-LINK
 ;;                                       SCREEN 36 LINE 9
 ;;
+
 !if 0 {
         +WORD "voc-link"
 W_VOCL
@@ -1204,6 +1195,7 @@ W_VOCL
 ;;                                       WARNING
 ;;                                       SCREEN 36 LINE 6
 ;;
+
 !if 0 {
         +WORD "warning"
 W_WARNING
@@ -1227,6 +1219,7 @@ W_WARNING
 ;;                                       WIDTH
 ;;                                       SCREEN 36 LINE 5
 ;;
+
 !if 0 {
         +WORD "width"
 W_WIDTH
@@ -1249,6 +1242,7 @@ W_WIDTH
 ;;                                       SCREEN 45 LINE 11
 ;;                                       Actually Ascii Null
 ;;
+
 !if 0 {
         +WORD "x"
 W_X

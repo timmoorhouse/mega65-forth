@@ -61,7 +61,7 @@ W_SETBANK       ; (data filename --)
         pla
         jsr SETBANK
         ldx <TEMP1
-        jmp POPTWO
+        jmp POP2
 
 SETBANK
         +KERNEL_CALL $ff6b
@@ -144,7 +144,7 @@ W_SETLFS        ; (logical device secondary --)
         ldx <TEMP1
         inx
         inx
-        jmp POPTWO
+        jmp POP2
 
 
 SETLFS
@@ -170,7 +170,7 @@ W_SETNAM        ; (c-addr u --)
         pla
         jsr SETNAM
         ldx <TEMP1
-        jmp POPTWO
+        jmp POP2
 
 SETNAM
         +KERNEL_CALL $ffbd
