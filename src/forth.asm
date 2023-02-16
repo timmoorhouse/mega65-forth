@@ -41,7 +41,6 @@
 !ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS        = 0 } ; TODO lots of things are triggering this - need to clean them up before enabling
 !ifndef USE_BASIC                       { USE_BASIC                    = 0 } ; not used - REMOVE?
 
-
 ;
 ; Colour scheme
 ; These are indexes into the colour pallen (see docs for BACKGROUND for a table)
@@ -77,87 +76,10 @@ COLOUR_ERROR  =   4 ; purple
 * = $2001
         +upstart entry
 entry
-!if 0 {
-        ; works ... into the monitor
-        ; TODO is it getting the bank from $0002?
-        ;lda #0
-        ;sta $011d
-        ;sta $011f
-        brk
-        ; TODO resume using 'G' in monitor
-}
-!if 0 {
-        ; see vector at $0315, $032e
-        jmp $cd7c
-}
-
         jmp COLD
 
+; TODO a bunch of wasted space here
 !source "basepage.asm"
-
-
-; VM Registers
-; S - data stack pointer
-; R - return stack pointer
-; I - instruction pointer (FIG uses IP)
-; W - word pointer (to definition currently executing, used to get parameter field)
-; U - user pointer (in multitasked implementations, pointer to currently executing task) (FIG uses UP)
-;
-; floating point stack is allowed to be on the data stack or separate
-; (might want to look at using the math register area directly?)
-
-
-!macro STRING .text {
-        !byte len(.text)
-        !text .text
-}
-
-
-; Control bits:
-; - fig always sets bit 8 (so we can find the start of the name crawling back from the code field)
-; - precedence (fig uses bit 7 for immediate)
-; - smudge (fig uses bit 6 for hidden)
-; - length uses bits 1-5
-
-F_END_MARKER = $80
-F_IMMEDIATE  = $40
-F_HIDDEN     = $20
-
-!macro ALIGN {
-  !if *&1 {
-        !byte 0
-  }
-}
-
-!macro NONAME {
-        +ALIGN
-}
-
-!set _here = $0
-
-!macro WORD2 .name, .flags {
-        ; TODO align so that code field never straddles a page
-        +ALIGN
-        !word _here
-        !set _here = *-2
-        !byte len(.name) | F_END_MARKER | .flags ; TODO control bits
-        !text .name
-}
-
-!macro WORD .name {
-        +WORD2 .name, 0
-}
-
-!macro WORD_IMM .name {
-        +WORD2 .name, F_IMMEDIATE
-}
-
-; +WORD "name"
-; !word <code field> - DO_COLON, DO_CONSTANT, DO_USER
-; [!word <parameter>...]
-
-!ifdef DEBUG                { !src "debug.asm"         }
-
 
 ; MEMORY MAP
 ; THIS IS STILL EVOLVING
@@ -232,7 +154,41 @@ F_HIDDEN     = $20
 ;      | basic/kernel stuff
 ; 0000 +-----------------------------
 
+TIBX      = $0100                       ; terminal input buffer of 84 bytes.
+
+; TODO sort out memory layout, what ROM bits we need, etc
+LIMIT      = $C000 ; TODO
+UAREA_LEN  = 128 ; TODO remove this region
+UAREA      = LIMIT - UAREA_LEN
+DAREA_LEN  = MAX_OPEN_FILES * FILE_BUFFER_SIZE ; TODO add terminal buffer?
+DAREA      = UAREA - DAREA_LEN
+
+
+
+; VM Registers
+; S - data stack pointer
+; R - return stack pointer
+; I - instruction pointer (FIG uses IP)
+; W - word pointer (to definition currently executing, used to get parameter field)
+; U - user pointer (in multitasked implementations, pointer to currently executing task) (FIG uses UP)
 ;
+; floating point stack is allowed to be on the data stack or separate
+; (might want to look at using the math register area directly?)
+
+
+!macro STRING .text {
+        !byte len(.text)
+        !text .text
+}
+
+
+
+!macro ALIGN {
+  !if *&1 {
+        !byte 0
+  }
+}
+
 ; DICTIONARY ENTRY
 ;
 ;      +---------------     <--- preceeding link points here - aligned
@@ -244,11 +200,8 @@ F_HIDDEN     = $20
 ;      +-------+-------
 ;      | Name (0-31 bytes)
 ;      | 
-;      |             last byte of name could be 0 for alignment (this will be included in the length field?)
-;      |             TODO would need to account for the null byte when comparing names
-;      |             (alternatively the code would have to round up when moving past the name - just have to or with $01)
 ;      |
-;      +---------------     <--- aligned
+;      +---------------     <--- aligned (if name is even length there will be a pad byte)
 ;      | data field (2 bytes) DO_COLON, DO_VARIABLE, DO_CONSTANT, *+2, etc
 ;      +---------------
 ;      | parameter field
@@ -258,20 +211,44 @@ F_HIDDEN     = $20
 ;      |
 ;      +---------------
 
-TIBX      = $0100                       ; terminal input buffer of 84 bytes.
+!macro NONAME {
+        +ALIGN
+        ; TODO should we have a byte for flags (+ len 0 name) then a pad byte for alignment?
+        ; this would ensure we'd have flags before every word
+}
 
-; TODO sort out memory layout, what ROM bits we need, etc
-LIMIT      = $C000 ; TODO
-UAREA_LEN  = 128 ; TODO remove this region
-UAREA      = LIMIT - UAREA_LEN
-DAREA_LEN  = MAX_OPEN_FILES * FILE_BUFFER_SIZE ; TODO add terminal buffer?
-DAREA      = UAREA - DAREA_LEN
+!set _here = $0
 
-;    From DAREA downward to the top of the dictionary is free
-;    space where the user's applications are compiled.
-;
-;    Boot up parameters. This area provides jump vectors
-;    to Boot up  code, and parameters describing the system.
+; Control bits:
+; - fig always sets bit 8 (so we can find the start of the name crawling back from the code field)
+; - precedence (fig uses bit 7 for immediate)
+; - smudge (fig uses bit 6 for hidden)
+; - length uses bits 1-5
+
+F_END_MARKER = $80
+F_IMMEDIATE  = $40
+F_HIDDEN     = $20
+
+!macro WORD2 .name, .flags {
+        +ALIGN
+        !word _here
+        !set _here = *-2
+        !byte len(.name) | F_END_MARKER | .flags
+        !text .name
+        +ALIGN
+}
+
+!macro WORD .name {
+        +WORD2 .name, 0
+}
+
+!macro WORD_IMM .name {
+        +WORD2 .name, F_IMMEDIATE
+}
+
+!ifdef DEBUG                { !src "debug.asm"         }
+
+
 
 ;POP4
 ;        inx
