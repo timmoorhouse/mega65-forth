@@ -211,6 +211,8 @@ DAREA      = UAREA - DAREA_LEN
 ;      |
 ;      +---------------
 
+; FIG puts the name (and the associated length/flags) before the link, we put it after
+
 !macro NONAME {
         +ALIGN
         ; TODO should we have a byte for flags (+ len 0 name) then a pad byte for alignment?
@@ -422,7 +424,7 @@ COLD
         ; E000-FFFF     3E000   KERNAL
         ; C000-DFFF
         ; A000-BFFF
-        ; 8000-9FFF     20000   DOS ?
+        ; 8000-9FFF
         ; 6000-7FFF
         ; 4000-5FFF
         ; 0000-1FFF
@@ -450,18 +452,7 @@ COLD
         lda #>base_page
         tab
         
-; rest of cold stuff from FIG ...
-;          LDA ORIG+$0C   ; from cold start area
-;          STA FORTH+6 ; top of stack?
-;          LDA ORIG+$0D
-;          STA FORTH+7
-
-
-;          LDY #$15
-;          BNE +
 WARM
-;          LDY #$0F
-;+
 
 !if 1 { ; TODO REMOVE
         ; Set up user area

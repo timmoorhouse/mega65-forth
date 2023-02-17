@@ -836,8 +836,7 @@ W_COLON
         ; !word W_STORE
         !word W_CREATE
         !word W_RBRACKET
-;          !word PSCOD
-; !word SEMIS?
+;          !word PSCOD   ; ????????
         !word W_PSEMI
 
 ; ****************************************************************************
@@ -1856,15 +1855,11 @@ CR
 ;               header for a Forth definition.  The code field contains 
 ;               the address of the word's parameter field.  The new word 
 ;               is created in the CURRENT vocabulary.
-;
-;;
-;;                                       CREATE
-;;                                       SCREEN 50 LINE 2
-;;
 
         +WORD "create"
 W_CREATE
         !word DO_COLON
+
 ;          !word TIB      ;)
 ;          !word HERE     ;|
 ;          !word CLITERAL ;|  6502 only, assures
@@ -1874,13 +1869,17 @@ W_CREATE
 ;          !word TWO      ;|
 ;          !word QERR     ;)
 
-!if 1 {
-
-
         !word W_PARSE_NAME
 
         ; TODO look for an existing definition
 
+;          +ZBRANCH L2163
+;          !word DROP
+;          !word NFA
+;          !word IDDOT
+;          +CLITERAL 4
+;          !word MESSAGE
+;          !word SPACE
 
         ; TODO if no existing defintion found ...
 
@@ -1916,45 +1915,11 @@ W_CREATE
 
         !word W_ALIGN           ; need to realign after name
 
+        +LITERAL DO_COLON          ; TODO how should this be done?
+        !word W_COMMA
+
         ; ()
 
-} else {
-;          !word DFIND  ; store next word at HERE, search for match in dictionary
-}
-
-;          +ZBRANCH L2163
-;          !word DROP
-;          !word NFA
-;          !word IDDOT
-;          +CLITERAL 4
-;          !word MESSAGE
-;          !word SPACE
-
-;L2163:    !word HERE
-;          !word DUP
-;          !word CAT    ; get string len
-;          !word WIDTH
-;          !word AT
-;          !word MIN    ; limit symbol length to at most WIDTH
-;          !word 1PLUS  ; add 1 for the length
-;          !word ALLOT  ; allocate space for the counted string symbol name
-
-                ; TODO can we just align to take care of this?
-;          !word DP       ;)
-;          !word CAT      ;| 6502 only. The code field
-;          !word CLIT     ;| must not straddle page
-;          !byte $FD      ;| boundaries
-;          !word EQUAL    ;|
-;          !word ALLOT    ;)
-
-;          !word DUP
-;          +CLITERAL $a0 ; F_END_MARKER | F_HIDDEN
-;          !word TOGGLE
-;          !word HERE
-;          !word ONE
-;          !word SUB
-;          +CLITERAL $80
-;          !word TOGGLE  ; set $80 on end of string - we can skip this?
 ;          !word LATEST
 ;          !word COMMA
 ;          !word CURRENT
@@ -1963,46 +1928,8 @@ W_CREATE
 ;          !word HERE
 ;          !word TWOP
 ;          !word COMMA
-        !word W_PSEMI
 
-; FIG
-;      -FIND         ---  pfa  b  true     (found)
-;                    ---  0                (not found)
-;               Accepts the next text word (delimited by blanks) in the 
-;               input stream to HERE, and searches the CONTEXT and then 
-;               CURRENT vocabularies for a matching entry.  If found, the 
-;               dictionary entry's parameter field address, its length 
-;               byte, and a boolean true is left.  Otherwise, only a 
-;               boolean false is left.
-
-;;
-;;                                       -FIND
-;;                                       SCREEN 48 LINE 12
-;;
-!if 0 {
-        +WORD "-find"
-W_DFIND
-        !word DO_COLON
-;          !word BL
-;          !word WORD
-;          !word HERE     ; )
-;          !word COUNT    ; |- Optional allowing free use of low
-;          !word UPPER    ; )  case from terminal
-;          !word HERE
-;          !word CON
-;          !word AT
-;          !word AT
-;          !word PFIND
-;          !word DUP
-;          !word ZEQU
-;          !word ZBRANCH
-;L2068:    !word $A       ; L2073-L2068
-;          !word DROP
-;          !word HERE
-;          !word LATES
-;          !word PFIND
         !word W_PSEMI
-}
 
 ; ****************************************************************************
 ; DECIMAL 

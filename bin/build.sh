@@ -158,8 +158,16 @@ EOF
     cmd ls -l "${opt[builddir]}/forth.prg"
 }
 
-# TODO build_minimal
-# TODO build_full
+do_build_minimal() {
+    # TODO
+    :
+}
+
+do_build_full() {
+    # TODO
+    :
+}
+
 # TODO run various unit tests ...
 # TODO run various benchmarks ...
 

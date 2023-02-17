@@ -69,16 +69,18 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Fix handling of I/O error cases (skip for now?)
 - Defining words
   - [x] ,
-  - [ ] :
-  - [ ] ;
-  - [ ] CREATE (in progress)
+  - [x] :
+  - [ ] ; (in progress)
+  - [x] CREATE
   - [x] POSTPONE
   - [ ] Changes to EVALUATE for compilation state
   - [ ] Get the alignment right in CREATE, etc
   - [ ] Get the alignment right for builtin words
+  - [ ] Honour the hidden flag when doing name searches
 - Parse state stack
   - [ ] SAVE-INPUT
   - [ ] RESTORE-INPUT
+    - I think these will just need one word (1 byte fileid, 1 byte >IN)
   - [ ] Update to EVALUATE
   - [ ] Update to INCLUDE-FILE
   - [ ] Sort out the buffer to use in QUIT
@@ -86,6 +88,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Get rid of TIB, TIB# uses
   - [ ] Get SOURCE-ID and SOURCE right during all of this
 - Bootstrapping with portions of the library written in Forth
+  - [ ] A "skeletal" configuration with just the builtins
   - [ ] A "minimal" configuration
   - [ ] A "complete" configuration
   - [ ] Move things we can from assembler to Forth
@@ -94,6 +97,8 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] What to do about DMA lists?
 - Tests
   - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
+  - [ ] Some reasonable way of capturing test results 
+    - It might make sense to have a way to redirect EMIT to a file (this would need to persist across an ABORT though, so may need a compilation option) 
 - Benchmarks
   - [ ] Compiling the dictionary?
   - [ ] Something without I/O?
