@@ -578,45 +578,6 @@ W_HLD
 }
 
 ; ****************************************************************************
-; ID.
-
-;      ID.           addr ---
-;               Print a definition's name from its name field address.
-
-;;
-;;                                       ID.
-;;                                       SCREEN 49 LINE 9
-;;
-
-!if 0 {
-        +WORD "id."
-W_IDDOT
-        !word DO_COLON
-;          !word PAD
-;          !word CLIT
-;          !byte $20
-;          !word CLIT
-;          !byte $5F
-;          !word FILL
-;          !word DUP
-;          !word PFA
-;          !word LFA
-;          !word OVER
-;          !word SUB
-;          !word PAD
-;          !word SWAP
-;          !word CMOVE
-;          !word PAD
-;          !word COUNT
-;          !word CLIT
-;          !byte $1F
-;          !word ANDD
-;          !word TYPE
-;          !word SPACE
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; INDEX
 
 ;      INDEX         from  to  ---
@@ -974,31 +935,6 @@ W_PREV
 W_RNUM
         !word DO_USER
 ;          !byte $2E
-}
-
-; ****************************************************************************
-; SMUDGE
-
-;      SMUDGE
-;               Used during word definition to toggle the "smudge bit" in 
-;               a definition's name field.  This prevents an un-completed 
-;               definition  from being found during dictionary searches, 
-;               until compiling is completed without error.
-
-;;
-;;                                       SMUDGE
-;;                                       SCREEN 41 LINE 9
-;;
-
-!if 0 {
-        +WORD "smudge"
-W_SMUDGE
-        !word DO_COLON
-;          !word LATES
-        !word W_CLITERAL
-        !byte F_HIDDEN
-;          !word TOGGL
-        !word W_PSEMI
 }
 
 ; ****************************************************************************

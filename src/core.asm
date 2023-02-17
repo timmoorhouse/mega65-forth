@@ -865,7 +865,7 @@ W_SEMI
 ;          !word QCSP
         !word W_POSTPONE
         !word W_PSEMI
-;          !word SMUDG
+;          !word SMUDGE
         !word W_LBRACKET
         !word W_PSEMI
 
@@ -877,6 +877,24 @@ W_PSEMI
         pla
         sta <I+1
         jmp NEXT
+
+; FIG
+;      SMUDGE
+;               Used during word definition to toggle the "smudge bit" in 
+;               a definition's name field.  This prevents an un-completed 
+;               definition  from being found during dictionary searches, 
+;               until compiling is completed without error.
+
+!if 0 {
+        +WORD "smudge"
+W_SMUDGE
+        !word DO_COLON
+;          !word LATES
+        !word W_CLITERAL
+        !byte F_HIDDEN
+;          !word TOGGL
+        !word W_PSEMI
+}
 
 ; ****************************************************************************
 ; < 

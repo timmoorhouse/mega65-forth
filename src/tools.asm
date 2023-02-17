@@ -128,6 +128,7 @@ W_WORDS
         !word W_TRAVERSE_WORDLIST
         !word W_PSEMI
 
+; TODO this is pretty much id.
 W_PRINT_NAME
         !word DO_COLON
         !word W_OUT
@@ -143,6 +144,38 @@ W_PRINT_NAME
         !word W_TYPE
         !word W_TRUE
         !word W_PSEMI
+
+; FIG
+;      ID.           addr ---
+;               Print a definition's name from its name field address.
+
+!if 0 {
+        +WORD "id."
+W_IDDOT
+        !word DO_COLON
+;          !word PAD
+;          !word CLIT
+;          !byte $20
+;          !word CLIT
+;          !byte $5F
+;          !word FILL
+;          !word DUP
+;          !word PFA
+;          !word LFA
+;          !word OVER
+;          !word SUB
+;          !word PAD
+;          !word SWAP
+;          !word CMOVE
+;          !word PAD
+;          !word COUNT
+;          !word CLIT
+;          !byte $1F
+;          !word ANDD
+;          !word TYPE
+;          !word SPACE
+        !word W_PSEMI
+}
 
 ; FIG
 ;      VLIST

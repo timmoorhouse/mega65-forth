@@ -41,9 +41,22 @@
 !ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS        = 0 } ; TODO lots of things are triggering this - need to clean them up before enabling
 !ifndef USE_BASIC                       { USE_BASIC                    = 0 } ; not used - REMOVE?
 
+; TODO option for name case sensitivity?
+
+; Runtime checks
+; - For anything taking an aligned address, check that it's aligned
+;   - !, +!, @, EXECUTE
+;   - TODO: MOVE, others?
+; - TODO: check data stack depth at start of : matches that at start of ; (FIG uses !csp, ?csp for this)
+; - TODO: check for data stack overflow/underflow (FIG uses ?STACK)
+; - TODO: check for return stack overflow/underflow
+; - TODO: check if HERE is too close to DAREA (check in ALLOT)
+; - TODO: check if HERE is moved down below its initial value
+; - TODO: check value passed to FORGET (FIG uses FENCE for lower limit)
+
 ;
 ; Colour scheme
-; These are indexes into the colour pallen (see docs for BACKGROUND for a table)
+; These are indexes into the colour pallette (see docs for BACKGROUND for a table)
 ;
 
 COLOUR_OUTPUT =   1 ; white
@@ -302,6 +315,7 @@ NEXT
         ; - X contains the data stack pointer (this should always be preserved)
         ; - Y contains 0 (this can be trashed) TODO should we depend on this?
         ; - A & Z contain nothing in particular (and can be trashed) TODO can we use z for anything?
+        ; - TODO can we assume anything about flags?
         jmp &DO_JUMP_W
 
 DO_COLON
@@ -319,7 +333,7 @@ DO_COLON
 }
 
         clc ; ???
-        lda <W ; I = W + 2
+        lda <W ; I = W + 2 ; TODO faster to copy then inw?
         adc #2
         sta <I
         tya
