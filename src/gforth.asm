@@ -5,10 +5,29 @@
 
 ; TODO form (-- urows ucols)
 
+; ****************************************************************************
+; LATEST (also in FIG)
 
+;      LATEST        ---  addr
+;               Leave the name field address of the topmost word in the 
+;               CURRENT vocabulary.
+
+!if ENABLE_GFORTH {
+        +WORD "latest"
+} else {
+        +NONAME
+}
+W_LATEST
+        !word DO_COLON
+        !word W_GET_CURRENT
+        !word W_AT
+        ; !word W_AT
+        !word W_PSEMI
+
+
+; ****************************************************************************
 ; TODO savesystem ("filename" --) - or just include this at the end of bootstrap sources?
 ; TODO return ior?
-
 
 ; SAVESYSTEM FOO,P,W
 
@@ -16,7 +35,7 @@
         +WORD "savesystem"
 W_SAVESYSTEM
         !word DO_COLON
-!if 1 {
+!if DEBUG {
         !word W_PDOTQ
         +STRING "<savesystem>"
         !word W_DOTS
@@ -56,7 +75,7 @@ W_SAVESYSTEM
         !word W_CLOSE_FILE
         !word W_DROP ; TODO check status
 
-!if 1 {
+!if DEBUG {
         !word W_DOTS,W_CR
 }
         !word W_PSEMI

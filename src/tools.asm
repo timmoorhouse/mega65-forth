@@ -129,8 +129,18 @@ W_WORDS
         !word W_PSEMI
 
 ; TODO this is pretty much id.
-W_PRINT_NAME
+W_PRINT_NAME    ; (nt -- u)
         !word DO_COLON
+
+        ; Skip if hidden (leave nt on stack as true flag)
+        !word W_DUP
+        !word W_2PLUS
+        !word W_CAT
+        +CLITERAL F_HIDDEN
+        !word W_AND
+        !word W_ZEQUALS
+        +ZBRANCH _print_name_end
+
         !word W_OUT
         !word W_CAT
         !word W_DUP
@@ -143,6 +153,8 @@ W_PRINT_NAME
 +       !word W_NAME_TO_STRING
         !word W_TYPE
         !word W_TRUE
+
+_print_name_end
         !word W_PSEMI
 
 ; FIG

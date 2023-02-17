@@ -295,6 +295,26 @@ _RPSTORE
         rts
 
 ; ****************************************************************************
+;      SMUDGE (from FIG)
+;               Used during word definition to toggle the "smudge bit" in 
+;               a definition's name field.  This prevents an un-completed 
+;               definition  from being found during dictionary searches, 
+;               until compiling is completed without error.
+
+        +NONAME
+W_SMUDGE
+        !word DO_COLON
+        !word W_LATEST
+        !word W_2PLUS
+        !word W_DUP
+        !word W_CAT
+        +CLITERAL F_HIDDEN
+        !word W_XOR
+        !word W_SWAP
+        !word W_CSTORE
+        !word W_PSEMI
+
+; ****************************************************************************
 ;      SP! (from FIG)
 ;               A computer dependent procedure to initialise the stack 
 ;               pointer from S0.

@@ -620,28 +620,6 @@ W_INDEX
 }
 
 ; ****************************************************************************
-; LATEST
-
-;      LATEST        ---  addr
-;               Leave the name field address of the topmost word in the 
-;               CURRENT vocabulary.
-
-;;
-;;                                       LATEST
-;;                                       SCREEN 39 LINE 6
-;;
-
-!if 0 {
-        +WORD "latest"
-W_LATEST
-        !word DO_COLON
-;          !word CURR
-;          !word AT
-;          !word AT
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; LIMIT
 
 ;      LIMIT         ---  n

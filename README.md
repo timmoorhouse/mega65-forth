@@ -70,16 +70,31 @@ These should get us to the point of bootstrapping with a dictionary written in f
 - Defining words
   - [x] ,
   - [x] :
-  - [ ] ; (in progress)
+  - [x] ;
   - [x] CREATE
   - [x] POSTPONE
   - [ ] Changes to EVALUATE for compilation state
-  - [ ] Get the alignment right in CREATE, etc
-  - [ ] Get the alignment right for builtin words
-  - [ ] Honour the hidden flag when doing name searches
+  - [x] Get the alignment right in CREATE
+  - [x] Get the alignment right for builtin words
+  - [ ] Honour the hidden flag in SEARCH-NAMELIST
+  - [x] Honour the hidden flag in WORDS
+- Implement more of the basic wordset
+  - [ ] AHEAD, CS-PICK, CS-ROLL
+  - [ ] IF, ELSE, THEN
+  - [ ] BEGIN, AGAIN
+  - [ ] BEGIN, WHILE, REPEAT
+  - [ ] DO, LOOP
+  - [ ] DO, +LOOP
+  - [ ] LEAVE
+  - [ ] UNLOOP, EXIT
+  - [ ] I, J
+  - [ ] IMMEDIATE
+  - [ ] RECURSE (skip for now?)
+  - [ ] VARIABLE
+  - [ ] CONSTANT
+  - [ ] .(
 - Parse state stack
-  - [ ] SAVE-INPUT
-  - [ ] RESTORE-INPUT
+  - [ ] SAVE-INPUT, RESTORE-INPUT
     - I think these will just need one word (1 byte fileid, 1 byte >IN)
   - [ ] Update to EVALUATE
   - [ ] Update to INCLUDE-FILE

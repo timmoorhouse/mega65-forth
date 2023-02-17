@@ -923,6 +923,7 @@ W_BACKSLASH
         !word DO_COLON
         +CLITERAL '\r' ; TODO
         !word W_PARSE
+; !if DEBUG {
 !if 1 {
         !word W_PDOTQ
         +STRING "<comment>"
