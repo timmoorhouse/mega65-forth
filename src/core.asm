@@ -2787,7 +2787,7 @@ W_IMMEDIATE
         +CLITERAL F_IMMEDIATE
         !word W_OR
         !word W_SWAP
-        !word CSTORE
+        !word W_CSTORE
         !word W_PSEMI
 
 ; ****************************************************************************

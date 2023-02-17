@@ -59,35 +59,8 @@ W_FLUSH_FILE
         +WORD_IMM "include"
 W_INCLUDE
         !word DO_COLON
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<include>"
-        !word W_DOTS
-}
         !word W_PARSE_NAME
-
-!if DEBUG {
-        !word W_2DUP
-        +CLITERAL '['
-        !word W_EMIT
-        !word W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT
-}
-
-        !word W_RSLO
-        !word W_OPEN_FILE
-        !word W_DROP ; TODO check status
-        !word W_TOR ; need to move to return stack since include-file can do arbitrary things to the data stack
-        !word W_RAT
-        !word W_INCLUDE_FILE
-        !word W_RFROM
-        !word W_CLOSE_FILE
-        !word W_DROP ; TODO check status
-
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
+        !word W_INCLUDED
         !word W_PSEMI     
 }
 

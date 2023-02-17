@@ -58,7 +58,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] CLOSE-FILE
   - [x] READ-LINE
   - [x] INCLUDE
-  - [ ] INCLUDED
+  - [x] INCLUDED
   - [x] WRITE-FILE
   - [x] SAVESYSTEM (gforth extension)
   - [x] Automatic selection of appropriate channel numbers and secondary addresses (first address will be hardcoded as 8 for now)
@@ -88,7 +88,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] LEAVE
   - [ ] UNLOOP, EXIT
   - [ ] I, J
-  - [ ] IMMEDIATE
+  - [x] IMMEDIATE
   - [ ] RECURSE (skip for now?)
   - [ ] VARIABLE
   - [ ] CONSTANT

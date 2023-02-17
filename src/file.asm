@@ -361,8 +361,15 @@ W_INCLUDED
         +STRING "<included>"
         !word W_DOTS
 }      
-        ; TODO
-        !word W_2DROP
+        !word W_RSLO
+        !word W_OPEN_FILE
+        !word W_DROP ; TODO check status
+        !word W_TOR ; need to move to return stack since include-file can do arbitrary things to the data stack
+        !word W_RAT
+        !word W_INCLUDE_FILE
+        !word W_RFROM
+        !word W_CLOSE_FILE
+        !word W_DROP ; TODO check status
 !if DEBUG {
         !word W_DOTS,W_CR
 }
