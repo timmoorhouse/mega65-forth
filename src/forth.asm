@@ -663,7 +663,7 @@ _install_font_dmalist
 !src "xchar-ext.asm"
 
 INITIAL_FORTH_WORDLIST
-        !word _here
+        !word _here ; TODO can we get away without storing this?
 INITIAL_HERE
 
 ;TOP  :    .END           ; end of listing

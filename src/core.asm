@@ -1517,7 +1517,7 @@ W_ALIGN
         !word *+2
         bbr0 <HERE, +
         inc <HERE
-        beq +
+        bne +
         inc <HERE+1
 +
         jmp NEXT
@@ -1889,6 +1889,8 @@ W_CREATE
 
         ; (c-addr u)
 
+        !word W_ALIGN           ; TODO THIS SHOULD BE DONE BEFORE STORING THE LINK
+
         !word W_DUP             ; store name len | flags
         +CLITERAL F_END_MARKER | F_HIDDEN
         !word W_OR
@@ -1904,6 +1906,8 @@ W_CREATE
         !word W_DUP            
         !word W_ALLOT
         !word W_CMOVE
+
+        !word W_ALIGN           ; need to realign after name
 
         ; ()
 
