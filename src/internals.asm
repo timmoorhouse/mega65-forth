@@ -304,6 +304,7 @@ _RPSTORE
         +NONAME
 W_SMUDGE
         !word DO_COLON
+        ; see also immediate (core)
         !word W_LATEST
         !word W_2PLUS
         !word W_DUP

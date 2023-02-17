@@ -760,11 +760,18 @@ _parse_name_all_done
 
 ; ****************************************************************************
 ; PICK
-; (x_u...x_1 x_u u -- x_u...x_1 x_0 x_u)
+; (x_u...x_1 x_0 u -- x_u...x_1 x_0 x_u)
 ; ANSI 6.2.2030
 
 !if ENABLE_CORE_EXT {
+        +WORD "pick"
+} else {
+        +NONAME
 }
+W_PICK
+        !word *+2
+        ; TODO
+        jmp NEXT
 
 ; ****************************************************************************
 ; REFILL
@@ -790,7 +797,14 @@ _parse_name_all_done
 ; ANSI 6.2.2150
 
 !if ENABLE_CORE_EXT {
+        +WORD "roll"
+} else {
+        +NONAME
 }
+W_ROLL
+        !word *+2
+        ; TODO
+        jmp NEXT
 
 ; ****************************************************************************
 ; S\"

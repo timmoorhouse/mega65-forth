@@ -72,14 +72,14 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] :
   - [x] ;
   - [x] CREATE
-  - [x] POSTPONE
-  - [ ] Changes to EVALUATE for compilation state
+  - [ ] POSTPONE (sorta right? need to check this)
+  - [x] Changes to EVALUATE for compilation state
   - [x] Get the alignment right in CREATE
   - [x] Get the alignment right for builtin words
   - [ ] Honour the hidden flag in SEARCH-NAMELIST
   - [x] Honour the hidden flag in WORDS
 - Implement more of the basic wordset
-  - [ ] AHEAD, CS-PICK, CS-ROLL
+  - [ ] AHEAD, CS-PICK, CS-ROLL (in progress)
   - [ ] IF, ELSE, THEN
   - [ ] BEGIN, AGAIN
   - [ ] BEGIN, WHILE, REPEAT
@@ -92,7 +92,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] RECURSE (skip for now?)
   - [ ] VARIABLE
   - [ ] CONSTANT
-  - [ ] .(
+  - [x] .(
 - Parse state stack
   - [ ] SAVE-INPUT, RESTORE-INPUT
     - I think these will just need one word (1 byte fileid, 1 byte >IN)

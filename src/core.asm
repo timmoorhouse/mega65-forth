@@ -2775,22 +2775,20 @@ W_IF
 ;               compiling situations, rather than build them into the 
 ;               fundamental compiler.  The user may force compilation of 
 ;               an immediate definition by preceding it with [COMPILE].
-;
-;
-;;
-;;                                       IMMEDIATE
-;;                                       SCREEN 53 LINE 1
-;;
 
-!if 0 {
         +WORD "immediate"
 W_IMMEDIATE
         !word DO_COLON
-;          !word LATES
+        ; see also smudge (internals)
+        !word W_LATEST
+        !word W_2PLUS
+        !word W_DUP
+        !word W_CAT
         +CLITERAL F_IMMEDIATE
-;          !word TOGGL
+        !word W_OR
+        !word W_SWAP
+        !word CSTORE
         !word W_PSEMI
-}
 
 ; ****************************************************************************
 ; INVERT 

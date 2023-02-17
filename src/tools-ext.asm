@@ -80,10 +80,19 @@ W_PSCODE
 ;
 ;
 
+; This just uses the data stack for the compilation stack
+
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
 
 !if ENABLE_TOOLS_EXT {
+        +WORD_IMM "ahead"
+} else {
+        +NONAME
 }
+W_AHEAD
+        !word DO_COLON
+        !word W_HERE
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; ASSEMBLER
@@ -133,7 +142,14 @@ W_BYE
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
 
 !if ENABLE_TOOLS_EXT {
+        +WORD "cs-pick"
+} else {
+        +NONAME
 }
+W_CS_PICK
+        !word DO_COLON
+        !word W_PICK
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; CS-ROLL
@@ -143,7 +159,14 @@ W_BYE
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
 
 !if ENABLE_TOOLS_EXT {
+        +WORD "cs-roll"
+} else {
+        +NONAME
 }
+W_CS_ROLL
+        !word DO_COLON
+        !word W_ROLL
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; EDITOR
