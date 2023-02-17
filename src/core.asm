@@ -454,7 +454,7 @@ W_COMMA
         !word DO_COLON
         !word W_HERE
         !word W_STORE   ; TODO check if aligned?
-        !word W_TWO ; TODO W_ONE,W_CELLS?
+        !word W_TWO 
         !word W_ALLOT
         !word W_PSEMI
 
@@ -1875,21 +1875,28 @@ W_CREATE
 ;          !word QERR     ;)
 
 !if 1 {
+
+
         !word W_PARSE_NAME
 
         ; TODO look for an existing definition
 
-        ; TODO ALIGN
 
-        ; TODO link into wordlist of GET-CURRENT
+        ; TODO if no existing defintion found ...
+
+        !word W_ALIGN           
+
+        !word W_HERE
+        !word W_GET_CURRENT
+        !word W_DUP
+        !word W_AT
+        !word W_COMMA
+        !word W_STORE
 
         +CLITERAL 31            ; limit the length
         !word W_MIN
-        ; TODO adjust length for alignment of data field?
 
         ; (c-addr u)
-
-        !word W_ALIGN           ; TODO THIS SHOULD BE DONE BEFORE STORING THE LINK
 
         !word W_DUP             ; store name len | flags
         +CLITERAL F_END_MARKER | F_HIDDEN

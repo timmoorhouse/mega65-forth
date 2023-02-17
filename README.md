@@ -71,7 +71,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] ,
   - [ ] :
   - [ ] ;
-  - [ ] CREATE
+  - [ ] CREATE (in progress)
   - [x] POSTPONE
   - [ ] Changes to EVALUATE for compilation state
   - [ ] Get the alignment right in CREATE, etc

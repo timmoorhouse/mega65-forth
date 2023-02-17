@@ -71,7 +71,7 @@ FORTH_WORDLIST
 ;;
 
 ;!if ENABLE_SEARCH {
-!if 0 {
+!if 1 {
          +WORD "get-current"
 W_GET_CURRENT
 !if 0 {
