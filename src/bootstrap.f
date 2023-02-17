@@ -1,6 +1,6 @@
 ( Some Stuff )
 \ More Stuff
-51 52 53 99 .s
+51 52 53 99 .s cr
 : foo2 ( -- u) 5 ;
 savesystem foo,p,w
-\ Stuff after save
+.( end of bootstrap.f )

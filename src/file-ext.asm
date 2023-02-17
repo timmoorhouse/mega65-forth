@@ -56,7 +56,7 @@ W_FLUSH_FILE
 ; Forth 2012 11.6.2.1714
 
 !if ENABLE_FILE_EXT {
-        +WORD "include"
+        +WORD_IMM "include"
 W_INCLUDE
         !word DO_COLON
 !if DEBUG {

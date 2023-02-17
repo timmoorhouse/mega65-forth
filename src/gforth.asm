@@ -32,7 +32,7 @@ W_LATEST
 ; SAVESYSTEM FOO,P,W
 
 !if ENABLE_GFORTH {
-        +WORD "savesystem"
+        +WORD_IMM "savesystem"
 W_SAVESYSTEM
         !word DO_COLON
 !if DEBUG {

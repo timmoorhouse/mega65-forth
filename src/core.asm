@@ -2267,6 +2267,16 @@ _evaluate_loop
         +STRING "<non-immediate>"
         !word W_DOTS,W_CR
 }
+
+        !word W_STATE
+        !word W_AT
+        +ZBRANCH _evaluate_nonimmediate_interpreting
+
+        !word W_COMMA
+        +BRANCH _evaluate_done_word
+
+_evaluate_nonimmediate_interpreting
+
         !word W_EXECUTE
         +BRANCH _evaluate_done_word
 
@@ -2287,8 +2297,20 @@ _evaluate_number
         +STRING "<number>"
         !word W_DOTS,W_CR
 }
+
+        !word W_2DROP ; drop address and MSW
+
+        !word W_STATE
+        !word W_AT
+        +ZBRANCH _evaluate_done_word
+
+        !word W_POSTPONE
+        !word W_LITERAL
+        !word W_COMMA
+
+_evaluate_number_interpreting
+
         ; TODO if compiling postpone a pliteral, then the number
-        !word W_2DROP
         +BRANCH _evaluate_done_word
 
 _evaluate_word_not_found

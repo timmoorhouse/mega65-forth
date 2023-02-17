@@ -11,6 +11,13 @@
 ;     : .( [CHAR] ) PARSE TYPE ; IMMEDIATE
 
 !if ENABLE_CORE_EXT {
+        +WORD_IMM ".("
+W_DPAREN
+        !word DO_COLON
+        +CLITERAL ')'
+        !word W_PARSE
+        !word W_TYPE
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -923,16 +930,17 @@ W_BACKSLASH
         !word DO_COLON
         +CLITERAL '\r' ; TODO
         !word W_PARSE
-; !if DEBUG {
-!if 1 {
+!if DEBUG {
         !word W_PDOTQ
         +STRING "<comment>"
         +CLITERAL '['
         !word W_EMIT
+        !word W_2DUP
         !word W_TYPE
         +CLITERAL ']'
         !word W_EMIT
         !word W_DOTS,W_CR
 }
+        !word W_2DROP
         !word W_PSEMI
 }
