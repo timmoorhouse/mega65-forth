@@ -44,6 +44,102 @@ FAM_RO  = 1
 FAM_WO  = 2
 FAM_RW  = (FAM_RO|FAM_WO)
 
+ldtnd = $0098
+lat   = $035a
+fat   = $0364
+sat   = $036e
+
+        +NONAME
+W_UNUSED_LOGICAL
+        !word *+2
+        jsr _unused_logical
+        pha
+        lda #0
+        jmp PUSH
+
+_unused_logical
+!if 0 {
+        lda #' '
+        jsr EMIT
+        lda ldtnd
+        jsr put_hex
+        ldy #0
+-       cpy #10
+        beq +
+        lda #'-'
+        jsr EMIT
+        lda lat,y
+        phy
+        jsr put_hex
+        ply
+        iny
+        bra -
++
+        lda #' '
+        jsr EMIT
+}
+
+        ; pick first unused >= 32
+        lda #$1f
+        ; check the next possibility ..
+--      inc
+        ; see if it's in use ...
+        ldy #0
+-       cpy ldtnd
+        beq +
+        cmp lat,y
+        beq --
+        iny
+        bra -
+        ; unused ... guaranteed to find one in the range [32,42]
++       rts
+
+        +NONAME
+W_UNUSED_SECONDARY
+        !word *+2
+        jsr _unused_secondary
+        pha
+        lda #0
+        jmp PUSH
+
+_unused_secondary
+!if 0 {
+        lda #' '
+        jsr EMIT
+        lda ldtnd
+        jsr put_hex
+        ldy #0
+-       cpy #10
+        beq +
+        lda #'-'
+        jsr EMIT
+        lda sat,y
+        phy
+        jsr put_hex
+        ply
+        iny
+        bra -
++
+        lda #' '
+        jsr EMIT
+}
+
+        ; pick first unused >= 2
+        lda #$61 ; these get stored as $60 | sa
+        ; check the next possibility ..
+--      inc
+        ; see if it's in use ...
+        ldy #0
+-       cpy ldtnd
+        beq +
+        cmp sat,y
+        beq --
+        iny
+        bra -
++       eor #$60
+        ; unused ... guaranteed to find one in the range [2,12]
+        rts
+
 ; ****************************************************************************
 ; (
 ; ("text" --)
@@ -310,12 +406,23 @@ W_OPEN_FILE
         ; TODO in BASIC for DOPEN#, channel numbers in [1,127] use CR, [128,255] use CR LF
         ; TODO DOPEN# has a ,W flag for write access
 
-        +LITERAL 50      ; TODO find unused fileid
+        !word W_UNUSED_LOGICAL
+!if 0 {
+        !word W_PDOTQ
+        +STRING "logical="
+        !word W_DUP
+        !word W_DOT
+}
 
         !word W_DUP
-        +LITERAL 8
-        ;!word W_ZERO
-        +LITERAL 5
+        +LITERAL 8 ; TODO how to select this?
+        !word W_UNUSED_SECONDARY
+!if 0 {
+        !word W_PDOTQ
+        +STRING "secondary="
+        !word W_DUP
+        !word W_DOT
+}
         !word W_SETLFS
 
         !word W_OPEN 

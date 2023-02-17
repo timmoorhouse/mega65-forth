@@ -2,5 +2,5 @@
 \ More Stuff
 51 52 53 99 .s
 : foo ( -- u) 5 ;
-
-\ savesystem foo,p,w
+savesystem foo,p,w
+\ Stuff after save

@@ -115,7 +115,7 @@ entry
 ;      |
 ;      | Transient workspace
 ;      +-----------------------------    <--- PAD 
-;          gap?  
+;          gap?  FIG apparently uses some space here in WORD
 ;      +-----------------------------    <--- HERE
 ;      |
 ;      | Dictionary
