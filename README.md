@@ -79,7 +79,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Honour the hidden flag in SEARCH-NAMELIST
   - [x] Honour the hidden flag in WORDS
 - Implement more of the basic wordset
-  - [ ] AHEAD, CS-PICK, CS-ROLL (in progress)
+  - [ ] AHEAD, CS-PICK, CS-ROLL (written but untested)
   - [ ] IF, ELSE, THEN
   - [ ] BEGIN, AGAIN
   - [ ] BEGIN, WHILE, REPEAT

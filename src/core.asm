@@ -2698,14 +2698,7 @@ W_HOLD
 
         +WORD "i"
 W_I
-!if 1 { 
-        ; TODO does this work ???
         !word W_RAT+2      ; share the code for R
-} else {
-        !word DO_COLON
-        !word W_RAT ; 2RAT,DROP?
-        !word W_PSEMI
-}
 
 ; ****************************************************************************
 ; IF 

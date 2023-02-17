@@ -225,6 +225,7 @@ DAREA      = UAREA - DAREA_LEN
 ;      +---------------
 
 ; FIG puts the name (and the associated length/flags) before the link, we put it after
+; TODO compilation and interpretation code fields?
 
 !macro NONAME {
         +ALIGN

@@ -770,8 +770,17 @@ _parse_name_all_done
 }
 W_PICK
         !word *+2
-        ; TODO
-        jmp NEXT
+        stx <XSAVE
+        clc
+        lda 0,x
+        asl
+        adc <XSAVE
+        tax
+        lda 0,x
+        pha
+        lda 1,x
+        ldx <XSAVE
+        jmp PUT
 
 ; ****************************************************************************
 ; REFILL
@@ -803,8 +812,37 @@ W_PICK
 }
 W_ROLL
         !word *+2
-        ; TODO
-        jmp NEXT
+        stx <XSAVE
+        lda 0,x
+        beq +           ; nothing to do if u = 0 except drop u
+
+        tay             ; y = u
+        asl
+        clc
+        adc <XSAVE
+        tax             ; x += 2*u
+
+-       lda 2,x
+        pha
+        lda 3,x
+        pha
+
+        lda 0,x
+        sta 2,x
+        lda 1,x
+        sta 3,x
+
+        dex
+        dex
+        dey
+        bne -
+
+        pla
+        sta 3,x
+        pla
+        sta 2,x
+
++       jmp DROP
 
 ; ****************************************************************************
 ; S\"

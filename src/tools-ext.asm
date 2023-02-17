@@ -147,9 +147,7 @@ W_BYE
         +NONAME
 }
 W_CS_PICK
-        !word DO_COLON
-        !word W_PICK
-        !word W_PSEMI
+        !word W_PICK+2
 
 ; ****************************************************************************
 ; CS-ROLL
@@ -164,9 +162,7 @@ W_CS_PICK
         +NONAME
 }
 W_CS_ROLL
-        !word DO_COLON
-        !word W_ROLL
-        !word W_PSEMI
+        !word W_ROLL+2
 
 ; ****************************************************************************
 ; EDITOR
