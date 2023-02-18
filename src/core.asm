@@ -1936,8 +1936,6 @@ W_CREATE
 
         !word W_ALIGN           ; need to realign after name
 
-        ; TODO this needs to be set to something like DO_VARIABLE (at execution must push address of data field)
-        ; +LITERAL DO_COLON          ; TODO how should this be done?
         +LITERAL DO_VARIABLE    ; default code fields needs to push address of data field
         !word W_COMMA
 
@@ -2069,11 +2067,6 @@ W_PDO
 ;               area or its contents.  Typical uses include the Forth 
 ;               assembler, multi-dimensional arrays, and compiler 
 ;               generation.
-;
-;;
-;;                                       DOES>
-;;                                       SCREEN 43 LINE 4
-;;
 
 !if 0 {
         +WORD "does>"

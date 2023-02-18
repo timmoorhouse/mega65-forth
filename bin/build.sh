@@ -152,7 +152,21 @@ EOF
     cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "${opt[builddir]}/mega65-forth.d81"
     # cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" autoboot.c65
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" mega65-forth
-    add_text_files "${opt[builddir]}/mega65-forth.d81" src/bootstrap.f "$topdir/test/forth2012-test-suite/src/prelimtest.fth"
+    add_text_files "${opt[builddir]}/mega65-forth.d81" \
+        src/bootstrap.f \
+        src/block.f         src/block-ext.f \
+        src/core.f          src/core-ext.f \
+        src/double.f        src/double-ext.f \
+        src/exception.f     src/exception-ext.f \
+        src/facility.f      src/facility-ext.f \
+        src/floating.f      src/floating-ext.f \
+        src/local.f         src/local-ext.f \
+        src/memory.f        src/memory-ext.f \
+        src/search.f        src/search-ext.f \
+        src/string.f        src/string-ext.f \
+        src/tools.f         src/tools-ext.f \
+        src/xchar.f         src/xchar-ext.f \
+        "$topdir/test/forth2012-test-suite/src/prelimtest.fth"
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -dir > "${opt[builddir]}/mega65-forth.txt"
 
     cmd ls -l "${opt[builddir]}/forth.prg"
