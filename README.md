@@ -62,7 +62,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] `WRITE-FILE`
   - [x] `SAVESYSTEM` (gforth extension)
   - [x] Automatic selection of appropriate channel numbers and secondary addresses (first address will be hardcoded as 8 for now)
-  - [ ] Automatic selection of disk buffer
+  - [x] Automatic selection of disk buffer
   - [ ] Handle file access modes (skip for now?)
   - [ ] `REQUIRE`, `REQUIRED` (skip for now?)
   - [ ] Fix I/O status handling (when is status from READSS reset?) (skip for now?)

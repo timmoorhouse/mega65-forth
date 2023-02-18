@@ -140,6 +140,20 @@ _unused_secondary
         ; unused ... guaranteed to find one in the range [2,12]
         rts
 
+        +NONAME
+W_BUFFER_OF_FILEID ; (fileid -- c-addr u)
+        !word DO_COLON
+        ; fileid will be in range [32,42)
+        +LITERAL $0f
+        !word W_AND             ; will be in range [0, 10)
+        +LITERAL FILE_BUFFER_SIZE
+        !word W_UMSTAR
+        !word W_DROP
+        +LITERAL DAREA
+        !word W_PLUS
+        +LITERAL FILE_BUFFER_SIZE
+        !word W_PSEMI
+
 ; ****************************************************************************
 ; (
 ; ("text" --)
@@ -297,17 +311,18 @@ W_INCLUDE_FILE
         +STRING "<include-file>"
         !word W_DOTS
 }
-
         ; TODO need to set SOURCE-ID
 
         !word W_TOR
 
 _include_read_loop
 
-        !word W_PAD ; TODO NEED TO USE A BUFFER NEAR END OF MEM SINCE THE EVALUATE CAN ALLOT !!!!!!!!!!!!
-
-        !word W_DUP
-        +CLITERAL 90
+        !word W_RAT
+        !word W_BUFFER_OF_FILEID
+        !word W_OVER
+        !word W_SWAP            ; (c-addr c-addr u) (R: fileid)
+        !word W_TWO
+        !word W_SUB             ; leave space for cr lf
         !word W_RAT
         !word W_READ_LINE
 
@@ -315,10 +330,10 @@ _include_read_loop
 
         +ZBRANCH _include_ior_ok
         ; ior bad ...
-        !word W_DROP ; drop flag
+        !word W_DROP            ; drop flag
 _include_flag_bad
-        !word W_DROP ; drop u2
-        !word W_DROP ; drop buffer address
+        !word W_DROP            ; drop u2
+        !word W_DROP            ; drop buffer address
 
 !if DEBUG {
         !word W_PDOTQ
@@ -332,11 +347,11 @@ _include_ior_ok
 
         ; (c-addr u)
 
-        !word W_EVALUATE ; TODO this sets SOURCE-ID to -1 !!!!!!!!!
+        !word W_EVALUATE        ; TODO this sets SOURCE-ID to -1 !!!!!!!!!
 
         +BRANCH _include_read_loop
 _include_after_loop
-        !word W_RFROM,W_DROP ; drop fileid
+        !word W_RFROM,W_DROP    ; drop fileid
 
 !if DEBUG {
         !word W_PDOTQ
