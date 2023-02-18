@@ -2252,6 +2252,9 @@ _evaluate_loop
         ; (xt 1)  (R: c-addr u) - immediate
         ; (xt -1) (R: c-addr u) - non-immediate
 
+        ; TODO turn the 1/-1 into EXECUTE/COMPILE, then just execute
+        ; (doing the same sort of thing as NAME>COMPILE)
+
         !word W_QDUP
         +ZBRANCH _evaluate_word_not_found
         
@@ -3170,6 +3173,15 @@ W_OVER
 ; POSTPONE
 ; ("text" --)
 ; ANSI 6.1.2033
+
+; TODO postpone should be appending the *compilation* semantics of the next word to the definition
+
+; SO,
+; - parse-word
+; - check if next word is immediate, if so execute it in a compilation state
+; - if not immediate, push it to the definition
+; IS THAT RIGHT???
+; - just do NAME>COMPILE and EXECUTE?
 
         +WORD "postpone"
 W_POSTPONE

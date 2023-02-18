@@ -112,19 +112,6 @@ W_GET_CURRENT
 W_SEARCH_WORDLIST
         !word DO_COLON
 
-!if 0 {
-        !word W_ROT
-        !word W_ROT
-        !word W_PDOTQ
-        +STRING "<search>["
-        !word W_2DUP
-        !word W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT
-        !word W_ROT
-        !word W_DOTS,W_CR
-}
-
         ; this zero is the default return value
 
         !word W_ZERO
@@ -166,11 +153,6 @@ W_PSEARCH_WORDLIST
         ; (c-addr u 0 nt -- c-addr u xt -1 false) if non-immediate ???
         !word DO_COLON
 
-!if 0 {
-        +CLITERAL 's'
-        !word W_EMIT
-}
-
         !word W_TOR     ; (c-addr u 0) (R: nt)
         !word W_DROP    ; (c-addr u) (R: nt)
         !word W_2DUP
@@ -178,20 +160,7 @@ W_PSEARCH_WORDLIST
 
         !word W_NAME_TO_STRING
 
-!if 0 {
-        +CLITERAL '"'
-        !word W_EMIT
-        !word W_2DUP
-        !word W_TYPE
-        +CLITERAL '"'
-        !word W_EMIT
-}
-
         !word W_COMPARE ; (c-addr u flag) (R: nt)
-
-!if 0 {
-        !word W_DOTS,W_CR
-}
 
         +ZBRANCH _psearch_wordlist_found
 
@@ -205,6 +174,9 @@ _psearch_wordlist_found
         !word W_RFROM
 
         !word W_DUP
+        !word W_NAME_TO_INTERPRET
+        !word W_SWAP
+
         !word W_2PLUS
         !word W_CAT
         +CLITERAL F_IMMEDIATE
@@ -212,15 +184,12 @@ _psearch_wordlist_found
         +ZBRANCH _psearch_wordlist_nonimmediate
 
         ; an immediate word
-        !word W_NAME_TO_COMPILE ; TODO NOT RIGHT - SHOULD PICK BASED ON STATE
         !word W_ONE
         !word W_FALSE   ; stop
-        ; !word W_DOTS,W_CR ; TODO 
         +BRANCH _psearch_wordlist_done
 
 _psearch_wordlist_nonimmediate
 
-        !word W_NAME_TO_INTERPRET ; TODO NOT RIGHT - SHOULD PICK BASED ON STATE
         !word W_TRUE    ; -1
         !word W_FALSE   ; stop
         ; +BRANCH _psearch_wordlist_done

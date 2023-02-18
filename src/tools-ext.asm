@@ -208,9 +208,13 @@ W_NTOR
 
 ; ****************************************************************************
 ; NAME>COMPILE
+; (nt -- w xt)
 ; Forth 2012 15.6.2.1909.10
 
-; TODO THIS IS WRONG !!!!!!!!!!!!!!!!!!
+; executing xt consumes w, performing the compilation semantics of nt
+; w is the execution token of nt (from NAME>INTERPRET)
+; xt is EXECUTE (if nt is immediate) or COMPILE, (if nt is not immediate)
+
 !if ENABLE_TOOLS_EXT {
         +WORD "name>compile"
 } else {
@@ -218,14 +222,22 @@ W_NTOR
 }
 W_NAME_TO_COMPILE
         !word DO_COLON
-        !word W_NAME_TO_STRING  ; immediately after the name
-        !word W_ONE
-        !word W_OR              ; for alignment
-        !word W_PLUS
+        !word W_DUP
+        !word W_NAME_TO_INTERPRET
+        !word W_2PLUS
+        !word W_CAT
+        +CLITERAL F_IMMEDIATE
+        !word W_AND
+        +ZBRANCH _name_to_compile_nonimmediate
+        +LITERAL W_EXECUTE
+        !word W_PSEMI
+_name_to_compile_nonimmediate
+        +LITERAL W_COMPILEC
         !word W_PSEMI
 
 ; ****************************************************************************
 ; NAME>INTERPRET
+; (nt -- xt)
 ; Forth 2012 15.6.2.1909.20
 
 !if ENABLE_TOOLS_EXT {

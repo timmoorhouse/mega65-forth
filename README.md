@@ -72,7 +72,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] :
   - [x] ;
   - [x] CREATE
-  - [ ] Fix NAME>COMPILE and start using it correctly
+  - [x] COMPILE,
   - [ ] POSTPONE (sorta right? need to check this)
   - [x] Changes to EVALUATE for compilation state
   - [x] Get the alignment right in CREATE

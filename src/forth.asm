@@ -47,6 +47,7 @@
 ; - For anything taking an aligned address, check that it's aligned
 ;   - !, +!, @, EXECUTE
 ;   - TODO: MOVE, others?
+;   - TODO: , currently uses ! so we'd need to keep HERE aligned (affects CLITERAL, .")
 ; - TODO: check data stack depth at start of : matches that at start of ; (FIG uses !csp, ?csp for this)
 ; - TODO: check for data stack overflow/underflow (FIG uses ?STACK)
 ; - TODO: check for return stack overflow/underflow
@@ -225,7 +226,10 @@ DAREA      = UAREA - DAREA_LEN
 ;      +---------------
 
 ; FIG puts the name (and the associated length/flags) before the link, we put it after
-; TODO compilation and interpretation code fields?
+; This makes it a bit tougher to get to the flags, but easier to get to the code field
+
+; TODO we might want a level of indirection for SYNONYM?  We may want the same
+; thing for DEFER (though those could be handled with a separate DO_DEFER)
 
 ; This is mostly here so I can keep them straight:
 ; Name token (nt)
@@ -236,10 +240,13 @@ DAREA      = UAREA - DAREA_LEN
 ;   - NAME>INTERPRET will convert from a name token to an execution token
 ;   - We use the address of the data field for the execution token
 ; Compilation token (ct)
-;   - TODO a pair of words x xt
-;   - The execution token consumes x and performs the compilation semantics of the word
+;   - This is a pair of cells w xt
+;   - The execution token xt consumes w and performs the compilation semantics of the 
+;     corresponding word (in our case xt will be either EXECUTE or COMPILE, and w
+;     will be the execution token of the word)
 ;   - NAME>COMPILE will convert from a name token to a compilation token
 ;
+; TODO SEACH-WORDLIST gives you a flag for immediate/non-immediate instead
 
 !macro NONAME {
         +ALIGN

@@ -299,7 +299,14 @@ W_AGAIN
 ; ANSI 6.2.0945
 
 !if ENABLE_CORE_EXT {
+        +WORD "compile,"
+} else {
+        +NOMAME
 }
+W_COMPILEC
+        !word DO_COLON
+        !word W_COMMA
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; DEFER
@@ -842,7 +849,7 @@ W_ROLL
         pla
         sta 2,x
 
-+       jmp DROP
++       jmp POP
 
 ; ****************************************************************************
 ; S\"
