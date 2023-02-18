@@ -14,9 +14,9 @@ Note that we have actually switched to font A (the ASCII font).  The '\\' word s
 
 This is *very* much in the early stages of developement:
 
-- The interpreter is working well enough to support development, but is still pretty minimal.  It needs better error handling, etc.
+- The interpreter is working well enough to support development.  It needs better error handling, etc.
 - File input is partially there.  We can include a file, but nested includes won't work yet (we need a stack of parse states).
-- Work is starting on defining words, but nothing is usable yet.
+- Words can be defined (:, ;, CREATE, VARIABLE, CONSTANT are functional).  There isn't much support for control structures yet (conditionals, loops, etc) so these aren't particularly useful yet.
 
 File input and defining words are the current priorities.  Once these are in resonable shape, we can start running unit tests and do most of the remainder of the implementation in Forth.
 
