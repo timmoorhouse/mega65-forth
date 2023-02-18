@@ -159,6 +159,7 @@ EOF
         src/double.f        src/double-ext.f \
         src/exception.f     src/exception-ext.f \
         src/facility.f      src/facility-ext.f \
+        src/file.f          src/file-ext.f \
         src/floating.f      src/floating-ext.f \
         src/local.f         src/local-ext.f \
         src/memory.f        src/memory-ext.f \
