@@ -227,6 +227,20 @@ DAREA      = UAREA - DAREA_LEN
 ; FIG puts the name (and the associated length/flags) before the link, we put it after
 ; TODO compilation and interpretation code fields?
 
+; This is mostly here so I can keep them straight:
+; Name token (nt)
+;   - TRAVERSE-WORD list passes these to the supplied word when iterating
+;   - We use the address of the link field as the name token
+; Execution token (xt)
+;   - These are the end result of SEARCH-WORDLIST and can be passed to EXECUTE
+;   - NAME>INTERPRET will convert from a name token to an execution token
+;   - We use the address of the data field for the execution token
+; Compilation token (ct)
+;   - TODO a pair of words x xt
+;   - The execution token consumes x and performs the compilation semantics of the word
+;   - NAME>COMPILE will convert from a name token to a compilation token
+;
+
 !macro NONAME {
         +ALIGN
         ; TODO should we have a byte for flags (+ len 0 name) then a pad byte for alignment?

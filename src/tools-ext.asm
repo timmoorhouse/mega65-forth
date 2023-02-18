@@ -210,6 +210,7 @@ W_NTOR
 ; NAME>COMPILE
 ; Forth 2012 15.6.2.1909.10
 
+; TODO THIS IS WRONG !!!!!!!!!!!!!!!!!!
 !if ENABLE_TOOLS_EXT {
         +WORD "name>compile"
 } else {
