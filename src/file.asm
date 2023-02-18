@@ -307,8 +307,6 @@ W_FILE_SIZE
 W_INCLUDE_FILE
         !word DO_COLON
 
-
-
 !if DEBUG {
         !word W_PDOTQ
         +STRING "<include-file>"
@@ -355,6 +353,7 @@ _include_ior_ok
 
         ; (c-addr u)
 
+        ; TODO change to PEVALUATE !!!!!!!!!!
         !word W_EVALUATE        ; TODO this sets SOURCE-ID to -1 !!!!!!!!!
 
         +BRANCH _include_read_loop

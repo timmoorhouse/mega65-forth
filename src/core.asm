@@ -2195,7 +2195,26 @@ W_EVALUATE
         +LITERAL &INPUT_BUFFER
         !word W_STORE
 
-        !word W_ZERO
+        !word W_PEVALUATE
+
+        !word W_NRFROM
+        !word W_RESTORE_INPUT
+        !word W_DROP            ; TODO check status from restore
+
+        !word W_PSEMI
+
+        +NONAME
+W_PEVALUATE             ; ( -- )
+        !word DO_COLON
+        ; This does the real work of EVALUATE but does not
+        ; SAVE-INPUT/RESTORE-INPUT, set SOURCE-ID, etc.
+        ; We need to split this off from EVALUATE so we can
+        ; call it from INCLUDE-FILE - we don't want to
+        ; change the SOURCE-ID in this case to allow
+        ; REFILL to grab more input data (necessary for
+        ; multiline '(' comments, [IF]/[ELSE]/[THEN], etc)
+
+        !word W_ZERO ; TODO should this be done in EVALUATE too?
         !word W_IN
         !word W_STORE
 
@@ -2342,10 +2361,6 @@ _evaluate_done_word
 
 _evaluate_done_loop
         !word W_DROP ; (c-addr) was left on stack
-
-        !word W_NRFROM
-        !word W_RESTORE_INPUT
-        !word W_DROP            ; TODO check status from restore
 
         !word W_PSEMI
 
