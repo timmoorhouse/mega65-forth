@@ -791,7 +791,17 @@ W_PICK
 ; TODO always enable?
 
 !if ENABLE_CORE_EXT {
+        +WORD "restore-input"
+} else {
+        +NONAME
 }
+W_RESTORE_INPUT
+        !word DO_COLON
+        !word W_DROP            ; TODO drop the dummy value
+        !word W_DROP            ; TODO drop the 1 from save-input
+        ; TODO
+        !word W_ZERO            ; input successfully restored
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; ROLL
@@ -870,7 +880,15 @@ W_ROLL
 ; TODO always enable?
 
 !if ENABLE_CORE_EXT {
+        +WORD "save-input"
+} else {
+        +NONAME
 }
+W_SAVE_INPUT
+        !word DO_COLON
+        +LITERAL 123
+        !word W_ONE             ; number of other cells pushed
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; SOURCE-ID
@@ -879,19 +897,19 @@ W_ROLL
 ; (-- 0|-1|fileid)
 ; ANSI 11.6.1.2218
 
-; TODO always enable?
-
 ; TODO extension to allow fileid if FILE enabled
 
 !if ENABLE_CORE_EXT {
         +WORD "source-id"
+} else {
+        +NONAME
+}
 W_SOURCE_ID
         !word *+2
         lda <SOURCE_ID
         pha
         lda <SOURCE_ID+1
         jmp PUSH
-}
 
 ; ****************************************************************************
 ; TO

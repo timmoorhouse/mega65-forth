@@ -306,11 +306,19 @@ W_FILE_SIZE
         +WORD "include-file"
 W_INCLUDE_FILE
         !word DO_COLON
+
+
+
 !if DEBUG {
         !word W_PDOTQ
         +STRING "<include-file>"
+        !word W_SOURCE_ID,W_DOT
         !word W_DOTS
 }
+
+        !word W_SAVE_INPUT
+        !word W_NTOR
+
         ; TODO need to set SOURCE-ID
 
         !word W_TOR
@@ -357,7 +365,11 @@ _include_after_loop
         !word W_PDOTQ
         +STRING "<include-file-end>"        
         !word W_DOTS,W_CR
-}    
+} 
+
+        !word W_NRFROM
+        !word W_RESTORE_INPUT
+        !word W_DROP            ; TODO check status from restore
 
         !word W_PSEMI
 }

@@ -2186,6 +2186,9 @@ W_EVALUATE
         !word W_DOTS,W_CR
 }
 
+        !word W_SAVE_INPUT
+        !word W_NTOR
+
         ; TODO setup SOURCE
         +LITERAL &INPUT_LEN
         !word W_STORE
@@ -2339,6 +2342,11 @@ _evaluate_done_word
 
 _evaluate_done_loop
         !word W_DROP ; (c-addr) was left on stack
+
+        !word W_NRFROM
+        !word W_RESTORE_INPUT
+        !word W_DROP            ; TODO check status from restore
+
         !word W_PSEMI
 
 ; FIG
