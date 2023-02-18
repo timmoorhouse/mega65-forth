@@ -40,8 +40,7 @@
 !ifndef DEBUG                           { DEBUG                        = 0 }
 !ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS        = 0 } ; TODO lots of things are triggering this - need to clean them up before enabling
 !ifndef USE_BASIC                       { USE_BASIC                    = 0 } ; not used - REMOVE?
-
-; TODO option for name case sensitivity?
+!ifndef CASE_INSENSITIVE                { CASE_INSENSITIVE             = 1 } ; map names to lower case when defining/resolving
 
 ; Runtime checks
 ; - For anything taking an aligned address, check that it's aligned

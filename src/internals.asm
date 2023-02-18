@@ -249,6 +249,48 @@ W_QIMMEDIATE
         !word W_PSEMI
 
 ; ****************************************************************************
+; LOWER
+; (c-addr u --)
+; Convert to lower case
+
+        ;+WORD "lower"
+        +NONAME
+W_LOWER
+        !word DO_COLON
+        !word W_OVER
+        !word W_PLUS
+        !word W_SWAP
+        !word W_PDO
+
+_lower_loop
+
+        !word W_I
+        !word W_CAT
+        +CLITERAL 'A'
+        !word W_LESS
+        !word W_OVER
+        +CLITERAL 'Z'
+        !word W_GREATER
+        !word W_OR
+        !word W_ZEQUALS
+        +ZBRANCH +
+
+        ; need to change case
+        !word W_I
+        !word W_CAT
+        +CLITERAL 'A'-'a'
+        !word W_SUB
+        !word W_I
+        !word W_CSTORE
+
++
+
+        !word W_PLOOP
+        !word _lower_loop-*
+
+        !word W_PSEMI
+
+; ****************************************************************************
 ; OUT   (from FIG)
 
 ;      OUT           ---  addr                               U

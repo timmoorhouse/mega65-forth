@@ -1892,6 +1892,11 @@ W_CREATE
 
         !word W_PARSE_NAME
 
+!if CASE_INSENSITIVE {
+        !word W_2DUP
+        !word W_LOWER
+}
+
         ; TODO look for an existing definition
 
 ;          +ZBRANCH L2163
@@ -2258,6 +2263,11 @@ _evaluate_loop
         
         ; () (R: c-addr u)
 
+!if CASE_INSENSITIVE {
+        !word W_2DUP
+        !word W_LOWER
+}
+
         !word W_2RAT
         !word W_FORTH_WORDLIST ; TODO
         !word W_SEARCH_WORDLIST
@@ -2524,6 +2534,12 @@ W_FIND
         !word DO_COLON
         !word W_DUP
         !word W_COUNT
+
+!if CASE_INSENSITIVE {
+        !word W_2DUP
+        !word W_LOWER
+}
+
 !if 0 {
         ; TODO iterate through
         ; !word W_GET_ORDER
@@ -3193,6 +3209,10 @@ W_POSTPONE
         !word DO_COLON
 !if 1 {
         !word W_PARSE_NAME
+!if CASE_INSENSITIVE {
+        !word W_2DUP
+        !word W_LOWER
+}
         !word W_ZERO
         !word W_PSEARCH_WORDLIST
         !word W_FORTH_WORDLIST ; TODO

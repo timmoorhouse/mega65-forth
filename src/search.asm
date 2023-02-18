@@ -112,6 +112,13 @@ W_GET_CURRENT
 W_SEARCH_WORDLIST
         !word DO_COLON
 
+!if CASE_INSENSITIVE {
+        !word W_TOR
+        !word W_2DUP
+        !word W_LOWER
+        !word W_RFROM
+}
+
         ; this zero is the default return value
 
         !word W_ZERO
