@@ -364,22 +364,8 @@ W_COMPILEC
 ;      ERASE         addr  n  ---
 ;               Clear a region of memory to zero from addr over n 
 ;               addresses.
-;
-;
-;;
-;;                                       ERASE
-;;                                       SCREEN 46 LINE 4
 
-!if ENABLE_CORE_EXT {
-!if 0 {
-        +WORD "erase"
-W_ERASE
-        !word DO_COLON
-        !word W_ZERO
-        !word W_FILL
-        !word W_PSEMI
-}
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; FALSE

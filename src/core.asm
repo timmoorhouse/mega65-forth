@@ -820,10 +820,6 @@ W_2SWAP
 ;               Other details are that the CONTEXT vocabulary is set to 
 ;               the CURRENT vocabulary and that words with the precedence 
 ;               bit set (P) are executed rather than being compiled.
-;
-;;
-;;                                       :
-;;                                       SCREEN 33 LINE 2
 
         +WORD_IMM ":"
 W_COLON
@@ -876,10 +872,6 @@ DO_COLON
 ;               word compiled at the end of a colon-definition which 
 ;               returns execution to the calling procedure.
 
-;;
-;;                                       ;
-;;                                       SCREEN 33 LINE 9
-
         +WORD_IMM ";"
 W_SEMI 
         !word DO_COLON
@@ -898,8 +890,6 @@ W_PSEMI
         pla
         sta <I+1
         jmp NEXT
-
-
 
 ; ****************************************************************************
 ; < 
@@ -1159,7 +1149,6 @@ _tonumber_done_0drop
         !word W_2RFROM
         !word W_PSEMI
 
-
 ;      NUMBER_FOO        addr  ---  d
 ;               Convert a character string left at addr with a preceding 
 ;               count, to a signed double number, using the current base.  
@@ -1224,6 +1213,7 @@ L2047
 ;               conversion is invalid, leaves only a false flag.
 
         ; +WORD "digit"
+        +NONAME
 W_DIGIT
         !word *+2
         ; ldy #0 ; TODO
@@ -1374,7 +1364,6 @@ W_ABORT
 ; ABS 
 ; (n -- u)
 ; ANSI 6.1.0690
-
 
 ; FIG:
 ;      ABS           n  ---  u                               L0
@@ -1617,7 +1606,8 @@ W_BASE
 
 ; ****************************************************************************
 ; BEGIN 
-; (??)
+; Compilation: (C: -- dest)
+; Runtime: (--)
 ; ANSI 6.1.0760
 
 ; FIG:
@@ -1637,20 +1627,8 @@ W_BASE
 ;
 ;               At compile time BEGIN leaves its return address and n for 
 ;               compiler error checking.
-;
-;;
-;;                                       BEGIN
-;;                                       SCREEN 73 LINE 3
 
-!if 0 {
-        +WORD_IMM "begin"
-W_BEGIN
-        !word DO_COLON
-;          !word QCOMP
-;          !word HERE
-;          !word ONE
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; BL 
@@ -2155,29 +2133,8 @@ W_DUP
 ;               ELSE also resolves the pending forward branch from IF by 
 ;               calculating the offset from addr1 to HERE and storing at 
 ;               addr1.
-;
-;
-;;
-;;                                       ELSE
-;;                                       SCREEN 74 LINE 10
 
-!if 0 {
-        +WORD_IMM "else"
-W_ELSE
-        !word DO_COLON
-;          !word TWO
-;          !word QPAIR
-;          !word COMPILE
-;          !word BRANCH
-;          !word HERE
-;          !word ZERO
-;          !word COMMA
-;          !word SWAP
-;          !word TWO
-;          !word ENDIF
-;          !word TWO
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; EMIT 
@@ -2399,10 +2356,6 @@ _evaluate_done_loop
 ;               double number value will be left.  The decimal point has 
 ;               no other purpose than to force this action.  See NUMBER.
 
-;;
-;;                                       INTERPRET
-;;                                       SCREEN 52 LINE 2
-;;
 !if 0 {
 ;        +WORD "interpret"
 W_INTERPRET
@@ -2738,8 +2691,6 @@ W_I
 ;       
 ;
 
-
-
 ; FIG:
 ;
 ;      IF            f  ---              (run-time)
@@ -2758,23 +2709,8 @@ W_I
 ;               At compile-time IF compiles 0BRANCH and reserves space for 
 ;               an offset at addr.  addr and n are used later for 
 ;               resolution of the offset and error testing.
-;
-;;
-;;                                       IF
-;;                                       SCREEN 74 LINE 8
 
-!if 1 {
-        +WORD_IMM "if"
-W_IF
-        !word DO_COLON
-;          !word COMPILE
-;          !word ZBRANCH
-;          !word HERE
-;          !word ZERO
-;          !word COMMA
-;          !word TWO
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; IMMEDIATE 
@@ -3239,35 +3175,6 @@ W_POSTPONE
 }
         !word W_PSEMI
 
-;FIG
-
-; See discussion in ANSI A.6.1.2033 and POSTPONE
-
-;      COMPILE                                               C2
-;               When the word containing COMPILE executes, the execution 
-;               address of the word following COMPILE is copied (compiled) 
-;               into the dictionary.  This allows specific compilation 
-;               situations to be handled in addition to simply compiling 
-;               an execution address (which the interpreter already does).
-
-;;
-;;                                       COMPILE
-;;                                       SCREEN 41 LINE 2
-;;
-!if 0 {
-        +WORD "compile"
-W_COMPILE
-        !word DO_COLON
-;          !word QCOMP
-;          !word RFROM
-;          !word DUP
-;          !word TWOP
-;          !word TOR
-;          !word AT
-;          !word COMMA
-        !word W_PSEMI
-}
-
 ; ****************************************************************************
 ; QUIT
 ; (???)
@@ -3577,12 +3484,9 @@ W_SPACE
 ; (n --)
 ; ANSI 6.1.2230
 
-; FIG:
-;
-;
-;      SPACES        n  ---                                  L0
-;               Transmit n ascii blanks to the output device.
+; See core.f
 
+; TODO remove this definition
         +WORD "spaces"
 W_SPACES
         !word DO_COLON
@@ -3662,23 +3566,7 @@ W_SWAP
 ;
 ;
 
-; FIG:
-;
-;      THEN                                                  P,C0,L0
-;               An alias for ENDIF.
-;
-;;
-;;                                       THEN
-;;                                       SCREEN 73 LINE 7
-
-!if 0 {
-        +WORD_IMM "then"
-W_THEN
-        !word DO_COLON
-;          !word ENDIF
-        !word W_PSEMI
-}
-
+; FIG
 ;      ENDIF         addr1  n  ---       (compile)           P,C0,L0
 ;               Occurs in a colon-definition in the form:
 ;                         IF  ...  ENDIF
@@ -3693,25 +3581,7 @@ W_THEN
 ;               from addr to HERE and stores it at addr.  n is used for 
 ;               error tests.
 
-;;
-;;                                       ENDIF
-;;                                       SCREEN 73 LINE 5
-;;
-
-!if 0 {
-;        +WORD "endif"
-W_ENDIF
-        !word DO_COLON
-;          !word QCOMP
-;          !word TWO
-;          !word QPAIR
-;          !word HERE
-;          !word OVER
-;          !word SUB
-;          !word SWAP
-;          !word STORE
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; TYPE
@@ -3724,11 +3594,6 @@ W_ENDIF
 ;      TYPE          addr  count  ---                        L0
 ;               Transmit count characters from addr to the selected output 
 ;               device.
-;
-;;
-;;                                       TYPE
-;;                                       SCREEN 44 LINE 2
-;;
 
         +WORD "type"
 W_TYPE
@@ -3987,7 +3852,6 @@ DO_VARIABLE
 ;    : WHILE POSTPONE IF 1 CS-ROLL ; IMMEDIATE
 ;
 ;
-
 
 ; FIG:
 ;
