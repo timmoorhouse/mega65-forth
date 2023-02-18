@@ -9,7 +9,7 @@
 ; LATEST (also in FIG)
 
 ;      LATEST        ---  addr
-;               Leave the name field address of the topmost word in the 
+;               Leave the name token of the most recently defined word
 ;               CURRENT vocabulary.
 
 !if ENABLE_GFORTH {
@@ -21,9 +21,7 @@ W_LATEST
         !word DO_COLON
         !word W_GET_CURRENT
         !word W_AT
-        ; !word W_AT
         !word W_PSEMI
-
 
 ; ****************************************************************************
 ; TODO savesystem ("filename" --) - or just include this at the end of bootstrap sources?

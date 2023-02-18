@@ -216,9 +216,9 @@ DAREA      = UAREA - DAREA_LEN
 ;      | 
 ;      |
 ;      +---------------     <--- aligned (if name is even length there will be a pad byte)
-;      | data field (2 bytes) DO_COLON, DO_VARIABLE, DO_CONSTANT, *+2, etc
+;      | code field (2 bytes) DO_COLON, DO_VARIABLE, DO_CONSTANT, *+2, etc
 ;      +---------------
-;      | parameter field
+;      | data field
 ;      |
 ;      |
 ;      |
@@ -340,36 +340,9 @@ NEXT
         ; - TODO can we assume anything about flags?
         jmp &DO_JUMP_W
 
-DO_COLON
-        ; ldy #0 ; TODO
 
-        ; Start executing the word with the code field pointed to by W
-        ; (in a new stack frame)
-!if 1 {
-        lda <I+1 ; push I
-        pha
-        lda <I
-        pha
-} else {
-        phw &I ; TODO why doesn't this work?
-}
 
-        clc ; ???
-        lda <W ; I = W + 2 ; TODO faster to copy then inw?
-        adc #2
-        sta <I
-        tya
-        adc <W+1
-        sta <I+1
-        jmp NEXT
 
-DO_CONSTANT
-        ldy #2
-        lda (<W),y
-        pha
-        iny
-        lda (<W),y
-        jmp PUSH
 
 ; 00: latest???
 ; 02: backspace???
@@ -406,16 +379,6 @@ DO_USER ; TODO REMOVE
         pha
         lda #0
         adc <U+1
-        jmp PUSH
-
-DO_VARIABLE
-        ; ldy #0 ; TODO
-        clc
-        lda <W
-        adc #2
-        pha
-        tya
-        adc <W+1
         jmp PUSH
 
 DO_DOES

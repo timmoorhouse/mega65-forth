@@ -41,31 +41,21 @@ W_SCODE
 ;          !word SMUDG
         !word W_PSEMI
 }
+}
 
 ; (;CODE)
 
 ;               The run-time procedure, compiled by ;CODE, that rewrites 
 ;               the code field of the most recently defined word to point 
 ;               to the following machine code sequence.  See ;CODE.
-
-;;
-;;
-;;
-;;                                       (;CODE)
-;;                                       SCREEN 42 LINE 2
-;;
-!if 0 {
-;        +WORD "(;code)"
+        +NONAME
 W_PSCODE
         !word DO_COLON
-;          !word RFROM
-;          !word LATES
-;          !word PFA
-;          !word CFA
-;          !word STORE
+        !word W_RFROM
+        !word W_LATEST
+        !word W_NAME_TO_INTERPRET
+        !word W_STORE
         !word W_PSEMI
-}
-}
 
 ; ****************************************************************************
 ; AHEAD

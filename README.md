@@ -73,7 +73,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] ;
   - [x] CREATE
   - [x] COMPILE,
-  - [ ] POSTPONE (sorta right? need to check this)
+  - [x] POSTPONE
   - [x] Changes to EVALUATE for compilation state
   - [x] Get the alignment right in CREATE
   - [x] Get the alignment right for builtin words
@@ -91,8 +91,8 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] I, J
   - [x] IMMEDIATE
   - [ ] RECURSE (skip for now?)
-  - [ ] VARIABLE
-  - [ ] CONSTANT
+  - [x] VARIABLE
+  - [x] CONSTANT
   - [x] .(
 - Parse state stack
   - [ ] SAVE-INPUT, RESTORE-INPUT
@@ -113,6 +113,12 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] What to do about DMA lists?
 - Tests
   - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
+    - Needed for prelimtest
+      - [ ] Case insensitive word names (or map to upper case)
+      - [ ] [CHAR]
+      - [ ] IF, ELSE, THEN
+      - [ ] DO, LEAVE, LOOP
+      - [ ] FIND (I've just been using PARSE, PARSE-NAME)
   - [ ] Some reasonable way of capturing test results 
     - It might make sense to have a way to redirect EMIT to a file (this would need to persist across an ABORT though, so may need a compilation option) 
 - Benchmarks

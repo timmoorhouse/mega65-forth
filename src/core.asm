@@ -836,8 +836,29 @@ W_COLON
         ; !word W_STORE
         !word W_CREATE
         !word W_RBRACKET
-;          !word PSCOD   ; ????????
-        !word W_PSEMI
+        !word W_PSCODE
+DO_COLON
+        ; ldy #0 ; TODO
+
+        ; Start executing the word with the code field pointed to by W
+        ; (in a new stack frame)
+!if 1 {
+        lda <I+1 ; push I
+        pha
+        lda <I
+        pha
+} else {
+        phw &I ; TODO why doesn't this work?
+}
+
+        clc ; ???
+        lda <W ; I = W + 2 ; TODO faster to copy then inw?
+        adc #2
+        sta <I
+        tya
+        adc <W+1
+        sta <I+1
+        jmp NEXT
 
 ; ****************************************************************************
 ; ; 
@@ -1768,7 +1789,7 @@ W_CHARS
 
 ; ****************************************************************************
 ; CONSTANT 
-; (??)
+; (x "<spaces>name" --)
 ; ANSI 6.1.0950
 
 ; FIG:
@@ -1779,24 +1800,22 @@ W_CHARS
 ;               to create word cccc, with its parameter field containing 
 ;               n.  When cccc is later executed, it will push the value of 
 ;               n to the stack.
-;
-;;
-;;                                       CONSTANT
-;;                                       SCREEN 34 LINE 1
-;;
 
-!if 0 {
         +WORD "constant"
 W_CONSTANT
-;   !word DOCOL
-;          !word CREATE
-;          !word SMUDGE
-;          !word COMMA
-;          !word PSCOD
-; SEMIS?
-        !word *+2
-        rts
-}
+        !word DO_COLON
+        !word W_CREATE
+        !word W_SMUDGE
+        !word W_COMMA
+        !word W_PSCODE
+; Push the first cell in the data field
+DO_CONSTANT
+        ldy #2
+        lda (<W),y
+        pha
+        iny
+        lda (<W),y
+        jmp PUSH
 
 ; ****************************************************************************
 ; COUNT 
@@ -1845,7 +1864,7 @@ CR
 
 ; ****************************************************************************
 ; CREATE 
-; (???)
+; ("<spaces>name" --)
 ; ANSI 6.1.1000
 
 ; FIG:
@@ -1917,7 +1936,9 @@ W_CREATE
 
         !word W_ALIGN           ; need to realign after name
 
-        +LITERAL DO_COLON          ; TODO how should this be done?
+        ; TODO this needs to be set to something like DO_VARIABLE (at execution must push address of data field)
+        ; +LITERAL DO_COLON          ; TODO how should this be done?
+        +LITERAL DO_VARIABLE    ; default code fields needs to push address of data field
         !word W_COMMA
 
         ; ()
@@ -3910,7 +3931,7 @@ W_UNTIL
 
 ; ****************************************************************************
 ; VARIABLE
-; (???)
+; ("<spaces>name" --)
 ; ANSI 6.1.2410
 
 ; FIG:
@@ -3923,20 +3944,25 @@ W_UNTIL
 ;               later executed, the address of its parameter field 
 ;               (containing n) is left on the stack, so that a fetch or 
 ;               store may access this location.
-;
-;
-;;
-;;                                       VARIABLE
-;;                                       SCREEN 34 LINE 5
-;;
 
-!if 0 {
         +WORD "variable"
 W_VARIABLE    
-;       !word DO_COLON
-        !word W_CONSTANT
-;          !word PSCOD
-}
+        !word DO_COLON
+        !word W_CREATE
+        !word W_SMUDGE
+        !word W_ZERO
+        !word W_COMMA
+        !word W_PSCODE
+; Push the address of the first cell in the data field
+DO_VARIABLE
+        ; ldy #0 ; TODO
+        clc
+        lda <W
+        adc #2
+        pha
+        tya
+        adc <W+1
+        jmp PUSH
 
 ; ****************************************************************************
 ; WHILE
