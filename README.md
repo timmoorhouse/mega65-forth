@@ -100,7 +100,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Update to EVALUATE
   - [ ] Update to INCLUDE-FILE
   - [ ] Sort out the buffer to use in QUIT
-  - [ ] REFILL (skip for now?)
+  - [ ] REFILL
   - [ ] Get rid of TIB, TIB# uses
   - [ ] Get SOURCE-ID and SOURCE right during all of this
 - Bootstrapping with portions of the library written in Forth

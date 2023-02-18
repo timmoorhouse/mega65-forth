@@ -863,8 +863,8 @@ W_COLON
 W_SEMI 
         !word DO_COLON
 ;          !word QCSP
-        !word W_POSTPONE
-        !word W_PSEMI
+        +LITERAL W_PSEMI
+        !word W_COMPILEC
         !word W_SMUDGE
         !word W_LBRACKET
         !word W_PSEMI
@@ -2245,7 +2245,7 @@ _evaluate_loop
         ; () (R: c-addr u)
 
         !word W_2RAT
-        !word W_FORTH_WORDLIST
+        !word W_FORTH_WORDLIST ; TODO
         !word W_SEARCH_WORDLIST
 
         ; (0)     (R: c-addr u) - not found
@@ -2307,8 +2307,8 @@ _evaluate_number
         !word W_AT
         +ZBRANCH _evaluate_done_word
 
-        !word W_POSTPONE
-        !word W_LITERAL
+        +LITERAL W_LITERAL
+        !word W_COMPILEC
         !word W_COMMA
 
 _evaluate_number_interpreting
@@ -2532,15 +2532,6 @@ W_FIND
 ;               field address, length byte of name field and boolean true 
 ;               for a good match.  If no match is found, only a boolean 
 ;               false is left.
-
-
-;
-; TODO like FIND but for a (c-addr u) string
-;          ... using:
-;                GET-ORDER (search)
-;                TRAVERSE-WORDLIST (tools)? SEARCH-WORDLIST? (search)
-;                NAME>STRING (tools),
-;                COMPARE (string)
 ;
 ;        +WORD "(find)"
 W_PFIND
@@ -3186,6 +3177,24 @@ W_OVER
         +WORD "postpone"
 W_POSTPONE
         !word DO_COLON
+!if 1 {
+        !word W_PARSE_NAME
+        !word W_ZERO
+        !word W_PSEARCH_WORDLIST
+        !word W_FORTH_WORDLIST ; TODO
+        ; (c-addr u 0 xt wid)
+        !word W_TRAVERSE_WORDLIST
+        ; (c-addr u 0)  if not found
+        ; (c-addr u nt) if found        
+        !word W_NIP
+        !word W_NIP
+
+        !word W_QDUP
+        +ZBRANCH + ; TODO error if not found
+        !word W_NAME_TO_COMPILE
+        !word W_EXECUTE
++
+} else {
         ; !word QCOMP
         !word W_RFROM
         !word W_DUP
@@ -3193,6 +3202,7 @@ W_POSTPONE
         !word W_TOR
         !word W_AT
         !word W_COMMA
+}
         !word W_PSEMI
 
 ;FIG
@@ -3563,6 +3573,7 @@ _spaces_done
 ; STATE
 ; (-- a-addr)
 ; ANSI 6.1.2250
+; ANSI 15.6.2.2250
 
 ; FIG:
 ;

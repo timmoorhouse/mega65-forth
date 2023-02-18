@@ -125,33 +125,36 @@ W_SEARCH_WORDLIST
         ; (c-addr u 0 xt wid)
 
         !word W_TRAVERSE_WORDLIST
+        ; (c-addr u 0)  if not found
+        ; (c-addr u nt) if found
 
-        ; (c-addr u 0) if not found 
-        ; (c-addr u xt 1) if immediate ???
-        ; (c-addr u xt -1) if non-immediate ???
+        !word W_NIP
+        !word W_NIP
 
         !word W_DUP
-        +ZBRANCH _search_wordlist_not_found
+        +ZBRANCH ++
 
         ; found
-        !word W_2TOR
-        !word W_2DROP
-        !word W_2RFROM
-        +BRANCH _search_wordlist_done
-        
-_search_wordlist_not_found        
-        !word W_DROP
-        !word W_2DROP
-        !word W_ZERO
+        !word W_DUP
+        !word W_NAME_TO_INTERPRET
+        !word W_SWAP
+        !word W_QIMMEDIATE
 
-_search_wordlist_done
+        +ZBRANCH +
+        !word W_ONE
+        !word W_PSEMI       
++
+        !word W_TRUE ; -1
+++
         !word W_PSEMI
 
-W_PSEARCH_WORDLIST 
-        ; (c-addr u 0 nt -- c-addr u 0 true) if not found
-        ; (c-addr u 0 nt -- c-addr u xt 1 false) if immediate ???
-        ; (c-addr u 0 nt -- c-addr u xt -1 false) if non-immediate ???
+; Search wordlist and return name token of a match
+; Caller must place (c-addr u 0) on stack before TRAVERSE-WORDLIST, cleanup after
+        +NONAME
+W_PSEARCH_WORDLIST
         !word DO_COLON
+        ; (c-addr u 0 nt -- c-addr u 0 true)   if not found
+        ; (c-addr u 0 nt -- c-addr u nt false) if found
 
         !word W_TOR     ; (c-addr u 0) (R: nt)
         !word W_DROP    ; (c-addr u) (R: nt)
@@ -159,43 +162,20 @@ W_PSEARCH_WORDLIST
         !word W_RAT     ; (c-addr u c-addr u nt) (R: nt)
 
         !word W_NAME_TO_STRING
-
         !word W_COMPARE ; (c-addr u flag) (R: nt)
 
-        +ZBRANCH _psearch_wordlist_found
+        +ZBRANCH +
 
-        !word W_RFROM,W_DROP ; clean up R
-        !word W_ZERO    ; put back the not found indicator
-        !word W_TRUE    ; continue
-        +BRANCH _psearch_wordlist_done
+        ; not found
+        !word W_RFROM,W_DROP
+        !word W_ZERO
+        !word W_TRUE
+        !word W_PSEMI
 
-_psearch_wordlist_found
-
++
+        ; found
         !word W_RFROM
-
-        !word W_DUP
-        !word W_NAME_TO_INTERPRET
-        !word W_SWAP
-
-        !word W_2PLUS
-        !word W_CAT
-        +CLITERAL F_IMMEDIATE
-        !word W_AND
-        +ZBRANCH _psearch_wordlist_nonimmediate
-
-        ; an immediate word
-        !word W_ONE
-        !word W_FALSE   ; stop
-        +BRANCH _psearch_wordlist_done
-
-_psearch_wordlist_nonimmediate
-
-        !word W_TRUE    ; -1
-        !word W_FALSE   ; stop
-        ; +BRANCH _psearch_wordlist_done
-
-_psearch_wordlist_done
-        
+        !word W_FALSE
         !word W_PSEMI
 
 ; ****************************************************************************

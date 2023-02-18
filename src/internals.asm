@@ -232,6 +232,23 @@ _inc_I_PUSH
 }
 
 ; ****************************************************************************
+; ?IMMEDIATE
+; (nt -- flag)
+;
+; Check if a name token is immediate
+; Used by NAME>COMPILE and (soon) POSTPONE
+
+        ; +WORD "?immediate"
+        +NONAME
+W_QIMMEDIATE
+        !word DO_COLON
+        !word W_2PLUS
+        !word W_CAT
+        +CLITERAL F_IMMEDIATE
+        !word W_AND
+        !word W_PSEMI
+
+; ****************************************************************************
 ; OUT   (from FIG)
 
 ;      OUT           ---  addr                               U

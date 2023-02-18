@@ -224,14 +224,12 @@ W_NAME_TO_COMPILE
         !word DO_COLON
         !word W_DUP
         !word W_NAME_TO_INTERPRET
-        !word W_2PLUS
-        !word W_CAT
-        +CLITERAL F_IMMEDIATE
-        !word W_AND
-        +ZBRANCH _name_to_compile_nonimmediate
+        !word W_SWAP
+        !word W_QIMMEDIATE
+        +ZBRANCH +
         +LITERAL W_EXECUTE
         !word W_PSEMI
-_name_to_compile_nonimmediate
++
         +LITERAL W_COMPILEC
         !word W_PSEMI
 
@@ -316,10 +314,7 @@ W_NRFROM
 ; (-- a-addr)
 ; ANSI 15.6.2.2250
 
-; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
-
-!if ENABLE_TOOLS_EXT {
-}
+; See core
 
 ; ****************************************************************************
 ; SYNONYM
