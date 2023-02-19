@@ -89,7 +89,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] `CS-PICK`
   - [x] `CS-ROLL`
 - Implement more of the basic wordset
-  - [ ] `IF`, `ELSE`, `THEN` (still problems with `ELSE`)
+  - [x] `IF`, `ELSE`, `THEN`
   - [ ] `BEGIN`, `AGAIN`
   - [ ] `BEGIN`, `WHILE`, `REPEAT`
   - [ ] `DO`, `LOOP`

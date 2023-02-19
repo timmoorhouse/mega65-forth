@@ -3150,8 +3150,10 @@ W_OVER
 
 ; ****************************************************************************
 ; POSTPONE
-; ("text" --)
+; ("<spaces>name" --)
 ; ANSI 6.1.2033
+;
+; Appends the *compilation* semantics of name to the current definition
 
         +WORD_IMM "postpone"
 W_POSTPONE
@@ -3167,22 +3169,30 @@ W_POSTPONE
         +CLITERAL ']'
         !word W_EMIT
 }        
+
         !word W_FORTH_WORDLIST ; TODO
         !word W_SEARCH_WORDLIST_NT ; (0 | nt)
         !word W_QDUP
-        +ZBRANCH + ; TODO error if not found
+        +ZBRANCH _postpone_done ; TODO error if not found
+
+        !word W_DUP
+        !word W_QIMMEDIATE
+        +ZBRANCH _postpone_nonimmediate 
+
+        ; immediate
         !word W_NAME_TO_INTERPRET
-!if 0 {
-        !word W_PDOTQ
-        +STRING "<postpone>"
-        !word W_DUP,W_DOT,W_CR
-}
+        !word W_COMMA
+        +BRANCH _postpone_done
+
+_postpone_nonimmediate
+        !word W_NAME_TO_INTERPRET
         +LITERAL W_LITERAL
         !word W_COMMA
         !word W_COMMA
         +LITERAL W_COMMA
         !word W_COMMA
-+
+
+_postpone_done
         !word W_PSEMI
 
 ; ****************************************************************************

@@ -31,7 +31,8 @@
 \ ***************************************************************************
 \ ... if [ ... else ] ... then
 
-: else ( 2 ?pairs ) postpone branch here 0 , swap ( 2 ) postpone then ( 2 ) ; immediate
+\ TODO use AHEAD
+: else ( ?comp 2 ?pairs ) postpone branch here 0 , swap ( 2 ) postpone then ( 2 ) ; immediate
 \ : ELSE     2  ?PAIRS  COMPILE  BRANCH  HERE  0  ,  SWAP  2  [COMPILE]  ENDIF  2  ; IMMEDIATE
 
 \ ***************************************************************************
