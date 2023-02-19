@@ -790,11 +790,8 @@ W_PICK
 W_REFILL
         !word DO_COLON
 
-!if 0 {
-        ; if SOURCE-ID = 0 use keyboard ...
-        ; TODO
-        !word W_ACCEPT
-}
+        !word W_SOURCE_ID
+        +ZBRANCH _refill_tib
 
 !if 0 {
         ; if SOURCE-ID > 0 its a file ...
@@ -811,7 +808,35 @@ W_REFILL
         !word W_FALSE
 }
 
+        !word W_FALSE
+        +BRANCH _refill_done
+
+_refill_tib
+
+        +LITERAL TIB
+        !word W_DUP
+        +LITERAL TIB_LEN
+        !word W_ACCEPT
+
+        ; (c-addr u)
+
+        ; TODO make this stuff common
+
+        +LITERAL &INPUT_LEN
+        !word W_STORE
+
+        +LITERAL &INPUT_BUFFER
+        !word W_STORE
+
         !word W_ZERO
+        !word W_IN
+        !word W_STORE
+
+        !word W_TRUE
+
+_refill_done
+
+        ; (flag)
 
         !word W_PSEMI
 

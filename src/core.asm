@@ -3180,44 +3180,28 @@ W_POSTPONE
 W_QUIT
         !word DO_COLON
 QUIT
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<quit>"
-        !word W_DOTS,W_CR
-}
 
 !if ENABLE_BLOCK {
         !word W_ZERO
         !word W_BLK
         !word W_STORE
 }
-        ; TODO set SOURCE-ID to 0
-        !word W_LBRACKET
 
 _quit_read_loop
 
-        !word W_RPSTORE ; TODO HOW???
+        !word W_ZERO
+        +LITERAL &SOURCE_ID
+        !word W_STORE
 
-        +LITERAL TIB
-        !word W_DUP
-        +CLITERAL TIB_LEN
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<quit-pre-accept>"
-        !word W_DOTS,W_CR
-}        
-        !word W_ACCEPT
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<quit-post-accept>"
-        !word W_DOTS,W_CR
-}    
-        ; TODO PEVALUATE!
-        !word W_EVALUATE
+        !word W_LBRACKET
 
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
+;_quit_read_loop ; TODO
+
+        !word W_RPSTORE
+
+        !word W_REFILL
+        !word W_DROP
+        !word W_PEVALUATE
 
         !word W_STATE
         !word W_AT
