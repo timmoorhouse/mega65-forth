@@ -99,10 +99,11 @@ These should get us to the point of bootstrapping with a dictionary written in f
     - I think these will just need one word (1 byte fileid, 1 byte `>IN`)
   - [ ] Update to `EVALUATE` (in progress)
   - [ ] Update to `INCLUDE-FILE` (in progress)
-  - [ ] Sort out the buffer to use in `QUIT`
-  - [ ] `REFILL`
-  - [ ] Get rid of `TIB`, `TIB#` uses
-  - [ ] Get `SOURCE-ID` and `SOURCE` right during all of this
+  - [x] Sort out the buffer to use in `QUIT`
+  - [ ] `REFILL` (in progress)
+  - [x] Get rid of `TIB`, `TIB#` uses
+  - [ ] Get `SOURCE-ID` and `SOURCE` right during all of this (in 
+  progress)
 - Bootstrapping with portions of the dictionary written in Forth
   - [ ] A "skeletal" configuration with just the builtins
   - [ ] A "minimal" configuration

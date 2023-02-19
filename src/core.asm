@@ -3187,15 +3187,13 @@ QUIT
         !word W_STORE
 }
 
-_quit_read_loop
+        !word W_LBRACKET
 
         !word W_ZERO
         +LITERAL &SOURCE_ID
         !word W_STORE
 
-        !word W_LBRACKET
-
-;_quit_read_loop ; TODO
+_quit_read_loop
 
         !word W_RPSTORE
 

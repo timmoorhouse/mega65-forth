@@ -791,25 +791,46 @@ W_REFILL
         !word DO_COLON
 
         !word W_SOURCE_ID
+
+        ; TODO don't reset input buffer? (if we handle it in save/restore it shouldn't have changed)
+        ; TODO we'd need to store the max len of the buffer
+
+        !word W_QDUP
         +ZBRANCH _refill_tib
 
-!if 0 {
-        ; if SOURCE-ID > 0 its a file ...
-        !word W_SOURCE
-        ; (c-addr u)
-        !word W_SOURCE_ID
-        ; (c-addr u fileid)
-        !word W_READ_LINE
-}
+        !word W_DUP
+        !word W_ZLESS
+        +ZBRANCH _refill_file
 
-!if 0 {
-        ; if SOURCE-ID < 0 its a string
+        ; SOURCE-ID < 0 ... its a string
 
-        !word W_FALSE
-}
-
+        !word W_DROP
         !word W_FALSE
         +BRANCH _refill_done
+
+_refill_file
+
+        !word W_BUFFER_OF_FILEID
+        !word W_OVER
+        !word W_SWAP
+        !word W_TWO
+        !word W_SUB                     ; leave space for cr lf (spec requires this)
+        !word W_READ_LINE
+        ; (c-addr u flag ior)
+
+        +ZBRANCH _refill_ior_ok
+        ; ior bad ...
+        !word W_DROP                    ; drop flag
+_refill_flag_bad
+        !word W_2DROP                   ; drop u2 and buffer address
+        !word W_FALSE
+        +BRANCH _refill_done
+
+_refill_ior_ok
+        +ZBRANCH _refill_flag_bad        
+        ; everything ok ...
+        ; (c-addr u)
+        +BRANCH _refill_set_buffer
 
 _refill_tib
 
@@ -820,7 +841,7 @@ _refill_tib
 
         ; (c-addr u)
 
-        ; TODO make this stuff common
+_refill_set_buffer
 
         +LITERAL &INPUT_LEN
         !word W_STORE
@@ -854,9 +875,11 @@ _refill_done
 }
 W_RESTORE_INPUT
         !word DO_COLON
-        !word W_DROP            ; TODO drop the dummy value
-        !word W_DROP            ; TODO drop the 1 from save-input
-        ; TODO
+        !word W_DROP            ; TODO check value
+        +LITERAL &SOURCE_ID
+        !word W_STORE
+        ; TODO >IN?
+        ; TODO SOURCE?
         !word W_ZERO            ; input successfully restored
         !word W_PSEMI
 
@@ -943,7 +966,9 @@ W_ROLL
 }
 W_SAVE_INPUT
         !word DO_COLON
-        +LITERAL 123
+        ; TODO >IN?
+        ; TODO SOURCE?
+        !word W_SOURCE_ID
         !word W_ONE             ; number of other cells pushed
         !word W_PSEMI
 
