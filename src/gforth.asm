@@ -97,7 +97,6 @@ W_SPAT
         phx
         lda #>base_page
         jmp PUSH
-        jmp PUSH
 }
 
 ; TODO gforth also has fp@, rp@, etc

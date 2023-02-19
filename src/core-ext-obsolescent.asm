@@ -21,7 +21,7 @@
 ; EXPECT
 ; (c-addr +n --) - marked as obsolescent, superseded by ACCEPT in core
 ; ANSI 6.2.1390
-; Not in Forth 2012?
+; Not in Forth 2012
 
 ; FIG:
 ;

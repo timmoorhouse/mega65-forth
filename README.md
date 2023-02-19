@@ -123,7 +123,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
     - Needed for prelimtest
       - [x] Case insensitive word names (map to lower case when defining/resolving)
       - [ ] `[CHAR]`
-      - [ ] `IF`, `ELSE`, `THEN`
+      - [x] `IF`, `ELSE`, `THEN`
       - [ ] `DO`, `LEAVE`, `LOOP`
       - [ ] `FIND` (I've just been using `PARSE`, `PARSE-NAME`)
   - [ ] Some reasonable way of capturing test results 
@@ -135,6 +135,40 @@ These should get us to the point of bootstrapping with a dictionary written in f
 
 There'll be lots more to do after that.
 
+# STATUS
+
+Wordset | Implemented | Not (Yet?) Implemented
+-- | -- | --
+BLOCK | | `BLK` `BLOCK` `BUFFER` `FLUSH` `LOAD` `SAVE-BUFFERS` `UPDATE`
+BLOCK-EXT | | `EMPTY-BUFFERS` `LIST` `SCR` `THRU`
+CORE | `!` `(` `*` `+` `+!` `,` `-` `.`(partial) `/` `0<` `0=` `1+` `1-` `2*` `2/` `2DROP` `2DUP` `:` `;` `<` `=` `>` `>BODY` `>IN` `>NUMBER` `>R` `?DUP` `@` `ABORT` `ABS` `ACCEPT` `ALIGN` `ALIGNED` `ALLOT` `AND` `BASE` `BEGIN` `BL` `C!` `C,` `C@` `CELL+` `CELLS` `CHAR` `CHAR+` `CHARS` `CONSTANT` `COUNT` `CR` `CREATE` `DECIMAL` `DEPTH` `DROP` `DUP` `ELSE` `EMIT` `EVALUATE` `EXECUTE` `FILL` `HERE` `I` `IF` `IMMEDIATE` `INVERT` `KEY` `LEAVE` `M*` `MAX` `MIN` `NEGATE` `OR` `OVER` `POSTPONE` `QUIT` `R>` `R@` `ROT` `S>D` `SOURCE` `SPACE` `SPACES` `STATE` `SWAP` `THEN` `TYPE` `UM*` `VARIABLE` `XOR` `[` `]` | `#` `#>` `#S` `'` `*/` `*/MOD` `+LOOP` `."` `/MOD` `2!` `2@` `2OVER` `2SWAP` `<#` `ABORT"` `DO` `DOES>` `ENVIRONMENT?` `EXIT` `FIND` `FM/MOD` `HOLD` `J` `LITERAL` `LOOP` `LSHIFT` `MOD` `MOVE` `RECURSE` `REPEAT` `RSHIFT` `S"` `SIGN` `SM/REM` `U.` `U<` `UM/MOD` `UNLOOP` `UNTIL` `WHILE` `WORD` `[']` `[CHAR]`
+CORE-EXT | `.(` `0<>` `2>R` `2R>` `2R@` `<>` `COMPILE,` `FALSE` `HEX` `NIP` `PAD` `PARSE` `PARSE-NAME` `PICK` `REFILL` `RESTORE-INPUT` `ROLL` `SAVE-INPUT` `SOURCE-ID` `TRUE` `\` | `.R` `0>` `:NONAME` `?DO` `ACTION-OF` `AGAIN` `BUFFER:` `C"` `CASE` `DEFER` `DEFER!` `DEFER@` `ENDCASE` `ENDOF` `ERASE` `HOLDS` `IS` `MARKER` `OF` `S\"` `TO` `TUCK` `U.R` `U>` `UNUSED` `VALUE` `WITHIN`
+CORE-EXT-OBSOLESCENT | | `#TIB` `CONVERT` `EXPECT` `QUERY` `SPAN` `TIB` `[COMPILE]`
+DOUBLE | `DABS` `DNEGATE` | `2CONSTANT` `2LITERAL` `2VARIABLE` `D+` `D-` `D.` `D.R` `D0<` `D0=` `D2*` `D2/` `D<` `D=` `D>S` `DMAX` `DMIN` `M*/` `M+`
+DOUBLE-EXT | | `2ROT` `2VALUE` `DU<`
+EXCEPTION | | `CATCH` `THROW`
+EXCEPTION-EXT | |
+FACILITY | `PAGE` | `AT-XY` `KEY?`
+FACILITY-EXT | `K-DELETE` `K-DOWN` `K-F1` `K-F10` `K-F11` `K-F12` `K-F2` `K-F3` `K-F4` `K-F5` `K-F6` `K-F7` `K-F8` `K-F9` `K-HOME` `K-INSERT` `K-LEFT` `K-RIGHT` `K-UP` | `+FIELD` `BEGIN-STRUCTURE` `CFIELD:` `EKEY` `EKEY>CHAR` `EKEY>FKEY` `EKEY?` `EMIT?` `END-STRUCTURE` `FIELD:` `K-ALT-MASK` `K-CTRL-MASK` `K-END` `K-NEXT` `K-PRIOR` `K-SHIFT-MASK` `MS` `TIME&DATE`
+FILE | `BIN` `CLOSE-FILE` `INCLUDE-FILE` `INCLUDED` `OPEN-FILE`(partial) `R/O` `R/W` `READ-FILE` `READ-LINE` `W/O` `WRITE-FILE` `WRITE-LINE` | `CREATE-FILE` `DELETE-FILE` `FILE-POSITION` `FILE-SIZE` `REPOSITION-FILE` `RESIZE-FILE`
+FILE-EXT | `INCLUDE` | `FILE-STATUS` `FLUSH-FILE` `REQUIRE` `REQUIRED`
+FLOATING | | `>FLOAT` `D>F` `F!` `F*` `F+` `F-` `F/` `F0<` `F0=` `F<` `F>D` `F@` `FALIGN` `FALIGNED` `FCONSTANT` `FDEPTH` `FDROP` `FDUP` `FLITERAL` `FLOAT+` `FLOATS` `FLOOR` `FMAX` `FMIN` `FNEGATE` `FOVER` `FROT` `FROUND` `FSWAP` `FVARIABLE` `REPRESENT`
+FLOATING-EXT | | `DF!` `DF@` `DFALIGN` `DFALIGNED` `DFFIELD` `DFLOAT+` `DFLOATS` `F**` `F.` `F>S` `FABS` `FACOS` `FACOSH` `FALOG` `FASIN` `FASINH` `FATAN` `FATAN2` `FATANH` `FCOS` `FCOSH` `FE.` `FEXP` `FEXPM1` `FFIELD:` `FLN` `FLNP1` `FLOG` `FS.` `FSIN` `FSINCOS` `FSINH` `FSQRT` `FTAN` `FTANH` `FTRUNC` `FVALUE` `F~` `PRECISION` `S>F` `SET-PRECISION` `SF!` `SF@` `SFALIGN` `SFALIGNED` `SFIELD:` `SFLOAT+` `SFLOATS`
+LOCAL | | `(LOCAL)` `TO`
+LOCAL-EXT | | `{:`
+LOCAL-EXT-OBSOLESCENT | | `LOCALS|`
+MEMORY | | `ALLOCATE` `FREE` `RESIZE`
+MEMORY-EXT | |
+SEARCH | `FORTH-WORDLIST` `GET-CURRENT`(partial) `SEARCH-WORDLIST` | `DEFINITIONS` `GET-ORDER` `SET-CURRENT` `SET-ORDER` `WORDLIST`
+SEARCH-EXT | | `ALSO` `FORTH` `ONLY` `ORDER` `PREVIOUS`
+STRING | `CMOVE` `CMOVE>` `COMPARE` | `-TRAILING` `/STRING` `BLANKS` `SEARCH` `SLITERAL`
+STRING-EXT | | `REPLACES` `SUBSTITUTE` `UNESCAPE`
+TOOLS | `.S`(partial) `WORDS` | `?` `DUMP` `SEE`
+TOOLS-EXT | `AHEAD` `BYE` `CS-PICK` `CS-ROLL` `N>R` `NAME>COMPILE` `NAME>INTERPRET` `NAME>STRING` `NR>` `TRAVERSE-WORDLIST` | `;CODE` `ASSEMBLER` `CODE` `EDITOR` `SYNONYM` `[DEFINED]` `[ELSE]` `[IF]` `[THEN]` `[UNDEFINED]`
+TOOLS-EXT-OBSOLESCENT | | `FORGET`
+XCHAR | | `X-SIZE` `XC!+` `XC!+?` `XC,` `XC-SIZE` `XC@+` `XCHAR+` `XEMIT` `XKEY` `XKEY?`
+XCHAR-EXT | | `+X/STRING` `-TRAILING-GARBAGE` `CHAR` `EKEY>XCHAR` `X-WIDTH` `XC-WIDTH` `XCHAR-` `XHOLD` `X\STRING`
+Extensions | `BACKGROUND` `BORDER` `FOREGROUND` `LATEST` `MON` `SAVESYSTEM` `SP@` |
 # CREDITS
 
 - Lots of the implementation comes from [FIG FORTH release 1.1](https://github.com/ptorric/figforth)
