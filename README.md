@@ -53,43 +53,13 @@ that the build process will get more involved:
 # RANDOM TODOs
 
 These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
-- Basic file reading (just enough to get by for now)
-  - [x] `OPEN-FILE`
-  - [x] `CLOSE-FILE`
-  - [x] `READ-LINE`
-  - [x] `INCLUDE`
-  - [x] `INCLUDED`
-  - [x] `WRITE-FILE`
-  - [x] `SAVESYSTEM` (gforth extension)
-  - [x] Automatic selection of appropriate channel numbers and secondary addresses (first address will be hardcoded as 8 for now)
-  - [x] Automatic selection of disk buffer
-  - [ ] Handle file access modes (skip for now?)
-  - [ ] `REQUIRE`, `REQUIRED` (skip for now?)
-  - [ ] Fix I/O status handling (when is status from READSS reset?) (skip for now?)
-  - [ ] Fix handling of I/O error cases (skip for now?)
-- Defining words
-  - [x] `,`
-  - [x] `:`
-  - [x] `;`
-  - [x] `CREATE`
-  - [x] `COMPILE,`
-  - [x] `POSTPONE`
-  - [x] Changes to `EVALUATE` for compilation state
-  - [x] Get the alignment right in `CREATE`
-  - [x] Get the alignment right for builtin words
+- Miscellaneous loose ends (these can likely be skipped for now)
+  - [ ] Handle file access modes
+  - [ ] Fix I/O status handling (when is status from READSS reset?)
+  - [ ] Fix handling of I/O error cases
   - [ ] Honour the hidden flag in `SEARCH-NAMELIST`
-  - [x] Honour the hidden flag in `WORDS`
-- Basic control flow words
-  - [x] `AHEAD`
-  - [x] `IF`
-  - [x] `THEN`
-  - [x] `BEGIN`
-  - [x] `AGAIN`
-  - [x] `UNTIL`
-  - [x] `CS-PICK`
-  - [x] `CS-ROLL`
+  - [ ] Handle `RESTORE-INPUT` failures
 - Implement more of the basic wordset
-  - [x] `IF`, `ELSE`, `THEN`
   - [ ] `BEGIN`, `AGAIN`
   - [ ] `BEGIN`, `WHILE`, `REPEAT`
   - [ ] `DO`, `LOOP`
@@ -97,19 +67,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] `LEAVE`
   - [ ] `UNLOOP`, `EXIT`
   - [ ] `I`, `J`
-  - [x] `IMMEDIATE`
-  - [ ] `RECURSE` (skip for now?)
-  - [x] `VARIABLE`
-  - [x] `CONSTANT`
-  - [x] `.(`
-- Parse state stack
-  - [ ] `SAVE-INPUT`, `RESTORE-INPUT` (in progress - might be good enough for now)
-  - [x] Update to `EVALUATE`
-  - [x] Update to `INCLUDE-FILE`
-  - [x] Sort out the buffer to use in `QUIT`
-  - [x] `REFILL`
-  - [x] Get rid of `TIB`, `TIB#` uses
-  - [ ] Handle `RESTORE-INPUT` failures (skip for now?)
 - Bootstrapping with portions of the dictionary written in Forth
   - [ ] A "skeletal" configuration with just the builtins
   - [ ] A "minimal" configuration
@@ -121,9 +78,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
 - Tests
   - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
     - Needed for prelimtest
-      - [x] Case insensitive word names (map to lower case when defining/resolving)
       - [ ] `[CHAR]`
-      - [x] `IF`, `ELSE`, `THEN`
       - [ ] `DO`, `LEAVE`, `LOOP`
       - [ ] `FIND` (I've just been using `PARSE`, `PARSE-NAME`)
   - [ ] Some reasonable way of capturing test results 
@@ -136,6 +91,8 @@ These should get us to the point of bootstrapping with a dictionary written in f
 There'll be lots more to do after that.
 
 # STATUS
+
+Note that some of these are implemented in Forth and the bootstrap process is not yet automated.
 
 Wordset | Implemented | Not (Yet?) Implemented
 -- | -- | --

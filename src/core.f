@@ -31,7 +31,8 @@
 \ ***************************************************************************
 \ ... if [ ... else ] ... then
 
-\ TODO use AHEAD
+\ TODO change swap to 1 cs-roll ?
+
 : else ( ?comp 2 ?pairs ) postpone ahead swap ( 2 ) postpone then ( 2 ) ; immediate
 \ : ELSE     2  ?PAIRS  COMPILE  BRANCH  HERE  0  ,  SWAP  2  [COMPILE]  ENDIF  2  ; IMMEDIATE
 
