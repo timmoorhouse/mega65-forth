@@ -2174,25 +2174,15 @@ W_EMIT
 W_EVALUATE        
         !word DO_COLON
 
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<evaluate>"
-        +CLITERAL '['
-        !word W_EMIT
-        !word W_2DUP
-        !word W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT        
-        !word W_DOTS,W_CR
-}
-
         !word W_SAVE_INPUT
         !word W_NTOR
 
-        ; TODO setup SOURCE
         +LITERAL &INPUT_LEN
         !word W_STORE
         +LITERAL &INPUT_BUFFER
+        !word W_STORE
+        +LITERAL -1
+        +LITERAL &SOURCE_ID
         !word W_STORE
 
         !word W_PEVALUATE
@@ -2203,16 +2193,17 @@ W_EVALUATE
 
         !word W_PSEMI
 
+; This does the real work of EVALUATE but does not
+; SAVE-INPUT/RESTORE-INPUT, set SOURCE-ID, etc.
+; We need to split this off from EVALUATE so we can
+; call it from INCLUDE-FILE - we don't want to
+; change the SOURCE-ID in this case to allow
+; REFILL to grab more input data (necessary for
+; multiline '(' comments, [IF]/[ELSE]/[THEN], etc)
+
         +NONAME
 W_PEVALUATE             ; ( -- )
         !word DO_COLON
-        ; This does the real work of EVALUATE but does not
-        ; SAVE-INPUT/RESTORE-INPUT, set SOURCE-ID, etc.
-        ; We need to split this off from EVALUATE so we can
-        ; call it from INCLUDE-FILE - we don't want to
-        ; change the SOURCE-ID in this case to allow
-        ; REFILL to grab more input data (necessary for
-        ; multiline '(' comments, [IF]/[ELSE]/[THEN], etc)
 
         !word W_ZERO ; TODO should this be done in EVALUATE too?
         !word W_IN
@@ -2242,7 +2233,7 @@ _evaluate_loop
         
         ; () (R: c-addr u)
 
-!if CASE_INSENSITIVE {
+!if CASE_INSENSITIVE { ; TODO move this to PARSE-NAME to get rid of duplication?
         !word W_2DUP
         !word W_LOWER
 }
@@ -3154,48 +3145,16 @@ W_OVER
 ; ("text" --)
 ; ANSI 6.1.2033
 
-; TODO postpone should be appending the *compilation* semantics of the next word to the definition
-
-; SO,
-; - parse-word
-; - check if next word is immediate, if so execute it in a compilation state
-; - if not immediate, push it to the definition
-; IS THAT RIGHT???
-; - just do NAME>COMPILE and EXECUTE?
-
         +WORD "postpone"
 W_POSTPONE
         !word DO_COLON
-!if 1 {
         !word W_PARSE_NAME
-!if CASE_INSENSITIVE {
-        !word W_2DUP
-        !word W_LOWER
-}
-        !word W_ZERO
-        !word W_PSEARCH_WORDLIST
-        !word W_FORTH_WORDLIST ; TODO
-        ; (c-addr u 0 xt wid)
-        !word W_TRAVERSE_WORDLIST
-        ; (c-addr u 0)  if not found
-        ; (c-addr u nt) if found        
-        !word W_NIP
-        !word W_NIP
-
+        !word W_SEARCH_WORDLIST_NT ; (0 | nt)
         !word W_QDUP
         +ZBRANCH + ; TODO error if not found
         !word W_NAME_TO_COMPILE
         !word W_EXECUTE
 +
-} else {
-        ; !word QCOMP
-        !word W_RFROM
-        !word W_DUP
-        !word W_2PLUS
-        !word W_TOR
-        !word W_AT
-        !word W_COMMA
-}
         !word W_PSEMI
 
 ; ****************************************************************************

@@ -102,7 +102,7 @@ W_GET_CURRENT
 ; 1 if immediate
 ; -1 otherwise
 
-; The word itself is required by the implmentation (of FIND) but is only visible if SEARCH is enabled
+; The word itself is required by the implementation (of FIND) but is only visible if SEARCH is enabled
 
 !if ENABLE_SEARCH {
         +WORD "search-wordlist"
@@ -110,6 +110,32 @@ W_GET_CURRENT
         +NONAME
 }
 W_SEARCH_WORDLIST
+        !word DO_COLON
+
+        !word W_SEARCH_WORDLIST_NT
+
+        ; (0 | nt)
+
+        !word W_DUP
+        +ZBRANCH ++
+
+        ; found
+        !word W_DUP
+        !word W_NAME_TO_INTERPRET
+        !word W_SWAP
+        !word W_QIMMEDIATE
+
+        +ZBRANCH +
+        !word W_ONE
+        !word W_PSEMI       
++
+        !word W_TRUE ; -1
+++
+        !word W_PSEMI
+
+; Like SEARCH-WORDLIST but returns 0|nt
+        +NONAME
+W_SEARCH_WORDLIST_NT ; (c-addr u wid -- 0 | nt)
         !word DO_COLON
 
 !if CASE_INSENSITIVE {
@@ -137,22 +163,6 @@ W_SEARCH_WORDLIST
 
         !word W_NIP
         !word W_NIP
-
-        !word W_DUP
-        +ZBRANCH ++
-
-        ; found
-        !word W_DUP
-        !word W_NAME_TO_INTERPRET
-        !word W_SWAP
-        !word W_QIMMEDIATE
-
-        +ZBRANCH +
-        !word W_ONE
-        !word W_PSEMI       
-+
-        !word W_TRUE ; -1
-++
         !word W_PSEMI
 
 ; Search wordlist and return name token of a match
