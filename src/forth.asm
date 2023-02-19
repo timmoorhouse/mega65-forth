@@ -4,43 +4,43 @@
 
 ; TODO clean up the symbol names - what does acme allow?
 
-!ifndef ENABLE_BLOCK                    { ENABLE_BLOCK                 = 0 }
-!ifndef ENABLE_BLOCK_EXT                { ENABLE_BLOCK_EXT             = 0 }
-!if 1                                   { ENABLE_CORE                  = 1 } ; Required
-!ifndef ENABLE_CORE_EXT                 { ENABLE_CORE_EXT              = 1 }
-!ifndef ENABLE_CORE_EXT_OBSOLESCENT     { ENABLE_CORE_EXT_OBSOLESCENT  = 0 }
-!ifndef ENABLE_DOUBLE                   { ENABLE_DOUBLE                = 1 }
-!ifndef ENABLE_DOUBLE_EXT               { ENABLE_DOUBLE_EXT            = 1 }
-!ifndef ENABLE_EXCEPTION                { ENABLE_EXCEPTION             = 0 }
-!ifndef ENABLE_EXCEPTION_EXT            { ENABLE_EXCEPTION_EXT         = 0 }
-!ifndef ENABLE_FACILITY                 { ENABLE_FACILITY              = 1 }
-!ifndef ENABLE_FACILITY_EXT             { ENABLE_FACILITY_EXT          = 1 }
-!ifndef ENABLE_FIG                      { ENABLE_FIG                   = 1 } ; TODO remove
-!ifndef ENABLE_FILE                     { ENABLE_FILE                  = 1 }
-!ifndef ENABLE_FILE_EXT                 { ENABLE_FILE_EXT              = 1 }
-!ifndef ENABLE_FLOATING                 { ENABLE_FLOATING              = 0 }
-!ifndef ENABLE_FLOATING_EXT             { ENABLE_FLOATING_EXT          = 0 }
-!ifndef ENABLE_GFORTH                   { ENABLE_GFORTH                = 1 } ; useful things following gforth's extensions
-!ifndef ENABLE_LOCAL                    { ENABLE_LOCAL                 = 0 }
-!ifndef ENABLE_LOCAL_EXT                { ENABLE_LOCAL_EXT             = 0 }
-!ifndef ENABLE_LOCAL_EXT_OBSOLESCENT    { ENABLE_LOCAL_EXT_OBSOLESCENT = 0 }
-!ifndef ENABLE_MEGA65                   { ENABLE_MEGA65                = 1 }
-!ifndef ENABLE_MEMORY                   { ENABLE_MEMORY                = 0 }
-!ifndef ENABLE_MEMORY_EXT               { ENABLE_MEMORY_EXT            = 0 }
-!ifndef ENABLE_SEARCH                   { ENABLE_SEARCH                = 1 }
-!ifndef ENABLE_SEARCH_EXT               { ENABLE_SEARCH_EXT            = 1 }
-!ifndef ENABLE_STRING                   { ENABLE_STRING                = 1 }
-!ifndef ENABLE_STRING_EXT               { ENABLE_STRING_EXT            = 1 }
-!ifndef ENABLE_TOOLS                    { ENABLE_TOOLS                 = 1 } ; for words, .s, etc
-!ifndef ENABLE_TOOLS_EXT                { ENABLE_TOOLS_EXT             = 1 }
-!ifndef ENABLE_TOOLS_EXT_OBSOLESCENT    { ENABLE_TOOLS_EXT_OBSOLESCENT = 0 }
-!ifndef ENABLE_XCHAR                    { ENABLE_XCHAR                 = 0 }
-!ifndef ENABLE_XCHAR_EXT                { ENABLE_XCHAR_EXT             = 0 }
+!ifndef ENABLE_BLOCK                    { ENABLE_BLOCK                  = 0 }
+!ifndef ENABLE_BLOCK_EXT                { ENABLE_BLOCK_EXT              = 0 }
+!if 1                                   { ENABLE_CORE                   = 1 } ; Required
+!ifndef ENABLE_CORE_EXT                 { ENABLE_CORE_EXT               = 1 }
+!ifndef ENABLE_CORE_EXT_OBSOLESCENT     { ENABLE_CORE_EXT_OBSOLESCENT   = 0 }
+!ifndef ENABLE_DOUBLE                   { ENABLE_DOUBLE                 = 1 }
+!ifndef ENABLE_DOUBLE_EXT               { ENABLE_DOUBLE_EXT             = 1 }
+!ifndef ENABLE_EXCEPTION                { ENABLE_EXCEPTION              = 0 }
+!ifndef ENABLE_EXCEPTION_EXT            { ENABLE_EXCEPTION_EXT          = 0 }
+!ifndef ENABLE_FACILITY                 { ENABLE_FACILITY               = 1 }
+!ifndef ENABLE_FACILITY_EXT             { ENABLE_FACILITY_EXT           = 1 }
+!ifndef ENABLE_FIG                      { ENABLE_FIG                    = 1 } ; TODO remove
+!ifndef ENABLE_FILE                     { ENABLE_FILE                   = 1 }
+!ifndef ENABLE_FILE_EXT                 { ENABLE_FILE_EXT               = 1 }
+!ifndef ENABLE_FLOATING                 { ENABLE_FLOATING               = 0 }
+!ifndef ENABLE_FLOATING_EXT             { ENABLE_FLOATING_EXT           = 0 }
+!ifndef ENABLE_GFORTH                   { ENABLE_GFORTH                 = 1 } ; useful things following gforth's extensions
+!ifndef ENABLE_LOCALS                   { ENABLE_LOCALS                 = 0 }
+!ifndef ENABLE_LOCALS_EXT               { ENABLE_LOCALS_EXT             = 0 }
+!ifndef ENABLE_LOCALS_EXT_OBSOLESCENT   { ENABLE_LOCALS_EXT_OBSOLESCENT = 0 }
+!ifndef ENABLE_MEGA65                   { ENABLE_MEGA65                 = 1 }
+!ifndef ENABLE_MEMORY                   { ENABLE_MEMORY                 = 0 }
+!ifndef ENABLE_MEMORY_EXT               { ENABLE_MEMORY_EXT             = 0 }
+!ifndef ENABLE_SEARCH                   { ENABLE_SEARCH                 = 1 }
+!ifndef ENABLE_SEARCH_EXT               { ENABLE_SEARCH_EXT             = 1 }
+!ifndef ENABLE_STRING                   { ENABLE_STRING                 = 1 }
+!ifndef ENABLE_STRING_EXT               { ENABLE_STRING_EXT             = 1 }
+!ifndef ENABLE_TOOLS                    { ENABLE_TOOLS                  = 1 } ; for words, .s, etc
+!ifndef ENABLE_TOOLS_EXT                { ENABLE_TOOLS_EXT              = 1 }
+!ifndef ENABLE_TOOLS_EXT_OBSOLESCENT    { ENABLE_TOOLS_EXT_OBSOLESCENT  = 0 }
+!ifndef ENABLE_XCHAR                    { ENABLE_XCHAR                  = 0 }
+!ifndef ENABLE_XCHAR_EXT                { ENABLE_XCHAR_EXT              = 0 }
 
-!ifndef DEBUG                           { DEBUG                        = 0 }
-!ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS        = 0 } ; TODO lots of things are triggering this - need to clean them up before enabling
-!ifndef USE_BASIC                       { USE_BASIC                    = 0 } ; not used - REMOVE?
-!ifndef CASE_INSENSITIVE                { CASE_INSENSITIVE             = 1 } ; map names to lower case when defining/resolving
+!ifndef DEBUG                           { DEBUG                         = 0 }
+!ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS         = 0 } ; TODO lots of things are triggering this - need to clean them up before enabling
+!ifndef USE_BASIC                       { USE_BASIC                     = 0 } ; not used - REMOVE?
+!ifndef CASE_INSENSITIVE                { CASE_INSENSITIVE              = 1 } ; map names to lower case when defining/resolving
 
 ; Runtime checks
 ; - For anything taking an aligned address, check that it's aligned
@@ -469,9 +469,9 @@ _install_font_dmalist
 !src "floating.asm"
 !src "floating-ext.asm"
 !src "gforth.asm"
-!src "local.asm"
-!src "local-ext.asm"
-!src "local-ext-obsolescent.asm"
+!src "locals.asm"
+!src "locals-ext.asm"
+!src "locals-ext-obsolescent.asm"
 !src "mega65.asm"
 !src "memory.asm"
 !src "memory-ext.asm"

@@ -161,7 +161,7 @@ EOF
         src/facility.f      src/facility-ext.f \
         src/file.f          src/file-ext.f \
         src/floating.f      src/floating-ext.f \
-        src/local.f         src/local-ext.f \
+        src/locals.f        src/locals-ext.f \
         src/memory.f        src/memory-ext.f \
         src/search.f        src/search-ext.f \
         src/string.f        src/string-ext.f \
