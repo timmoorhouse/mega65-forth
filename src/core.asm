@@ -3198,10 +3198,9 @@ _quit_read_loop
 
         !word W_RPSTORE ; TODO HOW???
 
-        +LITERAL UAREA+U_TIB ; TODO !!!!!!!!!!!!!!
-        !word W_AT
+        +LITERAL TIB
         !word W_DUP
-        +CLITERAL 80
+        +CLITERAL TIB_LEN
 !if DEBUG {
         !word W_PDOTQ
         +STRING "<quit-pre-accept>"
@@ -3213,6 +3212,7 @@ _quit_read_loop
         +STRING "<quit-post-accept>"
         !word W_DOTS,W_CR
 }    
+        ; TODO PEVALUATE!
         !word W_EVALUATE
 
 !if DEBUG {

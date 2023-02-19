@@ -101,23 +101,15 @@ entry
 ; FFFF +-----------------------------
 ;      | Kernel
 ; E000 +----------------------------- 
-; 
-; DFFF +-----------------------------
 ;      | I/O
 ; D000 +-----------------------------
-; 
-; CFFF +-----------------------------
 ;      | Interface 
 ; C000 +-----------------------------   <--- LIMIT
-;
-;      +-----------------------------
 ;      | User area (to be removed)
 ;      +-----------------------------   <--- UAREA
-; 
-;      +-----------------------------
 ;      | TODO move basepage here?
 ;      +-----------------------------
-; 
+;      | Terminal input buffer
 ;      +-----------------------------   
 ;      | File buffers
 ;      | (put terminal buffer here)
@@ -128,54 +120,43 @@ entry
 ;      |
 ;      | Transient workspace
 ;      +-----------------------------    <--- PAD 
-;          gap?  FIG apparently uses some space here in WORD
+;          gap?  FIG apparently uses some space here in WORD    TODO
 ;      +-----------------------------    <--- HERE
 ;      |
 ;      | Dictionary
 ;      |
 ;      | predefined words
 ; 2200 +-----------------------------
-; 
-; 21ff +-----------------------------
 ;      |               Data stack       TODO move this region
 ;      |                    |
 ;      |                    V
 ;      |
 ;      | Basepage data - W, I, etc
 ; 2100 +-----------------------------
-; 
-; 20ff +-----------------------------
 ;      | some unused space here
 ;      | basic stub
 ; 2001 +-----------------------------
-; 
-; 2000 +-----------------------------
 ;      | likely some space we could use for small things
 ;      |
 ;      |
 ; 0200 +----------------------------
-; 
-; 01ff +----------------------------     
-;      |  return stack
+;      |  return stack                   TODO
 ;      |       |          
-;      |       V           ^
-;      |                   |
-;      |           terminal buffer    TODO move
+;      |       V           
+;      |                   
+;      |           
 ; 0100 +-----------------------------
-; 
-; 00ff +-----------------------------
 ;      | basic/kernel stuff
 ; 0000 +-----------------------------
-
-TIBX      = $0100                       ; terminal input buffer of 84 bytes.
 
 ; TODO sort out memory layout, what ROM bits we need, etc
 LIMIT      = $C000 ; TODO
 UAREA_LEN  = 128 ; TODO remove this region
 UAREA      = LIMIT - UAREA_LEN
-DAREA_LEN  = MAX_OPEN_FILES * FILE_BUFFER_SIZE ; TODO add terminal buffer?
-DAREA      = UAREA - DAREA_LEN
-
+TIB_LEN    = FILE_BUFFER_SIZE
+TIB        = UAREA - TIB_LEN
+DAREA_LEN  = MAX_OPEN_FILES * FILE_BUFFER_SIZE 
+DAREA      = TIB - DAREA_LEN
 
 
 ; VM Registers
@@ -188,13 +169,10 @@ DAREA      = UAREA - DAREA_LEN
 ; floating point stack is allowed to be on the data stack or separate
 ; (might want to look at using the math register area directly?)
 
-
 !macro STRING .text {
         !byte len(.text)
         !text .text
 }
-
-
 
 !macro ALIGN {
   !if *&1 {
@@ -348,7 +326,7 @@ NEXT
 ; 04 ??? UAP start of user area?
 U_S0    = $06   ; S0 (see internal SP! in core)
 U_R0    = $08   ; R0 (see internal RP! in core)
-U_TIB   = $0a   ; TIB (core-ext)
+; U_TIB   = $0a   ; TIB (core-ext)
 ;           - 0C: WIDTH (fig)
 ;           - 0E: WARNING (fig)
 ; U_FENCE = $10   ; FENCE (fig)
@@ -475,11 +453,6 @@ WARM
         stx UAREA+U_S0
         ldy #0
         sty UAREA+U_S0+1
-
-        lda #<TIBX
-        sta UAREA+U_TIB
-        lda #>TIBX
-        sta UAREA+U_TIB+1
 
         lda INITIAL_FORTH_WORDLIST
         sta FORTH_WORDLIST

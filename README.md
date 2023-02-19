@@ -95,10 +95,10 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] `CONSTANT`
   - [x] `.(`
 - Parse state stack
-  - [ ] `SAVE-INPUT`, `RESTORE-INPUT`
+  - [ ] `SAVE-INPUT`, `RESTORE-INPUT` (in progress)
     - I think these will just need one word (1 byte fileid, 1 byte `>IN`)
-  - [ ] Update to `EVALUATE`
-  - [ ] Update to `INCLUDE-FILE`
+  - [ ] Update to `EVALUATE` (in progress)
+  - [ ] Update to `INCLUDE-FILE` (in progress)
   - [ ] Sort out the buffer to use in `QUIT`
   - [ ] `REFILL`
   - [ ] Get rid of `TIB`, `TIB#` uses

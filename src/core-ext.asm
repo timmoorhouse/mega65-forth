@@ -779,9 +779,41 @@ W_PICK
 ; REFILL
 ; (-- flag)
 ; ANSI 6.2.2125
+; ANSI 7.6.2.2125
+; ANSI 11.6.2.2125
 
 !if ENABLE_CORE_EXT {
+        +WORD "refill"
+} else {
+        +NONAME
 }
+W_REFILL
+        !word DO_COLON
+
+!if 0 {
+        ; if SOURCE-ID = 0 use keyboard ...
+        ; TODO
+        !word W_ACCEPT
+}
+
+!if 0 {
+        ; if SOURCE-ID > 0 its a file ...
+        !word W_SOURCE
+        ; (c-addr u)
+        !word W_SOURCE_ID
+        ; (c-addr u fileid)
+        !word W_READ_LINE
+}
+
+!if 0 {
+        ; if SOURCE-ID < 0 its a string
+
+        !word W_FALSE
+}
+
+        !word W_ZERO
+
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; RESTORE-INPUT

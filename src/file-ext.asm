@@ -67,25 +67,8 @@ W_INCLUDE
 ; ****************************************************************************
 ; REFILL
 ; (-- flag)
-; ANSI 7.6.2.2125
-; ANSI 11.6.2.2125
 
-!if ENABLE_FILE_EXT {
-        +WORD "refill"
-W_REFILL
-        !word DO_COLON
- !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<refill>"
-        !word W_DOTS
-}       
-        ; TODO
-        !word W_ZERO  
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
-        !word W_PSEMI    
-}
+; See core-ext
 
 ; ****************************************************************************
 ; RENAME-FILE
