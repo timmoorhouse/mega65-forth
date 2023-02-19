@@ -34,8 +34,14 @@
 \ TODO change swap to 1 cs-roll ?
 
 : else ( ?comp 2 ?pairs ) postpone ahead swap ( 2 ) postpone then ( 2 ) ; immediate
-\ : ELSE     2  ?PAIRS  COMPILE  BRANCH  HERE  0  ,  SWAP  2  [COMPILE]  ENDIF  2  ; IMMEDIATE
 
+: while postpone if 1 cs-roll ; immediate
+
+: repeat postpone again postpone then ; immediate
+
+\ : WHILE   [COMPILE]  IF  2+  ;    IMMEDIATE
+\ : REPEAT   >R  >R  [COMPILE]  AGAIN  R>  R>  2  -  [COMPILE]  ENDIF  ;  IMMEDIATE
+       
 \ ***************************************************************************
 
 \ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ;
