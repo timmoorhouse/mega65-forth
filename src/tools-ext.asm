@@ -74,15 +74,7 @@ W_PSCODE
 
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
 
-!if ENABLE_TOOLS_EXT {
-        +WORD_IMM "ahead"
-} else {
-        +NONAME
-}
-W_AHEAD
-        !word DO_COLON
-        !word W_HERE
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; ASSEMBLER

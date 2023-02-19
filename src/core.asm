@@ -3153,15 +3153,35 @@ W_OVER
 ; ("text" --)
 ; ANSI 6.1.2033
 
-        +WORD "postpone"
+        +WORD_IMM "postpone"
 W_POSTPONE
         !word DO_COLON
         !word W_PARSE_NAME
+!if 0 {
+        !word W_PDOTQ
+        +STRING "<postpone>"
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_2DUP
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
+}        
+        !word W_FORTH_WORDLIST ; TODO
         !word W_SEARCH_WORDLIST_NT ; (0 | nt)
         !word W_QDUP
         +ZBRANCH + ; TODO error if not found
-        !word W_NAME_TO_COMPILE
-        !word W_EXECUTE
+        !word W_NAME_TO_INTERPRET
+!if 0 {
+        !word W_PDOTQ
+        +STRING "<postpone>"
+        !word W_DUP,W_DOT,W_CR
+}
+        +LITERAL W_LITERAL
+        !word W_COMMA
+        !word W_COMMA
+        +LITERAL W_COMMA
+        !word W_COMMA
 +
         !word W_PSEMI
 

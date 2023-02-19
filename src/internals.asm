@@ -132,9 +132,8 @@ W_2PLUS
 ;               false (zero), the following in-line parameter is added to 
 ;               the interpretive pointer to branch ahead or back.  
 ;               Compiled by IF, UNTIL, and WHILE.
-;        +WORD "0branch"
 
-        +NONAME
+        +WORD "0branch"
 W_ZBRANCH
         !word *+2
         inx
@@ -156,16 +155,13 @@ BUMP             ; used by (loop) and LEAVE  TODO MESSY !!!!!!!!!!!!!!
 }
 
 ; ****************************************************************************
-; BRANCH
-
 ;      BRANCH                                                C2,L0
 ;               The run-time procedure to unconditionally branch.  An in-
 ;               line offset is added to the interpretive pointer IP to 
 ;               branch ahead or back.  BRANCH is compiled by ELSE, AGAIN, 
 ;               REPEAT.
-;        +WORD "branch"
 
-        +NONAME
+        +WORD "branch"
 W_BRANCH
         !word *+2
 BRANCH  ; used by (loop)  TODO MESSY !!!!!!!!

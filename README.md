@@ -79,9 +79,17 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] Get the alignment right for builtin words
   - [ ] Honour the hidden flag in `SEARCH-NAMELIST`
   - [x] Honour the hidden flag in `WORDS`
+- Basic control flow words
+  - [x] `AHEAD`
+  - [x] `IF`
+  - [x] `THEN`
+  - [x] `BEGIN`
+  - [x] `AGAIN`
+  - [x] `UNTIL`
+  - [x] `CS-PICK`
+  - [x] `CS-ROLL`
 - Implement more of the basic wordset
-  - [ ] `AHEAD`, `CS-PICK`, `CS-ROLL` (written but untested)
-  - [ ] `IF`, `ELSE`, `THEN`
+  - [ ] `IF`, `ELSE`, `THEN` (still problems with `ELSE`)
   - [ ] `BEGIN`, `AGAIN`
   - [ ] `BEGIN`, `WHILE`, `REPEAT`
   - [ ] `DO`, `LOOP`
