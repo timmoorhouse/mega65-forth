@@ -107,7 +107,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] A "minimal" configuration
   - [ ] A "complete" configuration
   - [ ] Move things we can from assembler to Forth
-- Making `SAVESYSTEM` deterministic? (it might not make sense to do this)
+- Making `SAVESYSTEM` output deterministic? (it might not make sense to do this)
   - [ ] Move basepage to top of memory?
   - [ ] What to do about DMA lists?
 - Tests
