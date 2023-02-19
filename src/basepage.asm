@@ -16,8 +16,6 @@ DO_JUMP_W
 ;      W        address of the code field pointer in zero-page.
 W               !word 0
 
-;      UP       address of the User Pointer in zero-page.
-U               !word 0
 ; floating point stack?
 
 ; TODO use a word for this? (turn it into S)
@@ -43,8 +41,10 @@ TEMP3           !word 0
 WORDP           !word 0 ; temporary pointer to iterate over words TODO REMOVE
 STRING          !word 0 ; pointer to string to print, etc TODO REMOVE
 
-BASE            !word 10
-; TODO STATE? or turn it into a normal variable
+BASE            !word 0
+STATE           !word 0
+R0              !word 0
+S0              !word 0
 
 !ifdef DEBUG {
 ;XW        =$12           ; scratch reg. to next code field add

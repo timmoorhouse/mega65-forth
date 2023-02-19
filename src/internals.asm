@@ -333,12 +333,10 @@ _RPSTORE
         sta <TEMP2+1
         ; Now reset the SPH & SPL from R0
         stx <XSAVE      
-        ldy #U_R0       
-        lda (<U),y      
+        lda <R0      
         tax
         txs
-        iny
-        lda (<U),y
+        lda <R0+1
         tay
         tys
         ldx <XSAVE
@@ -384,8 +382,7 @@ W_SMUDGE
 W_SPSTORE
         !word *+2
 SPSTORE
-        ldy #U_S0
-        lda (<U),y      ; load data stack pointer (X reg) from
+        lda <S0         ; load data stack pointer (X reg) from
         tax             ; silent user variable S0.
         jmp NEXT
 

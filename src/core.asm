@@ -1342,9 +1342,6 @@ W_ABORT
         !word DO_COLON
         !word W_SPSTORE
         !word W_DECIMAL
-!if ENABLE_BLOCK {
-;          !word DR0 ; from fig
-}
 ;          !word FORTH ; from search-ext
 ;          !word DEFIN ; from search
         +BRANCH QUIT
@@ -1387,10 +1384,6 @@ W_ABS
 
 ; input terminates on newline or if we reach the character limit
 ; characters are displayed as they are received (ie, we can assume keyboard input only)
-
-; TODO who should be checking BLK, SOURCE-ID?
-
-; TODO use REFILL?
 
         +WORD "accept"
 W_ACCEPT
@@ -2054,16 +2047,31 @@ W_PDO
 !if 0 {
         +WORD "does>"
 W_DOES
-;:     !word DOCOL
+        !word DO_COLON
 ;          !word RFROM
 ;          !word LATES
 ;          !word PFA
 ;          !word STORE
-;          !word PSCOD
-; SEMIS?
-        !word *+2
-        rts
+        !word W_PSCODE
 }
+DO_DOES
+;       LDA IP+1
+;       PHA
+;       LDA IP
+;       PHA
+;       LDY #2
+;       LDA (W),Y
+;       STA IP
+;       INY
+;       LDA (W),Y
+;       STA IP+1
+;       CLC
+;       LDA W
+;       ADC #4
+;       PHA
+;       LDA W+1
+;       ADC #0
+        jmp PUSH
 
 ; ****************************************************************************
 ; DROP 
@@ -3491,8 +3499,8 @@ _spaces_done
 
         +WORD "state"
 W_STATE
-        !word DO_USER
-        !byte U_STATE
+        !word DO_CONSTANT
+        !word &STATE
 
 ; ****************************************************************************
 ; SWAP

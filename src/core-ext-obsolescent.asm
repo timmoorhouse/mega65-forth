@@ -153,7 +153,7 @@ W_QUERY
 ; TIB
 ; (-- c-addr) 
 ; ANSI 6.2.2290 - marked as obsolescent (see SOURCE)
-; Not in Forth 2012?
+; Not in Forth 2012
 
 ; FIG:
 ;

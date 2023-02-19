@@ -76,11 +76,6 @@ COLOUR_ERROR  =   4 ; purple
 ; TODO phw to push a word? only out of memory (maybe not so useful) or immediate (could be useful)
 ; TODO quad stuff for double precision things
 
-; Alignment:
-; - VARIABLEs must be aligned
-; - CREATE must give an aligned data field?
-; - After definitions are compled the data-space pointer must be aligned
-
 !source "util.asm"
 !source "dma.asm"
 !source "vic4.asm"
@@ -105,8 +100,6 @@ entry
 ; D000 +-----------------------------
 ;      | Interface 
 ; C000 +-----------------------------   <--- LIMIT
-;      | User area (to be removed)
-;      +-----------------------------   <--- UAREA
 ;      | TODO move basepage here?
 ;      +-----------------------------
 ;      | Terminal input buffer
@@ -140,7 +133,7 @@ entry
 ;      |
 ;      |
 ; 0200 +----------------------------
-;      |  return stack                   TODO
+;      |  return stack                   
 ;      |       |          
 ;      |       V           
 ;      |                   
@@ -149,15 +142,11 @@ entry
 ;      | basic/kernel stuff
 ; 0000 +-----------------------------
 
-; TODO sort out memory layout, what ROM bits we need, etc
 LIMIT      = $C000 ; TODO
-UAREA_LEN  = 128 ; TODO remove this region
-UAREA      = LIMIT - UAREA_LEN
 TIB_LEN    = 80
-TIB        = UAREA - TIB_LEN
+TIB        = LIMIT - TIB_LEN
 DAREA_LEN  = MAX_OPEN_FILES * FILE_BUFFER_SIZE 
 DAREA      = TIB - DAREA_LEN
-
 
 ; VM Registers
 ; S - data stack pointer
@@ -262,8 +251,6 @@ F_HIDDEN     = $20
 
 !ifdef DEBUG                { !src "debug.asm"         }
 
-
-
 ;POP4
 ;        inx
 ;        inx
@@ -317,66 +304,6 @@ NEXT
         ; - TODO can we assume anything about flags?
         jmp &DO_JUMP_W
 
-
-
-
-
-; 00: latest???
-; 02: backspace???
-; 04 ??? UAP start of user area?
-U_S0    = $06   ; S0 (see internal SP! in core)
-U_R0    = $08   ; R0 (see internal RP! in core)
-; U_TIB   = $0a   ; TIB (core-ext)
-;           - 0C: WIDTH (fig)
-;           - 0E: WARNING (fig)
-; U_FENCE = $10   ; FENCE (fig)
-; U_DP    = $12   ; DP (fig)
-;           - 14: VOC-LINK (fig)
-U_BLK   = $16   ; BLK (block)
-; U_IN    = $18   ; >IN (fig)
-;           - 1A: OUT (fig)
-;           - 1C: SCR (block-ext)
-;           - 1E: OFFSET (fig)
-;           - 20: CONTEXT (fig)
-;           - 22: CURRENT (fig)
-U_STATE = $24   ; STATE (core) TODO move to base page
-; U_BASE  = $26   ; BASE (core) TODO move to base page
-; U_DPL   = $28   ; DPL (fig)
-;           - 2A: FLD (fig)
-;           - 2C: CSP (fig)
-;           - 2E: R# (fig)
-;           - 30: HLD (fig)
-; Things not in FIG ...
-
-DO_USER ; TODO REMOVE
-        ldy #2
-        clc
-        lda (<W),y
-        adc <U
-        pha
-        lda #0
-        adc <U+1
-        jmp PUSH
-
-DO_DOES
-;       LDA IP+1
-;       PHA
-;       LDA IP
-;       PHA
-;       LDY #2
-;       LDA (W),Y
-;       STA IP
-;       INY
-;       LDA (W),Y
-;       STA IP+1
-;       CLC
-;       LDA W
-;       ADC #4
-;       PHA
-;       LDA W+1
-;       ADC #0
-        jmp PUSH
-
 !src "kernel.asm"
 !src "internals.asm"
 !source "console.asm"
@@ -394,7 +321,6 @@ COLD
 ;               called from the terminal to remove application programs
 ;               and restart.
 
-!if 1 {
         +map_reset
 
         ; E000-FFFF     3E000   KERNAL
@@ -422,7 +348,6 @@ COLD
         ; +dma_enable_f018b ; TODO not needed?
 
         eom
-}
 
         ; set our base page
         lda #>base_page
@@ -430,29 +355,21 @@ COLD
         
 WARM
 
-!if 1 { ; TODO REMOVE
-        ; Set up user area
-        lda #<UAREA
-        sta <U
-        lda #>UAREA
-        sta <U+1
-}
-
         ; Save return stack pointer in R0
         stx <XSAVE
         tsx
-        stx UAREA+U_R0
+        stx <R0
         ldx <XSAVE
         tsy
-        sty UAREA+U_R0+1
+        sty <R0+1
 
         ; Reposition data stack
         ldx #TOS
 
         ; Save data stack pointer in S0
-        stx UAREA+U_S0
+        stx <S0
         ldy #0
-        sty UAREA+U_S0+1
+        sty <S0+1
 
         lda INITIAL_FORTH_WORDLIST
         sta FORTH_WORDLIST
@@ -464,44 +381,15 @@ WARM
         lda #>INITIAL_HERE
         sta <HERE+1
 
-        ; TODO set WIDTH
-        ; TODO set WARNING
-        ; TODO set FENCE
-        ; TODO set DP
-        ; TODO set VOC-LINK ; will be set by ABORT
-        ; BLK set in QUIT
-        ; TODO set IN
-        ; TODO set OUT
-!if ENABLE_BLOCK {
-        ; TODO set SCR
-}
-        ; TODO set OFFSET
-        ; TODO set CONTEXT
-        ; TODO set CURRENT
-        ; STATE set in QUIT
-        ; BASE set in ABORT
-        ; TODO set DPL
-        ; TODO set FLD
-        ; TODO set CSP
-        ; TODO set R#
-        ; TODO set HLD
-
         ; ldy #0 ; still 0 from above
         sty <SOURCE_ID
         sty <SOURCE_ID+1
 
         cld
 
-!if DEBUG {
-W_STARTUP = W_STARTUP_DEBUG
-} else {
-W_STARTUP = W_ABORT
-}
-
-        ; TODO just do W_ABORT directly ...
-        lda #<W_STARTUP+2
+        lda #<W_ABORT+2
         sta <I
-        lda #>W_STARTUP+2
+        lda #>W_ABORT+2
         sta <I+1
 
         lda #14 ; Lower case
@@ -546,34 +434,7 @@ W_STARTUP = W_ABORT
         lda #1 ; white
         jsr FOREGROUND
 
-        ; ldy #0
-
         jmp NEXT
-
-!if DEBUG {
-        +NONAME
-W_STARTUP_DEBUG
-        !word DO_COLON
-;TEST
-!if 0 {
-        !word W_WORDS
-        !word W_CR
-}
-!if 0 {
-        !word W_FORTH_WORDLIST,W_AT,W_DOT,W_CR
-        !word W_HERE,W_DOT,W_CR
-}
-!if 0 {
-        !word W_COMPARE_TEST
-}
-!if ENABLE_FILE {
-        !word W_FILE_TEST
-}
-!if 0 {
-        !word W_TONUMBER_TEST
-}
-        !word W_ABORT
-}
 
 _startup_text1
         +STRING "MEGA65-Forth 0.1"
@@ -627,6 +488,3 @@ _install_font_dmalist
 INITIAL_FORTH_WORDLIST
         !word _here ; TODO can we get away without storing this?
 INITIAL_HERE
-
-;TOP  :    .END           ; end of listing
-;
