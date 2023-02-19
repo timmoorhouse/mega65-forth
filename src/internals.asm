@@ -8,38 +8,6 @@
 
 ; TODO some sort of RPICK (like PICK but for the return stack) for J, I, LEAVE, PLOOP, PPLOOP
 
-; from FIG ...
-; used by (find), enclose, cmove
-;
-;
-; Move a number of words from data stack to array N[8] in basepage
-; (the idea being to allow lda ($<N+xx),y for scanning strings)
-; Can we instead move to return stack and use lda ($xx,SP),y?
-; We'd need to clean up the return stack
-; In either case, this seems like it will be of limited usefulness
-; if we want to allow lengths > 255.
-;
-;SETUP
-        ; A - # of words to move from stack to N (at most 4? 3?)
-        ; X - data stack pointer
-        ; Y - assumed to be 0
-        ; Z -
-;        asl
-;        sta N-1
-;-       lda 0,X
-;        sta N,Y
-;        inx
-;        iny
-;        cpy N-1
-;        bne -
-;        ldy #0
-        ; A - trashed
-        ; X - data stack pointer (adjusted)
-        ; Y - 0 
-        ; Z -
-;        rts
-
-
 ; Is this a whitespace character?
 ; Used by PARSE-NAME
 isspace
@@ -188,7 +156,7 @@ BRANCH  ; used by (loop)  TODO MESSY !!!!!!!!
 ;        +WORD "cliteral"
 
         +NONAME
-W_CLITERAL
+W_PCLITERAL
         !word *+2
         ; ldy #0 ; TODO
         lda (<I),y
@@ -199,7 +167,7 @@ W_CLITERAL
         inc <I+1
 +       jmp PUSH
 !macro CLITERAL .char {
-        !word W_CLITERAL
+        !word W_PCLITERAL
         !byte .char
 }
 
@@ -208,7 +176,7 @@ W_CLITERAL
 ;
 
         +NONAME
-W_LITERAL:
+W_PLITERAL:
         !word *+2
         ; ldy #0 ; TODO
         lda (<I),y
@@ -223,7 +191,7 @@ _inc_I_PUSH
         inc <I+1
 +       jmp PUSH
 !macro LITERAL .word {
-        !word W_LITERAL
+        !word W_PLITERAL
         !word .word
 }
 

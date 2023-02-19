@@ -384,19 +384,7 @@ W_FALSE
 ; (--)
 ; ANSI 6.2.1660
 
-; FIG:
-;
-;      HEX                                                   L0
-;               Set the numeric conversion base to sixteen (hexadecimal).
-!if ENABLE_CORE_EXT {
-        +WORD "hex"
-W_HEX
-        !word DO_COLON
-        +CLITERAL 16
-        !word W_BASE
-        !word W_STORE
-        !word W_PSEMI
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; HOLDS
@@ -464,18 +452,7 @@ W_NIP
 ;               Leave the address of the text output buffer, which is a 
 ;               fixed offset above HERE.
 
-; TODO always enable?
-
-!if ENABLE_CORE_EXT {
-        +WORD "pad"
-W_PAD
-        !word DO_COLON
-        !word W_HERE
-        !word W_CLITERAL
-        !byte 68        ; PAD is 68 bytes above here. TODO ????????????
-        !word W_PLUS
-        !word W_PSEMI
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; PARSE

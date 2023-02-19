@@ -6,9 +6,6 @@
 ; ! 
 ; (x a-addr --)
 ; ANSI 6.1.0010
-;
-; FIG:
-;               Store 16 bits of n at address.  Pronounced "store".
 
         +WORD "!"
 W_STORE
@@ -52,11 +49,6 @@ W_STORE
 ;               which is placed in an output string.  Result d2 is the 
 ;               quotient after division by BASE, and is maintained for 
 ;               further processing.  Used between <# and #>.  See #S.
-;
-;;
-;;                                       #
-;;                                       SCREEN 75 LINE 9
-;;
 
 !if 0 {
         +WORD "#"
@@ -93,11 +85,6 @@ W_DIG
 ;               Terminates numeric output conversion by dropping d, 
 ;               leaving the text address and character count suitable for 
 ;               TYPE.
-;
-;;
-;;                                       #>
-;;                                       SCREEN 75 LINE 5
-;;
 
 !if 0 {
         +WORD "#>"
@@ -125,11 +112,6 @@ W_EDIGS
 ;               Generates ascii text in the text output buffer, by the use 
 ;               of #, until a zero double number n2 results.  Used between 
 ;               <# and #>.
-;
-;
-;;                                       #S
-;;                                       SCREEN 75 LINE 12
-;;
 
 !if 0 {
         +WORD "#s"
@@ -160,12 +142,6 @@ W_DIGS
 ;               definition to compile the address as a literal.  If the 
 ;               word is not found after a search of CONTEXT and CURRENT, 
 ;               an appropriate error message is given.  Pronounced "tick".
-;
-;
-;;
-;;                                       '
-;;                                       SCREEN 72 LINE 2
-;;
 
 !if 0 {
         +WORD "'"
@@ -191,31 +167,11 @@ W_TICK
 
 ; TODO allow multiline comment blocks when parsing from a file
 
-; FIG:
-;      (                                                      P,L0
-;               Used in the form:
-;                         ( cccc)
-;               Ignore a comment that will be delimited by a right 
-;               parenthesis on the same line.  May occur during execution 
-;               or in a colon-definition.  A blank after the leading 
-;               parenthesis is required.
-
         +WORD_IMM "("
 W_PAREN
         !word DO_COLON
         +CLITERAL ')'
         !word W_PARSE
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<comment>"
-        +CLITERAL '['
-        !word W_EMIT
-        !word W_2DUP
-        !word W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT
-        !word W_DOTS,W_CR
-}
         !word W_2DROP
         !word W_PSEMI
 
@@ -223,10 +179,6 @@ W_PAREN
 ; * 
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.0090
-
-; FIG:
-;      *             n1  n2  ---  prod                       L0
-;               Leave the signed product of two signed numbers.
 
         +WORD "*"
 W_STAR
@@ -263,11 +215,6 @@ W_STAR
 ;               numbers.  Retention of an intermediate 31 bit product 
 ;               permits greater accuracy than would be available with the 
 ;               sequence:  n1 n2 * n3 /
-;
-;;
-;;                                       */
-;;                                       SCREEN 57 LINE 13
-;;
 
 !if 0 {
         +WORD "*/"
@@ -289,11 +236,6 @@ W_SSLASH
 ;               Leave the quotient n5 and remainder n4 of the operation 
 ;               n1*n2/n3.  A 31 bit intermediate product is used as for 
 ;               */.
-;
-;;
-;;                                       */MOD
-;;                                       SCREEN 57 LINE 11
-;;
 
 !if 0 {
         +WORD "*/mod"
@@ -311,10 +253,6 @@ W_SSMOD
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.0120
 
-; FIG:
-;      +             n1  n2  ---  sum                        L0
-;               Leave the sum of n1+n2.
-
         +WORD "+"
 W_PLUS
         !word *+2
@@ -331,11 +269,6 @@ W_PLUS
 ; +! 
 ; (n a-addr --)
 ; ANSI 6.1.0130
-
-; FIG:
-;      +!            n  addr  ---                            L0
-;               Add n to the value at the address.  Pronounced "plus-
-;               store".
 
         +WORD "+!"
 W_PSTORE
@@ -383,10 +316,6 @@ W_PSTORE
 ;               and the branch offset computed from HERE to the address 
 ;               left on the stack by DO.  n2 is used for compile-time 
 ;               error checking.
-;
-;;
-;;                                       +LOOP
-;;                                       SCREEN 73 LINE 13
 
 !if 0 {
         +WORD_IMM "+loop"
@@ -444,11 +373,6 @@ W_PPLOOP
 ; (x --)
 ; ANSI 6.1.0150
 
-; FIG:
-;      ,             n  ---                                  L0
-;               Store n into the next available dictionary memory cell, 
-;               advancing the dictionary pointer.  (comma)
-
         +WORD ","
 W_COMMA
         !word DO_COLON
@@ -462,10 +386,6 @@ W_COMMA
 ; - 
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.0160
-
-; FIG:
-;      -             n1  n2  ---  diff                       L0
-;               Leave the difference of n1-n2.
 
         +WORD "-"
 W_SUB
@@ -521,11 +441,6 @@ W_DOT
 ;               ." will immediately print the text until the final ".  The 
 ;               maximum number of characters may be an installation 
 ;               dependent value.  See (.").
-;
-;;
-;;                                       ."
-;;                                       SCREEN 44 LINE12
-;;
 
 !if 0 {
         +WORD_IMM ".\""
@@ -558,9 +473,6 @@ W_DOTQUOTE
 ;               following in-line text to the selected output device.  See 
 ;               ."
 
-;;
-;;                                       (.")
-;;                                       SCREEN 44 LINE 8
 ;        +WORD "(.\")"
 W_PDOTQ
         !word DO_COLON
@@ -618,11 +530,6 @@ W_SLASH
 ;      /MOD          n1  n2  ---  rem quot                   L0
 ;               Leave the remainder and signed quotient of n1/n2.  The 
 ;               remainder has the sign of the dividend.
-;
-;;
-;;                                       /MOD
-;;                                       SCREEN 57 LINE 8
-;;
 
 !if 0 {
         +WORD "/mod"
@@ -640,11 +547,6 @@ W_SLMOD
 ; (n -- flag)
 ; ANSI 6.1.0250
 
-; FIG:
-;      0<            n  ---  f                               L0
-;               Leave a true flag if the number is less than zero 
-;               (negative), otherwise leave a false flag.
-
         +WORD "0<"
 W_ZLESS
         !word *+2
@@ -660,11 +562,6 @@ W_ZLESS
 ; 0= 
 ; (x -- flag)
 ; ANSI 6.1.0270
-
-; FIG:
-;      0=            n  ---  f                               L0
-;               Leave a true flag if the number is equal to zero, 
-;               otherwise leave a false flag.
 
         +WORD "0="
 W_ZEQUALS
@@ -683,10 +580,6 @@ W_ZEQUALS
 ; 1+ 
 ; (n_1 -- n_2)
 ; ANSI 6.1.0290
-
-; FIG:
-;      1+            n1  ---  n2                             L1
-;               Increment n1 by 1.
 
         +WORD "1+"
 W_1PLUS
@@ -809,18 +702,6 @@ W_2SWAP
 ; (???)
 ; ANSI 6.1.0450
 
-; FIG:
-;      :                                                     P,E,L0
-;               Used in the form called a colon-definition:
-;                         : cccc   ...  ;
-;               Creates a dictionary entry defining cccc as equivalent to 
-;               the following sequence of Forth word definitions '...' 
-;               until the next ';' or ';CODE'.  The compiling process is 
-;               done by the text interpreter as long as STATE is non-zero.  
-;               Other details are that the CONTEXT vocabulary is set to 
-;               the CURRENT vocabulary and that words with the precedence 
-;               bit set (P) are executed rather than being compiled.
-
         +WORD_IMM ":"
 W_COLON
         !word DO_COLON
@@ -861,17 +742,6 @@ DO_COLON
 ; (???)
 ; ANSI 6.1.0460
 
-; FIG:
-;      ;                                                     P,C,L0
-;               Terminate a colon-definition and stop further compilation.  
-;               Compiles the run-time ;S.
-;
-
-;      ;S                                                    P,L0
-;               Stop interpretation of a screen.  ;S is also the run-time 
-;               word compiled at the end of a colon-definition which 
-;               returns execution to the calling procedure.
-
         +WORD_IMM ";"
 W_SEMI 
         !word DO_COLON
@@ -882,7 +752,7 @@ W_SEMI
         !word W_LBRACKET
         !word W_PSEMI
 
-        +WORD ";s" ; TODO
+        +NONAME
 W_PSEMI
         !word *+2
         pla
@@ -895,11 +765,6 @@ W_PSEMI
 ; < 
 ; (n_1 n_2 -- flag)
 ; ANSI 6.1.0480
-
-; FIG:
-;      <             n1  n2  ---  f                          L0
-;               Leave a true flag if n1 is less than n2; otherwise leave a 
-;               false flag.
 
         +WORD "<"
 W_LESS
@@ -931,11 +796,6 @@ W_LESS
 ;                         <#  #  #S  SIGN  #>
 ;               The conversion is done on a double number producing text 
 ;               at PAD.
-;
-;;
-;;                                       <#
-;;                                       SCREEN 75 LINE 3
-;;
 
 !if 0 {
         +WORD "<#"
@@ -951,10 +811,6 @@ W_BDIGS
 ; = 
 ; (x_1 x_2 -- flag)
 ; ANSI 6.1.0530
-
-; FIG:
-;      =             n1  n2  ---  f                          L0
-;               Leave a true flag if n1=n2; otherwise leave a false flag.
 
         +WORD "="
 W_EQUAL
@@ -980,11 +836,6 @@ W_EQUAL
 ; (n_1 n_2 -- flag)
 ; ANSI 6.1.0540
 
-; FIG:
-;      >             n1  n2  ---  f                          L0
-;               Leave a true flag if n1 is greater than n2; otherwise a 
-;               false flag.
-
         +WORD ">"
 W_GREATER
         !word DO_COLON
@@ -1008,13 +859,6 @@ W_TOBODY
 ; (-- a-addr)
 ; ANSI 6.1.0560
 
-; FIG
-;      IN            ---  addr                               L0
-;               A user variable containing the byte offset within the 
-;               current input text buffer (terminal or disc) from which 
-;               the next text will be accepted.  WORD uses and moves the 
-;               value of IN.
-
         +WORD ">in"
 W_IN
         !word DO_COLON
@@ -1027,65 +871,6 @@ W_IN
 ; ANSI 6.1.0570
 
 ; c-addr_2 u_2 is the unconverted portion of c-addr_1 u_1
-
-W_TONUMBER_TEST
-        !word DO_COLON
-
-        !word W_HEX
-!if 1 {
-        !word W_PDOTQ
-        +STRING "<base>"
-        !word W_BASE
-        !word W_AT
-        !word W_DOTS,W_CR
-        !word W_DROP
-}
-
-        +CLITERAL 'f'
-        !word W_PDOTQ
-        +STRING "<digit>"
-        !word W_DUP
-        !word W_EMIT
-        !word W_DIGIT
-        !word W_DOTS,W_CR
-        !word W_2DROP
-
-!if 1 {
-        +LITERAL 0
-        +LITERAL 0
-        +LITERAL _tonumber_test
-        !word W_COUNT
-        !word W_PDOTQ
-        +STRING "<number>"
-        +CLITERAL '['
-        !word W_EMIT
-        !word W_2DUP
-        !word W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT
-        !word W_TONUMBER
-        +CLITERAL '['
-        !word W_EMIT
-        !word W_2DUP
-        !word W_TYPE
-        +CLITERAL ']'        
-        !word W_EMIT
-        !word W_DOTS,W_CR
-}
-        !word W_PSEMI
-
-_tonumber_test
-        ;+STRING "1xyz"
-        ; +STRING "1234abcxyz"
-        +STRING "1234abc"
-        !byte 'd'
-
-; FIG
-;      (NUMBER)      d1  addr1  ---  d2  addr2
-;               Convert the ascii text beginning at addr1+1 with regard to 
-;               BASE.  The new value is accumulated into double number d1,  
-;               being left as d2.  Addr2 is the address of the first 
-;               unconvertable digit.  Used by NUMBER.
 
         +WORD ">number"
 W_TONUMBER
@@ -1250,12 +1035,6 @@ _digit_bad
 ; (x --) (R: -- x)
 ; ANSI 6.1.0580
 
-; FIG
-;      >R            n  ---                                  C,L0
-;               Remove a number from the computation stack and place as 
-;               the most accessable on the return stack.  Use should be 
-;               balanced with R> in the same definition.
-
         +WORD ">r"
 W_TOR
         !word *+2
@@ -1270,13 +1049,6 @@ W_TOR
 ; ?DUP 
 ; (x -- 0 | x x)
 ; ANSI 6.1.0630
-
-; FIG
-;      -DUP          n1  ---  n1         (if zero)
-;                    n1  ---  n1  n1     (non-zero)          L0
-;               Reproduce n1 only if it is non-zero.  This is usually used 
-;               to copy a value just before IF, to eliminate the need for 
-;               an ELSE part to drop it.
 
         +WORD "?dup"
 W_QDUP
@@ -1294,10 +1066,6 @@ W_QDUP
 ; @ 
 ; (a-addr -- x)
 ; ANSI 6.1.0650
-
-; FIG:
-;      @             addr  ---  n                            L0
-;               Leave the 16 bit contents of address.
 
         +WORD "@"
 W_AT
@@ -1331,12 +1099,6 @@ W_AT
 ;
 ; Empties the data stack and performs a QUIT
 
-; FIG
-;      ABORT                                                 L0
-;               Clear the stacks and enter the execution state.  Return 
-;               control to the operators terminal, printing a message 
-;               appropriate to the installation.
-
         +WORD "abort"
 W_ABORT
         !word DO_COLON
@@ -1361,10 +1123,6 @@ W_ABORT
 ; ABS 
 ; (n -- u)
 ; ANSI 6.1.0690
-
-; FIG:
-;      ABS           n  ---  u                               L0
-;               Leave the absolute value of n as u.
 
         +WORD "abs"
 W_ABS
@@ -1548,12 +1306,6 @@ W_ALIGNED
 ; (n --)
 ; ANSI 6.1.0710
 
-; FIG:
-;      ALLOT         n  ---                                  L0
-;               Add the signed number to the dictionary pointer DP.  May 
-;               be used to reserve dictionary space or re-origin memory.  
-;               n is with regard to computer address type (byte or word).
-
         +WORD "allot"
 W_ALLOT
         !word DO_COLON
@@ -1565,10 +1317,6 @@ W_ALLOT
 ; AND 
 ; (x_1 x_2 -- x_3)
 ; ANSI 6.1.0720
-
-; FIG:
-;      AND           n1  n2  ---  n3                         L0
-;               Leave the bitwise logical and of n1 and n2 as n3.
 
         +WORD "and"
 W_AND
@@ -1586,12 +1334,6 @@ W_AND
 ; (-- a-addr)
 ; ANSI 6.1.0750
 
-; FIG:
-;
-      ;BASE          ---  addr                               U,L0
-      ;         A user variable containing the current number base used 
-      ;         for input and output conversion.
-
         +WORD "base"
 W_BASE
         !word DO_CONSTANT
@@ -1603,36 +1345,12 @@ W_BASE
 ; Runtime: (--)
 ; ANSI 6.1.0760
 
-; FIG:
-;
-;
-;      BEGIN         ---  addr  n        (compiling)         P,L0
-;               Occurs in a colon-definition in form:
-;                         BEGIN  ...  UNTIL
-;                         BEGIN  ...  AGAIN
-;                         BEGIN  ...  WHILE  ...  REPEAT
-;               At run-time, BEGIN marks the start of a sequence that may 
-;               be repetitively executed.  It serves as a return point 
-;               from the corresponding UNTIL, AGAIN or REPEAT.  When 
-;               executing UNTIL, a return to BEGIN will occur if the top 
-;               of the stack is false; for AGAIN and REPEAT a return to 
-;               BEGIN always occurs.
-;
-;               At compile time BEGIN leaves its return address and n for 
-;               compiler error checking.
-
 ; See core.f
 
 ; ****************************************************************************
 ; BL 
 ; (-- char)
 ; ANSI 6.1.0770
-
-; FIG:
-;
-;
-;      BL            ---  c
-;               A constant that leaves the ascii value for "blank".
 
         +WORD "bl"
 W_BL
@@ -1643,13 +1361,6 @@ W_BL
 ; C! 
 ; (char c-addr --)
 ; ANSI 6.1.0850
-
-; FIG:
-;
-;      C!            b  addr  ---
-;               Store 8 bits at address.  On word addressing computers, 
-;               further specification is necessary regarding byte 
-;               addressing.
 
         +WORD "c!"
 W_CSTORE
@@ -1663,34 +1374,12 @@ W_CSTORE
 ; (char --)
 ; ANSI 6.1.0860
 
-; FIG:
-;
-;      C,            b  ---
-;               Store 8 bits of b into the next available dictionary byte, 
-;               advancing the dictionary pointer.  This is only available 
-;               on byte addressing computers, and should be used with 
-;               caution on byte addressing minicomputers.
-
-        +WORD "c,"
-W_CCOMM
-        !word DO_COLON
-        !word W_HERE
-        !word W_CSTORE
-        !word W_ONE
-        !word W_ALLOT
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; C@ 
 ; (c-addr -- char)
 ; ANSI 6.1.0870
-
-; FIG:
-;
-;      C@            addr  ---  b
-;               Leave the 8 bit contents of memory address.  On word 
-;               addressing computers, further specification is needed 
-;               regarding byte addressing.
 
         +WORD "c@"
 W_CAT
@@ -1763,15 +1452,6 @@ W_CHARS
 ; (x "<spaces>name" --)
 ; ANSI 6.1.0950
 
-; FIG:
-;
-;      CONSTANT      n  ---                                  L0
-;               A defining word used in the form:
-;                         n  CONSTANT  cccc
-;               to create word cccc, with its parameter field containing 
-;               n.  When cccc is later executed, it will push the value of 
-;               n to the stack.
-
         +WORD "constant"
 W_CONSTANT
         !word DO_COLON
@@ -1793,16 +1473,6 @@ DO_CONSTANT
 ; (c-addr_1 -- c-addr_2 u)
 ; ANSI 6.1.0980
 
-; FIG:
-;
-;
-;      COUNT         addr1  ---  addr2  n                    L0
-;               Leave the byte address addr2 and byte count n of a message 
-;               text beginning at addr1.  It is presumed that the first 
-;               byte at addr1 contains the text byte count and the actual 
-;               text starts with the second byte.  Typically COUNT is 
-;               followed by TYPE.
-
         +WORD "count"
 W_COUNT
         !word DO_COLON
@@ -1816,12 +1486,6 @@ W_COUNT
 ; CR 
 ; (--)
 ; ANSI 6.1.0990
-
-; FIG:
-;
-;      CR                                                    L0
-;               Transmit a carriage return and line feed to the selected 
-;               output device.
 
         +WORD "cr"
 W_CR
@@ -1837,16 +1501,6 @@ CR
 ; CREATE 
 ; ("<spaces>name" --)
 ; ANSI 6.1.1000
-
-; FIG:
-;
-;      CREATE
-;               A defining word used in the form:
-;                         CREATE  cccc
-;               by such words as CODE and CONSTANT to create a dictionary 
-;               header for a Forth definition.  The code field contains 
-;               the address of the word's parameter field.  The new word 
-;               is created in the CURRENT vocabulary.
 
         +WORD "create"
 W_CREATE
@@ -1933,11 +1587,6 @@ W_CREATE
 ; (--)
 ; ANSI 6.1.1170
 
-; FIG:
-;
-;      DECIMAL                                               L0
-;               Set the numeric conversion BASE for decimal input-output.
-
         +WORD "decimal"
 W_DECIMAL
         !word DO_COLON
@@ -1993,10 +1642,6 @@ W_DEPTH
 ;               When compiling within the colon-definition, DO compiles 
 ;               (DO), leaves the following address addr and n for later 
 ;               error checking.
-;
-;;
-;;                                       DO
-;;                                       SCREEN 73 LINE 9
 
 !if 0 {
         +WORD_IMM "do"
@@ -2078,11 +1723,6 @@ DO_DOES
 ; (x --)
 ; ANSI 6.1.1260
 
-; FIG:
-;
-;      DROP          n  ---                                  L0
-;               Drop the number from the stack.
-
         +WORD "drop"
 W_DROP
         !word *+2
@@ -2092,11 +1732,6 @@ W_DROP
 ; DUP 
 ; (x -- x x)
 ; ANSI 6.1.1290
-
-; FIG:
-;
-;      DUP           n  ---  n  n                            L0
-;               Duplicate the value on the stack.
 
         +WORD "dup"
 W_DUP
@@ -2111,49 +1746,12 @@ W_DUP
 ; (???)
 ; ANSI 6.1.1310
 
-; Compilation: (C: orig_1 -- orig_2)
-;
-;
-;
-; Run-time: (--)
-;
-;
-;
-;
-
-; From discussion in ANSI A.3.2.3.2:
-;
-;     : ELSE POSTPONE AHEAD 1 CS-ROLL POSTPONE THEN ; IMMEDIATE
-
-
-; FIG:
-;      ELSE          addr1  n1  ---  addr2  n2  (compiling)  P,C2,L0
-;               Occurs within a colon-definition in the form:
-;
-;                         IF  ...  ELSE  ...  ENDIF
-;               At run-time, ELSE executes after the true part following 
-;               IF.  ELSE forces execution to skip over the following 
-;               false part and resumes execution after the ENDIF.  It has 
-;               no stack effect.
-;               At compile-time ELSE emplaces BRANCH reserving a branch 
-;               offset, leaves the address addr2 and n2 for error testing.  
-;
-;               ELSE also resolves the pending forward branch from IF by 
-;               calculating the offset from addr1 to HERE and storing at 
-;               addr1.
-
 ; See core.f
 
 ; ****************************************************************************
 ; EMIT 
 ; (x --)
 ; ANSI 6.1.1320
-
-; FIG:
-;
-;      EMIT          c  ---                                  L0
-;               Transmit ascii character c to the selected output device.  
-;               OUT is incremented for each character output.
 
         +WORD "emit"
 W_EMIT
@@ -2309,7 +1907,7 @@ _evaluate_number
         !word W_AT
         +ZBRANCH _evaluate_done_word
 
-        +LITERAL W_LITERAL
+        +LITERAL W_PLITERAL
         !word W_COMPILEC
         !word W_COMMA
 
@@ -2421,13 +2019,6 @@ W_INTERPRET
 ; (i*x xt -- j*x)
 ; ANSI 6.1.1370
 
-; FIG:
-;
-;      EXECUTE       addr  ---
-;               Execute the definition whose code field address is on the 
-;               stack.  The code field address is also called the 
-;               compilation address.
-
         +WORD "execute"
 W_EXECUTE
         !word *+2
@@ -2464,12 +2055,6 @@ W_EXECUTE
 ; FILL 
 ; (c-addr u char --)
 ; ANSI 6.1.1540
-
-; FIG:
-;
-;      FILL          addr  quan  b  ---
-;               Fill memory at the address with the specified quantity of 
-;               bytes b.
 
         +WORD "fill"
 W_FILL
@@ -2665,11 +2250,6 @@ W_HERE
 ;               Used between <# and #> to insert an ascii character into a 
 ;               pictured numeric output string.  e.g. 2E HOLD will place a 
 ;               decimal point.
-;
-;;
-;;                                       HOLD
-;;                                       SCREEN 46 LINE 10
-;;
 
 !if 0 {
         +WORD "hold"
@@ -2704,52 +2284,12 @@ W_I
 ; (???)
 ; ANSI 6.1.1700
 
-; Compilation: (C: -- orig)
-;       Put the location of a new unresolved forward reference orig onto the control flow stack.
-;       Append the run-time semantics below to the current definition.  The semantics are incomplete
-;       until orig is resolved, e.g. by THEN or ELSE.
-;
-; Run-time: (x --)
-;       
-;
-
-; FIG:
-;
-;      IF            f  ---              (run-time)
-;                       ---  addr  n     (compile)           P,C2,L0
-;               Occurs in a colon definition in the form:
-;                         IF  (tp)  ...  ENDIF
-;                         IF  (tp)  ...  ELSE  (fp)  ...  ENDIF
-;               At run-time, IF selects execution based on a boolean flag.  
-;               If f is true (non-zero), execution continues ahead thru 
-;               the true part.  If f is false (zero), execution skips till 
-;               just after ELSE to execute the false part.  After either 
-;               part, execution resumes after ENDIF.  ELSE and its false 
-;               part are optional; if missing, false execution skips to 
-;               just after ENDIF.
-;
-;               At compile-time IF compiles 0BRANCH and reserves space for 
-;               an offset at addr.  addr and n are used later for 
-;               resolution of the offset and error testing.
-
 ; See core.f
 
 ; ****************************************************************************
 ; IMMEDIATE 
 ; (--)
 ; ANSI 6.1.1710
-
-; FIG:
-;
-;
-;      IMMEDIATE
-;               Mark the most recently made definition so that when 
-;               encountered at compile time, it will be executed rather 
-;               than being compiled. i.e. the precedence bit in its header 
-;               is set.  This method allows definitions to handle unusual 
-;               compiling situations, rather than build them into the 
-;               fundamental compiler.  The user may force compilation of 
-;               an immediate definition by preceding it with [COMPILE].
 
         +WORD "immediate"
 W_IMMEDIATE
@@ -2796,10 +2336,6 @@ W_IMMEDIATE
 ; KEY 
 ; (-- char)
 ; ANSI 6.1.1750
-
-; FIG:
-;      KEY           ---  c                                  L0
-;               Leave the ascii value of the next terminal key struck.
 
         +WORD "key"
 W_KEY
@@ -2856,10 +2392,6 @@ W_LEAVE
 ;               Compilation is suspended for the compile time calculation 
 ;               of a value.  Compilation is resumed and LITERAL compiles 
 ;               this value.
-;
-;;
-;;                                       LITERAL
-;;                                       SCREEN 51 LINE 2
 
 !if 0 {
         +WORD_IMM "literal"
@@ -2994,11 +2526,6 @@ W_MSTAR
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.1870
 
-; FIG:
-;
-;      MAX           n1  n2  ---  max                        L0
-;               Leave the greater of two numbers.
-
         +WORD "max"
 W_MAX
         !word DO_COLON
@@ -3013,11 +2540,6 @@ W_MAX
 ; MIN 
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.1880
-
-; FIG:
-;
-;      MIN           n1  n2  ---  min                        L0
-;               Leave the smaller of two numbers.
 
         +WORD "min"
 W_MIN
@@ -3113,11 +2635,6 @@ W_NEGATE
 ; (x_1 x_2 -- x_3)
 ; ANSI 6.1.1980
 
-; FIG:
-;
-;      OR            n1  n2  ---  or                         L0
-;               Leave the bit-wise logical or of two 16 bit values.
-
         +WORD "or"
 W_OR
         !word *+2
@@ -3133,12 +2650,6 @@ W_OR
 ; OVER
 ; (x_1 x_2 -- x_1 x_2 x_1)
 ; ANSI 6.1.1990
-
-; FIG:
-;
-;
-;      OVER          n1  n2  ---  n1  n2  n1                 L0
-;               Copy the second stack value, placing it as the new top.
 
         +WORD "over"
 W_OVER
@@ -3186,7 +2697,7 @@ W_POSTPONE
 
 _postpone_nonimmediate
         !word W_NAME_TO_INTERPRET
-        +LITERAL W_LITERAL
+        +LITERAL W_PLITERAL
         !word W_COMMA
         !word W_COMMA
         +LITERAL W_COMMA
@@ -3207,12 +2718,6 @@ _postpone_done
 ; - Repeat the following:
 ;   - Accept a line from input source into input buffer, set >IN to 0 and interpret
 ;   - Display prompt if in an interpretation state, all processing completed and no ambiguous condition exists
-
-; FIG:
-;
-;      QUIT                                                  L1
-;               Clear the return stack, stop compilation, and return 
-;               control to the operators terminal.  No message is given.
 
         +WORD "quit"
 W_QUIT
@@ -3260,12 +2765,6 @@ _quit_read_loop
 ; (???)
 ; ANSI 6.1.2060
 
-; FIG:
-;
-;      R>            ---  n                                  L0
-;               Remove the top value from the return stack and leave it on 
-;               the computation stack.  See >R and R.
-
         +WORD "r>"
 W_RFROM
         !word *+2
@@ -3282,10 +2781,6 @@ W_RFROM
 ; R@
 ; (???)
 ; ANSI 6.1.2070
-
-; FIG
-;      R             ---  n
-;               Copy the top of the return stack to the computation stack.
 
         +WORD "r@"
 W_RAT ; TODO rename to W_RFETCH?
@@ -3314,51 +2809,12 @@ W_RAT ; TODO rename to W_RFETCH?
 ; (???)
 ; ANSI 6.1.2140
 
-; From discussion in ANSI A.3.2.3.2:
-;
-;    : REPEAT POSTPONE AGAIN POSTPONE THEN ; IMMEDIATE
-
-
-; FIG
-;
-;      REPEAT        addr  n  ---        (compiling)         P,C2
-;               Used within a colon-definition in the form:
-;                         BEGIN  ...  WHILE  ...  REPEAT
-;               At run-time, REPEAT forces an unconditional branch back to 
-;               just after the corresponding BEGIN.
-;
-;               At compile-time, REPEAT compiles BRANCH and the offset 
-;               from HERE to addr.  n is used for error testing.
-;
-;;
-;;                                       REPEAT
-;;                                       SCREEN 74 LINE 5
-
-!if 0 {
-        +WORD_IMM "repeat"
-W_REPEAT
-        !word DO_COLON
-;          !word TOR
-;          !word TOR
-;          !word AGAIN
-;          !word RFROM
-;          !word RFROM
-;          !word TWO
-;          !word SUB
-;          !word ENDIF
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; ROT
 ; (x_1 x_2 x_3 -- x_2 x_3 x_1)
 ; ANSI 6.1.2160
-
-; FIG:
-;
-;      ROT           n1  n2  n3  ---  n2  n3  n1             L0
-;               Rotate the top three values on the stack, bringing the 
-;               third to the top.
 
         +WORD "rot"
 W_ROT
@@ -3469,11 +2925,6 @@ W_SOURCE
 ; (--)
 ; ANSI 6.1.2220
 
-; FIG:
-;
-;      SPACE                                                 L0
-;               Transmit an ascii blank to the output device.
-
         +WORD "space"
 W_SPACE
         !word DO_COLON
@@ -3515,18 +2966,6 @@ _spaces_done
 ; ANSI 6.1.2250
 ; ANSI 15.6.2.2250
 
-; FIG:
-;
-;
-;      STATE         ---  addr                               L0,U
-;               A user variable containing the compilation state.  A non-
-;               zero value indicates compilation.  The value itself may be 
-;               implementation dependent.
-
-; Only affectected by: :, ;, ABORT, QUIT, :NONAME, [, and ]
-; [ (core) sets state to 0   (not compiling)
-; ] (core) sets state to C0  (compiling?)
-
         +WORD "state"
 W_STATE
         !word DO_CONSTANT
@@ -3536,11 +2975,6 @@ W_STATE
 ; SWAP
 ; (x_1 x_2 -- x_2 x_1)
 ; ANSI 6.1.2260
-
-; FIG:
-;
-;      SWAP          n1  n2  ---  n2  n1                     L0
-;               Exchange the top two values on the stack.
 
         +WORD "swap"
 W_SWAP
@@ -3558,30 +2992,6 @@ W_SWAP
 ; THEN
 ; (???)
 ; ANSI 6.1.2270
-;
-; Compilation: (C: orig --)
-;       Append the runtime semantics below to the current definition.  Resolve the
-;       forward reference orig using the location of the appended run-time semantics.
-;
-; Run-time: (--)
-;
-;
-;
-
-; FIG
-;      ENDIF         addr1  n  ---       (compile)           P,C0,L0
-;               Occurs in a colon-definition in the form:
-;                         IF  ...  ENDIF
-;                         IF  ...  ELSE  ...  ENDIF
-;               At run-time, ENDIF serves only as the destination of a 
-;               forward branch from IF or ELSE.  It marks the conclusion 
-;               of the conditional structure.  THEN is another name for 
-;               ENDIF.  Both names are supported in fig-FORTH.  See also 
-;               IF and ELSE.
-;
-;               At compile-time, ENDIF computes the forward branch offset 
-;               from addr to HERE and stores it at addr.  n is used for 
-;               error tests.
 
 ; See core.f
 
@@ -3589,13 +2999,6 @@ W_SWAP
 ; TYPE
 ; (c-addr u --)
 ; ANSI 6.1.2310
-
-; FIG:
-;
-;
-;      TYPE          addr  count  ---                        L0
-;               Transmit count characters from addr to the selected output 
-;               device.
 
         +WORD "type"
 W_TYPE
@@ -3632,12 +3035,6 @@ _type_loop
 ; (u_1 u_2 -- flag)
 ; ANSI 6.1.2340
 
-; FIG:
-;;
-;;                                       U<
-;;                                       Unsigned less than
-;;
-
 !if 0 {
         +WORD "u<"
 W_ULESS
@@ -3651,11 +3048,6 @@ W_ULESS
 ; UM*
 ; (u_1 u_2 -- ud)
 ; ANSI 6.1.2360
-
-; FIG
-;      U*            u1  u2  ---  ud
-;               Leave the unsigned double number product of two unsigned 
-;               numbers.
 
         +WORD "um*"
 W_UMSTAR
@@ -3779,51 +3171,12 @@ W_MSMOD
 ; (???)
 ; ANSI 6.1.2390
 
-; FIG:
-;
-;
-;      UNTIL               f  ---        (run-time)
-;                    addr  n  ---        (compile)           P,C2,L0
-;               Occurs within a colon-definition in the form:
-;                         BEGIN  ...  UNTIL
-;               At run-time, UNTIL controls the conditional branch back to 
-;               the corresponding BEGIN.  If f is false, execution returns 
-;               to just after begin; if true, execution continues ahead.
-;
-;               At compile-time, UNTIL compiles (0BRANCH) and an offset 
-;               from HERE to addr.  n is used for error tests.
-;
-;;
-;;                                       UNTIL
-;;                                       SCREEN 73 LINE 15
-
-!if 0 {
-        +WORD_IMM "until"
-W_UNTIL
-        !word DO_COLON
-;          !word ONE
-;          !word QPAIR
-;          !word COMPILE
-;          !word W_ZBRANCH
-;          !word BACK
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; VARIABLE
 ; ("<spaces>name" --)
 ; ANSI 6.1.2410
-
-; FIG:
-;
-;      VARIABLE                                              E,L0
-;               A defining word used in the form:
-;                         n  VARIABLE  cccc
-;               When VARIABLE is executed, it creates the definition cccc 
-;               with its parameter field initialised to n.  When cccc is 
-;               later executed, the address of its parameter field 
-;               (containing n) is left on the stack, so that a fetch or 
-;               store may access this location.
 
         +WORD "variable"
 W_VARIABLE    
@@ -3849,42 +3202,7 @@ DO_VARIABLE
 ; (???)
 ; ANSI 6.1.2430
 
-; From discussion in ANSI A.3.2.3.2:
-;
-;    : WHILE POSTPONE IF 1 CS-ROLL ; IMMEDIATE
-;
-;
-
-; FIG:
-;
-;
-;      WHILE               f  ---        (run-time)
-;                    ad1  n1  ---  ad1  n1  ad2  n2          P,C2
-;               Occurs in a colon-definition in the form:
-;                         BEGIN  ...  WHILE  (tp)  ...  REPEAT
-;               At run-time, WHILE selects conditional execution based on 
-;               boolean flag f.  If f is true (non-zero), WHILE continues 
-;               execution of the true part through to REPEAT, which then 
-;               branches back to BEGIN.  If f is false (zero), execution 
-;               skips to just after REPEAT, exiting the structure.
-;
-;               At compile time, WHILE emplaces (0BRANCH) and leaves ad2 
-;               of the reserved offset.  The stack values will be resolved 
-;               by REPEAT.
-;
-;
-;;
-;;                                       WHILE
-;;                                       SCREEN 74 LINE 13
-
-!if 0 {
-        +WORD_IMM "while"
-W_WHILE
-        !word DO_COLON
-;          !word IF
-;          !word TWOP
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; WORD
@@ -3998,11 +3316,6 @@ W_ENCLOSE
 ; (x_1 x_2 -- x_3)
 ; ANSI 6.1.2490
 
-; FIG:
-;
-;      XOR           n1  n2  ---  xor                        L1
-;               Leave the bitwise logical exclusive-or of two values.
-
         +WORD "xor"
 W_XOR
         !word *+2
@@ -4018,17 +3331,6 @@ W_XOR
 ; [
 ; (--)
 ; ANSI 6.1.2500
-
-; FIG:
-;
-;
-;      [                                                     P,L1
-;               Used in a colon-definition in the form:
-;                         : xxx   [  words  ]   more  ;
-;               Suspend compilation.  The words after [ are executed, not 
-;               compiled.  This allows calculation or compilation 
-;               exceptions before resuming compilation with ].  See 
-;               LITERAL, ].
 
         +WORD_IMM "["
 W_LBRACKET
@@ -4059,20 +3361,17 @@ W_LBRACKET
 ;       Place char, the first character of name, on the stack
 ;
 
+!if 0 {
         +WORD_IMM "[char]"
 W_BCHARB
         !word *+2
         jmp NEXT
+}
 
 ; ****************************************************************************
 ; ]
 ; (--)
 ; ANSI 6.1.2540
-
-; FIG
-;      ]                                                     L1
-;               Resume compilation, to the completion of a colon-
-;               definition.  See [.
 
         +WORD "]"
 W_RBRACKET
