@@ -97,13 +97,13 @@ These should get us to the point of bootstrapping with a dictionary written in f
 - Parse state stack
   - [ ] `SAVE-INPUT`, `RESTORE-INPUT` (in progress)
     - I think these will just need one word (1 byte fileid, 1 byte `>IN`)
-  - [ ] Update to `EVALUATE` (in progress)
-  - [ ] Update to `INCLUDE-FILE` (in progress)
+  - [x] Update to `EVALUATE`
+  - [x] Update to `INCLUDE-FILE`
   - [x] Sort out the buffer to use in `QUIT`
-  - [ ] `REFILL` (in progress)
+  - [x] `REFILL`
   - [x] Get rid of `TIB`, `TIB#` uses
-  - [ ] Get `SOURCE-ID` and `SOURCE` right during all of this (in 
-  progress)
+  - [ ] Get `SOURCE-ID` and `SOURCE` right during all of this
+  - [ ] Handle `RESTORE-INPUT` failures (skip for now?)
 - Bootstrapping with portions of the dictionary written in Forth
   - [ ] A "skeletal" configuration with just the builtins
   - [ ] A "minimal" configuration

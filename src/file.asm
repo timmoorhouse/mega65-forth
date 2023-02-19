@@ -300,71 +300,25 @@ W_FILE_SIZE
 ; (i*x fileid -- j*x)
 ; ANSI 11.6.1.1717
 
-; TODO lots of duplication with QUIT ...
-
 !if ENABLE_FILE {
         +WORD "include-file"
 W_INCLUDE_FILE
         !word DO_COLON
 
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<include-file>"
-        !word W_SOURCE_ID,W_DOT
-        !word W_DOTS
-}
-
         !word W_SAVE_INPUT
         !word W_NTOR
 
-        ; TODO need to set SOURCE-ID
-
-        !word W_TOR
+        +LITERAL &SOURCE_ID
+        !word W_STORE
 
 _include_read_loop
 
-        !word W_RAT
-        !word W_BUFFER_OF_FILEID
-        !word W_OVER
-        !word W_SWAP            ; (c-addr c-addr u) (R: fileid)
-        !word W_TWO
-        !word W_SUB             ; leave space for cr lf
-        !word W_RAT
-        !word W_READ_LINE
-
-        ; (c-addr u flag ior) (R: fileid)
-
-        +ZBRANCH _include_ior_ok
-        ; ior bad ...
-        !word W_DROP            ; drop flag
-_include_flag_bad
-        !word W_DROP            ; drop u2
-        !word W_DROP            ; drop buffer address
-
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<include-file-error>"
-        !word W_DOTS,W_CR
-}
-        +BRANCH _include_after_loop
-
-_include_ior_ok
-        +ZBRANCH _include_flag_bad
-
-        ; (c-addr u)
-
-        ; TODO change to PEVALUATE !!!!!!!!!!
-        !word W_EVALUATE        ; TODO this sets SOURCE-ID to -1 !!!!!!!!!
+        !word W_REFILL
+        +ZBRANCH _include_after_loop
+        !word W_PEVALUATE
 
         +BRANCH _include_read_loop
 _include_after_loop
-        !word W_RFROM,W_DROP    ; drop fileid
-
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<include-file-end>"        
-        !word W_DOTS,W_CR
-} 
 
         !word W_NRFROM
         !word W_RESTORE_INPUT
@@ -382,23 +336,15 @@ _include_after_loop
         +WORD "included"
 W_INCLUDED
         !word DO_COLON
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<included>"
-        !word W_DOTS
-}      
         !word W_RSLO
         !word W_OPEN_FILE
-        !word W_DROP ; TODO check status
-        !word W_TOR ; need to move to return stack since include-file can do arbitrary things to the data stack
+        !word W_DROP            ; TODO check status
+        !word W_TOR             ; need to move to return stack since include-file can do arbitrary things to the data stack
         !word W_RAT
         !word W_INCLUDE_FILE
         !word W_RFROM
         !word W_CLOSE_FILE
-        !word W_DROP ; TODO check status
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
+        !word W_DROP            ; TODO check status
         !word W_PSEMI
 }
 

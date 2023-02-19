@@ -798,23 +798,23 @@ W_REFILL
         !word W_QDUP
         +ZBRANCH _refill_tib
 
-        !word W_DUP
         !word W_ZLESS
         +ZBRANCH _refill_file
 
         ; SOURCE-ID < 0 ... its a string
 
-        !word W_DROP
         !word W_FALSE
         +BRANCH _refill_done
 
 _refill_file
 
-        !word W_BUFFER_OF_FILEID
+        !word W_SOURCE_ID
+        !word W_BUFFER_OF_FILEID        ; (c-addr u)
         !word W_OVER
-        !word W_SWAP
+        !word W_SWAP                    ; (c-addr c-addr u)
         !word W_TWO
         !word W_SUB                     ; leave space for cr lf (spec requires this)
+        !word W_SOURCE_ID
         !word W_READ_LINE
         ; (c-addr u flag ior)
 
