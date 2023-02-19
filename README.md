@@ -15,10 +15,10 @@ Note that we have actually switched to font A (the ASCII font).  The `\` word sh
 This is *very* much in the early stages of developement:
 
 - The interpreter is working well enough to support development.  It needs better error handling, etc.
-- File input is partially there.  We can include a file, but nested includes won't work yet (we need a stack of parse states).
+- File input is mostly functional but slow.  Nested includes should work so long as the `INCLUDE` appears on a line by itself with the filename (`RESTORE-INPUT` into the middle of a line isn't working yet).
 - Words can be defined (`:`, `;`, `CREATE`, `VARIABLE`, `CONSTANT`, etc are functional).  There isn't much support for control structures yet (conditionals, loops, etc) so these aren't particularly useful yet.
 
-File input and defining words are the current priorities.  Once these are in resonable shape, we can start running unit tests and do most of the remainder of the implementation in Forth.
+Control structures (conditionals, loops, etc) are the current priority.  Once these are in resonable shape, we can start running unit tests and do most of the remainder of the implementation in Forth.
 
 My apologies if this isn't the greatest Forth implementation.  I don't really have much experience with Forth.  I'm doing this because I've always been intrigued by Forth, and with a new MEGA65 sitting on the dining room table, it seemed the perfect project to learn about Forth, shake decades of dust off my 6502 programming skills, and learn about some of the MEGA65-specific features.
 
@@ -95,14 +95,12 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [x] `CONSTANT`
   - [x] `.(`
 - Parse state stack
-  - [ ] `SAVE-INPUT`, `RESTORE-INPUT` (in progress)
-    - I think these will just need one word (1 byte fileid, 1 byte `>IN`)
+  - [ ] `SAVE-INPUT`, `RESTORE-INPUT` (in progress - might be good enough for now)
   - [x] Update to `EVALUATE`
   - [x] Update to `INCLUDE-FILE`
   - [x] Sort out the buffer to use in `QUIT`
   - [x] `REFILL`
   - [x] Get rid of `TIB`, `TIB#` uses
-  - [ ] Get `SOURCE-ID` and `SOURCE` right during all of this
   - [ ] Handle `RESTORE-INPUT` failures (skip for now?)
 - Bootstrapping with portions of the dictionary written in Forth
   - [ ] A "skeletal" configuration with just the builtins

@@ -311,14 +311,11 @@ W_INCLUDE_FILE
         +LITERAL &SOURCE_ID
         !word W_STORE
 
-_include_read_loop
-
-        !word W_REFILL
-        +ZBRANCH _include_after_loop
+-       !word W_REFILL
+        +ZBRANCH +
         !word W_PEVALUATE
-
-        +BRANCH _include_read_loop
-_include_after_loop
+        +BRANCH -
++
 
         !word W_NRFROM
         !word W_RESTORE_INPUT

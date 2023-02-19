@@ -463,10 +463,6 @@ W_NIP
 ;      PAD           ---  addr                               L0
 ;               Leave the address of the text output buffer, which is a 
 ;               fixed offset above HERE.
-;
-;;
-;;                                       PAD
-;;                                       SCREEN 46 LINE 13
 
 ; TODO always enable?
 
@@ -878,7 +874,8 @@ W_RESTORE_INPUT
         !word W_DROP            ; TODO check value
         +LITERAL &SOURCE_ID
         !word W_STORE
-        ; TODO >IN?
+        ;!word W_IN
+        ;!word W_STORE          ; TODO
         ; TODO SOURCE?
         !word W_ZERO            ; input successfully restored
         !word W_PSEMI
@@ -966,9 +963,11 @@ W_ROLL
 }
 W_SAVE_INPUT
         !word DO_COLON
-        ; TODO >IN?
+        ; TODO this could be made much smaller
         ; TODO SOURCE?
         !word W_SOURCE_ID
+        ;!word W_IN             ; TODO
+        ;!word W_AT
         !word W_ONE             ; number of other cells pushed
         !word W_PSEMI
 
