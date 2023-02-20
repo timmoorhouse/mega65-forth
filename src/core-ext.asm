@@ -454,6 +454,15 @@ W_NIP
 
 ; See core-ext.f
 
+; TODO !!!!!!!! used by WORD
+        +WORD "pad"
+W_PAD
+        !word DO_COLON
+        !word W_HERE
+        +CLITERAL 68
+        !word W_PLUS
+        !word W_PSEMI
+
 ; ****************************************************************************
 ; PARSE
 ; (char "ccc<char>" -- c-addr u)
@@ -589,13 +598,24 @@ _parse_done
         +NONAME
 }
 W_PARSE_NAME
+        !word DO_COLON
+        !word W_BL
+        !word W_PPARSE_NAME
+        !word W_PSEMI
+
+        +NONAME
+W_PPARSE_NAME ; (char "<chars>name<char>" -- c-addr u)
         !word *+2
 
         ; ldy #0 ; TODO
 
+        ; copy delimiter into TEMP1
+        lda 0,x
+        sta <TEMP1
+
         ; initialize addr
-        dex
-        dex
+        ;dex
+        ;dex
         clc
         lda <INPUT_BUFFER
         adc <IN
@@ -629,6 +649,8 @@ W_PARSE_NAME
         lda 7,x
         sta 1,x
 
+        ; delimiter at 8,x 
+
 _parse_name_skip_whitespace_loop
         ; check if we're at the end
         lda 0,x
@@ -642,7 +664,8 @@ _parse_name_skip_whitespace_loop
         ; not at the end yet ...
         ; check for whitespace
         lda (0,x)
-        jsr isspace
+        ; jsr isspace
+        cmp <TEMP1
         bne _parse_name_end_of_whitespace
 
         ; advance the current position ...
@@ -685,7 +708,8 @@ _parse_name_skip_nonwhitespace_loop
         ; not at the end yet ...
         ; check for whitespace
         lda (0,x)
-        jsr isspace
+        ; jsr isspace
+        cmp <TEMP1
         beq _parse_name_found_ending_whitespace
 
         ; advance the current position ...

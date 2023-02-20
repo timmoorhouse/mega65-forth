@@ -4,6 +4,6 @@
 
 : hex 16 base ! ;
 
-: pad here 68 + ; \ TODO FIG uses some space in the gap for WORDS ... clean this up
+\ : pad here 68 + ; \ TODO FIG uses some space in the gap for WORDS ... clean this up
 
 .( ... end of core-ext.f ) cr

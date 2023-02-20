@@ -14,7 +14,7 @@ savesystem forth-complete,p,w
 .( TODO autoboot.f should now be deleted or renamed ) cr
 
 \ TODO redirect output
-\ include prelimtest.fth
+include prelimtest.fth
 
 \ TODO delete autoboot.f? rename it?
 

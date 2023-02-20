@@ -3201,26 +3201,26 @@ DO_VARIABLE
 
 ; ****************************************************************************
 ; WORD
-; (char "text" -- c-addr)
+; (char "<chars>ccc<char>" -- c-addr)
 ; ANSI 6.1.2450
-
-; FIG:
-;
-;      WORD          c  ---                                  L0
-;               Read the next text characters from the input stream being 
-;               interpreted, until a delimiter c is found, storing the 
-;               packed character string beginning at the dictionary buffer 
-;               HERE.  WORD leaves the character count in the first byte, 
-;               the characters, and ends with two or more blanks.  Leading 
-;               occurances of c are ignored.  If BLK is zero, text is 
-;               taken from the terminal input buffer, otherwise from the 
-;               disc block stored in BLK.  See BLK, IN.
-
-; TODO check BLK, then if it's zero, check SOURCE-ID
 
         +WORD "word"
 W_WORD
         !word DO_COLON
+
+        !word W_PPARSE_NAME     ; (c-addr u)
+        !word W_DUP
+        !word W_PAD
+        !word W_CSTORE          ; (c-addr u)
+
+        !word W_PAD
+        !word W_1PLUS
+        !word W_SWAP
+        !word W_CMOVE           ; ()
+
+        !word W_PAD
+
+        !word W_PSEMI
 
 ;          !word BLK
 ;          !word AT
@@ -3257,7 +3257,7 @@ W_WORD
 ;          !word 1PLUS
 ;          !word RFROM
 ;          !word CMOVE
-        !word W_PSEMI
+;        !word W_PSEMI
 
 ;      ENCLOSE       addr1  c  ---  addr1  n1  n2  n3
 ;               The text scanning primitive used by WORD.  From the text 
