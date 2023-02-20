@@ -298,75 +298,45 @@ W_PSTORE
 ; (n --)
 ; ANSI 6.1.0140
 
-; FIG:
-;      +LOOP               n1  ---       (run)
-;                    addr  n2  ---       (compile)           P,C2,L0
-;               Used in a colon-definition in the form:
-;                         DO  ...  n1  +LOOP
-;               At run-time, +LOOP selectively controls branching back to 
-;               the corresponding DO based on n1, the loop index and the 
-;               loop limit.  The signed increment n1 is added to the index 
-;               and the total compared to the limit.  The branch back to 
-;               DO occurs until the new index is equal to or greater than 
-;               the limit (n1>0), or until the new index is equal to or 
-;               less than the limit (n1<0).  Upon exiting the loop, the 
-;               parameters are discarded and execution continues ahead.
-;
-;               At compile time, +LOOP compiles the run-time word (+LOOP) 
-;               and the branch offset computed from HERE to the address 
-;               left on the stack by DO.  n2 is used for compile-time 
-;               error checking.
-
-!if 0 {
-        +WORD_IMM "+loop"
-W_PLUS_LOOP
-        !word DO_COLON
-;          !word THREE
-;          !word QPAIR
-;          !word COMPILE
-;          !word PPLOO
-;          !word BACK
-        !word W_PSEMI
-}
+; See core.f
 
 ;      (+LOOP)       n  ---                                  C2
 ;               The run-time procedure compiled by +LOOP, which increments 
 ;               the loop index by n and tests for loop completion.  See 
 ;               +LOOP.
 
-;;
-;;                                       (+LOOP)
-;;                                       SCREEN 16 LINE 8
-;;
-!if 0 {
-;        +WORD "(+loop)"
+        +WORD "(+loop)"
 W_PPLOOP
         !word *+2
-;          INX
-;          INX
-;          STX XSAVE
-;          LDA $FF,X
-;          PHA
-;          PHA
-;          LDA $FE,X
-;          TSX
-;          INX
-;          INX
-;          CLC
-;          ADC $101,X
-;          STA $101,X
-;          PLA
-;          ADC $102,X
-;          STA $102,X
-;          PLA
-;          BPL PL1
-;          CLC
-;          LDA $101,X
-;          SBC $103,X
-;          LDA $102,X
-;          SBC $104,X
-;          JMP PL2
-}
+        ; see also (loop)
+        ; TODO CLEAN THIS UP
+        inx
+        inx
+        stx <XSAVE
+        lda $ff,x
+        pha
+        pha
+        lda $fe,x
+        tsx
+        inx
+        inx
+        clc
+        adc $101,x
+        sta $101,x
+        pla
+        adc $102,x
+        sta $102,x
+        pla
+        ; bpl PL1
+        bmi +
+        jmp PL1
++
+        clc
+        lda $101,x
+        sbc $103,x
+        lda $102,x
+        sbc $104,x
+        jmp PL2
 
 ; ****************************************************************************
 ; , 
@@ -2364,6 +2334,8 @@ W_LITERAL
         +WORD "(loop)"
 W_PLOOP
         !word *+2
+        ; see also (+loop)
+        ; TODO CLEAN THIS UP
         stx <XSAVE
         tsx
         inc $101,x
@@ -2371,12 +2343,13 @@ W_PLOOP
         inc $102,x
 +
         ; check for termination     TODO WHY DOES THIS WORK????
+ PL1 ; ??? used by (+loop)
         clc
         lda $103,x
         sbc $101,x
         lda $104,x
         sbc $102,x
-; PL2 ????   used by (+loop)
+PL2 ; ????   used by (+loop)
         ldx <XSAVE
         asl
 !if 0 {

@@ -43,6 +43,8 @@
 
 : loop ( 3 ?pairs ) postpone (loop) back ; immediate
 
+: +loop ( 3 ?pairs ) postpone (+loop) back ; immediate
+
 \ : WHILE   [COMPILE]  IF  2+  ;    IMMEDIATE
 \ : REPEAT   >R  >R  [COMPILE]  AGAIN  R>  R>  2  -  [COMPILE]  ENDIF  ;  IMMEDIATE
        
