@@ -123,24 +123,24 @@ Extensions | `BACKGROUND` `BORDER` `FOREGROUND` `LATEST` `MON` `SAVESYSTEM` `SP@
 
 # TEST STATUS
 
-The code is getting close to the point where attempting to run the test suite makes sense.  I do want to have some way to redirect output to get this more automated.
+The code is getting to the point where automating the test suite makes sense.  I do want to have some way to redirect output to make extracting results simpler.
 
 Test | Status | Comments
 -- | -- | --
 [Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | FAIL | `[CHAR] A` gives unexpected value (just a petscii vs ascii thing)
-Block | TBD |
-Core | FAIL | Lots to fix here
-Core Ext | TBD | 
-Core Plus | TBD |
-Double | TBD |
-Exception | TBD |
-Facility | TBD |
-File | TBD |
-Locals | TBD |
-Memory | TBD |
-Search | TBD |
-String | TBD |
-Tools | TBD |
+[BLOCK](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/blocktest.fth) | TBD |
+[CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | FAIL | Lots to fix here
+[CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | TBD | 
+[CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | TBD |
+[DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD |
+[EXCEPTION](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/exceptiontest.fth) | TBD |
+[FACILITY](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/facilitytest.fth) | TBD |
+[FILE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/filetest.fth) | TBD |
+[LOCALS](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/localstest.fth) | TBD |
+[MEMORY](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/memorytest.fth) | TBD |
+[SEARCH](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/searchordertest.fth) | TBD |
+[STRING](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/stringtest.fth) | TBD |
+[TOOLS](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/toolstest.fth) | TBD |
 
 # CREDITS
 
