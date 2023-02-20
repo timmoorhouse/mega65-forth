@@ -45,10 +45,6 @@
 
 : +loop ( 3 ?pairs ) postpone (+loop) back ; immediate
 
-: literal postpone (literal) , ; immediate
-
-\ : [char] parse-name ; immediate
-
 \ : WHILE   [COMPILE]  IF  2+  ;    IMMEDIATE
 \ : REPEAT   >R  >R  [COMPILE]  AGAIN  R>  R>  2  -  [COMPILE]  ENDIF  ;  IMMEDIATE
        
@@ -67,6 +63,10 @@
 : char+ ( c-addr_1 -- c-addr_2 ) 1+ ;
 
 : chars ( n_1 -- n_2 ) ;
+
+: literal postpone (literal) , ; immediate
+
+: [char] parse-name drop c@ postpone literal ; immediate
 
 \ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ;
     
