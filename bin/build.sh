@@ -124,8 +124,9 @@ add_text_files() {
     for src; do
         local name=$(basename "$src")
         # TODO this uses $0a for line ending, want $0d
-        cmd dd if="$src" of="${opt[builddir]}/$name.lc" conv=lcase
-        cmd "${opt[petcat]}" -text -w10 -o "${opt[builddir]}/$name" -- "${opt[builddir]}/$name.lc"
+        # cmd dd if="$src" of="${opt[builddir]}/$name.lc" conv=lcase
+        # cmd "${opt[petcat]}" -text -w10 -o "${opt[builddir]}/$name" -- "${opt[builddir]}/$name.lc"
+        cmd "${opt[petcat]}" -text -w10 -o "${opt[builddir]}/$name" -- "$src"
         cmd "${opt[c1541]}" "$image" -write "${opt[builddir]}/$name" "$name,s"
     done
 }
@@ -144,17 +145,19 @@ EOF
     # (at least temporarily) to make it easier to use m65dbg
     cmd "${opt[acme]}" "${acmeopts[@]}" \
         -l "$topdir/src/forth.sym" \
-        -o "${opt[builddir]}/forth.prg" \
+        -o "${opt[builddir]}/forth-skeletal.prg" \
         -r "$topdir/src/forth.rep" \
         src/forth.asm
 
     # TODO generate d81 image with everything
     cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "${opt[builddir]}/mega65-forth.d81"
     # cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" autoboot.c65
-    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" mega65-forth
+    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth-skeletal.prg" forth-skeletal
     add_text_files "${opt[builddir]}/mega65-forth.d81" \
         src/autoboot.f \
         src/bootstrap.f \
+        src/bootstrap-min.f \
+        src/bootstrap-full.f \
         src/block.f         src/block-ext.f \
         src/core.f          src/core-ext.f \
         src/double.f        src/double-ext.f \
@@ -171,7 +174,7 @@ EOF
         "$topdir/test/forth2012-test-suite/src/prelimtest.fth"
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -dir > "${opt[builddir]}/mega65-forth.txt"
 
-    cmd ls -l "${opt[builddir]}/forth.prg"
+    cmd ls -l "${opt[builddir]}/forth-skeletal.prg"
 }
 
 do_build_minimal() {

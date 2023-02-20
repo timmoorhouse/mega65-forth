@@ -48,4 +48,4 @@
 
 \ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ;
     
-.( end of core.f )
+.( ... end of core.f ) cr
