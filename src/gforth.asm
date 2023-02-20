@@ -122,28 +122,68 @@ W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
         !word W_TOR     ; (c-addr u) (R: old-base)
 
         !word W_STONUMBER_CHECK_BASE
+
+!if 1 {
+        !word W_ZERO
+        !word W_TOR     ; (c-addr u) (R: old-base is-negative)
+        !word W_DUP
+        +ZBRANCH ++
+
+        !word W_OVER
+        !word W_CAT
 !if 0 {
         !word W_PDOTQ
-        +STRING " s>number-2["
-        !word W_2DUP
-        !word W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT
-        !word W_BASE,W_AT,W_DOT
+        +STRING "s>number-5"
         !word W_DOTS,W_CR
 }
+        !word W_DUP
+        +CLITERAL '-'
+        !word W_EQUAL
+        +ZBRANCH +
+        !word W_DROP
+        ; It's a -, set is-negative flag
+        !word W_RFROM
+        !word W_INVERT
+        !word W_TOR
+        ; ... and remove from the string
+        !word W_1MINUS
+        !word W_SWAP
+        !word W_1PLUS
+        !word W_SWAP
+        +BRANCH ++
 
-        ; TODO check for '
-        ; TODO now check for leading -
++       ; !word W_DUP ; Don't bother DUPing - it's the last one
+        +CLITERAL '\''
+        !word W_EQUAL
+        +ZBRANCH +
+        ; It's a '
+        ; TODO handle char literal
+
+
+
++
+
+
+++
+}
+
 
         !word W_2TOR
         !word W_ZERO
         !word W_ZERO
-        !word W_2RFROM          ; (0 0 c-addr u) (R: old-base)
-        !word W_TONUMBER        ; (ud c-addr2 u2) (R: old-base)
+        !word W_2RFROM          ; (0 0 c-addr u) (R: old-base is-negative)
+        !word W_TONUMBER        ; (ud c-addr2 u2) (R: old-base is-negative)
         !word W_NIP
-        !word W_ZEQUALS         ; (ud flag) (R: old-base)
-        !word W_RFROM,W_DROP    ; (ud flag)
+        !word W_ZEQUALS         ; (ud flag) (R: old-base is-negative)
+        !word W_RFROM           ; (ud flag is-negative) (R: old-base)
+        +ZBRANCH +
+        !word W_TOR
+        !word W_DNEGATE         
+        !word W_RFROM
++
+        !word W_RFROM           ; (d flag old-base)
+        !word W_BASE
+        !word W_STORE
 !if 0 {
         !word W_PDOTQ
         +STRING " s>number-9"
@@ -231,7 +271,7 @@ W_STONUMBER_CHECK_BASE ; (c-addr u -- c-addr u)
         +LITERAL 16
         +BRANCH _stonumber_check_base_set
 
-+       !word W_DUP
++       ; !word W_DUP ; Don't bother DUPing ... it's the last one
         +CLITERAL '%'
         !word W_EQUAL
         +ZBRANCH +
@@ -241,7 +281,7 @@ W_STONUMBER_CHECK_BASE ; (c-addr u -- c-addr u)
 
 +
         ; ... nope, none of them
-        !word W_DROP
+        ;!word W_DROP
         ; (c-addr u)
         !word W_PSEMI
 

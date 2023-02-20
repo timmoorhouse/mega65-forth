@@ -2160,6 +2160,7 @@ W_IMMEDIATE
 ; flip all bits
 
         +WORD "invert"
+W_INVERT
         !word *+2
         lda 0,x
         eor #$ff ; TODO neg
