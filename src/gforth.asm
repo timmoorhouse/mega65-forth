@@ -80,6 +80,91 @@ W_SAVESYSTEM
 }
 
 ; ****************************************************************************
+; S>NUMBER?
+
+; <anynum>   := { <BASEnum> | <decnum> | <hexnum> | <binnum> | <cnum> }
+; <BASEnum>  := [-]<bdigit><bdigit>*
+; <decnum>   := #[-]<decdigit><decdigit>*
+; <hexnum>   := $[-]<hexdigit><hexdigit>*
+; <binnum>   := %[-]<bindigit><bindigit>*
+; <cnum>     := ’<char>’
+; <bindigit> := { 0 | 1 }
+; <decdigit> := { 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 }
+; <hexdigit> := { <decdigit> | a | b | c | d | e | f | A | B | C | D | E | F }
+;
+; <bdigit> represents a digit according to the value of BASE (see 3.2.1.2 Digit conversion). 
+; For <hexdigit>, the digits a. . . f have the values 10. . . 15. 
+; <char> represents any printable character.
+; The radix used for number conversion is:
+; <BASEnum> the value in BASE
+; <decnum> 10
+; <hexnum> 16
+; <binnum> 2
+; <cnum> the number is the value of <char>
+
+; TODO it might be more convenient if d was not left on the stack on failures
+
+        +WORD "s>number?"
+W_STONUMBERQ   ; (c-addr u -- d flag) ; flag indicates success
+        !word DO_COLON
+
+        ; Not right, but at least follows the interface ...
+        !word W_2TOR
+        !word W_ZERO
+        !word W_ZERO
+        !word W_2RFROM          ; (0 0 c-addr u)
+        !word W_TONUMBER        ; (ud c-addr2 u2)
+        !word W_NIP             ; (ud u2)
+        !word W_ZEQUALS         ; (ud flag)
+        !word W_PSEMI
+
+!if 0 {
+        ; (c-addr)
+        !word W_ZERO
+        !word W_ZERO
+        !word W_ROT     ; (0 0 c-addr)
+
+        ; check if first char is '-'
+        !word W_DUP
+        !word W_1PLUS
+        !word W_CAT
+        +CLITERAL '-'
+        !word W_EQUAL   ; (0 0 c-addr is-negative)
+        !word W_DUP
+        !word W_TOR     ; (0 0 c-addr is-negative) (R: is-negative)
+
+
+        !word W_PLUS
+        +LITERAL $ffff
+L2023
+;    !word DPL
+        !word W_STORE
+        ; !word W_TONUMBER
+        !word W_DUP    
+        !word W_CAT
+        !word W_BL
+        !word W_SUB
+        +ZBRANCH L2042
+
+        !word W_DUP
+        !word W_CAT
+        +CLITERAL '.'
+        !word W_SUB
+        !word W_ZERO
+;          !word QERR
+        !word W_ZERO
+        +BRANCH L2023
+
+L2042
+        !word W_DROP
+        !word W_RFROM
+        +ZBRANCH L2047
+        ; !word W_DMINUS
+L2047
+        !word W_PSEMI
+}
+
+; ****************************************************************************
 ; SP@
 
 ; Also in FIG:

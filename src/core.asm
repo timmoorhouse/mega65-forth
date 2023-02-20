@@ -900,64 +900,7 @@ _tonumber_done_0drop
         !word W_2RFROM
         !word W_PSEMI
 
-;      NUMBER_FOO        addr  ---  d
-;               Convert a character string left at addr with a preceding 
-;               count, to a signed double number, using the current base.  
-;               If a decimal point is encountered in the text, its 
-;               position will be given in DPL, but no other effect occurs.  
-;               If numeric conversion is not possible, an error message 
-;               will be given.
-
-W_TONUMBER_FOO
-        !word DO_COLON
-!if 1 {
-        ; (c-addr)
-        !word W_ZERO
-        !word W_ZERO
-        !word W_ROT     ; (0 0 c-addr)
-
-        ; check if first char is '-'
-        !word W_DUP
-        !word W_1PLUS
-        !word W_CAT
-        +CLITERAL '-'
-        !word W_EQUAL   ; (0 0 c-addr is-negative)
-        !word W_DUP
-        !word W_TOR     ; (0 0 c-addr is-negative) (R: is-negative)
-
-
-        !word W_PLUS
-        +LITERAL $ffff
-L2023
-;    !word DPL
-        !word W_STORE
-        ; !word W_TONUMBER
-        !word W_DUP    
-        !word W_CAT
-        !word W_BL
-        !word W_SUB
-        +ZBRANCH L2042
-
-        !word W_DUP
-        !word W_CAT
-        +CLITERAL '.'
-        !word W_SUB
-        !word W_ZERO
-;          !word QERR
-        !word W_ZERO
-        +BRANCH L2023
-
-L2042
-        !word W_DROP
-        !word W_RFROM
-        +ZBRANCH L2047
-        ; !word W_DMINUS
-L2047
-}
-        !word W_PSEMI
-
-
-;      DIGIT         (c -- n 1)    if ok
+;      DIGIT         (c -- n -1)    if ok
 ;                    (c -- 0)      if bad
 ;               Converts the ascii character c (using BASE) to its 
 ;               binary equivalent n, accompanied by a true flag.  If the 
@@ -986,7 +929,7 @@ W_DIGIT
 
         sta 0,x
         sty 1,x
-        lda #1
+        lda #$ff
         pha
         tya
         jmp PUSH         ; exit true with converted value
@@ -1816,15 +1759,15 @@ _evaluate_immediate
         !word W_EXECUTE
         +BRANCH _evaluate_done_word
 
-_evaluate_number
-        ; (ud_2 c-addr_2) (R: c-addr u)
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<number>"
-        !word W_DOTS,W_CR
-}
+_evaluate_word_not_found
 
-        !word W_2DROP ; drop address and MSW
+        ; (R: c-addr u)
+
+        !word W_2RAT
+        !word W_STONUMBERQ
+        +ZBRANCH _evaluate_stonumber_failed
+
+        !word W_DROP ; drop MSW
 
         !word W_STATE
         !word W_AT
@@ -1834,24 +1777,17 @@ _evaluate_number
         !word W_COMPILEC
         !word W_COMMA
 
-_evaluate_number_interpreting
-
         ; TODO if compiling postpone a pliteral, then the number
         +BRANCH _evaluate_done_word
 
-_evaluate_word_not_found
+_evaluate_stonumber_failed
+        ; (ud) (R: c-addr u)
+        !word W_NIP
+        !word W_NIP
+        ; +BRANCH _evaluate_error
 
+_evaluate_error
         ; (R: c-addr u)
-
-        ; TODO this just does unsigned single precision so far!!!!!
-        !word W_ZERO
-        !word W_ZERO
-        !word W_2RAT
-        !word W_TONUMBER
-        +ZBRANCH _evaluate_number
-        !word W_2DROP
-        !word W_DROP
-
         ; TODO error
         ; TODO change colour to red?
 !if DEBUG {
