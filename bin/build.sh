@@ -153,6 +153,7 @@ EOF
     # cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" autoboot.c65
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" mega65-forth
     add_text_files "${opt[builddir]}/mega65-forth.d81" \
+        src/autoboot.f \
         src/bootstrap.f \
         src/block.f         src/block-ext.f \
         src/core.f          src/core-ext.f \
