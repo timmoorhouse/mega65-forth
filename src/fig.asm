@@ -56,29 +56,6 @@ W_DASHDASH
 }
 
 ; ****************************************************************************
-; BACK
-
-;      BACK          addr ---
-;               Calculate the backward branch offset from HERE to addr and 
-;               compile into the next available dictionary memory address.
-
-
-;;
-;;                                       BACK
-;;                                       SCREEN 73 LINE 1
-;;
-
-!if 0 {
-        +WORD "back"
-W_BACK
-        !word DO_COLON
-;          !word HERE
-;          !word SUB
-;          !word COMMA
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; -BCD
 
 ;;
@@ -223,51 +200,6 @@ W_CSLL
         !word 64
 
 ; ****************************************************************************
-; CFA
-
-;      CFA           pfa  ---  cfa
-;               Convert the parameter field address of a definition to its 
-;               code field address.
-
-;;
-;;                                       CFA
-;;                                       SCREEN 39 LINE 12
-;;
-
-!if 0 {
-        +WORD "cfa"
-W_CFA
-        !word DO_COLON
-;          !word TWO
-;          !word SUB
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; ?COMP
-
-;      ?COMP
-;               Issue error message if not compiling.
-
-;;
-;;                                       ?COMP
-;;                                       SCREEN 40 LINE 6
-;;
-
-!if 0 {
-        +WORD "?comp"
-W_QCOMP
-        !word DO_COLON
-;          !word STATE
-;          !word AT
-;          !word ZEQU
-;          !word CLIT
-;          !byte $11
-;          !word QERR
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; CONTEXT
 
 ;      CONTEXT       ---  addr                               U,L0
@@ -284,77 +216,6 @@ W_QCOMP
 W_CONTEXT
         !word DO_USER
 ;          !byte $20
-}
-
-; ****************************************************************************
-; !CSP
-
-;               Save the stack position in CSP.  Used as part of the 
-;               compiler security.
-;
-;
-;
-
-;;
-;;                                       !CSP
-;;                                       SCREEN 40 LINE 1
-;;
-
-!if 0 {
-        +WORD "!csp"
-W_SCSP
-        !word DO_COLON
-;          !word SPAT
-;          !word CSP
-;          !word STORE
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; ?CSP
-
-;      ?CSP
-;               Issue error message if stack position differs from value 
-;               saved in CSP.
-
-;;
-;;                                       ?CSP
-;;                                       SCREEN 40 LINE 12
-;;
-
-!if 0 {
-        +WORD "?csp"
-W_QCSP
-        !word DO_COLON
-;          !word SPAT
-;          !word CSP
-;          !word AT
-;          !word SUB
-;          !word CLIT
-;          !byte $14
-;          !word QERR
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; CSP
-
-;      CSP           ---  addr                               U
-;               A user variable temporarily storing the stack pointer 
-;               position, for compilation error checking.
-
-;;
-;;
-;;
-;;                                       CSP
-;;                                       SCREEN 37 LINE 8
-;;
-
-!if 0 {
-        +WORD "csp"
-W_CSP
-        !word DO_USER
-;          !byte $2C
 }
 
 ; ****************************************************************************
@@ -435,71 +296,6 @@ W_DDISC
 W_DPL
         !word DO_USER
         !byte U_DPL
-}
-
-; ****************************************************************************
-; DR0
-
-;      DR0      Installation dependent commands to select disc drives, by 
-;      DR1      presetting OFFSET.  The contents of OFFSET is added to the 
-;               block number in BLOCK to allow for this selection.  Offset 
-;               is suppressed for error text so that it may always 
-;               originate from drive 0.
-
-;;
-;;                                       DR0
-;;                                       SCREEN 58 LINE 14
-;;
-
-!if 0 {
-        +WORD "dr0"
-W_DR0
-        !word DO_COLON
-;          !word W_ZERO
-;          !word W_OFFSET
-;          !word W_STORE
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; DR1
-
-;;
-;;                                       DR1
-;;                                       SCREEN 58 LINE 15
-;;
-
-!if 0 {
-        +WORD "dr1"
-W_DR1
-        !word DO_COLON
-;          !word LIT,SECTR ; sectors per drive
-;          !word W_OFFSET
-;          !word STORE
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; ?EXEC
-
-;      ?EXEC
-;               Issue an error message if not executing.
-
-;;
-;;                                       ?EXEC
-;;                                       SCREEN 40 LINE 8
-;;
-
-!if 0 {
-        +WORD "?exec"
-W_QEXEC
-        !word DO_COLON
-;          !word STATE
-;          !word AT
-;          !word CLIT
-;          !byte $12
-;          !word QERR
-        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -762,121 +558,6 @@ W_MESSAGE
 }
 
 ; ****************************************************************************
-; NFA
-
-;      NFA           pfa  ---  nfa
-;               Convert the parameter field address of a definition to its 
-;               name field.
-
-;;
-;;                                       NFA
-;;                                       SCREEN 39 LIINE 13
-;;
-
-!if 0 {
-        +WORD "nfa"
-W_NFA
-        !word DO_COLON
-;          !word CLIT
-;          !byte $5
-;          !word SUB
-;          !word LIT,$FFFF
-;          !word W_TRAVERSE
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; +ORIGIN
-
-;      +ORIGIN       n  ---  addr
-;               Leave the memory address relative by n to the origin 
-;               parameter area.  n is the minimum address unit, either 
-;               byte or word.  This definition is used to access or modify 
-;               the boot-up parameters at the origin area.
-
-;;
-;;                                       +ORIGIN
-;;                                       SCREEN 35 LINE 12
-; TODO only used by EXPECT
-
-!if 0 {
-        +WORD "+origin"
-W_PORIGIN
-        !word DO_COLON
-;          !word LIT,ORIG
-;          !word PLUS
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; OFFSET
-
-;      OFFSET        ---  addr                               U
-;               A user variable which may contain a block offset to disc 
-;               drives.  The contents of OFFSET is added to the stack 
-;               number by BLOCK.  Messages by MESSAGE are independent of 
-;               OFFSET.  See BLOCK, DR0, DR1, MESSAGE.
-
-;;
-;;                                       OFFSET
-;;                                       SCREEN 37 LINE 1
-;;
-
-!if 0 {
-        +WORD "offset"
-W_OFFSET
-        !word DO_USER
-;          !byte $1E
-}
-
-; ****************************************************************************
-; ?PAIRS
-
-;      ?PAIRS        n1  n2  ---
-;               Issue an error message if n1 does not equal n2.  The 
-;               message indicates that compiled conditionals do not match.
-
-;;
-;;                                       ?PAIRS
-;;                                       SCREEN 40 LINE 10
-;;
-
-!if 0 {
-        +WORD "?pairs"
-W_QPAIR
-        !word DO_COLON
-;          !word SUB
-;          !word CLIT
-;          !byte $13
-;          !word QERR
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; PFA
-
-;      PFA           nfa  ---  pfa
-;               Convert the name field address of a compiled definition to 
-;               its parameter field address.
-
-;;
-;;                                       PFA
-;;                                       SCREEN 39 LINE 14
-;;
-
-!if 0 {
-        +WORD "pfa"
-W_PFA
-        !word DO_COLON
-;          !word ONE
-;          !word W_TRAVERSE
-;          !word CLIT
-;          !byte 5
-;          !word PLUS
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; PREV
 
 ;      PREV          ---  addr
@@ -913,38 +594,6 @@ W_PREV
 W_RNUM
         !word DO_USER
 ;          !byte $2E
-}
-
-; ****************************************************************************
-; ?STACK
-
-;      ?STACK
-;               Issue an error message if the stack is out of bounds.  
-;               This definition may be installation dependent.
-
-;;
-;;                                       ?STACK
-;;                                       SCREEN 51 LINE 13
-;;
-
-!if 0 {
-        +WORD "?stack"
-W_QSTACK
-        !word DO_COLON
-;          !word CLIT
-;          !byte TOS
-;          !word SPAT
-;          !word ULESS
-;          !word ONE
-;          !word QERR
-;          !word SPAT
-;          !word CLIT
-;          !byte BOS
-;          !word ULESS
-;          !word CLIT
-;          !byte 7
-;          !word QERR
-        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -1115,30 +764,6 @@ W_VOCL
 W_WARNING
         !word DO_USER
 ;          !byte $E
-}
-
-; ****************************************************************************
-; WIDTH
-
-;      WIDTH         ---  addr                               U
-;               In fig-FORTH, a user variable containing the maximum 
-;               number of letters saved in the compilation of a 
-;               definition's name.  It must be 1 through 31, with a 
-;               default value of 31.  The name character count and its 
-;               natural characters are saved, up to the value in width.  
-;               The value may be changed at any time within the above 
-;               limits.
-
-;;
-;;                                       WIDTH
-;;                                       SCREEN 36 LINE 5
-;;
-
-!if 0 {
-        +WORD "width"
-W_WIDTH
-        !word DO_USER
-;          !byte $C
 }
 
 ; ****************************************************************************

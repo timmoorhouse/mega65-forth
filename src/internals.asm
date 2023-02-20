@@ -347,6 +347,174 @@ SPSTORE
         jmp NEXT
 
 ; ****************************************************************************
+; !CSP
+
+;               Save the stack position in CSP.  Used as part of the 
+;               compiler security.
+;
+;
+;
+
+;;
+;;                                       !CSP
+;;                                       SCREEN 40 LINE 1
+;;
+
+!if 0 {
+        +WORD "!csp"
+W_SCSP
+        !word DO_COLON
+;          !word SPAT
+;          !word CSP
+;          !word STORE
+        !word W_PSEMI
+}
+
+; ****************************************************************************
+; ?CSP
+
+;      ?CSP
+;               Issue error message if stack position differs from value 
+;               saved in CSP.
+
+;;
+;;                                       ?CSP
+;;                                       SCREEN 40 LINE 12
+;;
+
+!if 0 {
+        +WORD "?csp"
+W_QCSP
+        !word DO_COLON
+;          !word SPAT
+;          !word CSP
+;          !word AT
+;          !word SUB
+;          !word CLIT
+;          !byte $14
+;          !word QERR
+        !word W_PSEMI
+}
+
+; ****************************************************************************
+; CSP
+
+;      CSP           ---  addr                               U
+;               A user variable temporarily storing the stack pointer 
+;               position, for compilation error checking.
+
+;;
+;;
+;;
+;;                                       CSP
+;;                                       SCREEN 37 LINE 8
+;;
+
+!if 0 {
+        +WORD "csp"
+W_CSP
+        !word DO_USER
+;          !byte $2C
+}
+
+; ****************************************************************************
+; ?COMP
+
+;      ?COMP
+;               Issue error message if not compiling.
+
+;;
+;;                                       ?COMP
+;;                                       SCREEN 40 LINE 6
+;;
+
+!if 0 {
+        +WORD "?comp"
+W_QCOMP
+        !word DO_COLON
+;          !word STATE
+;          !word AT
+;          !word ZEQU
+;          !word CLIT
+;          !byte $11
+;          !word QERR
+        !word W_PSEMI
+}
+
+; ****************************************************************************
+; ?EXEC
+
+;      ?EXEC
+;               Issue an error message if not executing.
+
+;;
+;;                                       ?EXEC
+;;                                       SCREEN 40 LINE 8
+;;
+
+!if 0 {
+        +WORD "?exec"
+W_QEXEC
+        !word DO_COLON
+;          !word STATE
+;          !word AT
+;          !word CLIT
+;          !byte $12
+;          !word QERR
+        !word W_PSEMI
+}
+
+; ****************************************************************************
+; ?PAIRS
+
+;      ?PAIRS        n1  n2  ---
+;               Issue an error message if n1 does not equal n2.  The 
+;               message indicates that compiled conditionals do not match.
+
+;;
+;;                                       ?PAIRS
+;;                                       SCREEN 40 LINE 10
+;;
+
+!if 0 {
+        +WORD "?pairs"
+W_QPAIR
+        !word DO_COLON
+;          !word SUB
+;          !word CLIT
+;          !byte $13
+;          !word QERR
+        !word W_PSEMI
+}
+
+; ****************************************************************************
+; ?STACK
+
+;      ?STACK
+;               Issue an error message if the stack is out of bounds.  
+;               This definition may be installation dependent.
+
+!if 0 {
+        +WORD "?stack"
+W_QSTACK
+        !word DO_COLON
+;          !word CLIT
+;          !byte TOS
+;          !word SPAT
+;          !word ULESS
+;          !word ONE
+;          !word QERR
+;          !word SPAT
+;          !word CLIT
+;          !byte BOS
+;          !word ULESS
+;          !word CLIT
+;          !byte 7
+;          !word QERR
+        !word W_PSEMI
+}
+
+; ****************************************************************************
 
 ; FIG:
 ;      ?ERROR        f  n  ---

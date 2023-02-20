@@ -127,6 +127,27 @@ Extensions | `BACKGROUND` `BORDER` `FOREGROUND` `LATEST` `MON` `SAVESYSTEM` `SP@
 
 [^partial]: Partial support only
 
+# TEST STATUS
+
+The code is getting close to the point where attempting to run the test suite makes sense.  I do want to have some way to redirect output to get this more automated.
+
+Test | Status | Comments
+-- | -- | --
+[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | TBD | Dies spectacularly around test 10
+Block | TBD |
+Core | TBD |
+Core Ext | TBD | 
+Core Plus | TBD |
+Double | TBD |
+Exception | TBD |
+Facility | TBD |
+File | TBD |
+Locals | TBD |
+Memory | TBD |
+Search | TBD |
+String | TBD |
+Tools | TBD |
+
 # CREDITS
 
 - Lots of the implementation comes from [FIG FORTH release 1.1](https://github.com/ptorric/figforth)
