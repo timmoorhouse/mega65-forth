@@ -463,6 +463,7 @@ _install_font_dmalist
         +NONAME
 W_AUTOBOOT
         !word DO_COLON
+        !word W_DECIMAL ; abort will do this but we need it before autobooting
         +LITERAL AUTOBOOT_FILENAME
         !word W_COUNT
         !word W_INCLUDED

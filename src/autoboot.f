@@ -1,4 +1,4 @@
-.( Starting bootstrap ) cr
+.( Starting bootstrap... ) cr
 
 include bootstrap-min.f
 
@@ -11,6 +11,7 @@ include bootstrap-full.f
 savesystem forth-complete,p,w
 
 .( Completed bootstrap ) cr
+.( TODO autoboot.f should now be deleted ) cr
 
 \ TODO redirect output
 \ include prelimtest.fth
