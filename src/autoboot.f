@@ -24,7 +24,7 @@ savesystem forth-complete,p,w
 \ : foo2 ( -- ) 12 3 do i . space 2 +loop ;
 \ : foo2 ( -- 12 ) [ 12 ] literal ;
 \ : foo2 ( -- 40 ) [char] (foo) ;
-: foo2 #99 $ab -3 ;
+: foo2 #99 $ab -3 'a' ;
 foo2 cr .s cr
 
 \ TODO delete autoboot.f? rename it?

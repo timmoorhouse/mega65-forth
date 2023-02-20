@@ -123,7 +123,6 @@ W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
 
         !word W_STONUMBER_CHECK_BASE
 
-!if 1 {
         !word W_ZERO
         !word W_TOR     ; (c-addr u) (R: old-base is-negative)
         !word W_DUP
@@ -155,18 +154,18 @@ W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
 +       ; !word W_DUP ; Don't bother DUPing - it's the last one
         +CLITERAL '\''
         !word W_EQUAL
-        +ZBRANCH +
+        +ZBRANCH ++
         ; It's a '
-        ; TODO handle char literal
-
-
-
-+
-
+        ; TODO this doesn't check for a closing ' or check the length
+        !word W_DROP
+        !word W_1PLUS
+        !word W_CAT
+        !word W_ZERO
+        !word W_TRUE
+        +BRANCH _stonumber_finish_up
 
 ++
-}
-
+        ; Now convert the unsigned portion
 
         !word W_2TOR
         !word W_ZERO
@@ -175,6 +174,11 @@ W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
         !word W_TONUMBER        ; (ud c-addr2 u2) (R: old-base is-negative)
         !word W_NIP
         !word W_ZEQUALS         ; (ud flag) (R: old-base is-negative)
+
+_stonumber_finish_up
+
+        ; (ud flag) (R: old-base is-negative)
+
         !word W_RFROM           ; (ud flag is-negative) (R: old-base)
         +ZBRANCH +
         !word W_TOR
@@ -190,52 +194,6 @@ W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
         !word W_DOTS,W_CR
 }
         !word W_PSEMI
-
-!if 0 {
-        ; (c-addr)
-        !word W_ZERO
-        !word W_ZERO
-        !word W_ROT     ; (0 0 c-addr)
-
-        ; check if first char is '-'
-        !word W_DUP
-        !word W_1PLUS
-        !word W_CAT
-        +CLITERAL '-'
-        !word W_EQUAL   ; (0 0 c-addr is-negative)
-        !word W_DUP
-        !word W_TOR     ; (0 0 c-addr is-negative) (R: is-negative)
-
-
-        !word W_PLUS
-        +LITERAL $ffff
-L2023
-;    !word DPL
-        !word W_STORE
-        ; !word W_TONUMBER
-        !word W_DUP    
-        !word W_CAT
-        !word W_BL
-        !word W_SUB
-        +ZBRANCH L2042
-
-        !word W_DUP
-        !word W_CAT
-        +CLITERAL '.'
-        !word W_SUB
-        !word W_ZERO
-;          !word QERR
-        !word W_ZERO
-        +BRANCH L2023
-
-L2042
-        !word W_DROP
-        !word W_RFROM
-        +ZBRANCH L2047
-        ; !word W_DMINUS
-L2047
-        !word W_PSEMI
-}
 
 ; Checks for a leading #, $ or %
 ; If found, adjusts the address and count to remove the leading
