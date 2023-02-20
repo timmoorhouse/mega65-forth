@@ -44,7 +44,19 @@
        
 \ ***************************************************************************
 
+: >body ( xt -- a-addr ) 2+ ;
+
+\ : abs ( n -- u ) dup 0< if negate then ;
+
 : c, here c! 1 allot ;
+
+: cell+ ( a-addr_1 -- a-addr_2 ) 2+ ;
+
+: cells ( n_1 -- n_2 ) 2* ;
+
+: char+ ( c-addr_1 -- c-addr_2 ) 1+ ;
+
+: chars ( n_1 -- n_2 ) ;
 
 \ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ;
     

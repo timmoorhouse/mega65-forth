@@ -848,11 +848,7 @@ W_GREATER
 ; (xt -- a-addr)
 ; ANSI 6.1.0550
 
-        +WORD ">body"
-W_TOBODY
-        !word DO_COLON
-        !word W_2PLUS   ; skip code field
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; >IN 
@@ -1124,6 +1120,8 @@ W_ABORT
 ; (n -- u)
 ; ANSI 6.1.0690
 
+; TODO move to core.f
+
         +WORD "abs"
 W_ABS
         !word DO_COLON
@@ -1352,6 +1350,8 @@ W_BASE
 ; (-- char)
 ; ANSI 6.1.0770
 
+; TODO move top core.f
+
         +WORD "bl"
 W_BL
         !word DO_CONSTANT
@@ -1395,22 +1395,14 @@ W_CAT
 ; (a-addr_1 -- a-addr_2)
 ; ANSI 6.1.0880
 
-        +WORD "cell+"
-W_CELLP
-        !word DO_COLON
-        !word W_2PLUS
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; CELLS 
 ; (n_1 -- n_2)
 ; ANSI 6.1.0890
 
-        +WORD "cells"
-W_CELLS        
-        !word DO_COLON
-        !word W_2STAR
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; CHAR 
@@ -1431,21 +1423,14 @@ W_CHAR
 ; (c-addr_1 -- c-addr_2)
 ; ANSI 6.1.0897
 
-        +WORD "char+"
-W_CHARP
-        !word DO_COLON
-        !word W_1PLUS
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; CHARS 
 ; (n_1 -- n_2)
 ; ANSI 6.1.0898
 
-        +WORD "chars"
-W_CHARS
-        !word DO_COLON  ; no-op
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; CONSTANT 
@@ -2505,6 +2490,8 @@ W_PLOOP
 ;               A mixed magnitude math operation which leaves the double 
 ;               number signed product of two signed numbers.
 
+; TODO move to core.f
+
         +WORD "m*"
 W_MSTAR
         !word DO_COLON
@@ -2526,6 +2513,8 @@ W_MSTAR
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.1870
 
+; TODO move to core.f
+
         +WORD "max"
 W_MAX
         !word DO_COLON
@@ -2540,6 +2529,8 @@ W_MAX
 ; MIN 
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.1880
+
+; TODO move to core.f?
 
         +WORD "min"
 W_MIN
@@ -2862,6 +2853,8 @@ W_SQUOTE
 ;      S->D          n  ---  d
 ;               Sign extend a single number to form a double number.
 
+; TODO move to core.f
+
         +WORD "s>d"
 W_STOD
         !word DO_COLON
@@ -2924,6 +2917,8 @@ W_SOURCE
 ; SPACE
 ; (--)
 ; ANSI 6.1.2220
+
+; TODO move to core.f
 
         +WORD "space"
 W_SPACE

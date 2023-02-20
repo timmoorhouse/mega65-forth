@@ -79,13 +79,9 @@ W_TWO
 ; ****************************************************************************
 ; 2+
 
-;      2+            n1  ---  n2
-;               Leave n1 incremented by 2.
-
 ; TODO native implementation?
 
-;        +WORD "2+"
-        +NONAME
+        +WORD "2+"
 W_2PLUS
         !word DO_COLON
         !word W_TWO

@@ -11,7 +11,7 @@ include bootstrap-full.f
 savesystem forth-complete,p,w
 
 .( Completed bootstrap ) cr
-.( TODO autoboot.f should now be deleted ) cr
+.( TODO autoboot.f should now be deleted or renamed ) cr
 
 \ TODO redirect output
 \ include prelimtest.fth
