@@ -249,6 +249,21 @@ F_HIDDEN     = $20
         +WORD2 .name, F_IMMEDIATE
 }
 
+!macro BRANCH .target {
+        !word W_BRANCH
+        !word .target-*
+}
+
+!macro ZBRANCH .target {
+        !word W_ZBRANCH
+        !word .target-*
+}
+
+!macro DO .end {
+        !word W_PDO
+        !word .end
+}
+
 !ifdef DEBUG                { !src "debug.asm"         }
 
 ;POP4

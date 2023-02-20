@@ -25,6 +25,8 @@ include prelimtest.fth
 \ : foo2 ( -- 12 ) [ 12 ] literal ;
 \ : foo2 ( -- 40 ) [char] (foo) ;
 \ : foo2 #99 $ab -3 'a' ;
+\ : foo2  ( -- n )  0 10 0 DO DUP 5 = IF LEAVE ELSE 1+ THEN LOOP ;
+\ : foo2  ( -- n )  0 10 0 DO leave LOOP ;
 \ foo2 cr .s cr
 
 \ TODO delete autoboot.f? rename it?

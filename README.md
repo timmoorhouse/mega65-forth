@@ -126,7 +126,7 @@ The code is getting close to the point where attempting to run the test suite ma
 
 Test | Status | Comments
 -- | -- | --
-[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | FAIL | Things are good up to TST6 which tests `LEAVE`
+[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | FAIL | 9 failures
 Block | TBD |
 Core | TBD |
 Core Ext | TBD | 

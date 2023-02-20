@@ -497,7 +497,7 @@ W_READ_LINE
         !word W_OVER
         !word W_PLUS
         !word W_OVER
-        !word W_PDO
+        +DO _read_line_after_loop
 
         !word W_DROP ; drop the original c-addr
         !word W_ZERO ; initial value for u2
@@ -641,7 +641,7 @@ W_WRITE_FILE
         !word W_OVER
         !word W_PLUS
         !word W_SWAP
-        !word W_PDO
+        +DO _write_file_after_loop
 
 _write_file_loop
 
@@ -651,6 +651,7 @@ _write_file_loop
 
         !word W_PLOOP
         !word _write_file_loop-*
+_write_file_after_loop
 
         ; restore default output
         !word W_ZERO
@@ -688,7 +689,7 @@ W_WRITE_LINE
         !word W_OVER
         !word W_PLUS
         !word W_SWAP
-        !word W_PDO
+        +DO _write_line_after_loop
 
 _write_line_loop
 
@@ -698,6 +699,7 @@ _write_line_loop
 
         !word W_PLOOP
         !word _write_line_loop-*
+_write_line_after_loop
 
         !word W_CR
         !word W_BASOUT

@@ -109,14 +109,10 @@ BUMP             ; used by (loop) and LEAVE  TODO MESSY !!!!!!!!!!!!!!
         clc
         lda <I
         adc #2
-        sta <I
+        sta <I ; TODO inw
         bcc +
         inc <I+1
 +       jmp NEXT
-!macro ZBRANCH .target {
-        !word W_ZBRANCH
-        !word .target-*
-}
 
 ; ****************************************************************************
 ;      BRANCH                                                C2,L0
@@ -133,7 +129,7 @@ BRANCH  ; used by (loop)  TODO MESSY !!!!!!!!
         clc
         lda (<I),y
         adc <I
-        pha ; TODO why not just store? (and skip the push and pull)
+        pha
         iny
         lda (<I),y
         adc <I+1
@@ -141,10 +137,7 @@ BRANCH  ; used by (loop)  TODO MESSY !!!!!!!!
         pla
         sta <I
         jmp NEXT ; NEXT +2 ????????
-!macro BRANCH .target {
-        !word W_BRANCH
-        !word .target-*
-}
+
 
 ;
 ;    CLITERAL pushes the next inline byte to data stack
@@ -158,7 +151,7 @@ W_PCLITERAL
         lda (<I),y
         pha
         tya
-        inc <I
+        inc <I ; TODO inw
         bne +
         inc <I+1
 +       jmp PUSH
@@ -177,12 +170,12 @@ W_PLITERAL:
         ; ldy #0 ; TODO
         lda (<I),y
         pha
-        inc <I
+        inc <I ; TODO inw
         bne +
         inc <I+1
 +       lda (<I),y
 _inc_I_PUSH
-        inc <I
+        inc <I ; TODO inw
         bne +
         inc <I+1
 +       jmp PUSH
@@ -220,7 +213,7 @@ W_LOWER
         !word W_OVER
         !word W_PLUS
         !word W_SWAP
-        !word W_PDO
+        +DO _lower_after_loop
 
 _lower_loop
 
@@ -247,6 +240,7 @@ _lower_loop
 
         !word W_PLOOP
         !word _lower_loop-*
+_lower_after_loop
 
         !word W_PSEMI
 

@@ -1051,7 +1051,7 @@ W_ACCEPT
         !word W_OVER
         !word W_PLUS
         !word W_OVER
-        !word W_PDO
+        +DO _accept_after_loop
 
         !word W_DROP 
         !word W_ZERO
@@ -1119,7 +1119,7 @@ _accept_not_delete
 
         !word W_DROP ; drop the CR
         !word W_LEAVE
-        !word _accept_after_loop-*
+        ; !word _accept_after_loop-*
 _accept_not_return
 
         ; (index key)
@@ -1515,6 +1515,44 @@ W_DEPTH
         +WORD "(do)"
 W_PDO
         !word *+2
+!if 1 {
+!if 0 {
+        ; ldy #0 ; TODO
+        lda '='
+        jsr EMIT
+        ldy #1
+        lda (<I),y
+        jsr put_hex
+        ldy #0
+        lda (<I),y
+        jsr put_hex
+        ldy #0
+}
+
+        ; ldy #0 ; TODO
+        lda (<I),y
+        pha
+        inc <I ; TODO inw
+        bne +
+        inc <I+1
++       lda (<I),y
+        pha
+        inc <I
+        bne +
+        inc <I+1
++
+        ; skip over next word (for now)
+        ;clc
+        ;lda <I
+        ;adc #2
+        ;sta <I
+        ;bcc +
+        ;inc <I+1
+;+
+        ;pha ; TODO
+        ;pha ; TODO
+}
+
         lda 3,x
         pha
         lda 2,x
@@ -2209,12 +2247,28 @@ W_KEY
         +WORD "leave"
 W_LEAVE
         !word *+2
-        ; TODO
+!if 1 {
         pla ; TODO 
         pla
         pla
         pla
-        jmp BRANCH
+        pla ; TODO new I
+        sta <I+1
+        pla
+        sta <I
+        jmp NEXT
+        ;jmp BRANCH
+} else {
+        ; FIG behaviour
+        stx <XSAVE
+        tsx
+        lda $101,x
+        sta $103,x
+        lda $102,x
+        sta $104,x
+        ldx <XSAVE
+        jmp NEXT
+}
 
 ; ****************************************************************************
 ; LITERAL 
@@ -2265,6 +2319,9 @@ PL2 ; ????   used by (+loop)
         ; yup, terminating ...
         pla
         pla
+        pla
+        pla
+        ; TODO
         pla
         pla
         jmp BUMP
@@ -2745,7 +2802,7 @@ W_SPACES
         +ZBRANCH _spaces_done
 
         !word W_ZERO    ; (n 0)
-        !word W_PDO
+        +DO _spaces_done
 
 _spaces_loop
         !word W_SPACE
@@ -2804,13 +2861,14 @@ W_TYPE
         !word W_OVER
         !word W_PLUS
         !word W_SWAP
-        !word W_PDO
+        +DO _type_after_loop
 _type_loop
         !word W_I
         !word W_CAT
         !word W_EMIT
         !word W_PLOOP
         !word _type_loop-*
+_type_after_loop
         +BRANCH ++
 +       !word W_DROP
 ++      !word W_PSEMI

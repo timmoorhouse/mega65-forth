@@ -39,11 +39,18 @@
 
 : repeat postpone again postpone then ; immediate
 
-: do postpone (do) here ( 3 ) ; immediate
+\ TODO do ... loop is wrong
+\ need to find where to exit to in a leave
+\ - have address of end of loop inline after the (do)
+\ - (do) copies end address to return stack
+\ - (loop), (+loop) pulls from return stack on exit
+\ - leave pulls from return stack and sets I
 
-: loop ( 3 ?pairs ) postpone (loop) back ; immediate
+: do postpone (do) 0 , here ( 3 ) ; immediate
 
-: +loop ( 3 ?pairs ) postpone (+loop) back ; immediate
+: loop ( 3 ?pairs ) postpone (loop) dup 2 - here 2 + swap ! back ; immediate
+
+: +loop ( 3 ?pairs ) postpone (+loop) dup 2 - here 2 + swap ! back ; immediate
 
 \ : WHILE   [COMPILE]  IF  2+  ;    IMMEDIATE
 \ : REPEAT   >R  >R  [COMPILE]  AGAIN  R>  R>  2  -  [COMPILE]  ENDIF  ;  IMMEDIATE
