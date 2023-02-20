@@ -403,6 +403,8 @@ W_DOT
 
 ; See core.f
 
+; TODO remove this! it's only used for hardcoded words
+
 ; (.")
 ;               The run-time procedure, compiled by ." which transmits the 
 ;               following in-line text to the selected output device.  See 
