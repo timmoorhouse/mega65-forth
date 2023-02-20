@@ -126,7 +126,7 @@ The code is getting close to the point where attempting to run the test suite ma
 
 Test | Status | Comments
 -- | -- | --
-[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | FAIL | Things are good up to around line 97 when we start checking that true values from 0< are exactly -1
+[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | :X: | Things are good up to line 109
 Block | TBD |
 Core | TBD |
 Core Ext | TBD | 

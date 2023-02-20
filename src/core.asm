@@ -522,10 +522,10 @@ W_ZLESS
         !word *+2
         ; ldy #0 ; TODO
         asl 1,x
-        tya
-        rol
-        sty 1,x
-        sta 0,x 
+        bcc +
+        dey
++       sty 1,x
+        sty 0,x 
         jmp NEXT
 
 ; ****************************************************************************
