@@ -18,7 +18,7 @@ This is still in the early stages of developement:
 - File input is mostly functional but slow.  Nested includes should work so long as the `INCLUDE` appears on a line by itself with the filename (`RESTORE-INPUT` into the middle of a line isn't working yet).  I/O will likely stay quite slow until I can get more of the test suite passing and automated.
 - Words can be defined (`:`, `;`, `CREATE`, `VARIABLE`, `CONSTANT`, etc are functional).  Many of the basic control structures are working (`IF`/`ELSE`/`THEN`, `BEGIN`/`AGAIN`, etc). Check the status table below.
 
-Getting through the [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) test case successfully is the current priority.  Right now it dies around test 12 of 57.  It's a start.
+Getting through the [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) test case successfully is the current priority.
 
 My apologies if this isn't the greatest Forth implementation.  I don't really have much experience with Forth.  I'm doing this because I've always been intrigued by Forth, and with a new MEGA65 sitting on the dining room table, it seemed the perfect project to learn about Forth, shake decades of dust off my 6502 programming skills, and learn about some of the MEGA65-specific features.
 
@@ -126,7 +126,7 @@ The code is getting close to the point where attempting to run the test suite ma
 
 Test | Status | Comments
 -- | -- | --
-[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | TBD | Things start to go bad at test 12 
+[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | TBD | Things start to go bad at test 14
 Block | TBD |
 Core | TBD |
 Core Ext | TBD | 
