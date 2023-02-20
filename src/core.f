@@ -77,6 +77,7 @@
 
 \ TODO alignment after string?
 : ." [char] " parse postpone (.") dup c, swap over here swap cmove allot ; immediate
+: s" [char] " parse postpone (s") dup c, swap over here swap cmove allot ; immediate
 
 \ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ;
     

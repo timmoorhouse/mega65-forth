@@ -39,5 +39,8 @@ here . cr
 foo2
 .( line 3 ) cr
 .s cr 
+: foo3 s" foo bar baz " type ;
+foo3
+.s cr
 
 \ TODO delete autoboot.f? rename it?

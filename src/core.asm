@@ -410,6 +410,7 @@ W_DOT
 
         +WORD "(.\")"
 W_PDOTQ
+        ; see also (s") ; TODO just use (s") and postpone the extra type?
         !word DO_COLON
         !word W_RAT
         !word W_COUNT
@@ -2662,6 +2663,19 @@ W_SQUOTE
         +CLITERAL '"'  ; for colourization ... "
         !word W_PARSE
         ; TODO ...
+        !word W_PSEMI
+
+        +WORD "(s\")"
+W_PSQ
+        ; see also (.")
+        !word DO_COLON
+        !word W_RAT
+        !word W_COUNT
+        !word W_DUP
+        !word W_1PLUS ; account for length field
+        !word W_RFROM
+        !word W_PLUS
+        !word W_TOR
         !word W_PSEMI
 
 ; ****************************************************************************
