@@ -63,7 +63,7 @@ W_ZNOTEQUALS
         sty 1,x
         ora 0,x
         beq +
-        iny
+        iny ; TODO need to leave -1 for true
 +       sty 0,x
         jmp NEXT
 }
@@ -211,7 +211,7 @@ W_NOTEQUAL
         ora 2,x
 
         beq +
-        iny
+        iny ; TODO need to leave -1 for true
 +       sty 2,x
         jmp POP
 }
@@ -554,22 +554,14 @@ _parse_loop
 +
 
         ; ... and increment IN
-        clc   ; TODO inw
-        inc <IN
-        bne +
-        inc <IN+1
-+
+        inw <IN
 
         bra _parse_loop
 
 _parse_found_terminator
 
         ; and increment IN
-        clc ; TODO inw
-        inc <IN
-        bne +
-        inc <IN+1
-+
+        inw <IN
         ;bra _parse_done
 
 _parse_done
@@ -683,11 +675,7 @@ _parse_name_skip_whitespace_loop
 +
 
         ; ... and increment IN
-        clc   ; TODO inw
-        inc <IN
-        bne +
-        inc <IN+1
-+
+        inw <IN
 
         bra _parse_name_skip_whitespace_loop
 
@@ -727,22 +715,14 @@ _parse_name_skip_nonwhitespace_loop
 +
 
         ; ... and increment IN
-        clc ; TODO inw
-        inc <IN
-        bne +
-        inc <IN+1
-+
+        inw <IN
 
         bra _parse_name_skip_nonwhitespace_loop
 
 _parse_name_found_ending_whitespace
 
         ; increment IN
-        clc ; TODO inw
-        inc <IN
-        bne +
-        inc <IN+1
-+
+        inw <IN
 
 _parse_name_all_done
 

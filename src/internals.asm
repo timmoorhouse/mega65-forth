@@ -151,10 +151,8 @@ W_PCLITERAL
         lda (<I),y
         pha
         tya
-        inc <I ; TODO inw
-        bne +
-        inc <I+1
-+       jmp PUSH
+        inw <I
+        jmp PUSH
 !macro CLITERAL .char {
         !word W_PCLITERAL
         !byte .char
@@ -170,15 +168,11 @@ W_PLITERAL:
         ; ldy #0 ; TODO
         lda (<I),y
         pha
-        inc <I ; TODO inw
-        bne +
-        inc <I+1
-+       lda (<I),y
+        inw <I
+        lda (<I),y
 _inc_I_PUSH
-        inc <I ; TODO inw
-        bne +
-        inc <I+1
-+       jmp PUSH
+        inw <I
+        jmp PUSH
 !macro LITERAL .word {
         !word W_PLITERAL
         !word .word

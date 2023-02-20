@@ -1146,11 +1146,8 @@ _accept_after_loop ; TODO remove
 W_ALIGN
         !word *+2
         bbr0 <HERE, +
-        inc <HERE
-        bne +
-        inc <HERE+1
-+
-        jmp NEXT
+        inw <HERE
++       jmp NEXT
 
 ; ****************************************************************************
 ; ALIGNED 
@@ -1166,8 +1163,7 @@ W_ALIGNED
         inc 0,x
         beq +
         inc 1,x
-+
-        jmp NEXT
++       jmp NEXT
 
 ; ****************************************************************************
 ; ALLOT 
@@ -1484,41 +1480,13 @@ W_DEPTH
 W_PDO
         !word *+2
 !if 1 {
-!if 0 {
-        ; ldy #0 ; TODO
-        lda '='
-        jsr EMIT
-        ldy #1
-        lda (<I),y
-        jsr put_hex
-        ldy #0
-        lda (<I),y
-        jsr put_hex
-        ldy #0
-}
-
         ; ldy #0 ; TODO
         lda (<I),y
         pha
-        inc <I ; TODO inw
-        bne +
-        inc <I+1
-+       lda (<I),y
+        inw <I
+        lda (<I),y
         pha
-        inc <I
-        bne +
-        inc <I+1
-+
-        ; skip over next word (for now)
-        ;clc
-        ;lda <I
-        ;adc #2
-        ;sta <I
-        ;bcc +
-        ;inc <I+1
-;+
-        ;pha ; TODO
-        ;pha ; TODO
+        inw <I
 }
 
         lda 3,x
