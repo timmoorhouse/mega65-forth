@@ -146,7 +146,7 @@ EOF
         -l "$topdir/src/forth.sym" \
         -o "${opt[builddir]}/forth.prg" \
         -r "$topdir/src/forth.rep" \
-        src/forth.asm # 2>&1 | tee build/forth.log
+        src/forth.asm
 
     # TODO generate d81 image with everything
     cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "${opt[builddir]}/mega65-forth.d81"
@@ -187,13 +187,18 @@ do_build_full() {
 # TODO run various benchmarks ...
 
 do_screenshot() {
-    "${opt[m65]}" "${m65opts[@]}" --quiet --screenshot="${opt[builddir]}/screenshot.png"
+    cmd "${opt[m65]}" "${m65opts[@]}" --quiet --screenshot="${opt[builddir]}/screenshot.png"
+}
+
+do_bootstrap() {
+    :
 }
 
 do_test() {
     if [ -n "${opt[emulate]}" ]; then
+
         cmd "${opt[xmega65]}" "${xmega65opts[@]}" -8 "${opt[builddir]}/mega65-forth.d81"
-        # -prg "${opt[builddir]}/forth.prg"
+
     else
         "${opt[m65]}" --quiet --reset
 

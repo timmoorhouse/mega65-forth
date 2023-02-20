@@ -11,4 +11,5 @@ include core-ext.f
 foo2 cr .s cr
 
 savesystem foo,p,w
+
 .( end of bootstrap.f )

@@ -41,6 +41,7 @@
 !ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS         = 0 } ; TODO lots of things are triggering this - need to clean them up before enabling
 !ifndef USE_BASIC                       { USE_BASIC                     = 0 } ; not used - REMOVE?
 !ifndef CASE_INSENSITIVE                { CASE_INSENSITIVE              = 1 } ; map names to lower case when defining/resolving
+!ifndef AUTOBOOT                        { AUTOBOOT                      = 1 } ; Attempt to include autoboot.f on startup
 
 ; Runtime checks
 ; - For anything taking an aligned address, check that it's aligned
@@ -387,9 +388,15 @@ WARM
 
         cld
 
-        lda #<W_ABORT+2
+!if AUTOBOOT {
+        W_STARTUP = W_AUTOBOOT
+} else {
+        W_STARTUP = W_ABORT
+}
+
+        lda #<W_STARTUP+2
         sta <I
-        lda #>W_ABORT+2
+        lda #>W_STARTUP+2
         sta <I+1
 
         lda #14 ; Lower case
@@ -451,6 +458,18 @@ _install_font_dmalist
 ; B: 03D000
 ; C: 02D000
 
+
+!if AUTOBOOT {
+        +NONAME
+W_AUTOBOOT
+        !word DO_COLON
+        +LITERAL AUTOBOOT_FILENAME
+        !word W_COUNT
+        !word W_INCLUDED
+        !word W_ABORT
+}
+AUTOBOOT_FILENAME
+        +STRING "autoboot.f"
 
 !src "block.asm"
 !src "block-ext.asm"
