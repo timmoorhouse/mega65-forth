@@ -1670,17 +1670,17 @@ W_PEVALUATE             ; ( -- )
         !word W_IN
         !word W_STORE
 
-_evaluate_loop
+_pevaluate_loop
         !word W_PARSE_NAME
 
         ; (c-addr u)
 
         !word W_QDUP
-        +ZBRANCH _evaluate_done_loop
+        +ZBRANCH _pevaluate_done_loop
 
 !if DEBUG {
         !word W_PDOTQ
-        +STRING "evaluate-name"
+        +STRING "pevaluate-name"
         +CLITERAL '['
         !word W_EMIT
         !word W_2DUP
@@ -1690,14 +1690,14 @@ _evaluate_loop
         ; !word W_DOTS,W_CR
 }
 
-        !word W_2TOR    
-        
-        ; () (R: c-addr u)
-
 !if CASE_INSENSITIVE { ; TODO move this to PARSE-NAME to get rid of duplication?
         !word W_2DUP
         !word W_LOWER
 }
+
+        !word W_2TOR    
+        
+        ; () (R: c-addr u)
 
         !word W_2RAT
         !word W_FORTH_WORDLIST ; TODO
@@ -1711,12 +1711,12 @@ _evaluate_loop
         ; (doing the same sort of thing as NAME>COMPILE)
 
         !word W_QDUP
-        +ZBRANCH _evaluate_word_not_found
+        +ZBRANCH _pevaluate_word_not_found
         
         ; TODO clean up the immediate/non-immediate handling
 
         !word W_1MINUS
-        +ZBRANCH _evaluate_immediate
+        +ZBRANCH _pevaluate_immediate
 
         ; non-immediate
         ; TODO execute if interpreting, move to definition if compiling
@@ -1728,17 +1728,17 @@ _evaluate_loop
 
         !word W_STATE
         !word W_AT
-        +ZBRANCH _evaluate_nonimmediate_interpreting
+        +ZBRANCH _pevaluate_nonimmediate_interpreting
 
         !word W_COMMA
-        +BRANCH _evaluate_done_word
+        +BRANCH _pevaluate_done_word
 
-_evaluate_nonimmediate_interpreting
+_pevaluate_nonimmediate_interpreting
 
         !word W_EXECUTE
-        +BRANCH _evaluate_done_word
+        +BRANCH _pevaluate_done_word
 
-_evaluate_immediate
+_pevaluate_immediate
         ; TODO always execute
 !if DEBUG {
         !word W_PDOTQ
@@ -1746,36 +1746,36 @@ _evaluate_immediate
         !word W_DOTS,W_CR
 }
         !word W_EXECUTE
-        +BRANCH _evaluate_done_word
+        +BRANCH _pevaluate_done_word
 
-_evaluate_word_not_found
+_pevaluate_word_not_found
 
         ; (R: c-addr u)
 
         !word W_2RAT
         !word W_STONUMBER
-        +ZBRANCH _evaluate_stonumber_failed
+        +ZBRANCH _pevaluate_stonumber_failed
 
         !word W_DROP ; drop MSW
 
         !word W_STATE
         !word W_AT
-        +ZBRANCH _evaluate_done_word
+        +ZBRANCH _pevaluate_done_word
 
         +LITERAL W_PLITERAL
         !word W_COMPILEC
         !word W_COMMA
 
         ; TODO if compiling postpone a pliteral, then the number
-        +BRANCH _evaluate_done_word
+        +BRANCH _pevaluate_done_word
 
-_evaluate_stonumber_failed
+_pevaluate_stonumber_failed
         ; (ud) (R: c-addr u)
         !word W_NIP
         !word W_NIP
         ; +BRANCH _evaluate_error
 
-_evaluate_error
+_pevaluate_error
         ; (R: c-addr u)
         ; TODO error
         ; TODO change colour to red?
@@ -1800,11 +1800,11 @@ _evaluate_error
 }
         ; jmp _evaluate_done_word
 
-_evaluate_done_word
+_pevaluate_done_word
         !word W_2RFROM,W_2DROP
-        +BRANCH _evaluate_loop
+        +BRANCH _pevaluate_loop
 
-_evaluate_done_loop
+_pevaluate_done_loop
         !word W_DROP ; (c-addr) was left on stack
 
         !word W_PSEMI
