@@ -401,49 +401,14 @@ W_DOT
 ; ("text" --)
 ; ANSI 6.1.0190
 
-; FIG:
-;      ."                                                    P,L0
-;               Used in the form:
-;                         ." cccc"
-;               Compiles an in-line string cccc (delimited by the trailing 
-;               ") with an execution procedure to transmit the text to the 
-;               selected output device.  If executed outside a definition, 
-;               ." will immediately print the text until the final ".  The 
-;               maximum number of characters may be an installation 
-;               dependent value.  See (.").
-
-!if 0 {
-        +WORD_IMM ".\""
-W_DOTQUOTE
-        !word DO_COLON
-;          !word CLITERAL
-;          !byte $22
-;          !word STATE
-;          !word AT
-;          !word ZBRANCH
-;L1709:    !word $14      ;L1719-L1709
-;          !word COMPILE
-;          !word PDOTQ
-;          !word WORD
-;          !word HERE
-;          !word CAT
-;          !word 1PLUS
-;          !word ALLOT
-;          !word BRANCH
-;L1718:    !word $A       ;L1723-L1718
-;L1719:    !word WORD
-;          !word HERE
-;          !word COUNT
-;          !word TYPE
-        !word W_PSEMI
-}
+; See core.f
 
 ; (.")
 ;               The run-time procedure, compiled by ." which transmits the 
 ;               following in-line text to the selected output device.  See 
 ;               ."
 
-;        +WORD "(.\")"
+        +WORD "(.\")"
 W_PDOTQ
         !word DO_COLON
         !word W_RAT
@@ -2691,17 +2656,13 @@ W_ROT
 ; ANSI 6.1.2165
 ; ANSI 11.6.1.2165
 
-!if 0 {
         +WORD_IMM "s\""
 W_SQUOTE
         !word DO_COLON
-!if 0 {
         +CLITERAL '"'  ; for colourization ... "
         !word W_PARSE
         ; TODO ...
-}
         !word W_PSEMI
-}
 
 ; ****************************************************************************
 ; S>D

@@ -75,6 +75,9 @@
 
 : [char] parse-name drop c@ postpone literal ; immediate
 
+\ TODO alignment after string?
+: ." [char] " parse postpone (.") dup c, swap over here swap cmove allot ; immediate
+
 \ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ;
     
 .( ... end of core.f ) cr
