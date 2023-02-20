@@ -171,7 +171,7 @@ W_PCLITERAL
 ;    LITERAL pushes the next inline word to data stack
 ;
 
-        +NONAME
+        +WORD "(literal)"
 W_PLITERAL:
         !word *+2
         ; ldy #0 ; TODO

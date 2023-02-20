@@ -45,6 +45,10 @@
 
 : +loop ( 3 ?pairs ) postpone (+loop) back ; immediate
 
+: literal postpone (literal) , ; immediate
+
+\ : [char] parse-name ; immediate
+
 \ : WHILE   [COMPILE]  IF  2+  ;    IMMEDIATE
 \ : REPEAT   >R  >R  [COMPILE]  AGAIN  R>  R>  2  -  [COMPILE]  ENDIF  ;  IMMEDIATE
        

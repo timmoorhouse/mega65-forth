@@ -21,7 +21,8 @@ savesystem forth-complete,p,w
 \ : foo2 0 begin .s 1+ dup 10 > until drop ;
 \ : foo2 0 begin  1+ dup 10 < while .s repeat drop ;
 \ : foo2 ( -- ) 7 3 do i . space loop ;
-: foo2 ( -- ) 12 3 do i . space 2 +loop ;
+\ : foo2 ( -- ) 12 3 do i . space 2 +loop ;
+: foo2 ( -- 12 ) [ 12 ] literal ;
 foo2 cr .s cr
 
 \ TODO delete autoboot.f? rename it?

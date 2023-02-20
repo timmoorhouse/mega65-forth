@@ -2295,30 +2295,7 @@ W_LEAVE
 ; (???)
 ; ANSI 6.1.1780
 
-; FIG:
-;
-;      LITERAL       n  ---    (compiling)                   P,C2,L0
-;               If compiling, then compile the stack value n as a 16 bit 
-;               literal.  This definition is immediate so that it will 
-;               execute during a colon definition.  The intended use is:
-;                         : xxx   [ calculate ]  LITERAL  ;
-;               Compilation is suspended for the compile time calculation 
-;               of a value.  Compilation is resumed and LITERAL compiles 
-;               this value.
-
-!if 0 {
-        +WORD_IMM "literal"
-W_LITERAL
-        !word DO_COLON
-;          !word STATE
-;          !word AT
-;          !word ZBRANCH
-;L2222:    !word 8        ; L2226-L2222
-;          !word COMPILE
-;          !word LIT
-;          !word COMMA
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; LOOP 
@@ -3257,8 +3234,10 @@ W_LBRACKET
 !if 0 {
         +WORD_IMM "[char]"
 W_BCHARB
-        !word *+2
-        jmp NEXT
+        !word DO_COLON
+
+        !word W_PARSE_NAME
+        !word W_PSEMI
 }
 
 ; ****************************************************************************
