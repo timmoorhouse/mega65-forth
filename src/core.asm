@@ -714,12 +714,12 @@ W_LESS
         lda 3,x
         sbc 1,x
 
-        sty 3,x
         bvc +
         eor #$80
 +       bpl +
-        iny
+        dey
 +       sty 2,x
+        sty 3,x
         jmp POP
 
 ; ****************************************************************************
@@ -2267,11 +2267,17 @@ PL2 ; ????   used by (+loop)
 ; (x_1 u -- x_2)
 ; ANSI 6.1.1805
 
-!if 0 {
         +WORD "lshift"
+W_LSHIFT
         !word *+2
-        rts
-}
+        lda 0,x
+beq +
+-       clc
+        rol 2,x
+        rol 3,x
+        dec
+        bne -
++       jmp POP
 
 ; ****************************************************************************
 ; M* 
@@ -2615,11 +2621,17 @@ W_ROT
 ; (x_1 u -- x_2)
 ; ANSI 6.1.2162
 
-!if 0 {
         +WORD "rshift"
+W_RSHIFT
         !word *+2
-        rts
-}
+        lda 0,x
+beq +
+-       clc
+        ror 3,x
+        ror 2,x
+        dec
+        bne -
++       jmp POP
 
 ; ****************************************************************************
 ; S"
@@ -2834,14 +2846,12 @@ _type_after_loop
 ; (u_1 u_2 -- flag)
 ; ANSI 6.1.2340
 
-!if 0 {
         +WORD "u<"
 W_ULESS
         !word DO_COLON
-;          !word SUB      ; subtract two values
-;          !word ZLESS    ; test sign
+        !word W_SUB      ; subtract two values
+        !word W_ZLESS    ; test sign
         !word W_PSEMI
-}
 
 ; ****************************************************************************
 ; UM*
