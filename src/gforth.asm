@@ -105,17 +105,50 @@ W_SAVESYSTEM
 ; TODO it might be more convenient if d was not left on the stack on failures
 
         +WORD "s>number?"
-W_STONUMBERQ   ; (c-addr u -- d flag) ; flag indicates success
+W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
         !word DO_COLON
 
-        ; Not right, but at least follows the interface ...
+!if 0 {
+        !word W_PDOTQ
+        +STRING "s>number-1["
+        !word W_2DUP
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT,W_DOTS
+}
+
+        !word W_BASE
+        !word W_AT
+        !word W_TOR     ; (c-addr u) (R: old-base)
+
+        !word W_STONUMBER_CHECK_BASE
+!if 0 {
+        !word W_PDOTQ
+        +STRING " s>number-2["
+        !word W_2DUP
+        !word W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
+        !word W_BASE,W_AT,W_DOT
+        !word W_DOTS,W_CR
+}
+
+        ; TODO check for '
+        ; TODO now check for leading -
+
         !word W_2TOR
         !word W_ZERO
         !word W_ZERO
-        !word W_2RFROM          ; (0 0 c-addr u)
-        !word W_TONUMBER        ; (ud c-addr2 u2)
-        !word W_NIP             ; (ud u2)
-        !word W_ZEQUALS         ; (ud flag)
+        !word W_2RFROM          ; (0 0 c-addr u) (R: old-base)
+        !word W_TONUMBER        ; (ud c-addr2 u2) (R: old-base)
+        !word W_NIP
+        !word W_ZEQUALS         ; (ud flag) (R: old-base)
+        !word W_RFROM,W_DROP    ; (ud flag)
+!if 0 {
+        !word W_PDOTQ
+        +STRING " s>number-9"
+        !word W_DOTS,W_CR
+}
         !word W_PSEMI
 
 !if 0 {
@@ -163,6 +196,65 @@ L2042
 L2047
         !word W_PSEMI
 }
+
+; Checks for a leading #, $ or %
+; If found, adjusts the address and count to remove the leading
+; char and sets BASE appropriately
+        +NONAME
+W_STONUMBER_CHECK_BASE ; (c-addr u -- c-addr u)
+        !word DO_COLON
+
+        !word W_DUP
+        !word W_ZEQUALS
+        +ZBRANCH +
+        ; zero length, just return
+        !word W_PSEMI
++
+
+        !word W_OVER
+        !word W_CAT
+        ; (c-addr u char)
+
+        !word W_DUP
+        +CLITERAL '#'
+        !word W_EQUAL
+        +ZBRANCH +
+        ; It's a # ... use base 10
+        +LITERAL 10
+        +BRANCH _stonumber_check_base_set
+
++       !word W_DUP
+        +CLITERAL '$'
+        !word W_EQUAL
+        +ZBRANCH +
+        ; It's a $ ... use base 16
+        +LITERAL 16
+        +BRANCH _stonumber_check_base_set
+
++       !word W_DUP
+        +CLITERAL '%'
+        !word W_EQUAL
+        +ZBRANCH +
+        ; It's a % ... use base 2
+        +LITERAL 2
+        +BRANCH _stonumber_check_base_set
+
++
+        ; ... nope, none of them
+        !word W_DROP
+        ; (c-addr u)
+        !word W_PSEMI
+
+_stonumber_check_base_set
+        ; (c-addr u c base)
+        !word W_BASE
+        !word W_STORE
+        !word W_DROP
+        !word W_1MINUS
+        !word W_SWAP
+        !word W_1PLUS
+        !word W_SWAP
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; SP@

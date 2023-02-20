@@ -14,7 +14,7 @@ savesystem forth-complete,p,w
 .( TODO autoboot.f should now be deleted or renamed ) cr
 
 \ TODO redirect output
-include prelimtest.fth
+\ include prelimtest.fth
 
 \ : Foo2 ( -- u) 5 3 if 7 else 9 then 1+ ;
 \ : foo2 ( -- ) 5 4 begin .s again ;
@@ -24,6 +24,7 @@ include prelimtest.fth
 \ : foo2 ( -- ) 12 3 do i . space 2 +loop ;
 \ : foo2 ( -- 12 ) [ 12 ] literal ;
 \ : foo2 ( -- 40 ) [char] (foo) ;
-\ foo2 cr .s cr
+: foo2 #99 $ab ;
+foo2 cr .s cr
 
 \ TODO delete autoboot.f? rename it?

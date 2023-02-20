@@ -870,17 +870,6 @@ _tonumber_loop
         !word W_UMSTAR
         !word W_DPLUS
 
-!if 0 {
-        !word DPL ; # digits to right of decimal place
-        !word W_AT
-        !word W_1PLUS
-        +ZBRANCH +
-        !word W_ONE
-        !word DPL
-        !word W_PSTORE
-+
-}
-
         ; (ud) (R: c-addr u)
 
         !word W_2RFROM
@@ -1764,7 +1753,7 @@ _evaluate_word_not_found
         ; (R: c-addr u)
 
         !word W_2RAT
-        !word W_STONUMBERQ
+        !word W_STONUMBER
         +ZBRANCH _evaluate_stonumber_failed
 
         !word W_DROP ; drop MSW
