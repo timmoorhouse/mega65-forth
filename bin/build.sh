@@ -171,7 +171,24 @@ EOF
         src/string.f        src/string-ext.f \
         src/tools.f         src/tools-ext.f \
         src/xchar.f         src/xchar-ext.f \
-        "$topdir/test/forth2012-test-suite/src/prelimtest.fth"
+        "$topdir/test/forth2012-test-suite/src/prelimtest.fth" \
+        "$topdir/test/forth2012-test-suite/src/tester.fr" \
+        "$topdir/test/forth2012-test-suite/src/ttester.fs" \
+        "$topdir/test/forth2012-test-suite/src/core.fr" \
+        "$topdir/test/forth2012-test-suite/src/coreplustest.fth" \
+        "$topdir/test/forth2012-test-suite/src/utilities.fth" \
+        "$topdir/test/forth2012-test-suite/src/errorreport.fth" \
+        "$topdir/test/forth2012-test-suite/src/coreexttest.fth" \
+        "$topdir/test/forth2012-test-suite/src/blocktest.fth" \
+        "$topdir/test/forth2012-test-suite/src/doubletest.fth" \
+        "$topdir/test/forth2012-test-suite/src/exceptiontest.fth" \
+        "$topdir/test/forth2012-test-suite/src/facilitytest.fth" \
+        "$topdir/test/forth2012-test-suite/src/filetest.fth" \
+        "$topdir/test/forth2012-test-suite/src/localstest.fth" \
+        "$topdir/test/forth2012-test-suite/src/memorytest.fth" \
+        "$topdir/test/forth2012-test-suite/src/toolstest.fth" \
+        "$topdir/test/forth2012-test-suite/src/searchordertest.fth" \
+        "$topdir/test/forth2012-test-suite/src/stringtest.fth"
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -dir > "${opt[builddir]}/mega65-forth.txt"
 
     cmd ls -l "${opt[builddir]}/forth-skeletal.prg"

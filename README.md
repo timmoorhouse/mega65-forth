@@ -17,8 +17,9 @@ This is still in the early stages of developement:
 - The interpreter is working well enough to support development.  It needs better error handling, etc.
 - File input is mostly functional but slow.  Nested includes should work so long as the `INCLUDE` appears on a line by itself with the filename (`RESTORE-INPUT` into the middle of a line isn't working yet).  I/O will likely stay quite slow until I can get more of the test suite passing and automated.
 - Words can be defined (`:`, `;`, `CREATE`, `VARIABLE`, `CONSTANT`, etc are functional).  Many of the basic control structures are working (`IF`/`ELSE`/`THEN`, `BEGIN`/`AGAIN`, etc). Check the status table below.
+- The [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) test case runs mostly clean.  There's one minor problem caused by a PETSCII vs ASCII difference.
 
-Getting through the [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) test case successfully is the current priority.
+The next priority is getting the [core](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) test results cleaned up.  There are still a number of things in CORE to implement and many are buggy.
 
 My apologies if this isn't the greatest Forth implementation.  I don't really have much experience with Forth.  I'm doing this because I've always been intrigued by Forth, and with a new MEGA65 sitting on the dining room table, it seemed the perfect project to learn about Forth, shake decades of dust off my 6502 programming skills, and learn about some of the MEGA65-specific features.
 
@@ -124,14 +125,11 @@ Extensions | `BACKGROUND` `BORDER` `FOREGROUND` `LATEST` `MON` `SAVESYSTEM` `SP@
 
 The code is getting close to the point where attempting to run the test suite makes sense.  I do want to have some way to redirect output to get this more automated.
 
-Problems from prelimtest:
-- [CHAR] A gives unexpected value (just a petscii vs ascii thing)
-
 Test | Status | Comments
 -- | -- | --
-[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | FAIL | 1 failures
+[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | FAIL | `[CHAR] A` gives unexpected value (just a petscii vs ascii thing)
 Block | TBD |
-Core | TBD |
+Core | FAIL | Lots to fix here
 Core Ext | TBD | 
 Core Plus | TBD |
 Double | TBD |

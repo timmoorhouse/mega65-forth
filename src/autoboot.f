@@ -14,7 +14,26 @@ savesystem forth-complete,p,w
 .( TODO autoboot.f should now be deleted or renamed ) cr
 
 \ TODO redirect output
-include prelimtest.fth
+include prelimtest.fth          \ 1 failure
+\ include tester.fr               \ OK
+\  \ include ttester.fs
+\ include core.fr                 \ LOTS to fix
+\ include coreplustest.fth
+\ include utilities.fth
+\ include errorreport.fth
+\ include coreexttest.fth
+\ include blocktest.fth
+\ include doubletest.fth
+\ include exceptiontest.fth
+\ include facilitytest.fth
+\ include filetest.fth
+\ include localstest.fth
+\ include memorytest.fth
+\ include toolstest.fth
+\ include searchordertest.fth
+\ include stringtest.fth
+\ report-errors
+cr .( Forth tests completed ) cr cr
 
 \ : Foo2 ( -- u) 5 3 if 7 else 9 then 1+ ;
 \ : foo2 ( -- ) 5 4 begin .s again ;
