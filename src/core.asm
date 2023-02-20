@@ -539,11 +539,11 @@ W_ZEQUALS
         ; see also 0<> (core-ext)
         ; ldy #0 ; TODO
         lda 1,x
-        sty 1,x
         ora 0,x
         bne +
-        iny
+        dey
 +       sty 0,x
+        sty 1,x
         jmp NEXT
 
 ; ****************************************************************************
@@ -2246,7 +2246,7 @@ W_PLOOP
         inc $102,x
 +
         ; check for termination     TODO WHY DOES THIS WORK????
- PL1 ; ??? used by (+loop)
+PL1 ; ??? used by (+loop)
         clc
         lda $103,x
         sbc $101,x
