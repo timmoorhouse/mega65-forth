@@ -152,9 +152,8 @@ DAREA      = TIB - DAREA_LEN
 ; VM Registers
 ; S - data stack pointer
 ; R - return stack pointer
-; I - instruction pointer (FIG uses IP)
+; I - instruction pointer
 ; W - word pointer (to definition currently executing, used to get parameter field)
-; U - user pointer (in multitasked implementations, pointer to currently executing task) (FIG uses UP)
 ;
 ; floating point stack is allowed to be on the data stack or separate
 ; (might want to look at using the math register area directly?)
@@ -468,9 +467,10 @@ W_AUTOBOOT
         !word W_COUNT
         !word W_INCLUDED
         !word W_ABORT
-}
+
 AUTOBOOT_FILENAME
         +STRING "autoboot.f"
+}
 
 !src "block.asm"
 !src "block-ext.asm"

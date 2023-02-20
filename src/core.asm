@@ -1603,46 +1603,14 @@ W_DEPTH
 ; (???)
 ; ANSI 6.1.1240
 
+; See core.f
 
-;    <limit> <initial> DO ... LOOP
-;    <limit> <initial> DO ... <increment> +LOOP
-
-; FIG:
-;      DO             n1  n2  ---        (execute)
-;                    addr  n  ---        (compile)           P,C2,L0
-;               Occurs in a colon-definition in the form:
-;                         DO  ...  LOOP
-;                         DO  ...  +LOOP
-;               At run-time, DO begins a sequence with repetitive 
-;               execution controlled by a loop limit n1 and an index with 
-;               initial value n2.  DO removes these from the stack.  Upon 
-;               reaching LOOP the index is incremented by one.  Until the 
-;               new index equals or exceeds the limit, execution loops 
-;               back to just after DO; otherwise the loop parameters are 
-;               discarded and execution continues ahead.  Both n1 and n2 
-;               are determined at run-time and may be the result of other 
-;               operations.  Within a loop 'I' will copy the current value 
-;               of the index to the stack.  See I, LOOP, +LOOP, LEAVE.
-;
-;               When compiling within the colon-definition, DO compiles 
-;               (DO), leaves the following address addr and n for later 
-;               error checking.
-
-!if 0 {
-        +WORD_IMM "do"
-W_DO
-        !word DO_COLON
-;          !word COMPILE
-;          !word PDO
-;          !word HERE
-;          !word THREE
-        !word W_PSEMI
-}
+; TODO share code with 2>r
 
 ;      (DO)                                                   C
 ;               The run-time procedure compiled by DO which moves the loop 
 ;               control parameters to the return stack.  See DO.
-;        +WORD "(do)"
+        +WORD "(do)"
 W_PDO
         !word *+2
         lda 3,x
@@ -2342,16 +2310,6 @@ W_KEY
 
 ; In ANS, execution of the loop is terminated immediately.
 
-; TODO this currently implements the FIG behaviour - we should switch to ANS.
-
-; FIG:
-;
-;      LEAVE                                                 C,L0
-;               Force termination of a DO-LOOP at the next opportunity by 
-;               setting the loop limit to the current value of the index.  
-;               The index itself remains unchanged, and execution proceeds 
-;               normally until LOOP or +LOOP is encountered.
-
         +WORD "leave"
 W_LEAVE
         !word *+2
@@ -2397,46 +2355,13 @@ W_LITERAL
 ; (???)
 ; ANSI 6.1.1800
 
-; FIG:
-;
-;      LOOP          addr  n  ---        (compiling)         P,C2,L0
-;               Occurs in a colon-definition in the form:
-;                         DO  ...  LOOP
-;               At run-time, LOOP selectively controls branching back to 
-;               the corresponding DO based on the loop index and limit.  
-;               The  loop index is incremented by one and compared to the 
-;               limit.  The branch back to DO occurs until the index 
-;               equals or exceeds the limit; at that time, the parameters 
-;               are discarded and execution continues ahead.
-;
-;               At compile-time, LOOP compiles (LOOP) and uses addr to 
-;               calculate an offset to DO.  n is used for error testing.
-;
-;;
-;;                                       LOOP
-;;                                       SCREEN 73 LINE 11
-
-!if 0 {
-        +WORD_IMM "loop"
-W_LOOP
-        !word DO_COLON
-;          !word THREE
-;          !word QPAIR
-;          !word COMPILE
-;          !word PLOOP
-;          !word BACK
-        !word W_PSEMI
-}
+; See core.f
 
 ;      (LOOP)                                                 C2
 ;               The run-time procedure compiled by LOOP which increments 
 ;               the loop index and tests for loop completion.  See LOOP.
-;
-;;
-;;                                       (LOOP)
-;;                                       SCREEN 16 LINE 1
-;;
-;        +WORD "(loop)"
+
+        +WORD "(loop)"
 W_PLOOP
         !word *+2
         stx <XSAVE
