@@ -230,10 +230,10 @@ do_test() {
 
         local -a m65opts_
         [ -n "${opt[debug]}" ] || m65opts_+=(--run)
-        cmd "${opt[m65]}" "${m65opts[@]}" "${m65opts_[@]}" --quiet "${opt[builddir]}/forth.prg"
+        cmd "${opt[m65]}" "${m65opts[@]}" "${m65opts_[@]}" --quiet "${opt[builddir]}/forth-skeletal.prg"
 
         # TODO
-        # "${opt[m65dbg]}" load "${opt[builddir]}/forth.prg"
+        # "${opt[m65dbg]}" load "${opt[builddir]}/forth-skeletal.prg"
 
     fi
 }

@@ -1832,8 +1832,16 @@ W_EXECUTE
         +WORD "fill"
 W_FILL
         !word *+2
-        lda #'q'
-        jsr EMIT
+!if 1 {
+        ; TODO dma fills of length 0 look to be happily ignored on a MEGA65
+        ; but cause bad things to happen with xemu - check this case
+        ; explicitly for now
+        lda 2,x
+        ora 3,x
+        bne +
+        jmp POP3
++
+}
         lda 0,x
         sta _fill_value
         lda 2,x
@@ -1858,8 +1866,6 @@ _fill_dst
         !byte 0                 ; dst bank/flags
         !byte 0                 ; cmd msb
         !word 0                 ; modulo
-        lda #'q'
-        jsr EMIT
         jmp POP3
 
 ; ****************************************************************************
