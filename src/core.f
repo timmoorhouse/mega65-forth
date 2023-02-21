@@ -108,4 +108,8 @@
 
 \ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ; \ TODO use ?do
 
+: +- 0< if negate then ; \ TODO REMOVE
+
+: sm/rem over >r >r dabs r@ abs um/mod r> r@ xor +- swap r> +- swap ;
+
 .( ... end of core.f ) cr

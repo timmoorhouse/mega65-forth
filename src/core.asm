@@ -1950,7 +1950,7 @@ W_MSLASH
         ; !word W_DABS
         ; !word W_R
         ; !word W_ABS
-        ; !word W_USLAS
+        ; !word W_USLASH
         ; !word W_RFROM
         ; !word W_R
         ; !word W_XOR
@@ -2578,11 +2578,7 @@ W_SIGN
 ; (d_1 n_1 -- n_2 n_3)
 ; ANSI 6.1.2214
 
-!if 0 {
-        +WORD "sm/rem"
-        !word *+2
-        rts
-}
+; See core.f
 
 ; ****************************************************************************
 ; SOURCE
