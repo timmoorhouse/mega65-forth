@@ -14,7 +14,7 @@ savesystem forth-complete,p,w
 .( TODO autoboot.f should now be deleted or renamed ) cr
 
 \ TODO redirect output
-include prelimtest.fth          \ 1 failure
+\ include prelimtest.fth          \ 1 failure
 \ include tester.fr               \ OK
 \  \ include ttester.fs
 \ include core.fr                 \ LOTS to fix
@@ -48,5 +48,8 @@ cr .( Forth tests completed ) cr cr
 \ : foo2  ( -- n )  0 10 0 DO leave LOOP ;
 \ : foo2  ( -- ch )  [char] 0 [char] a [CHAR] A ;
 \ foo2 cr .s cr
+
+create buf 0 c,
+buf 1 20 fill
 
 \ TODO delete autoboot.f? rename it?

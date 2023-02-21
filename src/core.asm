@@ -1832,6 +1832,8 @@ W_EXECUTE
         +WORD "fill"
 W_FILL
         !word *+2
+        lda #'q'
+        jsr EMIT
         lda 0,x
         sta _fill_value
         lda 2,x
@@ -1843,6 +1845,7 @@ W_FILL
         lda 5,x
         sta _fill_dst+1
         +dma_inline
+        !byte $0b ; F018B 12-byte format
         +dma_options_end
         !byte dma_cmd_fill      ; cmd
 _fill_count
@@ -1855,6 +1858,8 @@ _fill_dst
         !byte 0                 ; dst bank/flags
         !byte 0                 ; cmd msb
         !word 0                 ; modulo
+        lda #'q'
+        jsr EMIT
         jmp POP3
 
 ; ****************************************************************************
