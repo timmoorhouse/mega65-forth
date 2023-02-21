@@ -1189,7 +1189,7 @@ W_ALIGNED
         and #1
         beq +
         inc 0,x
-        beq +
+        bne +
         inc 1,x
 +       jmp NEXT
 
