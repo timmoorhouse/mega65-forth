@@ -91,7 +91,8 @@ W_ZNOTEQUALS
 W_2TOR
         !word *+2
         ; see also >r (core)
-        lda 3,x
+!if PUSH_MSB_FIRST {        
+        lda 3,x ; TODO PUSH_MSB_FIRST
         pha
         lda 2,x
         pha
@@ -99,6 +100,16 @@ W_2TOR
         pha
         lda 0,x
         pha
+} else {
+        lda 2,x ; TODO PUSH_MSB_FIRST
+        pha
+        lda 3,x
+        pha
+        lda 0,x
+        pha
+        lda 1,x
+        pha
+}
         jmp POP2
 
 ; ****************************************************************************
@@ -120,7 +131,8 @@ W_2RFROM
         dex
         dex
         dex
-        pla
+!if PUSH_MSB_FIRST {        
+        pla ; TODO PUSH_MSB_FIRST
         sta 0,x
         pla
         sta 1,x
@@ -128,6 +140,16 @@ W_2RFROM
         sta 2,x
         pla
         sta 3,x
+} else {
+        pla ; TODO PUSH_MSB_FIRST
+        sta 1,x
+        pla
+        sta 0,x
+        pla
+        sta 3,x
+        pla
+        sta 2,x
+}        
         jmp NEXT     
 
 ; ****************************************************************************
@@ -151,7 +173,8 @@ W_2RAT
         dex
         stx <XSAVE
         tsx
-        lda $103,x
+!if PUSH_MSB_FIRST {        
+        lda $103,x ; TODO PUSH_MSB_FIRST
         ldx <XSAVE
         sta 0,x
         tsx
@@ -162,7 +185,25 @@ W_2RAT
         lda $101,x
         pha
         lda $102,x
-        ldx <XSAVE        
+        ldx <XSAVE  
+} else {
+        lda $104,x ; TODO PUSH_MSB_FIRST
+        ldx <XSAVE
+        sta 0,x
+        tsx
+        lda $103,x
+        ldx <XSAVE
+        sta 1,x
+        tsx
+        lda $102,x
+        pha
+        lda $101,x
+        ldx <XSAVE  
+
+}       
+
+
+
 } else {
         dex
         dex

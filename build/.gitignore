@@ -2,8 +2,12 @@
 revision.asm
 *.d81
 *.f
-*.fth
 *.lc
 *.png
 *.prg
 *.txt
+
+# from test suite
+*.fr
+*.fs
+*.fth

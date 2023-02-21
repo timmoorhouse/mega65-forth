@@ -14,7 +14,7 @@
 ; MEGA65 jump table https://mega65.atlassian.net/wiki/spaces/MEGA65/pages/6619137/Kernel+Jump+Table
 
 !macro KERNEL_PRE {
-        stx <XSAVE
+        stx <KERNEL_XSAVE
         pha
         lda #0
         tab
@@ -25,7 +25,7 @@
         lda #>base_page
         tab
         pla
-        ldx <XSAVE
+        ldx <KERNEL_XSAVE
 }
 !macro KERNEL_CALL .tgt {
         +KERNEL_PRE
@@ -165,6 +165,13 @@ SETLFS
         +NONAME
 W_SETNAM        ; (c-addr u --)
         !word *+2
+
+!if 1 {
+        jsr RDUMP
+        brk
+}
+
+
         stx <TEMP1
         lda 0,x
         pha

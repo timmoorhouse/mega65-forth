@@ -92,6 +92,6 @@
 
 : recurse latest name>interpret compile, ; immediate
 
-\ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ;
+\ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ; \ TODO use ?do
     
 .( ... end of core.f ) cr

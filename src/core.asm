@@ -661,13 +661,21 @@ DO_COLON
 
         ; Start executing the word with the code field pointed to by W
         ; (in a new stack frame)
-!if 1 {
+!if PUSH_MSB_FIRST {
         lda <I+1 ; push I
         pha
         lda <I
         pha
 } else {
-        phw &I ; TODO why doesn't this work?
+        phw &I ; TODO why doesn't this work? looks like phw uses the opposite byte order
+}
+
+!if 0 { ; TODO debugging why phw isn't working ...
+        phw &I ; 
+        jsr RDUMP
+        pla
+        pla
+        ldy #0
 }
 
         clc ; ???
@@ -697,10 +705,19 @@ W_SEMI
         +NONAME
 W_PSEMI
         !word *+2
+!if PUSH_MSB_FIRST {        
         pla
         sta <I
         pla
         sta <I+1
+} else {
+        ; TODO plw &I
+        pla
+        sta <I+1
+        pla
+        sta <I
+
+}        
         jmp NEXT
 
 ; ****************************************************************************
@@ -909,10 +926,17 @@ _digit_bad
 W_TOR
         !word *+2
         ; see also 2>r (core-ext), n>r (tools-ext)
-        lda 1,x
+!if PUSH_MSB_FIRST {        
+        lda 1,x ; TODO PUSH_MSB_FIRST
         pha
         lda 0,x
         pha
+} else {
+        lda 0,x ; TODO PUSH_MSB_FIRST
+        pha
+        lda 1,x
+        pha
+}
         jmp POP
 
 ; ****************************************************************************
@@ -1279,6 +1303,7 @@ W_CAT
 ; ("text" -- char)
 ; ANSI 6.1.0895
 
+; TODO move to core.f 
         +WORD_IMM "char"
 W_CHAR
         !word DO_COLON
@@ -1371,6 +1396,14 @@ W_CREATE
 ;          !word QERR     ;)
 
         !word W_PARSE_NAME
+
+!if 0 {
+        !word W_PDOTQ
+        +STRING "create["
+        !word W_2DUP,W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT,W_CR
+}
 
 !if CASE_INSENSITIVE {
         !word W_2DUP
@@ -1486,7 +1519,7 @@ W_PDO
 !if 1 {
         ; ldy #0 ; TODO
         lda (<I),y
-        pha
+        pha ; TODO PUSH_MSB_FIRST - looks like this one is backwards!!!
         inw <I
         lda (<I),y
         pha
@@ -2082,10 +2115,18 @@ W_LEAVE
         pla
         pla
         pla
+!if 1 { ; TODO PUSH_MSB_FIRST {        
         pla ; TODO new I
-        sta <I+1
+        sta <I+1 ; TODO BACKWARDS???
         pla
         sta <I
+} else {
+        pla ; TODO new I
+        sta <I
+        pla
+        sta <I+1
+
+}        
         jmp NEXT
         ;jmp BRANCH
 
@@ -2444,11 +2485,18 @@ W_RFROM
         !word *+2
         ; see also 2r> (core-ext), nr> (tools-ext)
         dex
-        dex
+        dex ; TODO PUSH_MSB_FIRST
+!if PUSH_MSB_FIRST {        
         pla
         sta 0,x ; TODO can we use PUSH and avoid some dex's here?  would save a bit of code size
         pla
         sta 1,x
+} else {
+        pla
+        sta 1,x ; TODO can we use PUSH and avoid some dex's here?  would save a bit of code size
+        pla
+        sta 0,x
+}        
         jmp NEXT
 
 ; ****************************************************************************
@@ -2460,10 +2508,16 @@ W_RFROM
 W_RAT ; TODO rename to W_RFETCH?
         !word *+2
         stx <XSAVE
-        tsx
+        tsx  ; TODO PUSH_MSB_FIRST
+!if PUSH_MSB_FIRST {        
         lda $101,x
         pha
         lda $102,x
+} else {
+        lda $102,x
+        pha
+        lda $101,x
+}        
         ldx <XSAVE
         jmp PUSH
 
@@ -2765,56 +2819,46 @@ W_UMSTAR
 ; (ud u_1 -- u_2 u_3)
 ; ANSI 6.1.2370
 
-!if 0 {
         +WORD "um/mod"
+W_USLASH                ; TODO rename - this is the old FIG name
         !word *+2
-        rts
-}
 
+        ; TODO rewrite this using math unit
+!if 1 {
 ; FIG
 ;      U/            ud  u1  ---  u2  u3
 ;               Leave the unsigned remainder u2 and unsigned quotient u3 
 ;               from the unsigned double dividend ud and unsigned divisor 
 ;               u1.
-
-;;
-;;                                       U/
-;;                                       SCREEN 24 LINE 1
-;;
-
-!if 0 {
-        +WORD "u/"
-W_USLASH
-        !word *+2
-;          LDA 4,X
-;          LDY 2,X
-;          STY 4,X
-;          ASL A
-;          STA 2,X
-;          LDA 5,X
-;          LDY 3,X
-;          STY 5,X
-;          ROL A
-;          STA 3,X
-;          LDA #16
-;          STA N
-;L433:     ROL 4,X
-;          ROL 5,X
-;          SEC
-;          LDA 4,X
-;          SBC 0,X
-;          TAY
-;          LDA 5,X
-;          SBC 1,X
-;          BCC L444
-;          STY 4,X
-;          STA 5,X
-;L444:     ROL 2,X
-;          ROL 3,X
-;          DEC N
-;          BNE L433
-        jmp POP
+        lda 4,x
+        ldy 2,x
+        sty 4,x
+        asl
+        sta 2,x
+        lda 5,x
+        ldy 3,x
+        sty 5,x
+        rol
+        sta 3,x
+        lda #16
+        sta <TEMP1
+-       rol 4,x
+        rol 5,x
+        sec
+        lda 4,x
+        sbc 0,x
+        tay
+        lda 5,x
+        sbc 1,x
+        bcc +
+        sty 4,x
+        sta 5,x
++       rol 2,x
+        rol 3,x
+        dec <TEMP1
+        bne -
 }
+        jmp POP
 
 ; see discussion in ANSI A.3.2.2.1
 ; FIG
@@ -2892,6 +2936,8 @@ DO_VARIABLE
 ; WORD
 ; (char "<chars>ccc<char>" -- c-addr)
 ; ANSI 6.1.2450
+
+; TODO move to core.f
 
         +WORD "word"
 W_WORD

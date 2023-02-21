@@ -117,7 +117,7 @@ TOOLS-EXT | [`AHEAD`](https://forth-standard.org/standard/tools/AHEAD) [`BYE`](h
 TOOLS-EXT-OBSOLESCENT | | [`FORGET`](https://forth-standard.org/standard/tools/FORGET)
 XCHAR | | [`X-SIZE`](https://forth-standard.org/standard/xchar/X-SIZE) [`XC!+`](https://forth-standard.org/standard/xchar/XCStorePlus) [`XC!+?`](https://forth-standard.org/standard/xchar/XCStorePlusq) [`XC,`](https://forth-standard.org/standard/xchar/XCComma) [`XC-SIZE`](https://forth-standard.org/standard/xchar/XC-SIZE) [`XC@+`](https://forth-standard.org/standard/xchar/XCFetchPlus) [`XCHAR+`](https://forth-standard.org/standard/xchar/XCHARPlus) [`XEMIT`](https://forth-standard.org/standard/xchar/XEMIT) [`XKEY`](https://forth-standard.org/standard/xchar/XKEY) [`XKEY?`](https://forth-standard.org/standard/xchar/XKEYq)
 XCHAR-EXT | | [`+X/STRING`](https://forth-standard.org/standard/xchar/PlusXDivSTRING) [`-TRAILING-GARBAGE`](https://forth-standard.org/standard/xchar/MinusTRAILING-GARBAGE) [`CHAR`](https://forth-standard.org/standard/xchar/CHAR) [`EKEY>XCHAR`](https://forth-standard.org/standard/xchar/EKEYtoXCHAR) [`X-WIDTH`](https://forth-standard.org/standard/xchar/X-WIDTH) [`XC-WIDTH`](https://forth-standard.org/standard/xchar/XC-WIDTH) [`XCHAR-`](https://forth-standard.org/standard/xchar/XCHARMinus) [`XHOLD`](https://forth-standard.org/standard/xchar/XHOLD) [`X\STRING-`](https://forth-standard.org/standard/xchar/XSTRINGMinus)
-Extensions | `BACKGROUND` `BORDER` `FOREGROUND` `LATEST` `MON` `SAVESYSTEM` `SP@` |
+Extensions | [`BACKGROUND`](doc/mega65.md) `BORDER` `FOREGROUND` `LATEST` `MON` `SAVESYSTEM` `SP@` |
 
 [^partial]: Partial support only
 

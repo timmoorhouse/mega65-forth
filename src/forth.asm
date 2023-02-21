@@ -77,6 +77,15 @@ COLOUR_ERROR  =   4 ; purple
 ; TODO phw to push a word? only out of memory (maybe not so useful) or immediate (could be useful)
 ; TODO quad stuff for double precision things
 
+; TODO when pushing words onto the return stack, we've been pushing MSB then LSB (so the result will have LSB first in memory)
+; BUT it looks like phw pushes the LSB first then the MSB.  Should we switch the order we use the return stack in?
+; This would mean we'd be free to use phw, but it would also mean we couldn't use words in place as they sit on the
+; return stack.  Should the data stack follow the same convention?  It seems more problematic to do this for the data stack.
+;
+; HOWEVER jsr pushes the MSB of the PC first????
+
+PUSH_MSB_FIRST = 1 ; Enabled is the current expectation
+
 !source "util.asm"
 !source "dma.asm"
 !source "vic4.asm"
@@ -212,7 +221,8 @@ DAREA      = TIB - DAREA_LEN
 ;     will be the execution token of the word)
 ;   - NAME>COMPILE will convert from a name token to a compilation token
 ;
-; TODO SEACH-WORDLIST gives you a flag for immediate/non-immediate instead
+; SEACH-WORDLIST gives you a flag for immediate/non-immediate instead.  We implment a SEARCH-WORDLIST-NT
+; that provides 0 | nt.
 
 !macro NONAME {
         +ALIGN
@@ -309,9 +319,18 @@ NEXT
         lda (<I),y
         sta <W
 
-        inw I           ; Increment I by two
-        inw I
+        inw <I           ; Increment I by two
+        inw <I
 
+!if DEBUG {
+        lda <W+1
+        jsr put_hex
+        lda <W
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+        ldy #0
+}
         ; After the jmp:
         ; - X contains the data stack pointer (this should always be preserved)
         ; - Y contains 0 (this can be trashed) TODO should we depend on this?

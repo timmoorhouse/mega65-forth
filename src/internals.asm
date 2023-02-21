@@ -6,6 +6,40 @@
 ;
 ;
 
+; TODO things marked 'common usage' in Forth Programmer's Handbook:
+; 2+                    OK
+; 2-                    OK
+; .'
+; [DEFINED]             in 2012
+; [UNDEFINED]           in 2012
+; BEGIN (assembler)
+; c+!                   skip?
+; CURRENT               skip? also in gforth - should be fine with just get-current/set-current though?
+; CVARIABLE             skip?
+; DASM
+; DEFER <name>          in 2012
+; ELSE (assembler)
+; END-CODE
+; IF (assembler)
+; INCLUDE <filename>
+; INTERRUPT
+; IS <name>
+; L
+; LOCATE <name>
+; M-
+; M/
+; NEXT
+; NOT
+; NOT (assembler)
+; T*
+; T/
+; THEN (assembler)
+; UNTIL (assembler)
+; VOCABULARY <name>
+; WH <name>
+; WHERE <name>
+; 
+
 ; TODO some sort of RPICK (like PICK but for the return stack) for J, I, LEAVE, PLOOP, PPLOOP
 
 ; Is this a whitespace character?
@@ -87,6 +121,8 @@ W_2PLUS
         !word W_TWO
         !word W_PLUS
         !word W_PSEMI
+
+; TODO 2-        
 
 ; ****************************************************************************
 ; 0BRANCH
@@ -340,13 +376,6 @@ SPSTORE
 ;               Save the stack position in CSP.  Used as part of the 
 ;               compiler security.
 ;
-;
-;
-
-;;
-;;                                       !CSP
-;;                                       SCREEN 40 LINE 1
-;;
 
 !if 0 {
         +WORD "!csp"
@@ -364,11 +393,6 @@ W_SCSP
 ;      ?CSP
 ;               Issue error message if stack position differs from value 
 ;               saved in CSP.
-
-;;
-;;                                       ?CSP
-;;                                       SCREEN 40 LINE 12
-;;
 
 !if 0 {
         +WORD "?csp"
@@ -391,13 +415,6 @@ W_QCSP
 ;               A user variable temporarily storing the stack pointer 
 ;               position, for compilation error checking.
 
-;;
-;;
-;;
-;;                                       CSP
-;;                                       SCREEN 37 LINE 8
-;;
-
 !if 0 {
         +WORD "csp"
 W_CSP
@@ -410,11 +427,6 @@ W_CSP
 
 ;      ?COMP
 ;               Issue error message if not compiling.
-
-;;
-;;                                       ?COMP
-;;                                       SCREEN 40 LINE 6
-;;
 
 !if 0 {
         +WORD "?comp"
@@ -435,11 +447,6 @@ W_QCOMP
 ;      ?EXEC
 ;               Issue an error message if not executing.
 
-;;
-;;                                       ?EXEC
-;;                                       SCREEN 40 LINE 8
-;;
-
 !if 0 {
         +WORD "?exec"
 W_QEXEC
@@ -458,11 +465,6 @@ W_QEXEC
 ;      ?PAIRS        n1  n2  ---
 ;               Issue an error message if n1 does not equal n2.  The 
 ;               message indicates that compiled conditionals do not match.
-
-;;
-;;                                       ?PAIRS
-;;                                       SCREEN 40 LINE 10
-;;
 
 !if 0 {
         +WORD "?pairs"

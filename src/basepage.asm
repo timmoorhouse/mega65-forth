@@ -23,6 +23,7 @@ W               !word 0
 ;      XSAVE    address of a temporary register for X in zero-page.
 XSAVE           !byte 0 ; temporary to save S when we need to reuse X
 ; TODO separate XSAVE for kernel calls
+KERNEL_XSAVE    !byte 0 ; just for use in kernel calls
 
 ; TODO alignment
 ; TODO input buffer stack (need to support depth of 8)

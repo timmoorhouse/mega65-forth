@@ -113,6 +113,26 @@ W_SEE
 }
 }
 
+;
+; TODO
+; - lookup name
+; - check code field
+;   - DO_VARIABLE
+;   - DO_CONSTANT
+;   - DO_COLON
+;     - print ': <name>'
+;     - scan a word at a time, resolving word name until we hit (;)
+;     - will need special handling for words like LITERAL, DO, BRANCH, 0BRANCH
+;     - might not be able to transform control structures back to IF, etc (that should be ok?)
+;     - will need to change builtins to only have a single (;)
+;     - limit to maximum length in case we get out of sync
+;     - show address of everything and hex dump (like acme listing)
+;   - DO_DOES
+;     - might not be able to do anything sensible for this case?
+;
+;
+;
+
 ; ****************************************************************************
 ; WORDS
 ; (--)

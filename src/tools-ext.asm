@@ -91,7 +91,6 @@ W_PSCODE
 ; Return control to the host operating system
 
 !if ENABLE_TOOLS_EXT {
-        !word W_BYE
         +WORD "bye"
 W_BYE
         !word *+2
@@ -174,7 +173,7 @@ W_NTOR
         taz
         beq +
 
--       lda 3,x
+-       lda 3,x ; TODO PUSH_MSB_FIRST
         pha
         lda 2,x
         pha
@@ -279,7 +278,7 @@ W_NRFROM
 
 -       dex
         dex
-        pla
+        pla ; TODO PUSH_MSB_FIRST
         sta 0,x
         pla
         sta 1,x
