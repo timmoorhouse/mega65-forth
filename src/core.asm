@@ -2692,19 +2692,8 @@ W_PSQ
 ; S>D
 ; (n -- d)
 ; ANSI 6.1.2170
-;FIG:
-;      S->D          n  ---  d
-;               Sign extend a single number to form a double number.
 
-; TODO move to core.f
-
-        +WORD "s>d"
-W_STOD
-        !word DO_COLON
-        !word W_DUP
-        !word W_ZLESS
-        !word W_NEGATE
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; SIGN

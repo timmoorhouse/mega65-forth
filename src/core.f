@@ -79,6 +79,8 @@
 : s" [char] " parse postpone (s") dup c, swap over here swap cmove allot ; immediate
 : ." postpone s" postpone type ; immediate
 
+: s>d 0 over 0< if invert then ;
+
 \ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ;
     
 .( ... end of core.f ) cr
