@@ -2724,10 +2724,17 @@ _type_after_loop
 
         +WORD "u<"
 W_ULESS
-        !word DO_COLON
-        !word W_SUB      ; subtract two values
-        !word W_ZLESS    ; test sign
-        !word W_PSEMI
+        !word *+2
+        lda 3,x
+        cmp 1,x
+        bne +
+        lda 2,x
+        cmp 0,x
++       bcs +
+        dey
++       sty 2,x
+        sty 3,x
+        jmp POP
 
 ; ****************************************************************************
 ; UM*
