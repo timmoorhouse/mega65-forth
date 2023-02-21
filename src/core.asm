@@ -129,35 +129,18 @@ W_DIGS
 
 ; ****************************************************************************
 ; ' 
-; ("text" -- xt)
+; ("<spaces>name" -- xt)
 ; ANSI 6.1.0070
 
-; FIG:
-;
-;      '             ---  addr                               P,L0
-;               Used in the form:
-;                         '  nnnn
-;               Leaves the parameter field address of dictionary word 
-;               nnnn.  As a compiler directive, executes in a colon 
-;               definition to compile the address as a literal.  If the 
-;               word is not found after a search of CONTEXT and CURRENT, 
-;               an appropriate error message is given.  Pronounced "tick".
-
-!if 0 {
-        +WORD "'"
+        +WORD_IMM "'"
 W_TICK
         !word DO_COLON
-
-
-
-;          !word DFIND
-;          !word ZEQU
-;          !word ZERO
-;          !word QERR
-;          !word DROP
-;          !word LITERAL
+        !word W_PARSE_NAME
+        !word W_FORTH_WORDLIST ; TODO
+        !word W_SEARCH_WORDLIST
+        ; TODO check status from search-wordlist
+        !word W_DROP
         !word W_PSEMI
-}
 
 ; ****************************************************************************
 ; ( 
