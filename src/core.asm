@@ -132,6 +132,8 @@ W_DIGS
 ; ("<spaces>name" -- xt)
 ; ANSI 6.1.0070
 
+; TODO move to core.f
+
         +WORD_IMM "'"
 W_TICK
         !word DO_COLON
@@ -2459,11 +2461,7 @@ W_RAT ; TODO rename to W_RFETCH?
 ; (--)
 ; ANSI 6.1.2120
 
-!if 0 {
-        +WORD "recurse"
-        !word *+2
-        rts
-}
+; See core.f
 
 ; ****************************************************************************
 ; REPEAT
@@ -2936,11 +2934,7 @@ W_LBRACKET
 ; (???)
 ; ANSI 6.1.2510
 
-!if 0 {
-        +WORD_IMM "[']"
-        !word *+2
-        rts
-}
+; See core.f
 
 ; ****************************************************************************
 ; [CHAR]
