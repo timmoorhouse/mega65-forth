@@ -81,6 +81,10 @@
 
 : s>d 0 over 0< if invert then ;
 
+: 2! swap over ! cell+ ! ;
+
+: 2@ dup cell+ @ swap @ ;
+
 \ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ;
     
 .( ... end of core.f ) cr
