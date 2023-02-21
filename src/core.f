@@ -85,6 +85,8 @@
 
 : 2@ dup cell+ @ swap @ ;
 
+: ['] postpone ' postpone literal ; immediate
+
 \ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ;
     
 .( ... end of core.f ) cr
