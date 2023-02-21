@@ -79,7 +79,7 @@
 : s" [char] " parse postpone (s") dup c, swap over here swap cmove allot ; immediate
 : ." postpone s" postpone type ; immediate
 
-: s>d 0 over 0< if invert then ;
+: s>d dup 0< ;
 
 : 2! swap over ! cell+ ! ;
 
