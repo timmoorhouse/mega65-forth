@@ -165,13 +165,6 @@ SETLFS
         +NONAME
 W_SETNAM        ; (c-addr u --)
         !word *+2
-
-!if 1 {
-        jsr RDUMP
-        brk
-}
-
-
         stx <TEMP1
         lda 0,x
         pha
