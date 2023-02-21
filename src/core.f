@@ -73,6 +73,9 @@
 
 : literal postpone (literal) , ; immediate
 
+\ TODO choose cmove or cmove> ?
+: move cmove ;
+
 : [char] parse-name drop c@ postpone literal ; immediate
 
 \ TODO alignment after string?

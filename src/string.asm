@@ -102,6 +102,16 @@ W_BLANK
 }
 W_CMOVE
         !word *+2
+!if 1 {
+        ; TODO dma copies of length 0 look to be happily ignored on a MEGA65
+        ; but cause bad things to happen with xemu - check this case
+        ; explicitly for now
+        lda 0,x
+        ora 1,x
+        bne +
+        jmp POP3
++
+}        
         lda 0,x
         sta _cmove_count
         lda 1,x
@@ -142,6 +152,17 @@ _cmove_dst
         +WORD "cmove>"
 W_CMOVEG
         !word *+2
+!if 1 {
+        ; TODO dma copies of length 0 look to be happily ignored on a MEGA65
+        ; but cause bad things to happen with xemu - check this case
+        ; explicitly for now
+        lda 0,x
+        ora 1,x
+        bne +
+        jmp POP3
++
+}        
+
         ; TODO add len - 1 to src, dst
         lda 0,x
         sta _cmoveg_count
