@@ -606,34 +606,62 @@ W_2DROP
 
         +WORD "2dup"
 W_2DUP
-        !word DO_COLON
-        !word W_OVER
-        !word W_OVER
-        !word W_PSEMI
+        !word *+2
+        dex
+        dex
+        lda 4,x
+        sta 0,x
+        lda 5,x
+        sta 1,x
+        lda 2,x
+        pha
+        lda 3,x
+        jmp PUSH
 
 ; ****************************************************************************
 ; 2OVER 
 ; (x_1 x_2 x_3 x_4 -- x_1 x_2 x_3 x_4 x_1 x_2)
 ; ANSI 6.1.0400
 
-!if 0 {
         +WORD "2over"
 W_2OVER
         !word *+2
-        rts
-}
+        dex
+        dex
+        lda 8,x
+        sta 0,x
+        lda 9,x
+        sta 1,x
+        lda 6,x
+        pha
+        lda 7,x
+        jmp PUSH
 
 ; ****************************************************************************
 ; 2SWAP 
 ; (x_1 x_2 x_3 x_4 -- x_3 x_4 x_1 x_2)
 ; ANSI 6.1.0430
 
-!if 0 {
         +WORD "2swap"
 W_2SWAP
         !word *+2
-        rts
-}
+        lda 4,x
+        ldy 0,x
+        sty 4,x
+        sta 0,x
+        lda 5,x
+        ldy 1,x
+        sty 5,x
+        sta 1,x
+        lda 6,x
+        ldy 2,x
+        sty 6,x
+        sta 2,x
+        lda 7,x
+        ldy 3,x
+        sty 7,x
+        sta 3,x
+        jmp NEXT
 
 ; ****************************************************************************
 ; : 
