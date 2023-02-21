@@ -1802,59 +1802,6 @@ _pevaluate_done_loop
 
         !word W_PSEMI
 
-; FIG
-;      INTERPRET
-;               The outer text interpreter which sequentially executes or 
-;               compiles text from the input stream (terminal or disc) 
-;               depending on STATE.  If the word name cannot be found 
-;               after a search of CONTEXT and then CURRENT it is converted 
-;               to a number according to the current base.  That also 
-;               failing, an error message echoing the name with a " ?" 
-;               will be given.
-;
-;               Text input will be taken according to the convention for 
-;               WORD.  If a decimal point is found as part of a number, a 
-;               double number value will be left.  The decimal point has 
-;               no other purpose than to force this action.  See NUMBER.
-
-!if 0 {
-;        +WORD "interpret"
-W_INTERPRET
-        !word DO_COLON
-;L2272:    !word DFIND
-;          !word ZBRANCH
-;L2274:    !word $1E      ; L2289-L2274
-;          !word STATE
-;          !word AT
-;          !word LESS
-;          !word ZBRANCH
-;L2279:    !word $A       ; L2284-L2279
-;          !word CFA
-;          !word COMMA
-;          !word BRANCH
-;L2283:    !word $6       ; L2286-L2283
-;L2284:    !word CFA
-;          !word EXEC
-;L2286:    !word QSTAC
-;          !word BRANCH
-;L2288:    !word $1C      ; L2302-L2288
-;L2289:    !word HERE
-;          !word NUMBER
-;          !word DPL
-;          !word AT
-;          !word 1PLUS
-;          !word ZBRANCH
-;L2295:    !word 8        ; L2299-L2295
-;          !word DLIT
-;          !word BRANCH
-;L2298:    !word $6       ; L2301-L2298
-;L2299:    !word DROP
-;          !word LITER
-;L2301:    !word QSTAC
-;L2302:    !word BRANCH
-;L2303:    !word $FFC2    ; L2272-L2303
-}
-
 ; ****************************************************************************
 ; EXECUTE 
 ; (i*x xt -- j*x)
@@ -1954,73 +1901,6 @@ W_FIND
         !word W_NIP
 +
         !word W_PSEMI
-
-; FIG
-;      (FIND)        addr1  addr2  ---  pfa  b  true    (ok)
-;                    addr1  addr2  ---  0               (bad)
-;               Searches the dictionary starting at the name field address 
-;               addr2, matching to the text at addr1.  Returns parameter 
-;               field address, length byte of name field and boolean true 
-;               for a good match.  If no match is found, only a boolean 
-;               false is left.
-;
-;        +WORD "(find)"
-W_PFIND
-        !word *+2
-;          LDA #2
-;          JSR SETUP
-;          STX XSAVE
-;L249:     LDY #0
-;          LDA (N),Y
-;          EOR (N+2),Y
-;;
-;;
-;          AND #$3F
-;          BNE L281
-;L254:     INY
-;          LDA (N),Y
-;          EOR (N+2),Y
-;          ASL A
-;          BNE L280
-;          BCC L254
-;          LDX XSAVE
-;          DEX
-;          DEX
-;          DEX
-;          DEX
-;          CLC
-;          TYA
-;          ADC #5
-;          ADC N
-;          STA 2,X
-;          LDY #0
-;          TYA
-;          ADC N+1
-;          STA 3,X
-;          STY 1,X
-;          LDA (N),Y
-;          STA 0,X
-;          LDA #1
-;          PHA
-;          JMP PUSH
-;L280:     BCS L284
-;L281:     INY
-;          LDA (N),Y
-;          BPL L281
-;L284:     INY
-;          LDA (N),Y
-;          TAX
-;          INY
-;          LDA (N),Y
-;          STA N+1
-;          STX N
-;          ORA N
-;          BNE L249
-;          LDX XSAVE
-;          LDA #0
-;          PHA
-        ; jmp PUSH ; exit false upon reading null link
-        jmp NEXT
 
 ; ****************************************************************************
 ; FM/MOD 
@@ -2202,7 +2082,6 @@ W_KEY
         +WORD "leave"
 W_LEAVE
         !word *+2
-!if 1 {
         pla ; TODO 
         pla
         pla
@@ -2213,17 +2092,6 @@ W_LEAVE
         sta <I
         jmp NEXT
         ;jmp BRANCH
-} else {
-        ; FIG behaviour
-        stx <XSAVE
-        tsx
-        lda $101,x
-        sta $103,x
-        lda $102,x
-        sta $104,x
-        ldx <XSAVE
-        jmp NEXT
-}
 
 ; ****************************************************************************
 ; LITERAL 
@@ -3044,90 +2912,6 @@ W_WORD
 
         !word W_PSEMI
 
-;          !word BLK
-;          !word AT
-;          !word ZBRANCH
-;L1908:    !word $C       ; L1914-L1908
-;          !word BLK
-;          !word AT
-;          !word BLOCK
-;          !word BRANCH
-;L1913:    !word $6       ; L1916-L1913
-
-;L1914:    !word TIB
-;          !word AT
-
-;L1916:    !word IN
-;          !word AT
-;          !word PLUS
-;          !word SWAP
-;          !word W_ENCLOSE
-;          !word HERE
-;          !word CLITERAL
-;          !byte $22
-;          !word BLANK
-;          !word IN
-;          !word PSTOR
-;          !word OVER
-;          !word SUB
-;          !word TOR
-;          !word R
-;          !word HERE
-;          !word CSTOR
-;          !word PLUS
-;          !word HERE
-;          !word 1PLUS
-;          !word RFROM
-;          !word CMOVE
-;        !word W_PSEMI
-
-;      ENCLOSE       addr1  c  ---  addr1  n1  n2  n3
-;               The text scanning primitive used by WORD.  From the text 
-;               address addr1 and an ascii delimiting character c, is 
-;               determined the byte offset to the first non-delimiting 
-;               character n1, the offset to the first delimiter after the 
-;               text n2, and the offset to the first character not 
-;               included.  This procedure will not process past an ascii 
-;               'null', treating it as an unconditional delimiter.
-
-;        +WORD "enclose"
-W_ENCLOSE
-        !word *+2
-
-;          LDA #2               ; move addr and c to N
-;          JSR SETUP 
-
-;          TXA                  ; make space on data stack for 4 words
-;          SEC
-;          SBC #8    
-;          TAX
-
-;          STY 3,X              ; set MSB of n2 & n3 to 0 (assume MSB of n1 still 0, addr1 still on stack)
-;          STY 1,X
-
-;          DEY                  ; setup for loop
-;-         INY                  ; skip leading delimiters
-;          LDA (N+2),Y
-;          CMP N
-;          BEQ -
-;          STY 4,X              ; and now set n1 (number of leading delimiters)
-
-;-         LDA (N+2),Y
-;          BNE ++
-;          STY 2,X
-;          STY 0,X
-;          TYA
-;          CMP 4,X
-;          BNE +
-;          INC 2,X
-;+         JMP NEXT
-;++        STY 2,X
-;          INY
-;          CMP N
-;          BNE -
-;          STY 0,X
-        jmp NEXT
-
 ; ****************************************************************************
 ; XOR
 ; (x_1 x_2 -- x_3)
@@ -3172,20 +2956,7 @@ W_LBRACKET
 ; [CHAR]
 ; ANSI 6.1.2520
 
-; Compilation ("<spaces>name" --):
-;       Skip leading space delimiters.  Parse name delimited by a space.
-; Run-time (-- char):
-;       Place char, the first character of name, on the stack
-;
-
-!if 0 {
-        +WORD_IMM "[char]"
-W_BCHARB
-        !word DO_COLON
-
-        !word W_PARSE_NAME
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; ]
