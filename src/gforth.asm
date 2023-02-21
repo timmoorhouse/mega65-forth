@@ -173,7 +173,7 @@ W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
         !word W_2RFROM          ; (0 0 c-addr u) (R: old-base is-negative)
         !word W_TONUMBER        ; (ud c-addr2 u2) (R: old-base is-negative)
         !word W_NIP
-        !word W_ZEQUALS         ; (ud flag) (R: old-base is-negative)
+        !word W_ZEQUAL         ; (ud flag) (R: old-base is-negative)
 
 _stonumber_finish_up
 
@@ -203,7 +203,7 @@ W_STONUMBER_CHECK_BASE ; (c-addr u -- c-addr u)
         !word DO_COLON
 
         !word W_DUP
-        !word W_ZEQUALS
+        !word W_ZEQUAL
         +ZBRANCH +
         ; zero length, just return
         !word W_PSEMI

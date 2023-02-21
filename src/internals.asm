@@ -253,9 +253,10 @@ _lower_loop
         !word W_LESS
         !word W_OVER
         +CLITERAL 'Z'
-        !word W_GREATER
+        !word W_SWAP
+        !word W_LESS
         !word W_OR
-        !word W_ZEQUALS
+        !word W_ZEQUAL
         +ZBRANCH +
 
         ; need to change case

@@ -150,15 +150,7 @@ W_TICK
 ; ANSI 6.1.0080
 ; ANSI 11.6.1.0080 (extensions in FILE)
 
-; TODO allow multiline comment blocks when parsing from a file
-
-        +WORD_IMM "("
-W_PAREN
-        !word DO_COLON
-        +CLITERAL ')'
-        !word W_PARSE
-        !word W_2DROP
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; * 
@@ -487,7 +479,7 @@ W_ZLESS
 ; ANSI 6.1.0270
 
         +WORD "0="
-W_ZEQUALS
+W_ZEQUAL
         !word *+2
         ; see also 0<> (core-ext)
         ; ldy #0 ; TODO
@@ -577,8 +569,6 @@ W_2DROP
 ; 2DUP 
 ; (x_1 x_2 -- x_1 x_2 x_1 x_2)
 ; ANSI 6.1.0380
-
-; TODO native implementation?
 
         +WORD "2dup"
 W_2DUP
@@ -697,12 +687,12 @@ W_SEMI
         !word DO_COLON
 ;          !word QCSP
         +LITERAL W_PSEMI
-        !word W_COMPILEC
+        !word W_COMMA ; COMPILEC?
         !word W_SMUDGE
         !word W_LBRACKET
         !word W_PSEMI
 
-        +NONAME
+        +NONAME ; ";s" ?
 W_PSEMI
         !word *+2
 !if PUSH_MSB_FIRST {        
@@ -795,12 +785,7 @@ W_EQUAL
 ; (n_1 n_2 -- flag)
 ; ANSI 6.1.0540
 
-        +WORD ">"
-W_GREATER
-        !word DO_COLON
-        !word W_SWAP
-        !word W_LESS
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; >BODY 
@@ -1774,7 +1759,7 @@ _pevaluate_word_not_found
         +ZBRANCH _pevaluate_done_word
 
         +LITERAL W_PLITERAL
-        !word W_COMPILEC
+        !word W_COMMA ; COMPILEC?
         !word W_COMMA
 
         ; TODO if compiling postpone a pliteral, then the number
@@ -1906,6 +1891,8 @@ _fill_dst
 ; (c-addr -- c-addr 0 | xt 1 | xt -1)
 ; ANSI 6.1.1550
 
+; TODO move to core.f
+
         +WORD "find"
 W_FIND
         !word DO_COLON
@@ -1957,21 +1944,21 @@ W_FIND
         +WORD "m/"
 W_MSLASH
         !word DO_COLON
-;          !word OVER
-;          !word TOR
-;          !word TOR
-;          !word DABS
-;          !word R
-;          !word ABS
-;          !word USLAS
-;          !word RFROM
-;          !word R
-;          !word XOR
-;          !word PM
-;          !word SWAP
-;          !word RFROM
-;          !word PM
-;          !word SWAP
+        ; !word W_OVER
+        ; !word W_TOR
+        ; !word W_TOR
+        ; !word W_DABS
+        ; !word W_R
+        ; !word W_ABS
+        ; !word W_USLAS
+        ; !word W_RFROM
+        ; !word W_R
+        ; !word W_XOR
+        ; !word W_PM
+        ; !word W_SWAP
+        ; !word W_RFROM
+        ; !word W_PM
+        ; !word W_SWAP
         !word W_PSEMI
 }
 
@@ -1983,7 +1970,6 @@ W_MSLASH
         +WORD "here"
 W_HERE
         !word *+2
-        ; TODO phw HERE
         lda <HERE
         pha
         lda <HERE+1
@@ -2214,23 +2200,7 @@ beq +
 ;               A mixed magnitude math operation which leaves the double 
 ;               number signed product of two signed numbers.
 
-; TODO move to core.f
-
-        +WORD "m*"
-W_MSTAR
-        !word DO_COLON
-        !word W_2DUP
-        !word W_XOR
-        !word W_TOR
-        !word W_ABS
-        !word W_SWAP
-        !word W_ABS
-        !word W_UMSTAR
-        !word W_RFROM
-        !word W_ZLESS
-        +ZBRANCH +
-        !word W_DNEGATE
-+       !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; MAX 
@@ -2260,7 +2230,8 @@ W_MAX
 W_MIN
         !word DO_COLON
         !word W_2DUP
-        !word W_GREATER
+        !word W_SWAP
+        !word W_LESS
         +ZBRANCH +
         !word W_SWAP
 +       !word W_DROP
@@ -2295,33 +2266,7 @@ W_MOD
 ; (addr_1 addr_2 u --)
 ; ANSI 6.1.1900
 
-
-; FIG
-;
-;      MOVE          addr1  addr2  n  ---
-;               Move the contents of n memory cells (16 bit contents) 
-;               beginning at addr1 into n cells beginning at addr2.  The 
-;               contents of addr1 is moved first.  This definition is 
-;               appropriate on word addressing computers.
-;
-; TODO DMA?
-
-!if 0 {
-        +WORD "move"
-        !word *+2
-
-
-; !if ENABLE_RUNTIME_CHECKS {
-;         ; TODO check alignment
-;         lda 0,x
-;         ror
-;         bcc+
-;         jmp fail_runtime_check
-; +
-; }
-
-        rts
-}
+; See core.f
 
 ; ****************************************************************************
 ; NEGATE
@@ -2380,6 +2325,8 @@ W_OVER
 ; ANSI 6.1.2033
 ;
 ; Appends the *compilation* semantics of name to the current definition
+
+; TODO move to core.f?
 
         +WORD_IMM "postpone"
 W_POSTPONE
@@ -2461,7 +2408,7 @@ _quit_read_loop
 
         !word W_STATE
         !word W_AT
-        !word W_ZEQUALS
+        !word W_ZEQUAL
         +ZBRANCH +
 
 !ifdef COLOUR_PROMPT {
@@ -2539,6 +2486,8 @@ W_RAT ; TODO rename to W_RFETCH?
 ; ROT
 ; (x_1 x_2 x_3 -- x_2 x_3 x_1)
 ; ANSI 6.1.2160
+
+; TODO native implementation?
 
         +WORD "rot"
 W_ROT
@@ -2820,6 +2769,7 @@ W_UMSTAR
 ; ANSI 6.1.2370
 
         +WORD "um/mod"
+W_UMMOD
 W_USLASH                ; TODO rename - this is the old FIG name
         !word *+2
 
@@ -2862,7 +2812,7 @@ W_USLASH                ; TODO rename - this is the old FIG name
 
 ; see discussion in ANSI A.3.2.2.1
 ; FIG
-;      M/MOD         ud1  u2  ---  u3  u4
+;      M/MOD         ud1  u2  ---  u3  u4 (ud4?)
 ;               An unsigned mixed magnitude math operation which leaves a 
 ;               double quotient ud4 and remainder u3, from a double 
 ;               dividend ud1 and single divisor u2.

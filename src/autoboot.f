@@ -1,6 +1,7 @@
-.( Starting bootstrap... ) cr
 
 include bootstrap-min.f
+
+\ Note that you can't use comments until after including bootstrap-min!
 
 .( ... saving forth-minimal ) cr
 savesystem forth-minimal,p,w
@@ -14,10 +15,10 @@ savesystem forth-complete,p,w
 .( TODO autoboot.f should now be deleted or renamed ) cr
 
 \ TODO redirect output
-\ include prelimtest.fth          \ 1 failure
-\ include tester.fr               \ OK
+include prelimtest.fth          \ 1 failure
+include tester.fr               \ OK
 \  \ include ttester.fs
-\ include core.fr                 \ LOTS to fix
+include core.fr                 \ LOTS to fix
 \ include coreplustest.fth
 \ include utilities.fth
 \ include errorreport.fth
@@ -50,6 +51,6 @@ cr .( Forth tests completed ) cr cr
 \ foo2 cr .s cr
 
 create buf 0 c,
-buf 1 20 fill
+buf 0 20 fill
 
 \ TODO delete autoboot.f? rename it?

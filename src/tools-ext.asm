@@ -211,7 +211,7 @@ W_NAME_TO_COMPILE
         +LITERAL W_EXECUTE
         !word W_PSEMI
 +
-        +LITERAL W_COMPILEC
+        +LITERAL W_COMMA ; COMPILEC?
         !word W_PSEMI
 
 ; ****************************************************************************
@@ -337,7 +337,7 @@ _traverse_loop
         !word W_SWAP    ; (i*x nt xt) (R: xt wid)
         !word W_EXECUTE ; (j*x flag) (R: xt wid)
 
-        !word W_ZEQUALS
+        !word W_ZEQUAL
         +ZBRANCH _traverse_loop
 
 _traverse_done

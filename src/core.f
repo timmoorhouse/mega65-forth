@@ -1,4 +1,18 @@
 
+: literal postpone (literal) , ; immediate
+
+: [char] parse-name drop c@ postpone literal ; immediate
+
+: ( [char] ) parse 2drop ; immediate
+( TODO allow multiline comments when parsing from a file )
+
+: \ 13 parse 2drop ; immediate
+
+: .( [char] ) parse type ; immediate
+( we cheated and put this in core instead of core-ext )
+
+.( Starting bootstrap... ) cr
+
 \ ***************************************************************************
 \ basic control flow building blocks
 
@@ -57,6 +71,8 @@
        
 \ ***************************************************************************
 
+: > swap < ;
+
 : >body ( xt -- a-addr ) 2+ ;
 
 \ : abs ( n -- u ) dup 0< if negate then ;
@@ -71,12 +87,10 @@
 
 : chars ( n_1 -- n_2 ) ;
 
-: literal postpone (literal) , ; immediate
+: m* 2dup xor >r abs swap abs um* r> 0< if dnegate then ;
 
 \ TODO choose cmove or cmove> ?
 : move cmove ;
-
-: [char] parse-name drop c@ postpone literal ; immediate
 
 \ TODO alignment after string?
 : s" [char] " parse postpone (s") dup c, swap over here swap cmove allot ; immediate
@@ -90,8 +104,8 @@
 
 : ['] postpone ' postpone literal ; immediate
 
-: recurse latest name>interpret compile, ; immediate
+: recurse latest name>interpret , ; immediate
 
 \ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ; \ TODO use ?do
-    
+
 .( ... end of core.f ) cr

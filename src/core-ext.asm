@@ -7,18 +7,7 @@
 ; ("text" --)
 ; ANSI 6.2.0200
 
-; from ANSI A.6.2.2008 discussion:
-;     : .( [CHAR] ) PARSE TYPE ; IMMEDIATE
-
-!if ENABLE_CORE_EXT {
-        +WORD_IMM ".("
-W_DPAREN
-        !word DO_COLON
-        +CLITERAL ')'
-        !word W_PARSE
-        !word W_TYPE
-        !word W_PSEMI
-}
+; See core.f (yup, we cheated and placed it in with core)
 
 ; ****************************************************************************
 ; .R
@@ -278,37 +267,7 @@ W_NOTEQUAL
 ; (???)
 ; ANSI 6.2.0700
 
-; FIG:
-;
-;
-;      AGAIN         addr  n  ---        (compiling)         P,C2,L0
-;               Used in a colon-definition in the form:
-;                         BEGIN  ...  AGAIN
-;               At run-time, AGAIN forces execution to return to 
-;               corresponding BEGIN.  There is no effect on the stack.  
-;               Execution cannot leave this loop (unless R> DROP is 
-;               executed one level below).
-;
-;               At compile time, AGAIN compiles BRANCH with an offset from 
-;               HERE to addr.  n is used for compile-time error checking.
-;
-;;
-;;                                       AGAIN
-;;                                       SCREEN 74 LINE 3
-
-!if ENABLE_CORE_EXT {
-!if 0 {
-        +WORD_IMM "again"
-W_AGAIN
-        !word DO_COLON
-;          !word ONE
-;          !word QPAIR
-;          !word COMP
-;          !word BRANCH
-;          !word BACK
-        !word W_PSEMI
-}
-}
+; See core.f
 
 ; ****************************************************************************
 ; BUFFER:
@@ -339,15 +298,7 @@ W_AGAIN
 ; (xt --)
 ; ANSI 6.2.0945
 
-!if ENABLE_CORE_EXT {
-        +WORD "compile,"
-} else {
-        +NOMAME
-}
-W_COMPILEC
-        !word DO_COLON
-        !word W_COMMA
-        !word W_PSEMI
+; See core-ext.f
 
 ; ****************************************************************************
 ; DEFER
@@ -1090,23 +1041,4 @@ W_TRUE
 ; ANSI 6.2.2535
 ; ANSI 7.6.2.2535
 
-!if ENABLE_CORE_EXT {
-        +WORD_IMM "\\"
-W_BACKSLASH
-        !word DO_COLON
-        +CLITERAL '\r' ; TODO
-        !word W_PARSE
-!if DEBUG {
-        !word W_PDOTQ
-        +STRING "<comment>"
-        +CLITERAL '['
-        !word W_EMIT
-        !word W_2DUP
-        !word W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT
-        !word W_DOTS,W_CR
-}
-        !word W_2DROP
-        !word W_PSEMI
-}
+; See core.f

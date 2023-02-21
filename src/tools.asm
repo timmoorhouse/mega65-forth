@@ -158,7 +158,7 @@ W_PRINT_NAME    ; (nt -- u)
         !word W_CAT
         +CLITERAL F_HIDDEN
         !word W_AND
-        !word W_ZEQUALS
+        !word W_ZEQUAL
         +ZBRANCH _print_name_end
 
         !word W_OUT
@@ -167,7 +167,8 @@ W_PRINT_NAME    ; (nt -- u)
         +ZBRANCH +
         !word W_SPACE
 +       !word W_CSLL
-        !word W_GREATER
+        !word W_SWAP
+        !word W_LESS
         +ZBRANCH +
         !word W_CR
 +       !word W_NAME_TO_STRING
