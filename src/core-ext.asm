@@ -49,11 +49,11 @@ W_ZNOTEQUALS
         ; see also 0= (core)
         ; ldy #0 ; TODO
         lda 1,x
-        sty 1,x
         ora 0,x
         beq +
-        iny ; TODO need to leave -1 for true
+        dey ; TODO need to leave -1 for true
 +       sty 0,x
+        sty 1,x
         jmp NEXT
 }
 
@@ -62,8 +62,7 @@ W_ZNOTEQUALS
 ; (n -- flag)
 ; ANSI 6.2.0280
 
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; 2>R
