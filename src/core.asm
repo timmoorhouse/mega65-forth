@@ -2033,10 +2033,10 @@ W_IMMEDIATE
 W_INVERT
         !word *+2
         lda 0,x
-        eor #$ff ; TODO neg
+        eor #$ff
         sta 0,x
         lda 1,x
-        eor #$ff ; TODO neg
+        eor #$ff
         sta 1,x
         jmp NEXT
 
@@ -2263,6 +2263,7 @@ W_NEGATE
         !word *+2
         ; ldy #0 ; TODO
         ; see also DNEGATE (double)
+        ; TODO use neg
         sec
         tya
         sbc 0,x

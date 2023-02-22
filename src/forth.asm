@@ -73,7 +73,7 @@ COLOUR_ERROR  =   4 ; purple
 ; TODO inq/deq for quads
 ; TODO asw for asl on a word!
 ; TODO row for rol on a word!
-; TODO neg for xor $ff
+; TODO neg for twos complement
 ; TODO phw to push a word? only out of memory (maybe not so useful) or immediate (could be useful)
 ; TODO quad stuff for double precision things
 
