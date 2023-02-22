@@ -2658,7 +2658,7 @@ W_SWAP
 ; (c-addr u --)
 ; ANSI 6.1.2310
 
-; TODO can we use primm?
+; TODO can we use primm? the problem is it uses a null terminated string
 
         +WORD "type"
 W_TYPE

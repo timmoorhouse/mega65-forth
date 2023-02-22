@@ -31,8 +31,8 @@
 ; NEXT
 ; NOT
 ; NOT (assembler)
-; T*
-; T/
+; T*                    triple precision, for m*/
+; T/                    triple precision, for m*/
 ; THEN (assembler)
 ; UNTIL (assembler)
 ; VOCABULARY <name>
