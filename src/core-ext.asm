@@ -237,12 +237,12 @@ W_NOTEQUAL
 
         lda 1,x
         eor 3,x
-        sty 3,x
-        ora 2,x
+        ora 2,x 
 
         beq +
-        iny ; TODO need to leave -1 for true
+        dey ; TODO need to leave -1 for true
 +       sty 2,x
+        sty 3,x
         jmp POP
 }
 
@@ -1008,8 +1008,7 @@ W_TRUE
 ; (u_1 u_2 flag)
 ; ANSI 6.2.2350
 
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; UNUSED

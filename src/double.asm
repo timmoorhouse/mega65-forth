@@ -90,10 +90,6 @@ W_DMINUS
 ;               accessable on the stack.  Conversion is performed 
 ;               according to the current BASE.  A blank follows.
 ;               Pronounced D-dot.
-;
-;;
-;;                                       D.
-;;                                       SCREEN 76 LINE 5
 
 ; The word itself is required by the implmentation (of .) but is only visible if DOUBLE is enabled
 
@@ -119,10 +115,6 @@ W_DDOT
 ;      D.R           d  n  ---
 ;               Print a signed double number d right aligned in a field n 
 ;               characters wide.
-;
-;;
-;;                                       D.R
-;;                                       SCREEN 76 LINE 1
 
 ; The word itself is required by the implmentation (of .) but is only visible if DOUBLE is enabled
 
