@@ -19,23 +19,15 @@ W_STORE
         jmp fail_runtime_check
 +
 }
-
         lda 2,x
         sta (0,x)
 
-        ; TODO we don't really need to do this since we've got an aligned address ..
-        ; just in case address is ??ff ...
-!if 1 {        
         inc 0,x
         bne +
         inc 1,x
 +
         lda 3,x
         sta (0,x)
-} else {
-        lda 3,x
-        sta (1,x)
-}        
         jmp POP2
 
 ; ****************************************************************************
@@ -259,8 +251,6 @@ W_PSTORE
         ; TODO check alignment
 }
 
-        ; TODO Like for ! do we need to do this when we have an aligned address? 
-        ; in case address is ??ff ...
         inc 0,x
         bne +
         inc 1,x
@@ -962,8 +952,6 @@ W_AT
         lda (0,x)
         pha
 
-        ; TODO like for ! can we skip this since we have an aligned address?
-        ; in case address is ??ff ...
         inc 0,x
         bne +
         inc 1,x
@@ -1383,8 +1371,7 @@ W_CREATE
         !word W_PARSE_NAME
 
 !if 0 {
-        !word W_PDOTQ
-        +STRING "create["
+        +DOTQ "create["
         !word W_2DUP,W_TYPE
         +CLITERAL ']'
         !word W_EMIT,W_CR
@@ -1675,8 +1662,7 @@ _pevaluate_loop
         +ZBRANCH _pevaluate_done_loop
 
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "pevaluate-name"
+        +DOTQ "pevaluate-name"
         +CLITERAL '['
         !word W_EMIT
         !word W_2DUP
@@ -1717,8 +1703,7 @@ _pevaluate_loop
         ; non-immediate
         ; TODO execute if interpreting, move to definition if compiling
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<non-immediate>"
+        +DOTQ "<non-immediate>"
         !word W_DOTS,W_CR
 }
 
@@ -1737,8 +1722,7 @@ _pevaluate_nonimmediate_interpreting
 _pevaluate_immediate
         ; TODO always execute
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<immediate>"
+        +DOTQ "<immediate>"
         !word W_DOTS,W_CR
 }
         !word W_EXECUTE
@@ -1776,8 +1760,7 @@ _pevaluate_error
         ; TODO error
         ; TODO change colour to red?
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<not found>"
+        +DOTQ "<not found>"
         !word W_DOTS,W_CR
 }
 
@@ -1788,8 +1771,7 @@ _pevaluate_error
         !word W_SPACE
         !word W_2RAT
         !word W_TYPE
-        !word W_PDOTQ
-        +STRING "? "
+        +DOTQ "? "
 !ifdef COLOUR_ERROR {
         +CLITERAL COLOUR_OUTPUT
         !word W_FOREGROUND
@@ -2333,8 +2315,7 @@ W_POSTPONE
         !word DO_COLON
         !word W_PARSE_NAME
 !if 0 {
-        !word W_PDOTQ
-        +STRING "<postpone>"
+        +DOTQ "<postpone>"
         +CLITERAL '['
         !word W_EMIT
         !word W_2DUP
@@ -2416,8 +2397,7 @@ _quit_read_loop
         !word W_FOREGROUND
 }
 
-        !word W_PDOTQ
-        +STRING " ok"
+        +DOTQ " ok"
         !word W_CR
 +
         +BRANCH _quit_read_loop
@@ -2676,6 +2656,8 @@ W_SWAP
 ; TYPE
 ; (c-addr u --)
 ; ANSI 6.1.2310
+
+; TODO can we use primm?
 
         +WORD "type"
 W_TYPE

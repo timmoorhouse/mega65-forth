@@ -174,7 +174,6 @@ BRANCH  ; used by (loop)  TODO MESSY !!!!!!!!
         sta <I
         jmp NEXT ; NEXT +2 ????????
 
-
 ;
 ;    CLITERAL pushes the next inline byte to data stack
 ;
@@ -189,10 +188,6 @@ W_PCLITERAL
         tya
         inw <I
         jmp PUSH
-!macro CLITERAL .char {
-        !word W_PCLITERAL
-        !byte .char
-}
 
 ;
 ;    LITERAL pushes the next inline word to data stack
@@ -209,10 +204,6 @@ W_PLITERAL:
 _inc_I_PUSH
         inw <I
         jmp PUSH
-!macro LITERAL .word {
-        !word W_PLITERAL
-        !word .word
-}
 
 ; ****************************************************************************
 ; ?IMMEDIATE

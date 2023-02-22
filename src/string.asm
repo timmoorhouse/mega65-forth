@@ -230,14 +230,12 @@ _cmoveg_dst
 !if 0 {
 W_COMPARE_TEST
         !word DO_COLON
-        !word W_PDOTQ
-        +STRING "<compare>["
+        +DOTQ "<compare>["
         +LITERAL str1
         !word W_COUNT
         !word W_2DUP
         !word W_TYPE
-        !word W_PDOTQ
-        +STRING "]["
+        +DOTQ "]["
         +LITERAL str2
         !word W_COUNT
         !word W_2DUP

@@ -102,6 +102,8 @@ W_BYE
         lda #0
         tab
 
+        ; TODO restore kernel vectors (monexit in particular)
+
         ; TODO restore memory map?
         rts
 }

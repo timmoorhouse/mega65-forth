@@ -274,6 +274,21 @@ F_HIDDEN     = $20
         !word .end
 }
 
+!macro LITERAL .word {
+        !word W_PLITERAL
+        !word .word
+}
+
+!macro CLITERAL .char {
+        !word W_PCLITERAL
+        !byte .char
+}
+
+!macro DOTQ .text {    ; TODO CLEAN THIS UP
+        !word W_PDOTQ
+        +STRING .text
+}
+
 !ifdef DEBUG                { !src "debug.asm"         }
 
 ;POP4
@@ -382,6 +397,8 @@ COLD
         ; +dma_enable_f018b ; TODO not needed?
 
         eom
+
+        ; TODO redirect monexit so we can return from monitor back into forth
 
         ; set our base page
         lda #>base_page

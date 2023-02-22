@@ -18,11 +18,6 @@
 ;      .R            n1  n2  ---
 ;               Print the number n1 right aligned in a field of whose 
 ;               width is n2.  No following blank is printed.
-;
-;;
-;;                                       .R
-;;                                       SCREEN 76 LINE 7
-;;
 
 !if ENABLE_CORE_EXT {
 !if 0 {
@@ -253,7 +248,7 @@ W_NOTEQUAL
         ora 2,x 
 
         beq +
-        dey ; TODO need to leave -1 for true
+        dey
 +       sty 2,x
         sty 3,x
         jmp POP
@@ -477,6 +472,8 @@ W_PAD
 
 ; The word itself is required by the implementation but will only be visible if CORE-EXT is enabled
 
+; TODO we're not getting the c-addr?!?!?!?!?!
+
 !if ENABLE_CORE_EXT {
         +WORD "parse"
 } else {
@@ -487,7 +484,7 @@ W_PARSE
 
         ; ldy #0 ; TODO
 
-        ; hold char in TEMP1
+        ; hold delimiter in TEMP1
         lda 0,x
         sta <TEMP1
 
@@ -500,13 +497,13 @@ W_PARSE
         sta 0,x
         lda <INPUT_BUFFER+1
         adc <IN+1
-        sta 1,x
+        sta 1,x                 ; (addr)
 
         ; initialize len
         dex
         dex
         sty 1,x
-        sty 0,x
+        sty 0,x                 ; (addr len)
 
         ; push a temporary of the end of the buffer
         dex
@@ -517,7 +514,7 @@ W_PARSE
         sta 0,x
         lda <INPUT_BUFFER+1
         adc <INPUT_LEN+1
-        sta 1,x
+        sta 1,x                 ; (addr len end)
 
         ; push a temporary current position
         dex
@@ -525,7 +522,7 @@ W_PARSE
         lda 6,x
         sta 0,x
         lda 7,x
-        sta 1,x
+        sta 1,x                 ; (addr len end current)
 
 _parse_loop
         ; check if we're at the end
@@ -540,7 +537,6 @@ _parse_loop
         ; not at the end yet ...
         ; check for terminator
         lda (0,x)
-        ; cmp 8,x
         cmp <TEMP1
         beq _parse_found_terminator
 
@@ -619,13 +615,13 @@ W_PPARSE_NAME ; (char "<chars>name<char>" -- c-addr u)
         sta 0,x
         lda <INPUT_BUFFER+1
         adc <IN+1
-        sta 1,x
+        sta 1,x                 ; (addr)
 
         ; initialize len
         dex
         dex
         sty 1,x
-        sty 0,x
+        sty 0,x                 ; (addr len)
 
         ; push a temporary of the end of the buffer
         dex
@@ -636,7 +632,7 @@ W_PPARSE_NAME ; (char "<chars>name<char>" -- c-addr u)
         sta 0,x
         lda <INPUT_BUFFER+1
         adc <INPUT_LEN+1
-        sta 1,x
+        sta 1,x                 ; (addr len end)
 
         ; push a temporary current position
         dex
@@ -644,9 +640,7 @@ W_PPARSE_NAME ; (char "<chars>name<char>" -- c-addr u)
         lda 6,x
         sta 0,x
         lda 7,x
-        sta 1,x
-
-        ; delimiter at 8,x 
+        sta 1,x                 ; (addr len end current)
 
 _parse_name_skip_whitespace_loop
         ; check if we're at the end

@@ -34,8 +34,7 @@ W_LATEST
 W_SAVESYSTEM
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<savesystem>"
+        +DOTQ "<savesystem>"
         !word W_DOTS
 }
         !word W_PARSE_NAME
@@ -102,6 +101,10 @@ W_SAVESYSTEM
 ; <binnum> 2
 ; <cnum> the number is the value of <char>
 
+; TODO if a '.' follows any case other than <cnum>, treat it as a double literal (see 8.3.1)
+; TODO floating point stuff (from 12.3.7)
+; 
+
 ; TODO it might be more convenient if d was not left on the stack on failures
 
         +WORD "s>number?"
@@ -109,8 +112,7 @@ W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
         !word DO_COLON
 
 !if 0 {
-        !word W_PDOTQ
-        +STRING "s>number-1["
+        +DOTQ "s>number-1["
         !word W_2DUP
         !word W_TYPE
         +CLITERAL ']'
@@ -131,8 +133,7 @@ W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
         !word W_OVER
         !word W_CAT
 !if 0 {
-        !word W_PDOTQ
-        +STRING "s>number-5"
+        +DOTQ "s>number-5"
         !word W_DOTS,W_CR
 }
         !word W_DUP
@@ -189,8 +190,7 @@ _stonumber_finish_up
         !word W_BASE
         !word W_STORE
 !if 0 {
-        !word W_PDOTQ
-        +STRING " s>number-9"
+        +DOTQ " s>number-9"
         !word W_DOTS,W_CR
 }
         !word W_PSEMI

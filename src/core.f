@@ -92,6 +92,7 @@
 \ TODO choose cmove or cmove> ?
 : move cmove ;
 
+\ TODO use sliteral!
 \ TODO alignment after string?
 : s" [char] " parse postpone (s") dup c, swap over here swap cmove allot ; immediate
 : ." postpone s" postpone type ; immediate

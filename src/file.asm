@@ -9,8 +9,7 @@ MAX_OPEN_FILES   = 10  ; kernel limit
 
 W_FILE_TEST
         !word DO_COLON
-        !word W_PDOTQ
-        +STRING "<file-test>"
+        +DOTQ "<file-test>"
         !word W_CR
 
         +LITERAL _test_filename
@@ -57,6 +56,8 @@ W_UNUSED_LOGICAL
         lda #0
         jmp PUSH
 
+; TODO use lkupla to check if la is in use
+
 _unused_logical
 !if 0 {
         lda #' '
@@ -93,6 +94,8 @@ _unused_logical
         bra -
         ; unused ... guaranteed to find one in the range [32,42]
 +       rts
+
+; TODO use lkupsa to check if sa is in use
 
         +NONAME
 W_UNUSED_SECONDARY
@@ -185,8 +188,7 @@ W_BIN
 W_CLOSE_FILE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<close-file>"
+        +DOTQ "<close-file>"
         !word W_DOTS
 }
         !word W_CLOSE
@@ -207,8 +209,7 @@ W_CLOSE_FILE
 W_CREATE_FILE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<create-file-file>"
+        +DOTQ "<create-file-file>"
         !word W_DOTS
 }        
         ; TODO
@@ -232,8 +233,7 @@ W_CREATE_FILE
 W_DELETE_FILE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<create-file-file>"
+        +DOTQ "<create-file-file>"
         !word W_DOTS
 }        
         ; TODO
@@ -255,8 +255,7 @@ W_DELETE_FILE
 W_FILE_POSITION
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<create-file-file>"
+        +DOTQ "<create-file-file>"
         !word W_DOTS
 }
         ; TODO
@@ -280,8 +279,7 @@ W_FILE_POSITION
 W_FILE_SIZE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<file-size>"
+        +DOTQ "<file-size>"
         !word W_DOTS
 }        
         ; TODO
@@ -355,8 +353,7 @@ W_INCLUDED
 W_OPEN_FILE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<open-file>"
+        +DOTQ "<open-file>"
         +CLITERAL '['
         !word W_EMIT
         !word W_TOR
@@ -384,8 +381,7 @@ W_OPEN_FILE
 
         !word W_UNUSED_LOGICAL
 !if 0 {
-        !word W_PDOTQ
-        +STRING "logical="
+        +DOTQ "logical="
         !word W_DUP
         !word W_DOT
 }
@@ -394,8 +390,7 @@ W_OPEN_FILE
         +LITERAL 8 ; TODO how to select this?
         !word W_UNUSED_SECONDARY
 !if 0 {
-        !word W_PDOTQ
-        +STRING "secondary="
+        +DOTQ "secondary="
         !word W_DUP
         !word W_DOT
 }
@@ -453,8 +448,7 @@ W_RSLW
 W_READ_FILE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<read-file>"
+        +DOTQ "<read-file>"
         !word W_DOTS
 }           
         ; TODO       
@@ -485,8 +479,7 @@ W_READ_FILE
 W_READ_LINE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<read-line>"
+        +DOTQ "<read-line>"
         !word W_DOTS
 }           
         ; TODO
@@ -553,8 +546,7 @@ _read_line_after_loop
 W_REPOSITION_FILE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<reposition-file>"
+        +DOTQ "<reposition-file>"
         !word W_DOTS
 }          
         ; TODO
@@ -577,8 +569,7 @@ W_REPOSITION_FILE
 W_RESIZE_FILE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<resize-file>"
+        +DOTQ "<resize-file>"
         !word W_DOTS
 }         
         ; TODO
@@ -628,8 +619,7 @@ W_WSLO
 W_WRITE_FILE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<write-file>"
+        +DOTQ "<write-file>"
         !word W_DOTS
 }       
 
@@ -675,8 +665,7 @@ _write_file_after_loop
 W_WRITE_LINE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<write-line>"
+        +DOTQ "<write-line>"
         !word W_DOTS
 }       
         ; TODO rewrite using WRITE-FILE

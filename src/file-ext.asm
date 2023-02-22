@@ -12,8 +12,7 @@
 W_FILE_STATUS
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<file-status>"
+        +DOTQ "<file-status>"
         !word W_DOTS
 }       
         ; TODO
@@ -37,8 +36,7 @@ W_FILE_STATUS
 W_FLUSH_FILE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<flush-file>"
+        +DOTQ "<flush-file>"
         !word W_DOTS
 }       
         ; TODO
@@ -80,8 +78,7 @@ W_INCLUDE
 W_RENAME_FILE
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<rename-file>"
+        +DOTQ "<rename-file>"
         !word W_DOTS
 }       
         ; TODO
@@ -104,8 +101,7 @@ W_RENAME_FILE
 W_REQUIRE
         !word DO_COLON
 !if 1 {
-        !word W_PDOTQ
-        +STRING "<require>"
+        +DOTQ "<require>"
         !word W_DOTS
 }       
         ; TODO
@@ -149,8 +145,7 @@ W_REQUIRE
 W_REQUIRED
         !word DO_COLON
 !if DEBUG {
-        !word W_PDOTQ
-        +STRING "<required>"
+        +DOTQ "<required>"
         !word W_DOTS
 }       
         ; TODO
