@@ -46,7 +46,7 @@ W_ZNOTEQUALS
         lda 1,x
         ora 0,x
         beq +
-        dey ; TODO need to leave -1 for true
+        dey
 +       sty 0,x
         sty 1,x
         jmp NEXT
@@ -454,7 +454,8 @@ W_NIP
 
 ; See core-ext.f
 
-; TODO !!!!!!!! used by WORD
+; Used by WORD
+; At the moment, there needs to be a gap between HERE and PAD since HOLD starts at PAD and goes back in memory
         +WORD "pad"
 W_PAD
         !word DO_COLON

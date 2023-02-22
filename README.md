@@ -19,14 +19,16 @@ This is still in the early stages of developement:
 - Words can be defined (`:`, `;`, `CREATE`, `VARIABLE`, `CONSTANT`, etc are functional).  Many of the basic control structures are working (`IF`/`ELSE`/`THEN`, `BEGIN`/`AGAIN`, etc). Check the status table below.
 - The [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) test case runs mostly clean.  There's one minor problem caused by a PETSCII vs ASCII difference.
 
-The next priority is getting the [core](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) test results cleaned up.  There are still a number of things in CORE to implement and many are buggy.
+The next priority is getting the [core](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) test results cleaned up.  There are still a number of things in CORE to implement and many are buggy.  As more and more of the implementation moves to Forth, getting a functional `SEE` would be very helpful.  Even if it's just a hex dump at first, getting something in place might soon be a priority.
 
 My apologies if this isn't the greatest Forth implementation.  I don't really have much experience with Forth.  I'm doing this because I've always been intrigued by Forth, and with a new MEGA65 sitting on the dining room table, it seemed the perfect project to learn about Forth, shake decades of dust off my 6502 programming skills, and learn about some of the MEGA65-specific features.
 
 An attempt will be made to:
 
-- Be more [Forth 2012](http://www.forth200x.org/documents/forth-2012.pdf) compliant, or at least ANS Forth (94)
-- Provide access to MEGA65 features
+- Be more [Forth 2012](http://www.forth200x.org/documents/forth-2012.pdf) compliant, or at least ANS Forth (94).
+- Provide access to MEGA65 features.  I'll likely look at least at SUPER FORTH 64 (which was based on MVP-FORTH) for API ideas here, and possibly others, but I may not retain compatability.
+
+I haven't looked at geoForth yet, but intend to at some point.  Making some sort of equivalent for the MEGA65 GEOS might be interesting, and give me an excuse to dig into GEOS a bit.  No promises here though.
 
 # BUILDING
 
@@ -74,7 +76,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
 - Tests
   - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
   - [ ] Some reasonable way of capturing test results 
-    - It might make sense to have a way to redirect `EMIT` to a file (this would need to persist across an `ABORT` though, so may need a compilation option) 
+    - It might make sense to have a way to redirect `EMIT` to a file (this would need to persist across an `ABORT` though, so may need a compilation option)   gforth makes `EMIT` a deferred, which might be the cleanest option (once we support `DEFER`).
 - Benchmarks
   - [ ] Compiling the dictionary?
   - [ ] Something without I/O?
