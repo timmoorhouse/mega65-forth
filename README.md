@@ -1,5 +1,5 @@
 
-# MEGA65 Forth
+# MEGA65 Forth (MEGA654<sup>th</sup>?)
 
 An attempt at [Forth](https://forth-standard.org/standard/words) for the [MEGA65](https://mega65.org/).  This is heavily influenced by [FIG FORTH release 1.1](https://github.com/ptorric/figforth)
 
@@ -25,7 +25,7 @@ My apologies if this isn't the greatest Forth implementation.  I don't really ha
 
 An attempt will be made to:
 
-- Be more ANS FORTH (94) compliant, and hopefully [Forth 2012](http://www.forth200x.org/documents/forth-2012.pdf)
+- Be more [Forth 2012](http://www.forth200x.org/documents/forth-2012.pdf) compliant, or at least ANS Forth (94)
 - Provide access to MEGA65 features
 
 # BUILDING
