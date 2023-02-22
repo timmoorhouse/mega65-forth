@@ -85,27 +85,24 @@ fail_runtime_check
 ;               These small numbers are used so often that it is 
 ;               attractive to define them by name in the dictionary as 
 ;               constants.
-;        +WORD "0"
 
-        +NONAME
+        +WORD "0"
 W_ZERO
         !word DO_CONSTANT
         !word 0
 
 ; ****************************************************************************
 ; 1
-;        +WORD "1"
 
-        +NONAME
+        +WORD "1"
 W_ONE
         !word DO_CONSTANT
         !word 1
 
 ; ****************************************************************************
 ; 2
-;        +WORD "2"
 
-        +NONAME
+        +WORD "2"
 W_TWO
         !word DO_CONSTANT
         !word 2
@@ -122,7 +119,17 @@ W_2PLUS
         !word W_PLUS
         !word W_PSEMI
 
-; TODO 2-        
+; ****************************************************************************
+; 2-
+
+; TODO native implementation?
+
+        +WORD "2-"
+W_2MINUS
+        !word DO_COLON
+        !word W_TWO
+        !word W_SUB
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; 0BRANCH
@@ -142,13 +149,9 @@ W_ZBRANCH
         ora $ff,x
         beq W_BRANCH+2
 BUMP             ; used by (loop) and LEAVE  TODO MESSY !!!!!!!!!!!!!!
-        clc
-        lda <I
-        adc #2
-        sta <I ; TODO inw
-        bcc +
-        inc <I+1
-+       jmp NEXT
+        inw <I
+        inw <I
+        jmp NEXT
 
 ; ****************************************************************************
 ;      BRANCH                                                C2,L0
