@@ -1,5 +1,4 @@
 
-: 0> swap 0< ;
 : compile, , ;
 
 \ : erase ( c-addr u ) 0 fill ;

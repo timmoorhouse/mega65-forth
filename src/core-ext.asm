@@ -62,7 +62,19 @@ W_ZNOTEQUALS
 ; (n -- flag)
 ; ANSI 6.2.0280
 
-; See core-ext.f
+        +WORD "0>"
+W_ZGREATER
+        !word *+2
+        ; ldy #0 ; TODO
+        lda 1,x
+        asl
+        bcs +
+        ora 0,x
+        beq +
+        dey
++       sty 1,x
+        sty 0,x 
+        jmp NEXT
 
 ; ****************************************************************************
 ; 2>R
