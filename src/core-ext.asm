@@ -62,6 +62,7 @@ W_ZNOTEQUALS
 ; (n -- flag)
 ; ANSI 6.2.0280
 
+!if ENABLE_CORE_EXT {
         +WORD "0>"
 W_ZGREATER
         !word *+2
@@ -75,6 +76,7 @@ W_ZGREATER
 +       sty 1,x
         sty 0,x 
         jmp NEXT
+}
 
 ; ****************************************************************************
 ; 2>R
