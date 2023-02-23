@@ -1795,11 +1795,23 @@ W_EXECUTE
 ; (???)
 ; ANSI 6.1.1380
 
-!if 0 {
         +WORD "exit"
+W_EXIT
         !word *+2
-        rts
+!if PUSH_MSB_FIRST {        
+        pla
+        sta <I
+        pla
+        sta <I+1
+} else {
+        ; TODO plw &I
+        pla
+        sta <I+1
+        pla
+        sta <I
+
 }
+        jmp NEXT
 
 ; ****************************************************************************
 ; FILL 
@@ -2777,11 +2789,20 @@ W_MSMOD
 ; (???)
 ; ANSI 6.1.2380
 
-!if 0 {
         +WORD "unloop"
+W_UNLOOP
         !word *+2
-        rts
-}
+        ;plz
+        ;ply
+        pla
+        pla
+        pla
+        pla
+        pla
+        pla
+        ;phy
+        ;phz
+        jmp NEXT
 
 ; ****************************************************************************
 ; UNTIL
