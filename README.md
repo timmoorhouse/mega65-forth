@@ -65,9 +65,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Fix handling of I/O error cases
   - [ ] Honour the hidden flag in `SEARCH-NAMELIST`
   - [ ] Handle `RESTORE-INPUT` failures
-- Implement more of the basic wordset
-  - [ ] `UNLOOP`, `EXIT`
-  - [ ] `J`
 - Bootstrapping with portions of the dictionary written in Forth
   - [ ] A "skeletal" configuration with just the builtins
   - [ ] A "minimal" configuration
@@ -134,7 +131,7 @@ Test | Status | Comments
 -- | -- | --
 [Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | FAIL | `[CHAR] A` gives unexpected value (just a petscii vs ascii thing)
 [BLOCK](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/blocktest.fth) | TBD |
-[CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | FAIL | Lots to fix here
+[CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | FAIL | Progressing nicely, still a fair bit to do though
 [CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | TBD | 
 [CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | TBD |
 [DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD |
