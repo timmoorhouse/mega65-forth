@@ -5,6 +5,8 @@
 
 : hex 16 base ! ;
 
+: tuck swap over ;
+
 : u> swap u< ;
 
 \ : pad here 68 + ; \ TODO FIG uses some space in the gap for WORDS ... clean this up

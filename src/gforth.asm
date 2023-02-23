@@ -29,6 +29,8 @@ W_LATEST
 
 ; SAVESYSTEM FOO,P,W
 
+; TODO do this in forth
+
 !if ENABLE_GFORTH {
         +WORD_IMM "savesystem"
 W_SAVESYSTEM

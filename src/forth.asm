@@ -123,7 +123,7 @@ entry
 ;      |
 ;      | Transient workspace
 ;      +-----------------------------    <--- PAD 
-;          gap?  FIG apparently uses some space here in WORD    TODO
+;          gap?  right now we need this since HOLD works backwards from PAD
 ;      +-----------------------------    <--- HERE
 ;      |
 ;      | Dictionary
@@ -237,6 +237,8 @@ DAREA      = TIB - DAREA_LEN
 ; - precedence (fig uses bit 7 for immediate)
 ; - smudge (fig uses bit 6 for hidden)
 ; - length uses bits 1-5
+
+; TODO can we get rid of the hidden flag by just not linking the word until ; ?
 
 F_END_MARKER = $80
 F_IMMEDIATE  = $40

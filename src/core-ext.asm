@@ -313,7 +313,39 @@ W_NOTEQUAL
 ; Forth 2012 6.2.1173
 
 !if ENABLE_CORE_EXT {
+        +WORD "defer"
+} else {
+        +NONAME
 }
+W_DEFER
+        !word DO_COLON
+        !word W_CREATE
+        !word W_SMUDGE
+        !word W_ZERO
+        !word W_COMMA
+        !word W_PSCODE
+DO_DEFER
+        ; See also DO_COLON
+
+        ; ldy #0 ; TODO
+
+!if PUSH_MSB_FIRST {
+        lda <I+1 ; push I
+        pha
+        lda <I
+        pha
+} else {
+        phw &I ; TODO why doesn't this work? looks like phw uses the opposite byte order
+}
+        clc ; ???
+        lda <W ; I = W + 2 ; TODO faster to copy then inw?
+        adc #2
+        sta <I
+        tya
+        adc <W+1
+        sta <I+1
+
+        jmp NEXT
 
 ; ****************************************************************************
 ; DEFER!
@@ -746,9 +778,9 @@ W_PICK
         asl
         adc <XSAVE
         tax
-        lda 0,x
+        lda 2,x
         pha
-        lda 1,x
+        lda 3,x
         ldx <XSAVE
         jmp PUT
 
@@ -883,12 +915,12 @@ W_ROLL
         adc <XSAVE
         tax             ; x += 2*u
 
--       lda 2,x
+        lda 2,x
         pha
         lda 3,x
         pha
 
-        lda 0,x
+-       lda 0,x
         sta 2,x
         lda 1,x
         sta 3,x
@@ -1000,8 +1032,7 @@ W_TRUE
 ; (x_1 x_2 -- x_2 x_1 x_2)
 ; ANSI 6.2.2300
 
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; U.R

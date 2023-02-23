@@ -252,6 +252,8 @@ W_PSTORE
 
 ; See core.f
 
+; TODO this seems to be exiting one iteration too early ...
+
 ;      (+LOOP)       n  ---                                  C2
 ;               The run-time procedure compiled by +LOOP, which increments 
 ;               the loop index by n and tests for loop completion.  See 
@@ -614,8 +616,10 @@ W_COLON
         !word W_RBRACKET
         !word W_PSCODE
 DO_COLON
-        ; ldy #0 ; TODO
+        ; See also DO_DEFER
 
+        ; ldy #0 ; TODO
+        
         ; Start executing the word with the code field pointed to by W
         ; (in a new stack frame)
 !if PUSH_MSB_FIRST {
@@ -661,6 +665,7 @@ W_SEMI
 
         +NONAME ; ";s" ?
 W_PSEMI
+        ; See also exit
         !word *+2
 !if PUSH_MSB_FIRST {        
         pla
@@ -1465,6 +1470,7 @@ W_DEPTH
         +WORD "(do)"
 W_PDO
         !word *+2
+        ; See also unloop
 !if 1 {
         ; ldy #0 ; TODO
         lda (<I),y
@@ -1798,6 +1804,12 @@ W_EXECUTE
         +WORD "exit"
 W_EXIT
         !word *+2
+        ; See also ;
+!if 0 {        
+        jsr RDUMP
+        jsr CR
+        ldy #0
+}
 !if PUSH_MSB_FIRST {        
         pla
         sta <I
@@ -2034,11 +2046,22 @@ W_INVERT
 ; (???)
 ; ANSI 6.1.1730
 
-!if 0 {
         +WORD "j"
+W_J
         !word *+2
-        rts
-}
+        stx <XSAVE
+        tsx
+!if PUSH_MSB_FIRST {        
+        lda $107,x
+        pha
+        lda $108,x
+} else {
+        lda $108,x
+        pha
+        lda $107,x
+}        
+        ldx <XSAVE
+        jmp PUSH
 
 ; ****************************************************************************
 ; KEY 
