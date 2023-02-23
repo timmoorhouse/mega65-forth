@@ -200,22 +200,7 @@ W_SSLASH
 ; (n_1 n_2 n_3 -- n_4 n_5)
 ; ANSI 6.1.0110
 
-; FIG:
-;      */MOD         n1  n2  n3  ---  n4  n5                 L0
-;               Leave the quotient n5 and remainder n4 of the operation 
-;               n1*n2/n3.  A 31 bit intermediate product is used as for 
-;               */.
-
-!if 0 {
-        +WORD "*/mod"
-W_SSMOD
-        !word DO_COLON
-;          !word TOR
-;          !word MSTAR
-;          !word RFROM
-;          !word MSLAS
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; + 
@@ -396,10 +381,15 @@ W_PDOTQ
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.0230
 
+; TODO WRONG FOR SIGNED !!!!!!!!!
+
+; See core.f for a temporary correct one
+
 ; FIG:
 ;      /             n1  n2  ---  quot                       L0
 ;               Leave the signed quotient of n1/n2.
 
+!if 0 {
         +WORD "/"
 W_SLASH
         !word *+2
@@ -425,27 +415,14 @@ W_SLASH
         lda DIVOUT+5
         sta 3,x
         jmp POP
+}
 
 ; ****************************************************************************
 ; /MOD 
 ; (n_1 n_2 -- n_3 n_4)
 ; ANSI 6.1.0240
 
-; FIG:
-;      /MOD          n1  n2  ---  rem quot                   L0
-;               Leave the remainder and signed quotient of n1/n2.  The 
-;               remainder has the sign of the dividend.
-
-!if 0 {
-        +WORD "/mod"
-W_SLMOD
-        !word DO_COLON
-;          !word TOR
-;          !word STOD
-;          !word RFROM
-;          !word MSLAS
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; 0< 
@@ -1921,7 +1898,7 @@ W_FIND
 ;;
 ;;                                       M/
 ;;                                       SCREEN 57 LINE 3
-;;
+;;  THIS IS SM/REM
 !if 0 {
         +WORD "m/"
 W_MSLASH
@@ -2224,24 +2201,7 @@ W_MIN
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.1890
 
-; FIG:
-;
-;      MOD           n1  n2  ---  mod                        L0
-;               Leave the remainder of n1/n2, with the same sign as n1.
-;
-;;
-;;                                       MOD
-;;                                       SCREEN 57 LINE 10
-;;
-
-!if 0 {
-        +WORD "mod"
-W_MOD
-        !word DO_COLON
-;          !word SLMOD
-;          !word DROP
-        !word W_PSEMI
-}
+; See core.f 
 
 ; ****************************************************************************
 ; MOVE

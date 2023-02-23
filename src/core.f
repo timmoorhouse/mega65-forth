@@ -111,8 +111,22 @@
 
 : +- 0< if negate then ; \ TODO REMOVE
 
-: sm/rem over >r >r dabs r@ abs um/mod r> r@ xor +- swap r> +- swap ;
+: sm/rem over >r >r dabs r@ abs um/mod r> r@ xor +- swap r> +- swap ; \ TODO
 
+\ For floored
+\ : /mod >r s>d r> fm/mod ; \ TODO
+\ : */mod >r m* r> fm/mod ; \ TODO
+
+\ For symmetric
+: /mod >r s>d r> sm/rem ; \ TODO
+: */mod >r m* r> sm/rem ; \ TODO
+
+: / /mod swap drop ; \ TODO
+: mod /mod drop ; \ TODO
+: */ */mod swap drop ; \ TODO
+
+\ TODO THIS IS WRONG
+\ : fm/mod over >r >r dabs r@ abs um/mod r> r@ xor +- swap r> +- swap ;
 
 \ ***************************************************************************
 
