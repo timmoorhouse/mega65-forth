@@ -374,13 +374,6 @@ DO_DEFER
 ; (addr u --)
 ; ANSI 6.2.1350
 
-; FIG:
-;
-;
-;      ERASE         addr  n  ---
-;               Clear a region of memory to zero from addr over n 
-;               addresses.
-
 ; See core-ext.f
 
 ; ****************************************************************************
