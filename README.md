@@ -60,12 +60,12 @@ that the build process will get more involved:
 
 These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
 - CORE
-  - [ ] #8
   - [ ] `+LOOP` can exit one iteration too early
   - [ ] `UM/MOD` gets things wrong for large inputs
   - [ ] Handle `RESTORE-INPUT` failures
   - [ ] Need to replace `.` with the one that handles different bases, signed values, etc
   - [ ] Need to reimplement the multiplication/division operations using the math unit
+  - [ ] There's a test that does `: NOP : POSTPONE ; ;` which causes bad things to happen - I need to wrap my head around how that's supposed to work
 - CORE-EXT
 - DOUBLE
   - [ ] Need to support double literals (eg `123.`)
