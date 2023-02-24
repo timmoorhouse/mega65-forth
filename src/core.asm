@@ -176,8 +176,6 @@ W_PSTORE
 
 ; See core.f
 
-; TODO this seems to be exiting one iteration too early ...
-
 ;      (+LOOP)       n  ---                                  C2
 ;               The run-time procedure compiled by +LOOP, which increments 
 ;               the loop index by n and tests for loop completion.  See 
@@ -188,12 +186,12 @@ W_PPLOOP
         !word *+2
         ; see also (loop)
         ; TODO CLEAN THIS UP
-        inx
+        inx                     ; pop the increment from the stack
         inx
         stx <XSAVE
         lda $ff,x
-        pha
-        pha
+        pha                     ; need two copies so we can check the sign of the increment
+        pha                     ; TODO it would be slightly faster to save it in Z
         lda $fe,x
         tsx
         inx
@@ -207,10 +205,10 @@ W_PPLOOP
         pla
         ; bpl PL1
         bmi +
-        jmp PL1
+        jmp PL1                 ; Increment is positive - use (loop) to check if we're >= the limit
 +
-        clc
-        lda $101,x
+        sec
+        lda $101,x              ; Increment is negative
         sbc $103,x
         lda $102,x
         sbc $104,x
@@ -1991,22 +1989,21 @@ W_PLOOP
         ; TODO CLEAN THIS UP
         stx <XSAVE
         tsx
-        inc $101,x
+        inc $101,x              ; increment loop index
         bne +
         inc $102,x
 +
-        ; check for termination     TODO WHY DOES THIS WORK????
 PL1 ; ??? used by (+loop)
         clc
-        lda $103,x
+        lda $103,x              ; compare against loop limit
         sbc $101,x
-        lda $104,x
-        sbc $102,x
+        lda $104,x              ; TODO we should be able to get away with just testing for equality
+        sbc $102,x              ; (though using this for (+loop) needs the >= check)
 PL2 ; ????   used by (+loop)
         ldx <XSAVE
         asl
 !if 0 {
-        bcc BRANCH
+        bcc BRANCH              
 } else {        
         bcs +
         jmp BRANCH
@@ -2020,7 +2017,7 @@ PL2 ; ????   used by (+loop)
         ; TODO
         pla
         pla
-        jmp BUMP
+        jmp BUMP                ; part of 0branch (internals)
 
 ; ****************************************************************************
 ; LSHIFT 

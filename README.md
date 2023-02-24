@@ -60,12 +60,12 @@ that the build process will get more involved:
 
 These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
 - CORE
-  - [ ] `+LOOP` can exit one iteration too early
   - [ ] `UM/MOD` gets things wrong for large inputs
   - [ ] Handle `RESTORE-INPUT` failures
-  - [ ] Need to replace `.` with the one that handles different bases, signed values, etc
+  - [ ] Need to replace `.` with the one that handles different bases, signed values, etc (need `DEFER` to do this)
   - [ ] Need to reimplement the multiplication/division operations using the math unit
   - [ ] There's a test that does `: NOP : POSTPONE ; ;` which causes bad things to happen - I need to wrap my head around how that's supposed to work
+  - [ ] We should be able to get rid of the hidden flag pretty easily by changing when we link new words into the dictionary
 - CORE-EXT
 - DOUBLE
   - [ ] Need to support double literals (eg `123.`)
@@ -145,7 +145,7 @@ Test | Status | Comments
 :-- | :--: | :--
 [Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | PASS | `[CHAR] A` complains about a PETSCII vs ASCII difference.
 [BLOCK](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/blocktest.fth) | TBD |
-[CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | FAIL | Getting close.  Some problems with `UM/MOD`, `+LOOP`.  Some things still to implement.
+[CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | FAIL | Getting close.  Some problems with `UM/MOD`.  Some things still to implement.
 [CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | FAIL | A lot still to implement.
 [CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | TBD |
 [DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD |
