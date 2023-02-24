@@ -20,7 +20,7 @@ This is still in the early stages of developement:
 - The [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) test case runs mostly clean.  There's one minor problem caused by a PETSCII vs ASCII difference.
 
 The next priorities are:
-- Getting the [core](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) test results cleaned up.  There are still a number of things in CORE to implement and many are buggy.
+- Getting the [core](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) test results cleaned up.  This is coming along nicely but there are still a number of things in CORE to implement and some known bugs.
 - As more and more of the implementation moves to Forth, getting a functional `SEE` would be very helpful.  Even if it's just a hex dump at first, getting something in place might soon be a priority.
 - Once `DEFER` is implemented, we might be able to move many parts of the outer interpreter from assembler to Forth.
 
@@ -59,20 +59,32 @@ that the build process will get more involved:
 # RANDOM TODOs
 
 These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
-- Things to fix in CORE/CORE-EXT
-  - [ ] +LOOP can exit one iteration too early
+- CORE
+  - [ ] #8
+  - [ ] `+LOOP` can exit one iteration too early
+  - [ ] `UM/MOD` gets things wrong for large inputs
+  - [ ] Handle `RESTORE-INPUT` failures
+  - [ ] Need to replace `.` with the one that handles different bases, signed values, etc
+  - [ ] Need to reimplement the multiplication/division operations using the math unit
+- CORE-EXT
+- DOUBLE
   - [ ] Need to support double literals (eg `123.`)
-- Miscellaneous loose ends (these can likely be skipped for now)
+- FILE
   - [ ] Handle file access modes
   - [ ] Fix I/O status handling (when is status from READSS reset?)
   - [ ] Fix handling of I/O error cases
-  - [ ] Honour the hidden flag in `SEARCH-NAMELIST`
-  - [ ] Handle `RESTORE-INPUT` failures
+- SEARCH
+  - [ ] Honour the hidden flag in `SEARCH-NAMELIST` (or in `TRAVERSE-WORDLIST`?)
 - Bootstrapping with portions of the dictionary written in Forth
   - [ ] A "skeletal" configuration with just the builtins
   - [ ] A "minimal" configuration
   - [ ] A "complete" configuration
   - [ ] Move things we can from assembler to Forth
+- Error checking
+  - [ ] Data stack overflow/underflow
+  - [ ] Return stack overflow/underflow
+  - [ ] `ALLOT` overflow/underflow
+  - [ ] Mismatched control structures
 - Making `SAVESYSTEM` output deterministic? (it might not make sense to do this)
   - [ ] Move basepage to top of memory?
   - [ ] What to do about DMA lists?
@@ -131,11 +143,11 @@ Extensions | [`BACKGROUND`](doc/mega65.md#background) [`BORDER`](doc/mega65.md#b
 The code is getting to the point where automating the test suite makes sense.  I do want to have some way to redirect output to make extracting results simpler.
 
 Test | Status | Comments
--- | -- | --
-[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | FAIL | `[CHAR] A` gives unexpected value (just a petscii vs ascii thing)
+:-- | :--: | :--
+[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | PASS | `[CHAR] A` complains about a PETSCII vs ASCII difference.
 [BLOCK](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/blocktest.fth) | TBD |
-[CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | FAIL | Progressing nicely, still a fair bit to do though
-[CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | TBD | 
+[CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | FAIL | Getting close.  Some problems with `UM/MOD`, `+LOOP`.  Some things still to implement.
+[CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | FAIL | A lot still to implement.
 [CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | TBD |
 [DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD |
 [EXCEPTION](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/exceptiontest.fth) | TBD |

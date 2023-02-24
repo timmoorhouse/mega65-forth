@@ -749,24 +749,35 @@ _tonumber_done_0drop
 ;               binary equivalent n, accompanied by a true flag.  If the 
 ;               conversion is invalid, leaves only a false flag.
 
-
-; TODO make this case insensitive
-
         ; +WORD "digit"
         +NONAME
 W_DIGIT
         !word *+2
         ; ldy #0 ; TODO
-        sec
         lda 0,x
+
+        cmp #$c1        ; Map $c1-$da to $41-$5a
+        bcc +
+        sec
+        sbc #$80
++
+
+        cmp #$61        ; Map $61-$7a to $41-$5a
+        bcc +
+        sec
+        sbc #$20
++
+
+        sec
         sbc #'0'
         bmi _digit_bad ; < '0'
 
         cmp #$A
         bmi +
         ; > '9'
+
         sec
-        sbc #('a'-'9'-1)
+        sbc #7 ; ('a'-'9'-1)
         cmp #$A
         bmi _digit_bad ; in between '9' and 'a'
 +

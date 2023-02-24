@@ -9,6 +9,8 @@
 
 ; TODO rewrite in FORTH using DEPTH, ., DO, LOOP
 
+; TODO if base is 10 used signed output, otherwise unsigned?
+
 !if ENABLE_TOOLS {
         +WORD ".s"
 W_DOTS
