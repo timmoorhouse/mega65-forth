@@ -85,16 +85,7 @@ W_BLANK
 ; (c-addr_1 c-addr_2 u --)
 ; ANSI 17.6.1.0910
 
-; FIG:
-;
-;      CMOVE         from  to  count  ---
-;               Move the specified quantity of bytes beginning at address 
-;               from to address to.  The contents of address from is moved 
-;               first proceeding toward high memory.  Further 
-;               specification is necessary on word addressing computers.
-
 ; we need this for CREATE
-; TODO DMA
 !if ENABLE_STRING {
         +WORD "cmove"
 } else {
@@ -102,16 +93,11 @@ W_BLANK
 }
 W_CMOVE
         !word *+2
-!if 1 {
-        ; TODO dma copies of length 0 look to be happily ignored on a MEGA65
-        ; but cause bad things to happen with xemu - check this case
-        ; explicitly for now
+
         lda 0,x
         ora 1,x
-        bne +
-        jmp POP3
-+
-}        
+        beq +
+
         lda 0,x
         sta _cmove_count
         lda 1,x
@@ -128,40 +114,34 @@ W_CMOVE
         sta _cmove_src+1
 
         +dma_inline
+        !byte $0b               ; F018B 12-byte format        
         +dma_options_end
         !byte dma_cmd_copy
 _cmove_count
         !word 0
 _cmove_src
         !word 0
-        !byte 0         ; src bank/flags
+        !byte 0                 ; src bank/flags
 _cmove_dst
         !word 0
-        !byte 0         ; dst bank/flags
-        !byte 0         ; cmd msb
-        !word 0         ; modulo
-        jmp POP3
+        !byte 0                 ; dst bank/flags
+        !byte 0                 ; cmd msb
+        !word 0                 ; modulo
++       jmp POP3
 
 ; ****************************************************************************
 ; CMOVE>
 ; (c-addr_1 c-addr_2 u --)
 ; ANSI 17.6.1.0920
 
-; TODO DMA
 !if ENABLE_STRING {
         +WORD "cmove>"
 W_CMOVEG
         !word *+2
-!if 1 {
-        ; TODO dma copies of length 0 look to be happily ignored on a MEGA65
-        ; but cause bad things to happen with xemu - check this case
-        ; explicitly for now
+
         lda 0,x
         ora 1,x
-        bne +
-        jmp POP3
-+
-}        
+        beq ++
 
         ; TODO add len - 1 to src, dst
         lda 0,x
@@ -169,6 +149,16 @@ W_CMOVEG
         lda 1,x
         sta _cmoveg_count+1
 
+        ; decrement len
+        sec
+        lda 0,x
+        sbc #1
+        sta 0,x
+        lda 1,x
+        sbc #0
+        sta 1,x
+
+        ; add (len-1) to dst
         clc
         lda 0,x
         adc 2,x
@@ -176,11 +166,8 @@ W_CMOVEG
         lda 1,x
         adc 3,x
         sta _cmoveg_dst+1
-        dec _cmoveg_dst
-        bne +
-        dec _cmoveg_dst+1
-+
 
+        ; add (len-1) to src
         clc
         lda 0,x
         adc 4,x
@@ -188,25 +175,22 @@ W_CMOVEG
         lda 1,x
         adc 5,x
         sta _cmoveg_src+1
-        dec _cmoveg_src
-        bne +
-        dec _cmoveg_src+1
-+
 
         +dma_inline
+        !byte $0b               ; F018B 12-byte format        
         +dma_options_end
-        !byte dma_cmd_copy
+        !byte dma_cmd_copy | $30 ; dec dst, dec src
 _cmoveg_count
         !word 0
 _cmoveg_src
         !word 0
-        !byte $60       ; src bank/flags - backwards
+        !byte 0 ; $40               ; src bank/flags - backwards
 _cmoveg_dst
         !word 0
-        !byte $60       ; dst bank/flags - backwards
-        !byte 0         ; cmd msb
-        !word 0         ; modulo        
-        jmp POP3
+        !byte 0 ; $40               ; dst bank/flags - backwards
+        !byte 0                 ; cmd msb
+        !word 0                 ; modulo        
+++      jmp POP3
 }
 
 ; ****************************************************************************

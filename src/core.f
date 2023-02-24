@@ -97,8 +97,8 @@
 
 : m* 2dup xor >r abs swap abs um* r> 0< if dnegate then ;
 
-\ TODO choose cmove or cmove> ?
-: move cmove ;
+\ TODO cmove is in STRING but move is in CORE - make move the native one
+: move ( src dst len -- ) >r 2dup < r> swap if cmove> else cmove then ;
 
 \ TODO use sliteral!
 \ TODO alignment after string?

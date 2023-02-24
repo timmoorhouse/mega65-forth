@@ -457,7 +457,20 @@ WARM
         jsr EMIT
 
         ; TODO a FONT word that switches font
-        +dma_run _install_font_dmalist
+        +dma_inline             ; copy from $0029000 to $ff7e000
+        !byte $0a               ; F018A 11-byte format  
+        !byte $81, $ff          ; dst MB      
+        +dma_options_end
+        !byte dma_cmd_copy
+        !word $1000             ; count
+        !word $9000             ; src
+        !byte $02               ; src bank/flags
+        !word $e000             ; dst
+        !byte $07               ; dst bank/flags
+        !word 0                 ; modulo
+; A: 029000
+; B: 03D000
+; C: 02D000
 
         jsr PAGE
 
@@ -502,13 +515,6 @@ _startup_text2
 !ifdef HAVE_REVISION {
 !src "revision.asm"
 }
-_install_font_dmalist
-        +dma_options $00, $ff
-        +dma_options_end
-        +dma_job_copy $0029000, $ff7e000, $1000, 0, 0
-; A: 029000
-; B: 03D000
-; C: 02D000
 
 
 !if AUTOBOOT {
