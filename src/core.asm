@@ -1768,33 +1768,7 @@ _fill_dst
 ; (c-addr -- c-addr 0 | xt 1 | xt -1)
 ; ANSI 6.1.1550
 
-; TODO move to core.f
-
-        +WORD "find"
-W_FIND
-        !word DO_COLON
-        !word W_DUP
-        !word W_COUNT
-
-!if CASE_INSENSITIVE {
-        !word W_2DUP
-        !word W_LOWER
-}
-
-!if 0 {
-        ; TODO iterate through
-        ; !word W_GET_ORDER
-        ; ...
-} else {
-        !word W_FORTH_WORDLIST 
-}
-        !word W_SEARCH_WORDLIST
-        !word W_DUP
-        +ZBRANCH +
-        !word W_ROT
-        !word W_DROP
-+
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; FM/MOD 
@@ -2567,7 +2541,7 @@ W_UMSTAR
 
         +WORD "um/mod"
 W_UMMOD
-W_USLASH                ; TODO rename - this is the old FIG name
+; W_USLASH                ; TODO rename - this is the old FIG name
         !word *+2
 
         ; TODO rewrite this using math unit

@@ -95,6 +95,8 @@
 
 : chars ( n_1 -- n_2 ) ;
 
+: find dup count forth-wordlist search-wordlist dup if rot drop then ;
+
 : m* 2dup xor >r abs swap abs um* r> 0< if dnegate then ;
 
 \ TODO cmove is in STRING but move is in CORE - make move the native one
