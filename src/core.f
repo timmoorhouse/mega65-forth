@@ -113,6 +113,8 @@
 
 : +- 0< if negate then ; \ TODO REMOVE
 
+: * 2dup 2>r abs swap abs um* drop r> +- r> +- ; \ TODO SLOW
+
 : sm/rem over >r >r dabs r@ abs um/mod r> r@ xor +- swap r> +- swap ; \ TODO
 
 \ For floored
