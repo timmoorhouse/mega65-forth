@@ -35,89 +35,21 @@ W_STORE
 ; (ud_1 -- ud_2)
 ; ANSI 6.1.0030
 
-; FIG:
-;      #             d1  ---  d2                             L0
-;               Generate from a double number d1, the next ascii character 
-;               which is placed in an output string.  Result d2 is the 
-;               quotient after division by BASE, and is maintained for 
-;               further processing.  Used between <# and #>.  See #S.
-
-!if 0 {
-        +WORD "#"
-W_DIG
-        !word DO_COLON
-;          !word BASE
-;          !word AT
-;          !word MSMOD
-;          !word ROT
-;          !word CLITERAL
-;          !byte 9
-;          !word OVER
-;          !word LESS
-;          !word ZBRANCH
-;L3513:    !word 7        ; L3517-L3513
-;          !word CLITERAL
-;          !byte 7
-;          !word PLUS
-;L3517:    !word CLITERAL
-;          !byte $30
-;          !word PLUS
-;          !word HOLD
-;          !word SEMIS
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; #> 
 ; (xd -- c-addr u)
 ; ANSI 6.1.0040
 
-; FIG:
-;      #>            d  ---  addr count                      L0
-;               Terminates numeric output conversion by dropping d, 
-;               leaving the text address and character count suitable for 
-;               TYPE.
-
-!if 0 {
-        +WORD "#>"
-W_EDIGS
-        !word DO_COLON
-;          !word DROP
-;          !word DROP
-;          !word HLD
-;          !word AT
-;          !word PAD
-;          !word OVER
-;          !word SUB
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; #S 
 ; (ud_1 -- ud_2)
 ; ANSI 6.1.0050
 
-; FIG:
-;
-;
-;      #S            d1  ---  d2                             L0
-;               Generates ascii text in the text output buffer, by the use 
-;               of #, until a zero double number n2 results.  Used between 
-;               <# and #>.
-
-!if 0 {
-        +WORD "#s"
-W_DIGS
-        !word DO_COLON
-;L3529:    !word DIG
-;          !word OVER
-;          !word OVER
-;          !word OR
-;          !word ZEQU
-;          !word ZBRANCH
-;L3535:    !word $FFF4    ; L3529-L3535
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; ' 
@@ -710,23 +642,7 @@ W_LESS
 ; (--)
 ; ANSI 6.1.0490
 
-; FIG:
-;      <#                                                    L0
-;               Setup for pictured numeric output formatting using the 
-;               words:
-;                         <#  #  #S  SIGN  #>
-;               The conversion is done on a double number producing text 
-;               at PAD.
-
-!if 0 {
-        +WORD "<#"
-W_BDIGS
-        !word DO_COLON
-;          !word PAD
-;          !word HLD
-;          !word STORE
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; = 
@@ -1963,25 +1879,7 @@ W_HERE
 ; (char --)
 ; ANSI 6.1.1670
 
-; FIG:
-;
-;      HOLD          c  ---                                  L0
-;               Used between <# and #> to insert an ascii character into a 
-;               pictured numeric output string.  e.g. 2E HOLD will place a 
-;               decimal point.
-
-!if 0 {
-        +WORD "hold"
-W_HOLD
-        !word DO_COLON
-;          !word LITERAL,$FFFF
-;          !word HLD
-;          !word PSTOR
-;          !word HLD
-;          !word AT
-;          !word CSTOR
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; I 
@@ -2784,29 +2682,6 @@ W_USLASH                ; TODO rename - this is the old FIG name
 }
         jmp POP
 
-; see discussion in ANSI A.3.2.2.1
-; FIG
-;      M/MOD         ud1  u2  ---  u3  u4 (ud4?)
-;               An unsigned mixed magnitude math operation which leaves a 
-;               double quotient ud4 and remainder u3, from a double 
-;               dividend ud1 and single divisor u2.
-
-!if 0 {
-        +WORD "m/mod"
-W_MSMOD
-        !word DO_COLON
-;          !word TOR
-;          !word ZERO
-;          !word R
-;          !word USLAS
-;          !word RFROM
-;          !word SWAP
-;          !word TOR
-;          !word USLAS
-;          !word RFROM
-        !word W_PSEMI
-}
-
 ; ****************************************************************************
 ; UNLOOP
 ; (???)
@@ -2815,16 +2690,12 @@ W_MSMOD
         +WORD "unloop"
 W_UNLOOP
         !word *+2
-        ;plz
-        ;ply
         pla
         pla
         pla
         pla
         pla
         pla
-        ;phy
-        ;phz
         jmp NEXT
 
 ; ****************************************************************************

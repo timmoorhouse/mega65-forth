@@ -14,23 +14,7 @@
 ; (n_1 n_2 --)
 ; ANSI 6.2.0210
 
-; FIG
-;      .R            n1  n2  ---
-;               Print the number n1 right aligned in a field of whose 
-;               width is n2.  No following blank is printed.
-
-!if ENABLE_CORE_EXT {
-!if 0 {
-        +WORD ".r"
-W_DOTR
-        !word DO_COLON
-;          !word TOR
-;          !word STOD
-;          !word RFROM
-;          !word DDOTR
-        !word W_PSEMI
-}
-}
+; See core.f
 
 ; ****************************************************************************
 ; 0<>
@@ -504,8 +488,6 @@ W_PAD
 ; Parse ccc delimited by char
 
 ; The word itself is required by the implementation but will only be visible if CORE-EXT is enabled
-
-; TODO we're not getting the c-addr?!?!?!?!?!
 
 !if ENABLE_CORE_EXT {
         +WORD "parse"
