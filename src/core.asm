@@ -1791,7 +1791,8 @@ W_FIND
         !word W_SEARCH_WORDLIST
         !word W_DUP
         +ZBRANCH +
-        !word W_NIP
+        !word W_ROT
+        !word W_DROP
 +
         !word W_PSEMI
 

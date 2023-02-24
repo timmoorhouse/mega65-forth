@@ -134,7 +134,8 @@ W_SEARCH_WORDLIST
         !word W_PSEMI
 
 ; Like SEARCH-WORDLIST but returns 0|nt
-        +NONAME
+        ; +NONAME
+        +WORD "search-wordlist-nt"
 W_SEARCH_WORDLIST_NT ; (c-addr u wid -- 0 | nt)
         !word DO_COLON
 
