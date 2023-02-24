@@ -328,10 +328,20 @@ _traverse_loop
         ; (i*x) (R: xt wid)
 
         !word W_RFROM ; (i*x wid) (R: xt)
-        !word W_AT    ; (i*x wid') (R: xt) 
+        !word W_AT    ; (i*x wid') (R: xt)
         !word W_DUP
         !word W_TOR   ; (i*x wid') (R: xt wid')
         +ZBRANCH _traverse_done
+
+        ; (i*x) (R: xt wid)
+
+!if 0 {
+        !word W_RAT
+        !word W_QHIDDEN
+        !word W_ZEQUAL
+        +ZBRANCH _traverse_loop
+        ;!word W_DROP
+}
 
         ; (i*x) (R: xt wid)
 
