@@ -15,7 +15,7 @@ Note that we have actually switched to font A (the ASCII font).  The `\` word sh
 This is still in the early stages of developement:
 
 - The interpreter is working well enough to support development.  It needs better error handling, etc.
-- File input is mostly functional but slow.  Nested includes should work so long as the `INCLUDE` appears on a line by itself with the filename (`RESTORE-INPUT` into the middle of a line isn't working yet).  I/O will likely stay quite slow until I can get more of the test suite passing and automated.
+- File input is mostly functional but slow.  Improving I/O speed likely won't be a priority until I can get more of the test suite passing and automated.
 - Words can be defined (`:`, `;`, `CREATE`, `VARIABLE`, `CONSTANT`, etc are functional).  Many of the basic control structures are working (`IF`/`ELSE`/`THEN`, `BEGIN`/`AGAIN`, etc). Check the status table below.
 - The [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) test case runs mostly clean.  There's one minor problem caused by a PETSCII vs ASCII difference.
 
@@ -62,7 +62,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
 - Things to fix in CORE/CORE-EXT
   - [ ] +LOOP can exit one iteration too early
   - [ ] Need to support double literals (eg `123.`)
-  - [ ] Not everything is being saved/restored in SAVE-INPUT/RESTORE-INPUT so after we pop the parse stack things tend to be wrong for the remainder of the input line or the next line
 - Miscellaneous loose ends (these can likely be skipped for now)
   - [ ] Handle file access modes
   - [ ] Fix I/O status handling (when is status from READSS reset?)

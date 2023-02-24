@@ -853,10 +853,14 @@ _refill_done
 W_RESTORE_INPUT
         !word DO_COLON
         !word W_DROP            ; TODO check value
+        +LITERAL &INPUT_LEN
+        !word W_STORE
+        +LITERAL &INPUT_BUFFER
+        !word W_STORE
+        !word W_IN
+        !word W_STORE
         +LITERAL &SOURCE_ID
         !word W_STORE
-        ;!word W_IN
-        ;!word W_STORE          ; TODO
         ; TODO SOURCE?
         !word W_ZERO            ; input successfully restored
         !word W_PSEMI
@@ -947,9 +951,10 @@ W_SAVE_INPUT
         ; TODO this could be made much smaller
         ; TODO SOURCE?
         !word W_SOURCE_ID
-        ;!word W_IN             ; TODO
-        ;!word W_AT
-        !word W_ONE             ; number of other cells pushed
+        !word W_IN
+        !word W_AT
+        !word W_SOURCE
+        +LITERAL 4             ; number of other cells pushed
         !word W_PSEMI
 
 ; ****************************************************************************
