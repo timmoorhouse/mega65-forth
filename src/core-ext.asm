@@ -461,13 +461,6 @@ W_NIP
 ; (-- c-addr)
 ; ANSI 6.2.2000
 
-; FIG:
-;
-;
-;      PAD           ---  addr                               L0
-;               Leave the address of the text output buffer, which is a 
-;               fixed offset above HERE.
-
 ; See core-ext.f
 
 ; Used by WORD

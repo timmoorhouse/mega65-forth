@@ -749,6 +749,9 @@ _tonumber_done_0drop
 ;               binary equivalent n, accompanied by a true flag.  If the 
 ;               conversion is invalid, leaves only a false flag.
 
+
+; TODO make this case insensitive
+
         ; +WORD "digit"
         +NONAME
 W_DIGIT
@@ -881,16 +884,7 @@ W_ABORT
 ; (n -- u)
 ; ANSI 6.1.0690
 
-; TODO move to core.f
-
-        +WORD "abs"
-W_ABS
-        !word DO_COLON
-        !word W_DUP
-        !word W_ZLESS
-        +ZBRANCH +
-        !word W_NEGATE
-+       !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; ACCEPT 
@@ -1754,7 +1748,7 @@ W_FILL
         lda 5,x
         sta _fill_dst+1
         +dma_inline
-        !byte $0b ; F018B 12-byte format
+        !byte $0b               ; F018B 12-byte format
         +dma_options_end
         !byte dma_cmd_fill      ; cmd
 _fill_count
@@ -1869,12 +1863,6 @@ W_HERE
 ; I 
 ; (???)
 ; ANSI 6.1.1680
-
-; FIG:
-;
-;      I             ---  n                                  C,L0
-;               Used within a DO-LOOP to copy the loop index to the stack.  
-;               Other use is implementation dependent.  See R.
 
         +WORD "i"
 W_I
@@ -2069,12 +2057,6 @@ beq +
 ; M* 
 ; (n_1 n_2 -- d)
 ; ANSI 6.1.1810
-
-; FIG:
-;
-;      M*            n1  n2  ---  d
-;               A mixed magnitude math operation which leaves the double 
-;               number signed product of two signed numbers.
 
 ; See core.f
 
@@ -2412,24 +2394,7 @@ W_PSQ
 ; (n --)
 ; ANSI 6.1.2210
 
-; FIG:
-;
-;      SIGN          n  d  ---  d                            L0
-;               Stores an ascii "-" sign just before a converted numeric 
-;               output string in the text output buffer when n is 
-;               negative.  n is discarded, but double number d is 
-;               maintained.  Must be between <# and #>.
-
-        +WORD "sign"
-W_SIGN
-        !word DO_COLON
-;          !word ROT
-;          !word ZLESS
-;          !word ZBRANCH
-;L3492:    !word $7       ; L3496-L3492
-        +CLITERAL '-'
-;          !word HOLD
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; SM/REM
@@ -2473,27 +2438,6 @@ W_SPACE
 ; ANSI 6.1.2230
 
 ; See core.f
-
-; TODO remove this definition
-        +WORD "spaces"
-W_SPACES
-        !word DO_COLON
-        !word W_ZERO
-        !word W_MAX     ; (n|0)
-        !word W_QDUP
-        +ZBRANCH _spaces_done
-
-        !word W_ZERO    ; (n 0)
-        +DO _spaces_done
-
-_spaces_loop
-        !word W_SPACE
-
-        !word W_PLOOP
-        !word _spaces_loop-*
-
-_spaces_done
-        !word W_PSEMI
 
 ; ****************************************************************************
 ; STATE
@@ -2562,11 +2506,7 @@ _type_after_loop
 ; (u --)
 ; ANSI 6.1.2320
 
-!if 0 {
-        +WORD "u."
-        !word *+2
-        rts
-}
+; See core.f
 
 ; ****************************************************************************
 ; U<

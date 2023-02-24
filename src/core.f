@@ -75,6 +75,10 @@
 
 : ' ( "<spaces>name" -- xt ) parse-name forth-wordlist search-wordlist drop ; immediate
 
+: +- 0< if negate then ; \ TODO REMOVE
+
+: abs dup +- ;
+
 : > swap < ;
 
 : >body ( xt -- a-addr ) 2+ ;
@@ -111,9 +115,7 @@
 
 : recurse latest name>interpret , ; immediate
 
-\ : spaces ( n -- ) 0 max ?dup if 0 do space loop then ; \ TODO use ?do
-
-: +- 0< if negate then ; \ TODO REMOVE
+: spaces ( n -- ) 0 max ?dup if 0 do space loop then ; \ TODO use ?do
 
 : * 2dup 2>r abs swap abs um* drop r> +- r> +- ; \ TODO SLOW
 

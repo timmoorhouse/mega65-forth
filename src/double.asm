@@ -34,12 +34,6 @@
 ; (d_1 d_2 -- d_3)
 ; ANSI 8.6.1.1040
 
-; FIG:
-;
-;
-;      D+            d1  d2  ---  dsum
-;               Leave the double number sum of two double numbers.
-
 ; This is required by >number (core) but will only be visible if DOUBLE is enabled
 
 !if ENABLE_DOUBLE {
@@ -82,63 +76,14 @@ W_DMINUS
 ; (d --)
 ; ANSI 8.6.1.1060
 
-; FIG:
-;
-;      D.            d  ---                                  L1
-;               Print a signed double number from a 32 bit two's 
-;               complement value.  The high-order 16 bits are most 
-;               accessable on the stack.  Conversion is performed 
-;               according to the current BASE.  A blank follows.
-;               Pronounced D-dot.
-
-; The word itself is required by the implmentation (of .) but is only visible if DOUBLE is enabled
-
-!if ENABLE_DOUBLE {
-        +WORD "d."
-} else {
-        +NONAME
-}
-W_DDOT
-        !word DO_COLON
-        !word W_ZERO
-        !word W_DDOTR
-        !word W_SPACE
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; D.R
 ; (d n --)
 ; ANSI 8.6.1.1070
 
-; FIG:
-;
-;      D.R           d  n  ---
-;               Print a signed double number d right aligned in a field n 
-;               characters wide.
-
-; The word itself is required by the implmentation (of .) but is only visible if DOUBLE is enabled
-
-!if ENABLE_DOUBLE {
-        +WORD "d.r"
-} else {
-        +NONAME
-}
-W_DDOTR
-        !word DO_COLON
-        !word W_TOR
-        !word W_SWAP
-        !word W_OVER
-        !word W_DABS
-        ; !word W_BDIGS ; core
-        ; !word W_DIGS  ; core
-        ; !word W_SIGN  ; core
-        ; !word W_EDIGS ; core
-        !word W_RFROM
-        !word W_OVER
-        !word W_SUB
-        !word W_SPACES
-        !word W_TYPE
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; D0<
@@ -200,15 +145,6 @@ W_DDOTR
 ; DABS
 ; (d -- ud)
 ; ANSI 8.6.1.1160
-
-; FIG:
-;
-;      DABS          d  ---  ud
-;               Leave the absolute value ud of a double number.
-;
-;;
-;;                                       DABS
-;;                                       SCREEN 56 LINE 10
 
 ; The word itself is required by the implmentation (of .) but is only visible if DOUBLE is enabled
 
