@@ -335,13 +335,10 @@ _traverse_loop
 
         ; (i*x) (R: xt wid)
 
-!if 0 {
         !word W_RAT
         !word W_QHIDDEN
         !word W_ZEQUAL
         +ZBRANCH _traverse_loop
-        ;!word W_DROP
-}
 
         ; (i*x) (R: xt wid)
 

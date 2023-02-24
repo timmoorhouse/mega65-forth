@@ -65,11 +65,6 @@ FORTH_WORDLIST
 ; (-- wid)
 ; ANSI 16.6.1.1643
 
-;;
-;;                                       CURRENT
-;;                                       SCREEN 37 LINE 3
-;;
-
 ;!if ENABLE_SEARCH {
 !if 1 {
          +WORD "get-current"
@@ -231,11 +226,6 @@ W_PSEARCH_WORDLIST
 ;               defined.  All vocabularies ultimately chain to Forth.  By 
 ;               convention, vocabulary names are to be declared IMMEDIATE.  
 ;               See VOC-LINK.
-
-;;
-;;                                       VOCABULARY
-;;                                       SCREEN 53 LINE 4
-;;
 
 !if ENABLE_SEARCH {
 !if 0 {

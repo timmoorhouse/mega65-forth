@@ -66,7 +66,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Need to replace `.` with the one that handles different bases, signed values, etc
   - [ ] Need to reimplement the multiplication/division operations using the math unit
   - [ ] There's a test that does `: NOP : POSTPONE ; ;` which causes bad things to happen - I need to wrap my head around how that's supposed to work
-  - [ ] Something bad happens during the test `: GDX 123 ; : GDX GDX 234 ; GDX` - I think it's the fact that we're not honouring the hidden flag in `SEARCH-NAMELIST` yet
 - CORE-EXT
 - DOUBLE
   - [ ] Need to support double literals (eg `123.`)
@@ -75,7 +74,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Fix I/O status handling (when is status from READSS reset?)
   - [ ] Fix handling of I/O error cases
 - SEARCH
-  - [ ] Honour the hidden flag in `SEARCH-NAMELIST` (or in `TRAVERSE-WORDLIST`?)
 - Bootstrapping with portions of the dictionary written in Forth
   - [ ] A "skeletal" configuration with just the builtins
   - [ ] A "minimal" configuration

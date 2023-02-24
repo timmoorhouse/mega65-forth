@@ -304,7 +304,6 @@ W_NOTEQUAL
 W_DEFER
         !word DO_COLON
         !word W_CREATE
-        !word W_SMUDGE
         !word W_ZERO
         !word W_COMMA
         !word W_PSCODE

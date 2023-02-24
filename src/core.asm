@@ -537,6 +537,7 @@ W_COLON
         ; !word W_GET_CURRENT ; context - change to get-current?
         ; !word W_STORE
         !word W_CREATE
+        !word W_SMUDGE
         !word W_RBRACKET
         !word W_PSCODE
 DO_COLON
@@ -1196,7 +1197,6 @@ W_CAT
 W_CONSTANT
         !word DO_COLON
         !word W_CREATE
-        !word W_SMUDGE
         !word W_COMMA
         !word W_PSCODE
 ; Push the first cell in the data field
@@ -1296,7 +1296,7 @@ W_CREATE
         ; (c-addr u)
 
         !word W_DUP             ; store name len | flags
-        +CLITERAL F_END_MARKER | F_HIDDEN
+        +CLITERAL F_END_MARKER
         !word W_OR
         !word W_HERE
         !word W_CSTORE
@@ -2624,7 +2624,6 @@ W_UNLOOP
 W_VARIABLE    
         !word DO_COLON
         !word W_CREATE
-        !word W_SMUDGE
         !word W_ZERO
         !word W_COMMA
         !word W_PSCODE
