@@ -138,6 +138,7 @@ W_SEE
 ; (--)
 ; ANSI 15.6.1.2465
 
+!if 1 {
 !if ENABLE_TOOLS {
         +WORD "words"
 W_WORDS
@@ -210,56 +211,5 @@ W_IDDOT
         !word W_PSEMI
 }
 
-; FIG
-;      VLIST
-;               List the names of the definitions in the context 
-;               vocabulary.  "Break" will terminate the listing.
-;
-;;
-;;                                       VLIST
-;;                                       SCREEN 78 LINE 2
-;;
-;;
-!if 0 {
-;        +WORD "vlist"
-W_VLIST
-        !word DO_COLON
-
-;          !word CLIT
-;          !byte $80
-;          !word OUT
-;          !word STORE
-
-;          !word CON
-;          !word AT
-;          !word AT
-
-;L3706:    !word OUT
-;          !word AT
-;          !word CSLL
-;          !word GREAT
-;          !word ZBRANCH
-;L3711:    !word $A       ; L3716-L3711
-;          !word CR
-;          !word ZERO
-;          !word OUT
-;          !word STORE
-
-;L3716:    !word DUP
-;          !word IDDOT
-;          !word SPACE
-;          !word SPACE
-;          !word PFA
-;          !word LFA
-;          !word AT
-;          !word DUP
-;          !word ZEQU
-;          !word QTERM
-;          !word OR
-;          !word ZBRANCH
-;L3728:    !word $FFD4    ; L3706-L3728
-
-;          !word DROP
-        !word W_PSEMI
 }
 }

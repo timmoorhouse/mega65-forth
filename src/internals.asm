@@ -209,14 +209,28 @@ _inc_I_PUSH
         jmp PUSH
 
 ; ****************************************************************************
+; ?HIDDEN
+; (nt -- flag)
+
+; Check if a name token is hidden
+
+        +WORD "?hidden"
+W_QHIDDEN
+        !word DO_COLON
+        !word W_2PLUS
+        !word W_CAT
+        +CLITERAL F_HIDDEN
+        !word W_AND
+        !word W_PSEMI
+
+; ****************************************************************************
 ; ?IMMEDIATE
 ; (nt -- flag)
 ;
 ; Check if a name token is immediate
 ; Used by NAME>COMPILE and (soon) POSTPONE
 
-        ; +WORD "?immediate"
-        +NONAME
+        +WORD "?immediate"
 W_QIMMEDIATE
         !word DO_COLON
         !word W_2PLUS

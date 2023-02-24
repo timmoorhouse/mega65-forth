@@ -71,6 +71,8 @@
        
 \ ***************************************************************************
 
+: ' ( "<spaces>name" -- xt ) parse-name forth-wordlist search-wordlist drop ; immediate
+
 : > swap < ;
 
 : >body ( xt -- a-addr ) 2+ ;

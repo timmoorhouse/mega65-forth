@@ -56,17 +56,7 @@ W_STORE
 ; ("<spaces>name" -- xt)
 ; ANSI 6.1.0070
 
-; TODO move to core.f
-
-        +WORD_IMM "'"
-W_TICK
-        !word DO_COLON
-        !word W_PARSE_NAME
-        !word W_FORTH_WORDLIST ; TODO
-        !word W_SEARCH_WORDLIST
-        ; TODO check status from search-wordlist
-        !word W_DROP
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; ( 

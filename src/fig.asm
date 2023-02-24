@@ -4,28 +4,6 @@
 !if ENABLE_FIG {
 
 ; ****************************************************************************
-; +-
-
-;      +-            n1  n2  ---  n3
-;               Apply the sign of n2 to n1, which is left as n3.
-
-;;
-;;                                       +-
-;;                                       SCREEN 56 LINE 4
-;;
-
-!if 0 {
-        +WORD "+-"
-W_PM
-        !word DO_COLON
-;          !word ZLESS
-;          !word ZBRAN
-;L2469:    !word 4
-;          !word MINUS
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; ->
 ;      -->                                                   P,L0
 ;               Continue interpretation with the next disc screen.  
