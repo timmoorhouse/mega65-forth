@@ -1166,15 +1166,7 @@ W_CAT
 ; ("text" -- char)
 ; ANSI 6.1.0895
 
-; TODO move to core.f 
-        +WORD_IMM "char"
-W_CHAR
-        !word DO_COLON
-        !word W_PARSE_NAME
-        ; TODO what if length is 0?
-        !word W_DROP
-        !word W_CAT
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; CHAR+ 

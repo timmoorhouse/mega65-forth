@@ -1,7 +1,9 @@
 
 : literal postpone (literal) , ; immediate
 
-: [char] parse-name drop c@ postpone literal ; immediate
+: char parse-name drop c@ ; immediate
+
+: [char] postpone char postpone literal ; immediate
 
 : ( [char] ) parse 2drop ; immediate
 ( TODO allow multiline comments when parsing from a file )
