@@ -132,17 +132,14 @@
 
 \ These look OK
 variable hld
-: hold -1 hld +! hld @ c! ; \ hmm ... this goes backwards.  OK with the gap, but might want to change this
-: <# pad hld ! ;
-: #> 2drop hld @ pad over - ;
-
-\ Looks OKish ... not tested
-: # base @ um/mod rot 9 over < if 7 + then '0' + hold ; \ TODO 7 is the gap between '9' and 'A'
-: #s begin # 2dup or 0= until ; \ TODO d0= instead of 2dup or 0=
-
-\ Not tested yet ...
-: sign rot 0< if '-' hold then ; \ looks wrong ... interface has changed in ANS
-: d.r >r swap over dabs <# #s sign #> r> over - spaces type ;
+: hold ( char -- ) -1 hld +! hld @ c! ; \ hmm ... this goes backwards.  OK with the gap, but might want to change this
+: <# ( -- ) pad hld ! ;
+: #> ( xd -- c-addr u ) 2drop hld @ pad over - ;
+: m/mod ( ud1 u2 -- u3 ud4 ) >r 0 r@ um/mod r> swap >r um/mod r> ; \ TODO just for # so far
+: # ( ud1 -- ud2 ) base @ m/mod rot 9 over < if 7 + then '0' + hold ; \ TODO 7 is the gap between '9' and 'A'
+: sign ( n -- ) 0< if '-' hold then ;
+: #s ( ud1 -- ud2 ) begin # 2dup or 0= until ; \ TODO d0= instead of 2dup or 0=
+: d.r ( d n -- ) >r swap over dabs <# #s rot sign #> r> over - spaces type ;
 : d. 0 d.r space ;
 : .r >r s>d r> d.r ;
 \ : . s>d d. ;
