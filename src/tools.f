@@ -5,23 +5,18 @@
 
 ' (.s) is .s
 
-: dump ( addr u -- )
-
-    2dup 16 min \ ( addr u addr u2 )
-    over . 
-
-    \ 2dup over + swap do i c@ . loop
-
-    space
-    char | emit
-    space
-
-    \ 2dup over + swap do i c@ emit loop
-
-    cr
-    2drop
-
-    2drop ;
+: dump ( addr u -- ) \ u is number of lines to display
+    base @ >r hex cr 
+    0 do   ( addr )
+        16 ( addr u2 )
+        over 4 u.r 
+        2dup over + swap do space i c@ 2 u.r loop
+        \ space ':' emit space
+        \ 2dup over + swap do i c@ emit loop \ TODO would need a check for printable chars
+        cr
+        +
+    loop
+    r> base ! ;
 
 : see ( "<spaces>name" -- ) ;
 
