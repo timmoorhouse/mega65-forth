@@ -1407,33 +1407,33 @@ W_PDO
 ;               assembler, multi-dimensional arrays, and compiler 
 ;               generation.
 
-!if 0 {
+!if 1 {
         +WORD "does>"
 W_DOES
         !word DO_COLON
-;          !word RFROM
-;          !word LATES
-;          !word PFA
-;          !word STORE
+        !word W_RFROM
+        !word W_LATEST
+        !word W_NAME_TO_INTERPRET
+        !word W_STORE
         !word W_PSCODE
 }
 DO_DOES
-;       LDA IP+1
-;       PHA
-;       LDA IP
-;       PHA
-;       LDY #2
-;       LDA (W),Y
-;       STA IP
-;       INY
-;       LDA (W),Y
-;       STA IP+1
-;       CLC
-;       LDA W
-;       ADC #4
-;       PHA
-;       LDA W+1
-;       ADC #0
+        lda <I+1
+        pha
+        lda <I
+        pha
+        ldy #2
+        lda (<W),y
+        sta <I
+        iny
+        lda (<W),y
+        sta <I+1
+        clc
+        lda <W
+        adc #4
+        pha
+        lda <W+1
+        adc #0
         jmp PUSH
 
 ; ****************************************************************************

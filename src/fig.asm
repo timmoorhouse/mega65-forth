@@ -149,12 +149,6 @@ W_PBUF
 ;               level rather than in assembler code (as required by 
 ;               ;CODE ).
 
-
-;;
-;;                                       <BUILDS
-;;                                       SCREEN 43 LINE 2
-;;
-
 !if 0 {
         +WORD "<builds"
 W_BUILD
