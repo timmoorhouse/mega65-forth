@@ -250,27 +250,19 @@ W_SUB
 ; (n --)
 ; ANSI 6.1.0180
 
-; FIG:
-;      .             n  ---                                  L0
-;               Print a number from a signed 16 bit two's complement 
-;               value, converted according to the numeric BASE.  A 
-;               trailing blank follows.  Pronounced "dot".
-
         +WORD "."
 W_DOT
-!if 0 {
-        !word DO_COLON
-        !word W_STOD
-        !word W_DDOT
-        !word W_PSEMI
-} else {
+        !word DO_DEFER
+        !word W_SIMPLE_DOT
+
+        :NONAME
+W_SIMPLE_DOT
         !word *+2
         lda 1,x
         jsr put_hex
         lda 0,x
         jsr put_hex
         jmp POP
-}
 
 ; ****************************************************************************
 ; ." 

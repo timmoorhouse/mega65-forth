@@ -154,6 +154,7 @@ variable hld
 : .r >r s>d r> d.r ;
 : u.r ( ud n -- ) >r <# #s #> r> over - spaces type ;
 : u. 0 u.r space ;
-\ : . s>d d. ;
+
+: (.) s>d d. ;
 
 .( ... end of core.f ) cr
