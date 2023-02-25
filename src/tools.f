@@ -8,7 +8,7 @@
 : ? @ . ;
 
 : dump ( addr u -- ) \ u is number of lines to display
-    base @ >r hex cr 
+    base @ >r hex cr
     0 do   ( addr )
         16 ( addr u2 )
         over 4 u.r 
@@ -20,9 +20,25 @@
     loop
     r> base ! ;
 
-: see ( "<spaces>name" -- ) ;
+\ following gforth ...
+: xt-see ( xt -- ) 
+    base @ >r hex
+    \ dup 4 u.r space ." TODO - xt-see "
+    5 dump
+    r> base ! ;
 
-\ TODO traverse-namelist should do the hidden check
+: see ( "<spaces>name" -- )
+    base @ >r hex cr
+    parse-name forth-wordlist search-wordlist-nt ?dup if
+        .s cr
+        dup 4 u.r space ':' emit space dup name>string type
+        \ TODO show name, flags
+        dup name>interpret xt-see
+        5 spaces ';' emit
+        ?immediate if ." immediate" then
+        cr
+    then r> base ! ;
+
 \ : print-name ( nt -- u ) dup ?hidden =0 if
 \         out @ 
 \             dup if space then
