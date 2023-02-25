@@ -62,81 +62,21 @@ SIMPLE_DOTS
 ; (a-addr --)
 ; ANSI 15.6.1.0600
 
-; FIG:
-;      ?             addr  ---                               L0
-;               Print the value contained at the address in free format 
-;               according to the current base.
-;
-;;
-;;                                       ?
-;;                                       SCREEN 76 LINE 11
-
-; TODO always enable?
-
-!if ENABLE_TOOLS {
-!if 0 {
-        +WORD "?"
-W_QUES
-        !word DO_COLON
-;          !word AT
-;          !word DOT
-        !word W_PSEMI
-}
-}
+; See tools.f
 
 ; ****************************************************************************
 ; DUMP
 ; (addr u --)
 ; ANSI 15.6.1.1280
 
-!if ENABLE_TOOLS {
-!if 0 {
-        +WORD "dump"
-W_DUMP
-        !word *+2
-        rts
-}
-}
+; See tools.f
 
 ; ****************************************************************************
 ; SEE
 ; ("text" --)
 ; ANSI 15.6.1.2194
 
-; FIG
-;      DUMP          addr  n  ---                            L0
-;               Print the contents of n memory locations beginning at 
-;               addr.  Both addresses and contents are shown in the 
-;               current numeric base.
-
-!if ENABLE_TOOLS {
-!if 0 {
-        +WORD "see"
-W_SEE
-        !word *+2
-        rts
-}
-}
-
-;
-; TODO
-; - lookup name
-; - check code field
-;   - DO_VARIABLE
-;   - DO_CONSTANT
-;   - DO_COLON
-;     - print ': <name>'
-;     - scan a word at a time, resolving word name until we hit (;)
-;     - will need special handling for words like LITERAL, DO, BRANCH, 0BRANCH
-;     - might not be able to transform control structures back to IF, etc (that should be ok?)
-;     - will need to change builtins to only have a single (;)
-;     - limit to maximum length in case we get out of sync
-;     - show address of everything and hex dump (like acme listing)
-;   - DO_DOES
-;     - might not be able to do anything sensible for this case?
-;
-;
-;
+; See tools.f
 
 ; ****************************************************************************
 ; WORDS
