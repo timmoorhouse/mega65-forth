@@ -63,6 +63,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] `UM/MOD` gets things wrong for large inputs
   - [ ] Still some problems with the termination check in `+LOOP`
   - [ ] `S"` is incorrect when interpreting
+  - [ ] Binary literals (such as %101010) don't seem to be working
   - [ ] Handle `RESTORE-INPUT` failures
   - [ ] Need to reimplement the multiplication/division operations using the math unit
   - [ ] We should be able to get rid of the hidden flag pretty easily by changing when we link new words into the dictionary

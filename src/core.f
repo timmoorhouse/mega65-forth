@@ -78,7 +78,7 @@
 \ TODO latest won't work with :noname
 : :noname ( -- xt ) align ] 
     \ $80 , \ end marker flag, zero length name \ TODO skip these??
-    here 0 , ;
+    here ' : @ , ; \ assumes the code field of : is DO_COLON
 
 : +- 0< if negate then ; \ TODO REMOVE
 
