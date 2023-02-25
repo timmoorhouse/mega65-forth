@@ -15,7 +15,7 @@ W_DOTS
         !word W_SIMPLE_DOTS
 
 !if ENABLE_TOOLS {
-        +WORD ".s"
+        +NONAME
 W_SIMPLE_DOTS
         !word *+2
         jsr SIMPLE_DOTS

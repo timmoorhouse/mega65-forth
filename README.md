@@ -62,7 +62,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
 - CORE
   - [ ] `UM/MOD` gets things wrong for large inputs
   - [ ] Handle `RESTORE-INPUT` failures
-  - [ ] Need to replace `.` with the one that handles different bases, signed values, etc (need `DEFER` to do this)
   - [ ] Need to reimplement the multiplication/division operations using the math unit
   - [ ] There's a test that does `: NOP : POSTPONE ; ;` which causes bad things to happen - I need to wrap my head around how that's supposed to work
   - [ ] We should be able to get rid of the hidden flag pretty easily by changing when we link new words into the dictionary
