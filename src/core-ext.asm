@@ -296,6 +296,8 @@ W_NOTEQUAL
 ; DEFER
 ; Forth 2012 6.2.1173
 
+; TODO move to core-ext.f once we have DOES> (see reference implementation)
+
 !if ENABLE_CORE_EXT {
         +WORD "defer"
 } else {

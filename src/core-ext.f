@@ -5,17 +5,12 @@
 
 : defer! ( xt2 xt1 -- ) >body ! ;
 
-\ : is ( xt "<spaces>name" -- )
-\    state @ if
-\      postpone ['] postpone defer!
-\    else
-\      ' defer!
-\    then ; immediate
-
-\ TODO references implementation doesn't have the postpone ...
-\ problem with our ' ? 
-: is ( xt "<spaces>name" -- ) 
-    ' defer! ; immediate
+: is ( xt "<spaces>name" -- )
+   state @ if
+     postpone ['] postpone defer!
+   else
+     ' defer!
+   then ; immediate
 
 : action-of ( "<spaces>name" -- )
    state @ if

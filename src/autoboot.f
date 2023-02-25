@@ -12,14 +12,14 @@ include bootstrap-full.f
 savesystem forth-complete,p,w
 
 \ TODO redirect output
-\ include prelimtest.fth          \ 1 failure
-\ include tester.fr               \ OK
+include prelimtest.fth          \ 1 failure
+include tester.fr               \ OK
 \  \ include ttester.fs
-\ include core.fr                 \ LOTS to fix
-\ include coreplustest.fth        \
+include core.fr                 \ LOTS to fix
+include coreplustest.fth        \
 \ include utilities.fth
 \ include errorreport.fth
-\ include coreexttest.fth         \
+include coreexttest.fth         \
 \ include blocktest.fth
 \ include doubletest.fth
 \ include exceptiontest.fth
