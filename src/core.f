@@ -152,9 +152,8 @@ variable hld
 : d.r ( d n -- ) >r swap over dabs <# #s rot sign #> r> over - spaces type ;
 : d. 0 d.r space ;
 : .r >r s>d r> d.r ;
-: u.r ( ud n -- ) >r <# #s #> r> over - spaces type ;
+: u.r ( u n -- ) >r 0 <# #s #> r> over - spaces type ;
 : u. 0 u.r space ;
-
-: (.) s>d d. ;
+: . s>d d. ;
 
 .( ... end of core.f ) cr

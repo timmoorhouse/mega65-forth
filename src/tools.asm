@@ -7,18 +7,21 @@
 ; (--)
 ; ANSI 15.6.0220
 
-; TODO rewrite in FORTH using DEPTH, ., DO, LOOP
+; See also tools.f
 
-; TODO if base is 10 used signed output, otherwise unsigned?
+        +WORD ".s"
+W_DOTS
+        !word DO_DEFER
+        !word W_SIMPLE_DOTS
 
 !if ENABLE_TOOLS {
         +WORD ".s"
-W_DOTS
+W_SIMPLE_DOTS
         !word *+2
-        jsr DOTS
+        jsr SIMPLE_DOTS
         jmp NEXT
 
-DOTS
+SIMPLE_DOTS
         stx <XSAVE
         lda #' '
         jsr EMIT

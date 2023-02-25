@@ -19,8 +19,6 @@
      ' defer@
    then ; immediate
 
-' (.) is .
-
 : erase ( c-addr u ) 0 fill ;
 
 : hex 16 base ! ;

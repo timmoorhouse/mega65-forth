@@ -1,4 +1,10 @@
 
+\ TODO eventually get rid of the defer ...
+\ TODO if base is 10 used signed output, otherwise unsigned?
+: (.s) '<' emit depth 0 u.r '>' emit space 0 depth 2- do i pick . -1 +loop ;
+
+' (.s) is .s
+
 : dump ( addr u -- )
 
     2dup 16 min \ ( addr u addr u2 )
