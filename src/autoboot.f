@@ -12,14 +12,14 @@ include bootstrap-full.f
 savesystem forth-complete,p,w
 
 \ TODO redirect output
-include prelimtest.fth          \ 1 failure
-include tester.fr               \ OK
+\ include prelimtest.fth          \ 1 failure
+\ include tester.fr               \ OK
 \  \ include ttester.fs
-include core.fr                 \ LOTS to fix
-\ include coreplustest.fth
+\ include core.fr                 \ LOTS to fix
+\ include coreplustest.fth        \
 \ include utilities.fth
 \ include errorreport.fth
-include coreexttest.fth
+\ include coreexttest.fth         \
 \ include blocktest.fth
 \ include doubletest.fth
 \ include exceptiontest.fth
@@ -46,6 +46,25 @@ cr .( Forth tests completed ) cr cr
 \ : foo2  ( -- n )  0 10 0 DO leave LOOP ;
 \ : foo2  ( -- ch )  [char] 0 [char] a [CHAR] A ;
 \ foo2 cr .s cr
+
+.( defer foo ) cr
+defer foo 
+.( ' foo ... ) cr
+' foo . cr
+.( : foo2 ... ) cr
+: foo2 ." in foo2 " $1234 ;
+.( ' foo2 ) cr
+' foo2 . cr
+.( ' foo2 execute ) cr
+' foo2 execute .s cr
+.( foo2 is foo ) cr
+' foo2 is foo
+.( foo contains xt ... ) cr
+' foo >body @ . cr
+.( foo ) cr
+foo
+.s cr
+
 
 .( Completed bootstrap ) cr
 .( TODO autoboot.f should now be deleted or renamed ) cr

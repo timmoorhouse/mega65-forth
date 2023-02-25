@@ -5,6 +5,9 @@
 
 : hex 16 base ! ;
 
+: is ( xt "<spaces>name" -- ) 
+    parse-name forth-wordlist search-wordlist if >body ! then ; immediate \ TODO error if not found
+
 : tuck swap over ;
 
 : u> swap u< ;

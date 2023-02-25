@@ -311,7 +311,28 @@ DO_DEFER
         ; See also DO_COLON
 
         ; ldy #0 ; TODO
+!if 1 {
+        lda #'w'
+        jsr EMIT
+        lda <W+1
+        jsr put_hex
+        lda <W
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+}
+!if 1 {
+        lda #'i'
+        jsr EMIT
+        lda <I+1
+        jsr put_hex
+        lda <I
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+}
 
+!if 0 {
 !if PUSH_MSB_FIRST {
         lda <I+1 ; push I
         pha
@@ -320,15 +341,49 @@ DO_DEFER
 } else {
         phw &I ; TODO why doesn't this work? looks like phw uses the opposite byte order
 }
-        clc ; ???
-        lda <W ; I = W + 2 ; TODO faster to copy then inw?
-        adc #2
-        sta <I
-        tya
-        adc <W+1
-        sta <I+1
+}
 
-        jmp NEXT
+        ; TODO there's likely a faster way to do this ...
+
+        clc
+        lda <W
+        adc #2
+        sta <TEMP1
+        lda <W+1
+        adc #0
+        sta <TEMP1+1
+
+!if 1 {
+        lda #'d'
+        jsr EMIT
+        lda <TEMP1+1
+        jsr put_hex
+        lda <TEMP1
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+}
+
+        ldy #0
+        lda (<TEMP1),y
+        sta <W
+        iny
+        lda (<TEMP1),y
+        sta <W+1
+
+!if 1 {
+        lda #'d'
+        jsr EMIT
+        lda <W+1
+        jsr put_hex
+        lda <W
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+}
+
+        ldy #0
+        jmp &DO_JUMP_W
 
 ; ****************************************************************************
 ; DEFER!
@@ -405,8 +460,7 @@ W_FALSE
 ; IS
 ; Forth 2012 6.2.1725
 
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; MARKER
