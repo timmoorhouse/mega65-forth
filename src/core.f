@@ -75,11 +75,6 @@
 
 : ' ( "<spaces>name" -- xt ) parse-name forth-wordlist search-wordlist drop ;
 
-\ TODO latest won't work with :noname
-: :noname ( -- xt ) align ] 
-    \ $80 , \ end marker flag, zero length name \ TODO skip these??
-    here ' : @ , ; \ assumes the code field of : is DO_COLON
-
 : +- 0< if negate then ; \ TODO REMOVE
 
 : abs dup +- ;
