@@ -5,6 +5,8 @@
 
 ' (.s) is .s
 
+: ? @ . ;
+
 : dump ( addr u -- ) \ u is number of lines to display
     base @ >r hex cr 
     0 do   ( addr )
