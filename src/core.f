@@ -78,17 +78,19 @@
 \    3 of ... endof
 \    ...
 \  endcase
-: case postpone >r 0 ; immediate
+: case 0 ; immediate
 
-: of postpone r@ postpone = postpone 0branch here 0 , ; immediate
+: of postpone over postpone = postpone 0branch here 0 , 
+    postpone drop ; immediate
 
 \ TODO duplication with then
 : endof postpone branch here rot 1+ rot 0 , \ branch to endcase
   here over - swap ! ; immediate \ branch of chained condition checks
 
 : endcase 
-    ?dup if 0 do here over - swap ! loop then
-    postpone r> postpone drop ; immediate \ TODO ?do
+    postpone drop
+    ?dup if 0 do here over - swap ! loop then \ TODO ?do
+    ; immediate
 
 \ ***************************************************************************
 
