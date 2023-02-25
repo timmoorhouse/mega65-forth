@@ -519,7 +519,7 @@ W_2SWAP
 ; (???)
 ; ANSI 6.1.0450
 
-        +WORD_IMM ":"
+        +WORD ":"
 W_COLON
         !word DO_COLON
 ;          !word QEXEC
