@@ -311,37 +311,6 @@ DO_DEFER
         ; See also DO_COLON
 
         ; ldy #0 ; TODO
-!if 1 {
-        lda #'w'
-        jsr EMIT
-        lda <W+1
-        jsr put_hex
-        lda <W
-        jsr put_hex
-        lda #' '
-        jsr EMIT
-}
-!if 1 {
-        lda #'i'
-        jsr EMIT
-        lda <I+1
-        jsr put_hex
-        lda <I
-        jsr put_hex
-        lda #' '
-        jsr EMIT
-}
-
-!if 0 {
-!if PUSH_MSB_FIRST {
-        lda <I+1 ; push I
-        pha
-        lda <I
-        pha
-} else {
-        phw &I ; TODO why doesn't this work? looks like phw uses the opposite byte order
-}
-}
 
         ; TODO there's likely a faster way to do this ...
 
@@ -353,34 +322,12 @@ DO_DEFER
         adc #0
         sta <TEMP1+1
 
-!if 1 {
-        lda #'d'
-        jsr EMIT
-        lda <TEMP1+1
-        jsr put_hex
-        lda <TEMP1
-        jsr put_hex
-        lda #' '
-        jsr EMIT
-}
-
         ldy #0
         lda (<TEMP1),y
         sta <W
         iny
         lda (<TEMP1),y
         sta <W+1
-
-!if 1 {
-        lda #'d'
-        jsr EMIT
-        lda <W+1
-        jsr put_hex
-        lda <W
-        jsr put_hex
-        lda #' '
-        jsr EMIT
-}
 
         ldy #0
         jmp &DO_JUMP_W
