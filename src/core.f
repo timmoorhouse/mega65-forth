@@ -73,7 +73,7 @@
        
 \ ***************************************************************************
 
-: ' ( "<spaces>name" -- xt ) parse-name forth-wordlist search-wordlist drop ; immediate
+: ' ( "<spaces>name" -- xt ) parse-name forth-wordlist search-wordlist drop ;
 
 : +- 0< if negate then ; \ TODO REMOVE
 
@@ -113,7 +113,7 @@
 
 : 2@ dup cell+ @ swap @ ;
 
-: ['] postpone ' postpone literal ; immediate
+: ['] ' postpone literal ; immediate
 
 : recurse latest name>interpret , ; immediate
 
