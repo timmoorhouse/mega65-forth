@@ -250,6 +250,11 @@ W_SUB
 ; (n --)
 ; ANSI 6.1.0180
 
+; See core.f
+
+; TODO this should get removed ... just keeping it for a while
+; in case we want it for debugging builtins
+
 !if 0 {
         +WORD "."
 W_DOT
@@ -1275,6 +1280,8 @@ W_CREATE
 
         !word W_ALIGN           
 
+        ; TODO turn latest into a var and set it here? (so it will work with :noname)
+
         !word W_HERE
         !word W_GET_CURRENT
         !word W_DUP
@@ -1290,7 +1297,7 @@ W_CREATE
         !word W_DUP             ; store name len | flags
         +CLITERAL F_END_MARKER
         !word W_OR
-        !word W_HERE
+        !word W_HERE            ; TODO c,
         !word W_CSTORE
         !word W_ONE
         !word W_ALLOT

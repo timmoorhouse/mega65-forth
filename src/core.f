@@ -75,6 +75,11 @@
 
 : ' ( "<spaces>name" -- xt ) parse-name forth-wordlist search-wordlist drop ;
 
+\ TODO latest won't work with :noname
+: :noname ( -- xt ) align ] 
+    \ $80 , \ end marker flag, zero length name \ TODO skip these??
+    here 0 , ;
+
 : +- 0< if negate then ; \ TODO REMOVE
 
 : abs dup +- ;
@@ -104,6 +109,7 @@
 
 \ TODO use sliteral!
 \ TODO alignment after string?
+\ TODO s" broken when interpreting
 : s" [char] " parse postpone (s") dup c, swap over here swap cmove allot ; immediate
 : ." postpone s" postpone type ; immediate
 

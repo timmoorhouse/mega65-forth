@@ -8,6 +8,10 @@
 ; ****************************************************************************
 ; LATEST (also in FIG)
 
+; TODO gforth has two vars:
+;    latest   - name token of the most recently defined word (0 if it has no name)
+;    latestxt - execution token of the most recently defined word
+
 ;      LATEST        ---  addr
 ;               Leave the name token of the most recently defined word
 ;               CURRENT vocabulary.

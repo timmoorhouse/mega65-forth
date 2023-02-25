@@ -11,27 +11,7 @@ include bootstrap-full.f
 .( ... saving forth-complete ) cr
 savesystem forth-complete,p,w
 
-\ TODO redirect output
-include prelimtest.fth          \ 1 failure
-include tester.fr               \ OK
-\  \ include ttester.fs
-include core.fr                 \ LOTS to fix
-include coreplustest.fth        \
-\ include utilities.fth
-\ include errorreport.fth
-include coreexttest.fth         \
-\ include blocktest.fth
-\ include doubletest.fth
-\ include exceptiontest.fth
-\ include facilitytest.fth
-\ include filetest.fth
-\ include localstest.fth
-\ include memorytest.fth
-\ include toolstest.fth
-\ include searchordertest.fth
-\ include stringtest.fth
-\ report-errors
-cr .( Forth tests completed ) cr cr
+include runtests.f
 
 \ : Foo2 ( -- u) 5 3 if 7 else 9 then 1+ ;
 \ : foo2 ( -- ) 5 4 begin .s again ;
@@ -47,23 +27,26 @@ cr .( Forth tests completed ) cr cr
 \ : foo2  ( -- ch )  [char] 0 [char] a [CHAR] A ;
 \ foo2 cr .s cr
 
-.( defer foo ) cr
-defer foo 
-.( ' foo ... ) cr
-' foo . cr
-.( : foo2 ... ) cr
-: foo2 ." in foo2 " $1234 ;
-.( ' foo2 ) cr
-' foo2 . cr
-.( ' foo2 execute ) cr
-' foo2 execute .s cr
-.( foo2 is foo ) cr
-' foo2 is foo
-.( foo contains xt ... ) cr
-' foo >body @ . cr
-.( foo ) cr
-foo
-.s cr
+\ .( defer foo ) cr
+\ defer foo 
+\ .( ' foo ... ) cr
+\ ' foo . cr
+\ .( : foo2 ... ) cr
+\ : foo2 ." in foo2 " $1234 ;
+\ .( ' foo2 ) cr
+\ ' foo2 . cr
+\ .( ' foo2 execute ) cr
+\ ' foo2 execute .s cr
+\ .( foo2 is foo ) cr
+\ ' foo2 is foo
+\ .( foo contains xt ... ) cr
+\ ' foo >body @ . cr
+\ .( foo ) cr
+\ foo
+\ .s cr
+\ :noname ." in foo3 " $5678 ; is foo
+\ foo
+\ .s cr
 
 
 .( Completed bootstrap ) cr

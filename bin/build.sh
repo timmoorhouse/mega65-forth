@@ -171,6 +171,7 @@ EOF
         src/string.f        src/string-ext.f \
         src/tools.f         src/tools-ext.f \
         src/xchar.f         src/xchar-ext.f \
+        src/runtests.f \
         "$topdir/test/forth2012-test-suite/src/prelimtest.fth" \
         "$topdir/test/forth2012-test-suite/src/tester.fr" \
         "$topdir/test/forth2012-test-suite/src/ttester.fs" \
