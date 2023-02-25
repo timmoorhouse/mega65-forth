@@ -71,27 +71,6 @@
 \ : WHILE   [COMPILE]  IF  2+  ;    IMMEDIATE
 \ : REPEAT   >R  >R  [COMPILE]  AGAIN  R>  R>  2  -  [COMPILE]  ENDIF  ;  IMMEDIATE
 
-
-\ 5 case
-\    1 of ... endof
-\    2 of ... endof
-\    3 of ... endof
-\    ...
-\  endcase
-: case 0 ; immediate
-
-: of postpone over postpone = postpone 0branch here 0 , 
-    postpone drop ; immediate
-
-\ TODO duplication with then
-: endof postpone branch here rot 1+ rot 0 , \ branch to endcase
-  here over - swap ! ; immediate \ branch of chained condition checks
-
-: endcase 
-    postpone drop
-    ?dup if 0 do here over - swap ! loop then \ TODO ?do
-    ; immediate
-
 \ ***************************************************************************
 
 : ' ( "<spaces>name" -- xt ) parse-name forth-wordlist search-wordlist drop ;
