@@ -61,8 +61,6 @@ that the build process will get more involved:
 These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
 - CORE
   - [ ] `UM/MOD` gets things wrong for large inputs
-  - [ ] `S"` is incorrect when interpreting
-  - [ ] Binary literals (such as %101010) don't seem to be working
   - [ ] Handle `RESTORE-INPUT` failures
   - [ ] Need to reimplement the multiplication/division operations using the math unit
   - [ ] We should be able to get rid of the hidden flag pretty easily by changing when we link new words into the dictionary
@@ -70,6 +68,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
 - DOUBLE
   - [ ] Need to support double literals (eg `123.`)
 - FILE
+  - [ ] `S"` is incorrect when interpreting
   - [ ] Need two separate transient areas for `S"` and `S\"` and implement their interpretation semantics
   - [ ] Handle file access modes
   - [ ] Fix I/O status handling (when is status from READSS reset?)

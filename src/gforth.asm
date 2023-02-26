@@ -252,12 +252,13 @@ W_STONUMBER_CHECK_BASE ; (c-addr u -- c-addr u)
         !word W_EQUAL
         +ZBRANCH +
         ; It's a % ... use base 2
+        !word W_ZERO ; put a dummy value where c should be (since we didn't dup)
         +LITERAL 2
         +BRANCH _stonumber_check_base_set
 
 +
         ; ... nope, none of them
-        ;!word W_DROP
+        ; !word W_DROP
         ; (c-addr u)
         !word W_PSEMI
 
