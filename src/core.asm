@@ -1457,14 +1457,15 @@ PDO     ; used by (?do)
         +WORD "does>"
 W_DOES
         !word DO_COLON
-        !word W_RFROM                   ; ?????
-        !word W_LATESTXT
+        !word W_RFROM                   ; DO_DOES? first word following the DOES>?
+        ; latest pfa ?
+        !word W_LATESTXT,W_2PLUS
         !word W_STORE
         !word W_PSCODE
 }
 DO_DOES
 !if PUSH_MSB_FIRST {
-        lda <I+1
+        lda <I+1                ; same thing DO_COLON starts with
         pha
         lda <I
         pha
@@ -1480,7 +1481,7 @@ DO_DOES
         sta <I
         iny
         lda (<W),y
-        sta <I+1
+        sta <I+1                ; Hmm ... this bit looks wrong
 
         clc
         lda <W
@@ -1488,6 +1489,17 @@ DO_DOES
         pha
         lda <W+1
         adc #0
+
+!if 1 {
+        lda #'i'
+        jsr EMIT
+        lda <I+1
+        jsr put_hex
+        lda <I
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+}
         jmp PUSH
 
 ; ****************************************************************************

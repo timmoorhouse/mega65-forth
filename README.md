@@ -20,9 +20,10 @@ This is still in the early stages of developement:
 - The [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) test case runs mostly clean.  There's one minor problem caused by a PETSCII vs ASCII difference.
 
 The next priorities are:
+- Getting `DOES>` working.
 - Getting the [core](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) test results cleaned up.  This is coming along nicely but there are still a number of things in CORE to implement and some known bugs.
 - As more and more of the implementation moves to Forth, getting a functional `SEE` would be very helpful.  Even if it's just a hex dump at first, getting something in place might soon be a priority.
-- Once `DEFER` is implemented, we might be able to move many parts of the outer interpreter from assembler to Forth.
+- Now that `DEFER` is implemented, we might be able to move many parts of the outer interpreter from assembler to Forth.
 
 My apologies if this isn't the greatest Forth implementation.  I don't really have much experience with Forth.  I'm doing this because I've always been intrigued by Forth, and with a new MEGA65 sitting on the dining room table, it seemed the perfect project to learn about Forth, shake decades of dust off my 6502 programming skills, and learn about some of the MEGA65-specific features.
 
