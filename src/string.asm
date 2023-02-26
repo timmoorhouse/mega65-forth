@@ -71,7 +71,7 @@ W_DTRAILING
 
 !if ENABLE_STRING {
 !if 0 {
-        +WORD "blanks"
+        +WORD "blank"
 W_BLANK
         !word DO_COLON
         !word W_BL
