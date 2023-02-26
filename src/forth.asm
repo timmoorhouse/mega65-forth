@@ -251,15 +251,16 @@ DAREA              = SBUF - DAREA_LEN
 
 ; TODO can we get rid of the hidden flag by just not linking the word until ; ?
 
-F_END_MARKER = $80
-F_IMMEDIATE  = $40
-F_HIDDEN     = $20
+F_IMMEDIATE  = $80
+F_HIDDEN     = $40 ; TODO remove this
+; <unused>     $20
+; TODO add a compile-only flag?
 
 !macro WORD2 .name, .flags {
         +ALIGN
         !word _here
         !set _here = *-2
-        !byte len(.name) | F_END_MARKER | .flags
+        !byte len(.name) | .flags
         !text .name
         +ALIGN
 }

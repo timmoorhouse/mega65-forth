@@ -600,6 +600,7 @@ W_SEMI
         
         !word W_LATEST          ; TODO CLEAN UP !!!!!!!!!
         +ZBRANCH +
+        ; TODO link into word list here
         !word W_SMUDGE
 +
 
@@ -1320,8 +1321,6 @@ W_CREATE
         ; (c-addr u)
 
         !word W_DUP             ; store name len | flags
-        +CLITERAL F_END_MARKER
-        !word W_OR
         !word W_HERE            ; TODO c,
         !word W_CSTORE
         !word W_ONE
