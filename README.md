@@ -61,7 +61,6 @@ that the build process will get more involved:
 These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
 - CORE
   - [ ] `UM/MOD` gets things wrong for large inputs
-  - [ ] Still some problems with the termination check in `+LOOP`
   - [ ] `S"` is incorrect when interpreting
   - [ ] Binary literals (such as %101010) don't seem to be working
   - [ ] Handle `RESTORE-INPUT` failures

@@ -176,61 +176,59 @@ W_PSTORE
 
 ; See core.f
 
-;      (+LOOP)       n  ---                                  C2
-;               The run-time procedure compiled by +LOOP, which increments 
-;               the loop index by n and tests for loop completion.  See 
-;               +LOOP.
-
         +WORD "(+loop)"
 W_PPLOOP
         !word *+2
         ; see also (loop)
-        ; TODO CLEAN THIS UP
-        inx                     ; pop the increment from the stack
-        inx
+        lda 0,x
+        sta <TEMP1
+        lda 1,x
+        sta <TEMP1+1
+
         stx <XSAVE
-        lda $ff,x
-        pha                     ; need two copies so we can check the sign of the increment
-        pha                     ; TODO it would be slightly faster to save it in Z
-        lda $fe,x
         tsx
-        inx
-        inx
+
         clc
+        lda $103,x              ; compare old index against limit
+        sbc $101,x
+        lda $104,x
+        sbc $102,x
+        asl
+        bcs +                   ; if old index >= limit
+        iny
++
+
+        clc                     ; increment index
+        lda <TEMP1
         adc $101,x
         sta $101,x
-        pla
+        lda <TEMP1+1
         adc $102,x
         sta $102,x
-        pla
-        ; bpl PL1
-        bmi +++
-                                ; Increment is positive - use (loop) to check if we're >= the limit
 
         clc
-        lda $103,x              ; compare against loop limit
+        lda $103,x              ; compare new index against limit
         sbc $101,x
-        lda $104,x              
-        sbc $102,x              
----  ; ????   used by (+loop)
-        ldx <XSAVE
+        lda $104,x
+        sbc $102,x
         asl
-!if 0 {
-        bcc BRANCH              
-} else {        
-        bcs +
-        jmp BRANCH
+        bcs +                   ; if new index >= limit
+        iny
 +
-}
-        jmp LEAVE
 
-+++
-        sec
-        lda $101,x              ; Increment is negative
-        sbc $103,x
-        lda $102,x
-        sbc $104,x
-        jmp ---
+        ldx <XSAVE
+        inx                     ; pop increment from data stack
+        inx
+
+        ; now if y & 1 is set, exactly one of the conditions was true
+        ; meaning we crossed the boundary and so should exit the loop
+
+        tya
+        ror
+        bcs +
+        ldy #0                  ; BRANCH depends on y == 0
+        jmp BRANCH
++       jmp LEAVE
 
 ; ****************************************************************************
 ; , 
@@ -2012,15 +2010,10 @@ LEAVE                   ; used by (loop) and (+loop)
 
 ; See core.f
 
-;      (LOOP)                                                 C2
-;               The run-time procedure compiled by LOOP which increments 
-;               the loop index and tests for loop completion.  See LOOP.
-
         +WORD "(loop)"
 W_PLOOP
         !word *+2
         ; see also (+loop)
-        ; TODO CLEAN THIS UP
         stx <XSAVE
         tsx
         inc $101,x              ; increment loop index
@@ -2031,18 +2024,12 @@ W_PLOOP
         lda $103,x              ; compare against loop limit
         sbc $101,x
         lda $104,x              ; TODO we should be able to get away with just testing for equality
-        sbc $102,x              ; (though using this for (+loop) needs the >= check)
-
+        sbc $102,x
         ldx <XSAVE
         asl
-!if 0 {
-        bcc BRANCH              
-} else {        
-        bcs +
+        bcs +                   ; if index >= limit
         jmp BRANCH
-+
-}
-        jmp LEAVE
++       jmp LEAVE
 
 ; ****************************************************************************
 ; LSHIFT 
