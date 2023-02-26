@@ -210,7 +210,23 @@ W_2RAT
 ; ANSI 6.2.0455
 
 !if ENABLE_CORE_EXT {
+        +WORD ":noname"
+W_NONAME
+        !word DO_COLON
+        !word W_ALIGN
+        !word W_RBRACKET
+        !word W_ZERO
+        +LITERAL &LATEST
+        !word W_STORE
+        !word W_HERE
+        +LITERAL DO_COLON
+        !word W_COMMA
+        !word W_PSEMI
 }
+
+; : :noname ( -- xt ) align ] 
+;     \ $80 , \ end marker flag, zero length name \ TODO skip these??
+;     here ['] : @ , ; \ assumes the code field of : is DO_COLON
 
 ; ****************************************************************************
 ; <>

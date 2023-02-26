@@ -581,7 +581,12 @@ W_SEMI
 ;          !word QCSP
         +LITERAL W_PSEMI
         !word W_COMMA ; COMPILEC?
+        
+        !word W_LATEST          ; TODO CLEAN UP !!!!!!!!!
+        +ZBRANCH +
         !word W_SMUDGE
++
+
         !word W_LBRACKET
         !word W_PSEMI
 
@@ -1283,6 +1288,10 @@ W_CREATE
         ; TODO turn latest into a var and set it here? (so it will work with :noname)
 
         !word W_HERE
+        +LITERAL &LATEST
+        !word W_STORE
+
+        !word W_HERE
         !word W_GET_CURRENT
         !word W_DUP
         !word W_AT
@@ -1311,6 +1320,10 @@ W_CREATE
         !word W_CMOVE
 
         !word W_ALIGN           ; need to realign after name
+
+        !word W_HERE
+        +LITERAL &LATEST_XT
+        !word W_STORE
 
         +LITERAL DO_VARIABLE    ; default code fields needs to push address of data field
         !word W_COMMA
@@ -1870,6 +1883,8 @@ W_IMMEDIATE
         !word DO_COLON
         ; see also smudge (internals)
         !word W_LATEST
+        !word W_QDUP
+        +ZBRANCH +
         !word W_2PLUS
         !word W_DUP
         !word W_CAT
@@ -1877,6 +1892,7 @@ W_IMMEDIATE
         !word W_OR
         !word W_SWAP
         !word W_CSTORE
++
         !word W_PSEMI
 
 ; ****************************************************************************

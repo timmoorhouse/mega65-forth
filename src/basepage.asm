@@ -25,7 +25,8 @@ XSAVE           !byte 0 ; temporary to save S when we need to reuse X
 ; TODO separate XSAVE for kernel calls
 KERNEL_XSAVE    !byte 0 ; just for use in kernel calls
 
-; TODO alignment
+                !byte 0         ; TODO alignment
+
 ; TODO input buffer stack (need to support depth of 8)
 ; TODO open file info
 SOURCE_ID       !word 0
@@ -46,6 +47,8 @@ BASE            !word 0
 STATE           !word 0
 R0              !word 0
 S0              !word 0
+LATEST          !word 0
+LATEST_XT       !word 0
 
 !ifdef DEBUG {
 ;XW        =$12           ; scratch reg. to next code field add

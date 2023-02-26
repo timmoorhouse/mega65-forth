@@ -116,7 +116,7 @@
 
 : ['] ' postpone literal ; immediate
 
-: recurse latest name>interpret , ; immediate
+: recurse latestxt , ; immediate
 
 : spaces ( n -- ) 0 max ?dup if 0 do space loop then ; \ TODO use ?do
 

@@ -1,9 +1,4 @@
 
-\ TODO latest won't work with :noname
-: :noname ( -- xt ) align ] 
-    \ $80 , \ end marker flag, zero length name \ TODO skip these??
-    here ['] : @ , ; \ assumes the code field of : is DO_COLON
-
 : buffer: ( u "<name>" -- ; -- addr ) create allot ;
 
 \ 5 case
