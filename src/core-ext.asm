@@ -209,11 +209,16 @@ W_2RAT
 ; (???)
 ; ANSI 6.2.0455
 
+; TODO could move this to core-ext.f if we have a way of setting latest, latextxt from forth
+
 !if ENABLE_CORE_EXT {
         +WORD ":noname"
 W_NONAME
         !word DO_COLON
         !word W_ALIGN
+        !word W_HERE
+        +LITERAL &LATEST_XT
+        !word W_STORE
         !word W_RBRACKET
         !word W_ZERO
         +LITERAL &LATEST
