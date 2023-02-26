@@ -204,15 +204,33 @@ W_PPLOOP
         sta $102,x
         pla
         ; bpl PL1
-        bmi +
-        jmp PL1                 ; Increment is positive - use (loop) to check if we're >= the limit
+        bmi +++
+                                ; Increment is positive - use (loop) to check if we're >= the limit
+
+        clc
+        lda $103,x              ; compare against loop limit
+        sbc $101,x
+        lda $104,x              
+        sbc $102,x              
+---  ; ????   used by (+loop)
+        ldx <XSAVE
+        asl
+!if 0 {
+        bcc BRANCH              
+} else {        
+        bcs +
+        jmp BRANCH
 +
+}
+        jmp LEAVE
+
++++
         sec
         lda $101,x              ; Increment is negative
         sbc $103,x
         lda $102,x
         sbc $104,x
-        jmp PL2
+        jmp ---
 
 ; ****************************************************************************
 ; , 
@@ -1962,6 +1980,7 @@ W_KEY
         +WORD "leave"
 W_LEAVE
         !word *+2
+LEAVE                   ; used by (loop) and (+loop)
         pla ; TODO 
         pla
         pla
@@ -1976,10 +1995,8 @@ W_LEAVE
         sta <I
         pla
         sta <I+1
-
 }        
         jmp NEXT
-        ;jmp BRANCH
 
 ; ****************************************************************************
 ; LITERAL 
@@ -2010,13 +2027,12 @@ W_PLOOP
         bne +
         inc $102,x
 +
-PL1 ; ??? used by (+loop)
         clc
         lda $103,x              ; compare against loop limit
         sbc $101,x
         lda $104,x              ; TODO we should be able to get away with just testing for equality
         sbc $102,x              ; (though using this for (+loop) needs the >= check)
-PL2 ; ????   used by (+loop)
+
         ldx <XSAVE
         asl
 !if 0 {
@@ -2026,15 +2042,7 @@ PL2 ; ????   used by (+loop)
         jmp BRANCH
 +
 }
-        ; yup, terminating ...
-        pla
-        pla
-        pla
-        pla
-        ; TODO
-        pla
-        pla
-        jmp BUMP                ; part of 0branch (internals)
+        jmp LEAVE
 
 ; ****************************************************************************
 ; LSHIFT 
