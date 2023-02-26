@@ -244,10 +244,16 @@ W_QIMMEDIATE
 ; (c-addr u --)
 ; Convert to lower case
 
-        ;+WORD "lower"
-        +NONAME
+        +WORD "lower"
+        ; +NONAME
 W_LOWER
         !word DO_COLON
+
+        ; TODO remove this check and just do ?DO
+        !word W_QDUP
+        +ZBRANCH _lower_zero_length
+
+
         !word W_OVER
         !word W_PLUS
         !word W_SWAP
@@ -267,6 +273,7 @@ _lower_loop
         !word W_ZEQUAL
         +ZBRANCH +
 
+        ; TODO handle other char ranges
         ; need to change case
         !word W_I
         !word W_CAT
@@ -281,6 +288,10 @@ _lower_loop
         !word _lower_loop-*
 _lower_after_loop
 
+        !word W_PSEMI
+
+_lower_zero_length
+        !word W_DROP
         !word W_PSEMI
 
 ; ****************************************************************************

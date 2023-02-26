@@ -1429,6 +1429,14 @@ W_PDO
 ; (???)
 ; ANSI 6.1.1250
 
+;
+;   : <name>   <compile time words>      \ presumably doing a CREATE
+;     DOES>    <run time words>      ;
+;
+;
+;
+
+
 ; FIG:
 ;
 ;      DOES>                                                 L0
@@ -1443,27 +1451,35 @@ W_PDO
 ;               assembler, multi-dimensional arrays, and compiler 
 ;               generation.
 
-!if 1 {
+!if 0 {
         +WORD "does>"
 W_DOES
         !word DO_COLON
-        !word W_RFROM
-        !word W_LATEST
-        !word W_NAME_TO_INTERPRET
+        !word W_RFROM                   ; ?????
+        !word W_LATEST_XT
         !word W_STORE
         !word W_PSCODE
 }
 DO_DOES
+!if PUSH_MSB_FIRST {
         lda <I+1
         pha
         lda <I
         pha
-        ldy #2
+} else {
+        lda <I
+        pha
+        lda <I+1
+        pha
+}
+
+        ldy #2                  ; I = (W),2
         lda (<W),y
         sta <I
         iny
         lda (<W),y
         sta <I+1
+
         clc
         lda <W
         adc #4
@@ -2020,6 +2036,7 @@ W_PLOOP
         bne +
         inc $102,x
 +
+!if 0{
         clc
         lda $103,x              ; compare against loop limit
         sbc $101,x
@@ -2028,6 +2045,16 @@ W_PLOOP
         ldx <XSAVE
         asl
         bcs +                   ; if index >= limit
+} else {
+        lda $103,x              ; this one is more correct
+        eor $101,x             
+        sta <TEMP1
+        lda $104,x
+        eor $102,x
+        ldx <XSAVE
+        ora <TEMP1
+        beq +                   ; if index = limit
+}
         jmp BRANCH
 +       jmp LEAVE
 
