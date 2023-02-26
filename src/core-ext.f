@@ -21,6 +21,9 @@
     ?dup if 0 do here over - swap ! loop then \ TODO ?do
     ; immediate
 
+\ see also do in core.f
+: ?do postpone (?do) 0 , here ( 3 ) ; immediate
+
 : compile, , ;
 
 : defer@ ( xt1 -- xt2 ) >body @ ;
@@ -50,6 +53,8 @@
 : tuck swap over ;
 
 : u> swap u< ;
+
+: within ( test low high -- flag ) over - >r - r> u< ;
 
 \ : pad here 68 + ; \ TODO FIG uses some space in the gap for WORDS ... clean this up
 

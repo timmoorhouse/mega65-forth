@@ -1402,6 +1402,7 @@ W_DEPTH
         +WORD "(do)"
 W_PDO
         !word *+2
+PDO     ; used by (?do)
         ; See also unloop
 !if 1 {
         ; ldy #0 ; TODO

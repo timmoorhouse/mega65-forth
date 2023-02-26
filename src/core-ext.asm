@@ -261,10 +261,34 @@ W_NOTEQUAL
 
 ; ****************************************************************************
 ; ?DO
-; (???)
+; (n1 n2 --)
 ; ANSI 6.2.0620
 
 !if ENABLE_CORE_EXT {
+        +WORD "(?do)"
+W_PQDO
+        !word *+2
+
+        ; check if index = limit
+
+        lda 0,x
+        eor 2,x
+        sta <TEMP1
+        lda 1,x
+        eor 3,x
+        ora <TEMP1
+        beq +
+        jmp PDO
++       
+        ; exit immediately
+        lda (<I),y
+        pha
+        iny
+        lda (<I),y
+        sta <I+1
+        pla
+        sta <I
+        jmp POP2
 }
 
 ; ****************************************************************************
