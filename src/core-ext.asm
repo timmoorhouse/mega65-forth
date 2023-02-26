@@ -1080,10 +1080,25 @@ W_TRUE
 
 ; ****************************************************************************
 ; VALUE
-; (???)
+; (x "<spaces>name" --)
 ; ANSI 6.2.2405
 
+; See also constant (core)
+
 !if ENABLE_CORE_EXT {
+        +WORD "value"
+W_VALUE
+        !word DO_COLON
+        !word W_CREATE
+        !word W_COMMA
+        !word W_PSCODE
+DO_VALUE
+        ldy #2
+        lda (<W),y
+        pha
+        iny
+        lda (<W),y
+        jmp PUSH
 }
 
 ; ****************************************************************************

@@ -1212,6 +1212,8 @@ W_CAT
 ; (x "<spaces>name" --)
 ; ANSI 6.1.0950
 
+; See also value (core-ext)
+
         +WORD "constant"
 W_CONSTANT
         !word DO_COLON
