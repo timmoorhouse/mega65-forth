@@ -1315,7 +1315,7 @@ W_CREATE
         !word W_COMMA
         !word W_STORE
 
-        +CLITERAL 31            ; limit the length
+        +CLITERAL NAME_LEN_MASK ; limit the length
         !word W_MIN
 
         ; (c-addr u)

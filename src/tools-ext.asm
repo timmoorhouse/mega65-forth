@@ -251,7 +251,7 @@ W_NAME_TO_STRING
         ; nt points to link, then name follows
         !word W_2PLUS
         !word W_COUNT
-        +CLITERAL $1f ; mask off the control bits
+        +CLITERAL NAME_LEN_MASK ; mask off the control bits
         !word W_AND
         !word W_PSEMI
 
