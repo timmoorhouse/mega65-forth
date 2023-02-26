@@ -1453,12 +1453,12 @@ PDO     ; used by (?do)
 ;               assembler, multi-dimensional arrays, and compiler 
 ;               generation.
 
-!if 0 {
+!if 1 {
         +WORD "does>"
 W_DOES
         !word DO_COLON
         !word W_RFROM                   ; ?????
-        !word W_LATEST_XT
+        !word W_LATESTXT
         !word W_STORE
         !word W_PSCODE
 }
