@@ -45,6 +45,8 @@
 
 : hex 16 base ! ;
 
+: holds ( addr u -- ) begin dup while 1- 2dup + c@ hold repeat 2drop ;
+
 : tuck swap over ;
 
 : u> swap u< ;

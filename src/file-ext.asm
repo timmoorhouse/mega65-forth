@@ -140,6 +140,8 @@ W_REQUIRE
 ; (i*x c-addr u -- i*x)
 ; Forth 2012 11.6.2.2144.50
 
+; See reference implementation
+
 !if ENABLE_FILE_EXT {
         +WORD "required"
 W_REQUIRED

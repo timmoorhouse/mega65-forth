@@ -8,4 +8,6 @@
 ; {:
 ; Forth 2012 13.6.2.2550
 
+; See reference implementation
+
 }

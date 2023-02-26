@@ -8,6 +8,8 @@
 ; (--)
 ; ANSI 16.6.1.1180
 
+; See reference implementation
+
 ; FIG:
 ;
 ;      DEFINITIONS                                           L1
@@ -85,6 +87,8 @@ W_GET_CURRENT
 ; (-- wid_n ... wid_1 n)
 ; ANSI 16.6.1.1647
 
+; See reference implementation
+
 !if ENABLE_SEARCH {
 }
 
@@ -127,6 +131,10 @@ W_SEARCH_WORDLIST
         !word W_TRUE ; -1
 ++
         !word W_PSEMI
+
+; TODO
+; See https://forth-standard.org/proposals/find-name#contribution-58
+; (this is pretty much the proposed FIND-NAME, FIND-NAME-IN)
 
 ; Like SEARCH-WORDLIST but returns 0|nt
         ; +NONAME
@@ -203,6 +211,8 @@ W_PSEARCH_WORDLIST
 ; SET-ORDER
 ; (wid_n ... wid_1 n --)
 ; ANSI 16.6.1.2197
+
+; See reference implementation
 
 !if ENABLE_SEARCH {
 }

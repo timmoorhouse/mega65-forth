@@ -9,10 +9,14 @@
 ; (--)
 ; ANSI 16.6.2.0715
 
+; See reference implementation
+
 ; ****************************************************************************
 ; FORTH
 ; (--)
 ; ANSI 16.6.2.1590
+
+; See reference implementation
 
 ; FIG:
 ;
@@ -40,6 +44,8 @@ W_FORTH
 ; (--)
 ; ANSI 16.6.2.1965
 
+; See reference implementation
+
 ; ****************************************************************************
 ; ORDER
 ; (--)
@@ -49,5 +55,7 @@ W_FORTH
 ; PREVIOUS
 ; (--)
 ; ANSI 16.6.2.2037
+
+; See reference implementation
 
 }

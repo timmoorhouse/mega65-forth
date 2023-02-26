@@ -109,15 +109,16 @@ entry
 ;      | I/O
 ; D000 +-----------------------------
 ;      | Interface 
-; C000 +-----------------------------   <--- LIMIT
+; C000 +-----------------------------    <--- LIMIT
 ;      | TODO move basepage here?
 ;      +-----------------------------
 ;      | Terminal input buffer
-;      +-----------------------------   
+;      +-----------------------------    <--- TIB
+;      | String buffers for S", S\"
+;      +-----------------------------    <--- SBUF
 ;      | File buffers
 ;      | (put terminal buffer here)
 ;      +-----------------------------    <--- DAREA
-; 
 ; 
 ; 
 ;      |
@@ -152,16 +153,21 @@ entry
 ;      | basic/kernel stuff
 ; 0000 +-----------------------------
 
-LIMIT      = $C000 ; TODO
-TIB_LEN    = 80
-TIB        = LIMIT - TIB_LEN
-DAREA_LEN  = MAX_OPEN_FILES * FILE_BUFFER_SIZE 
-DAREA      = TIB - DAREA_LEN
+LIMIT              = $C000 ; TODO
+TIB_LEN            = 80
+TIB                = LIMIT - TIB_LEN
+NUM_STRING_BUFFERS = 2
+STRING_BUFFER_LEN  = 80
+SBUF_LEN           = NUM_STRING_BUFFERS * STRING_BUFFER_LEN
+SBUF               = TIB - SBUF_LEN
+DAREA_LEN          = MAX_OPEN_FILES * FILE_BUFFER_SIZE 
+DAREA              = SBUF - DAREA_LEN
 
 ; TODO transient buffer for s", s\" (need 2 buffers so that two consecutive
 ; strings can be stored)
 ; so the following should work:
 ;     s" abc" s" def" rename-file
+; TODO can we use PAD and one additional buffer?
 
 ; VM Registers
 ; S - data stack pointer

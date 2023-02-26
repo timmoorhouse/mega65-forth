@@ -303,6 +303,8 @@ W_NRFROM
 ; SYNONYM
 ; Forth 2012 15.6.2.2264
 
+; See reference implementation
+
 !if ENABLE_TOOLS_EXT {
 }
 
@@ -361,6 +363,8 @@ _traverse_done
 ; [DEFINED]
 ; Forth 2012 15.6.2.2530.30
 
+; See reference implementation
+
 !if ENABLE_TOOLS_EXT {
 }
 
@@ -368,6 +372,8 @@ _traverse_done
 ; [ELSE]
 ; (???)
 ; ANSI 15.6.2.2531
+
+; See reference implementation
 
 !if ENABLE_TOOLS_EXT {
 }
@@ -377,6 +383,8 @@ _traverse_done
 ; (???)
 ; ANSI 15.6.2.2532
 
+; See reference implementation
+
 !if ENABLE_TOOLS_EXT {
 }
 
@@ -385,12 +393,16 @@ _traverse_done
 ; (--)
 ; ANSI 15.6.2.2533
 
+; See reference implementation
+
 !if ENABLE_TOOLS_EXT {
 }
 
 ; ****************************************************************************
 ; [UNDEFINED]
 ; Forth 2012 15.6.2.2534
+
+; See reference implementation
 
 !if ENABLE_TOOLS_EXT {
 }

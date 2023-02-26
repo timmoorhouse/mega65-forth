@@ -8,8 +8,12 @@
 ; CATCH
 ; ANSI 9.6.1.0875
 
+; See reference implementation (relying on sp@, sp!, rp@, rp!)
+
 ; ****************************************************************************
 ; THROW
 ; ANSI 9.6.1.2275
+
+; See reference implementation
 
 }

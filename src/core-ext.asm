@@ -423,8 +423,7 @@ W_FALSE
 ; HOLDS
 ; Forth 2012 6.2.1675
 
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; IS
@@ -936,6 +935,8 @@ W_ROLL
 ; S\"
 ; Forth 2012 6.2.2266
 ; Forth 2012 11.6.2.2266
+
+; See http://www.forth200x.org/escaped-strings.html for a reference implementation
 
 ; Needs to handle escape sequences:
 ; \a    BEL     7                               OK

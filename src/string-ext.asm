@@ -8,12 +8,18 @@
 ; REPLACES
 ; Forth 2012 17.6.2.2141
 
+; See reference implementation
+
 ; ****************************************************************************
 ; SUBSTITUTE
 ; Forth 2012 17.6.2.2255
 
+; See reference implementation
+
 ; ****************************************************************************
 ; UNESCAPE
 ; Forth 2012 17.6.2.2375
+
+; See reference implementation
 
 }

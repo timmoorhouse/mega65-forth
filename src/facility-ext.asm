@@ -71,12 +71,16 @@ W_K_RETURN
 ; +FIELD
 ; Forth 2012 10.6.2.0135
 
+; See reference implementation
+
 !if ENABLE_FACILITY {
 }
 
 ; ****************************************************************************
 ; BEGIN-STRUCTURE
 ; Forth 2012 10.6.2.0763
+
+; See reference implementation
 
 !if ENABLE_FACILITY {
 }
@@ -131,6 +135,8 @@ W_K_RETURN
 ; ****************************************************************************
 ; END-STRUCTURE
 ; Forth 2012 10.6.2.1336
+
+; See reference implementation
 
 !if ENABLE_FACILITY {
 }
