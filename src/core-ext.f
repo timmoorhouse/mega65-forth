@@ -50,6 +50,13 @@
 
 : holds ( addr u -- ) begin dup while 1- 2dup + c@ hold repeat 2drop ;
 
+: to ( x "<spaces>name" -- ) 
+  state @ if
+    postpone ['] postpone >body postpone !
+  else
+    ' >body ! 
+  then ; immediate
+
 : tuck swap over ;
 
 : u> swap u< ;
