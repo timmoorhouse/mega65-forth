@@ -158,6 +158,11 @@ TIB        = LIMIT - TIB_LEN
 DAREA_LEN  = MAX_OPEN_FILES * FILE_BUFFER_SIZE 
 DAREA      = TIB - DAREA_LEN
 
+; TODO transient buffer for s", s\" (need 2 buffers so that two consecutive
+; strings can be stored)
+; so the following should work:
+;     s" abc" s" def" rename-file
+
 ; VM Registers
 ; S - data stack pointer
 ; R - return stack pointer
