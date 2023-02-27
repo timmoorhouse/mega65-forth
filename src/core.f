@@ -8,6 +8,7 @@
 : ( [char] ) parse 2drop ; immediate
 ( TODO allow multiline comments when parsing from a file )
 
+( TODO should we move this to core-ext? )
 : \ 13 parse 2drop ; immediate
 
 : .( [char] ) parse type ; immediate
@@ -99,6 +100,8 @@
 
 : m* 2dup xor >r abs swap abs um* r> 0< if dnegate then ;
 
+: max ( n_1 n_2 -- n_3 ) 2dup < if swap then drop ;
+
 \ TODO cmove is in STRING but move is in CORE - make move the native one
 : move ( src dst len -- ) >r 2dup < r> swap if cmove> else cmove then ;
 
@@ -125,15 +128,13 @@
 : sm/rem over >r >r dabs r@ abs um/mod r> r@ xor +- swap r> +- swap ; \ TODO
 
 : fm/mod ( d n -- rem quot )
-  dup >r
-  sm/rem
+  dup >r sm/rem
   ( if the remainder is not zero and has a different sign than the divisor )
   over dup 0<> swap 0< r@ 0< xor and if
     1- swap r> + swap
   else
     r> drop
-  then
-;
+  then ;
 
 \ For floored
 \ : /mod >r s>d r> fm/mod ; \ TODO
@@ -143,16 +144,10 @@
 : /mod >r s>d r> sm/rem ; \ TODO
 : */mod >r m* r> sm/rem ; \ TODO
 
-: / /mod swap drop ; \ TODO
+: / /mod nip ; \ TODO
 : mod /mod drop ; \ TODO
-: */ */mod swap drop ; \ TODO
+: */ */mod nip ; \ TODO
 
-\ TODO THIS IS WRONG
-\ : fm/mod over >r >r dabs r@ abs um/mod r> r@ xor +- swap r> +- swap ;
-
-\ ***************************************************************************
-
-\ These look OK
 variable hld
 : hold ( char -- ) -1 hld +! hld @ c! ; \ hmm ... this goes backwards.  OK with the gap, but might want to change this
 : <# ( -- ) pad hld ! ;
@@ -167,5 +162,23 @@ variable hld
 : u.r ( u n -- ) >r 0 <# #s #> r> over - spaces type ;
 : u. 0 u.r space ;
 : . s>d d. ;
+
+\ TODO
+\ : abort" ;
+
+\ TODO might be simpler to do this one in assembler
+: environment? 2drop false ;
+\ TODO /COUNTED-STRING
+\ TODO /HOLD
+\ TODO /PAD
+\ TODO ADDRESS-UNIT-BITS
+\ TODO FLOORED
+\ TODO MAX-CHAR
+\ TODO MAX-D
+\ TODO MAX-N
+\ TODO MAX-U
+\ TODO MAX-UD
+\ TODO RETURN-STACK-CELLS
+\ TODO STACK-CELLS
 
 .( ... end of core.f ) cr

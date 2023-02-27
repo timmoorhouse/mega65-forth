@@ -102,22 +102,7 @@ W_STAR
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.0100
 
-; FIG:
-;      */            n1  n2  n3  ---  n4                     L0
-;               Leave the ratio n4 = n1*n2/n3 where all are signed 
-;               numbers.  Retention of an intermediate 31 bit product 
-;               permits greater accuracy than would be available with the 
-;               sequence:  n1 n2 * n3 /
-
-!if 0 {
-        +WORD "*/"
-W_SSLASH
-        !word DO_COLON
-;          !word SSMOD
-;          !word SWAP
-;          !word DROP
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; */MOD 
@@ -1132,7 +1117,7 @@ W_BASE
 ; (-- char)
 ; ANSI 6.1.0770
 
-; TODO move top core.f
+; TODO move to core.f
 
         +WORD "bl"
 W_BL
@@ -1347,15 +1332,6 @@ W_CREATE
 
         ; ()
 
-;          !word LATEST
-;          !word COMMA
-;          !word CURRENT
-;          !word AT
-;          !word STORE
-;          !word HERE
-;          !word TWOP
-;          !word COMMA
-
         !word W_PSEMI
 
 ; ****************************************************************************
@@ -1398,9 +1374,6 @@ W_DEPTH
 
 ; TODO share code with 2>r
 
-;      (DO)                                                   C
-;               The run-time procedure compiled by DO which moves the loop 
-;               control parameters to the return stack.  See DO.
         +WORD "(do)"
 W_PDO
         !word *+2
@@ -1439,12 +1412,11 @@ W_DOES
         !word W_COMMA
 
         ; add 'jsr DO_DOES'
-        +CLITERAL $20 ; jsr $nnnn
+        +CLITERAL $20           ; jsr $nnnn
         !word W_HERE            ; TODO c,
         !word W_CSTORE
         !word W_ONE
         !word W_ALLOT
-
         +LITERAL DO_DOES
         !word W_COMMA
 
@@ -1485,7 +1457,7 @@ DO_DOES
 }
         
 !if PUSH_MSB_FIRST {
-        lda <I+1                ; same thing DO_COLON starts with
+        lda <I+1
         pha
         lda <I
         pha
@@ -1853,44 +1825,7 @@ _fill_dst
 ; (d_1 n_1 -- n_2 n_3)
 ; ANSI 6.1.1561
 
-!if 0 {
-        +WORD "fm/mod"
-        !word *+2
-        rts
-}
-
-; FIG
-;      M/            d  n1  ---  n2  n3
-;               A mixed magnitude math operator which leaves the signed 
-;               remainder n2 and signed quotient n3, from a double number 
-;               dividend and divisor n1.  The remainder takes its sign 
-;               from the dividend.
-
-;;
-;;                                       M/
-;;                                       SCREEN 57 LINE 3
-;;  THIS IS SM/REM
-!if 0 {
-        +WORD "m/"
-W_MSLASH
-        !word DO_COLON
-        ; !word W_OVER
-        ; !word W_TOR
-        ; !word W_TOR
-        ; !word W_DABS
-        ; !word W_R
-        ; !word W_ABS
-        ; !word W_USLASH
-        ; !word W_RFROM
-        ; !word W_R
-        ; !word W_XOR
-        ; !word W_PM
-        ; !word W_SWAP
-        ; !word W_RFROM
-        ; !word W_PM
-        ; !word W_SWAP
-        !word W_PSEMI
-}
+; See core.f
 
 ; ****************************************************************************
 ; HERE 
@@ -2110,24 +2045,14 @@ beq +
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.1870
 
-; TODO move to core.f
-
-        +WORD "max"
-W_MAX
-        !word DO_COLON
-        !word W_2DUP
-        !word W_LESS
-        +ZBRANCH +
-        !word W_SWAP
-+       !word W_DROP
-        !word W_PSEMI
+; See core.f
 
 ; ****************************************************************************
 ; MIN 
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.1880
 
-; TODO move to core.f?
+; TODO move to core.f? it's used by create currently
 
         +WORD "min"
 W_MIN
@@ -2167,7 +2092,7 @@ W_NEGATE
         !word *+2
         ; ldy #0 ; TODO
         ; see also DNEGATE (double)
-        ; TODO use neg
+        ; TODO use neg? neg doesn't set or use the carry flag
         sec
         tya
         sbc 0,x
@@ -2230,7 +2155,7 @@ W_POSTPONE
 }        
 
         !word W_FORTH_WORDLIST ; TODO
-        !word W_SEARCH_WORDLIST_NT ; (0 | nt)
+        !word W_SEARCH_WORDLIST_NT ; (0 | nt) ; TODO FIND-NAME
         !word W_QDUP
         +ZBRANCH _postpone_done ; TODO error if not found
 
@@ -2406,6 +2331,7 @@ beq +
 ; ANSI 6.1.2165
 ; ANSI 11.6.1.2165
 
+!if 0 {
         +WORD_IMM "s\""
 W_SQUOTE
         !word DO_COLON
@@ -2413,6 +2339,7 @@ W_SQUOTE
         !word W_PARSE
         ; TODO ...
         !word W_PSEMI
+}
 
         +WORD "(s\")"
 W_PSQ
