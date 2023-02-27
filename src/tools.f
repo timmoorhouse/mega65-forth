@@ -24,7 +24,7 @@
 : xt-see ( xt -- ) 
     base @ >r hex
     \ dup 4 u.r space ." TODO - xt-see "
-    8 dump
+    3 dump
     r> base ! ;
 
 \ TODO

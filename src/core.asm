@@ -1431,39 +1431,59 @@ PDO     ; used by (?do)
 ; (???)
 ; ANSI 6.1.1250
 
-;
-;   : <name>   <compile time words>      \ presumably doing a CREATE
-;     DOES>    <run time words>      ;
-;
-;
-;
-
-
-; FIG:
-;
-;      DOES>                                                 L0
-;               A word which defines the run-time action within a high-
-;               level defining word.  DOES> alters the code field and 
-;               first parameter of the new word to execute the sequence of 
-;               compiled word addresses following DOES>.  Used in 
-;               combination with <BUILDS.  When the DOES> part executes it 
-;               begins with the address of the first parameter of the new 
-;               word on the stack.  This allows interpretation using this 
-;               area or its contents.  Typical uses include the Forth 
-;               assembler, multi-dimensional arrays, and compiler 
-;               generation.
-
-!if 1 {
-        +WORD "does>"
+        +WORD_IMM "does>"
 W_DOES
         !word DO_COLON
-        !word W_RFROM                   ; DO_DOES? first word following the DOES>?
-        ; latest pfa ?
-        !word W_LATESTXT,W_2PLUS
-        !word W_STORE
-        !word W_PSCODE
-}
+
+        +LITERAL W_PSCODE
+        !word W_COMMA
+
+        ; add 'jsr DO_DOES'
+        +CLITERAL $20 ; jsr $nnnn
+        !word W_HERE            ; TODO c,
+        !word W_CSTORE
+        !word W_ONE
+        !word W_ALLOT
+
+        +LITERAL DO_DOES
+        !word W_COMMA
+
+        !word W_PSEMI
+
 DO_DOES
+        ; TODO this could do with some cleanup
+        
+        pla
+        sta <TEMP1
+        pla
+        sta <TEMP1+1
+!if 0 {
+        lda #'i'
+        jsr EMIT
+        lda <I+1
+        jsr put_hex
+        lda <I
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+        lda #'w'
+        jsr EMIT
+        lda <W+1
+        jsr put_hex
+        lda <W
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+        lda #'t'
+        jsr EMIT
+        lda <TEMP1+1
+        jsr put_hex
+        lda <TEMP1
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+}
+        
 !if PUSH_MSB_FIRST {
         lda <I+1                ; same thing DO_COLON starts with
         pha
@@ -1476,30 +1496,19 @@ DO_DOES
         pha
 }
 
-        ldy #2                  ; I = (W),2
-        lda (<W),y
+        lda <TEMP1
         sta <I
-        iny
-        lda (<W),y
-        sta <I+1                ; Hmm ... this bit looks wrong
+        lda <TEMP1+1
+        sta <I+1
+        inw <I
 
-        clc
+        clc                     ; push W+2 onto data stack before doing the stuff after DOES>
         lda <W
-        adc #4
+        adc #2                  
         pha
         lda <W+1
         adc #0
 
-!if 1 {
-        lda #'i'
-        jsr EMIT
-        lda <I+1
-        jsr put_hex
-        lda <I
-        jsr put_hex
-        lda #' '
-        jsr EMIT
-}
         jmp PUSH
 
 ; ****************************************************************************
