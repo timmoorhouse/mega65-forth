@@ -12,5 +12,8 @@
 
 : benchmark timer 2>r execute timer 2r> d- du. ; \ TODO d-
 
-\ laptop 4 483 749
+\ desktop         TBD
+\ laptop    4 483 749
+\ MEGA65    5 662 489
+
 : bm1 25 ['] fib benchmark . cr ;

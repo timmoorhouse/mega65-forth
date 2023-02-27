@@ -323,7 +323,7 @@ POP2
 POP
         inx
         inx
-        jmp NEXT
+        bra NEXT
 
         ; A + top of stack is the 16-bit value
 PUSH
