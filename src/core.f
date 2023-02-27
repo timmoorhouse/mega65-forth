@@ -124,6 +124,17 @@
 
 : sm/rem over >r >r dabs r@ abs um/mod r> r@ xor +- swap r> +- swap ; \ TODO
 
+: fm/mod ( d n -- rem quot )
+  dup >r
+  sm/rem
+  ( if the remainder is not zero and has a different sign than the divisor )
+  over dup 0<> swap 0< r@ 0< xor and if
+    1- swap r> + swap
+  else
+    r> drop
+  then
+;
+
 \ For floored
 \ : /mod >r s>d r> fm/mod ; \ TODO
 \ : */mod >r m* r> fm/mod ; \ TODO
