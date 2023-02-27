@@ -55,32 +55,6 @@ W_DTRAILING
 }
 
 ; ****************************************************************************
-; BLANK
-; (c-addr u --)
-; ANSI 17.6.1.0780
-
-; FIG
-;      BLANKS        addr  count  ---
-;               Fill an area of memory begining at addr with blanks.
-;
-
-;;
-;;                                       BLANKS
-;;                                       SCREEN 46 LINE 7
-;;
-
-!if ENABLE_STRING {
-!if 0 {
-        +WORD "blank"
-W_BLANK
-        !word DO_COLON
-        !word W_BL
-        !word W_FILL
-        !word W_PSEMI
-}
-}
-
-; ****************************************************************************
 ; CMOVE
 ; (c-addr_1 c-addr_2 u --)
 ; ANSI 17.6.1.0910

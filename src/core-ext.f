@@ -1,16 +1,16 @@
 
-( The following words are implemented internally:                             )
-
-( 0<> 0> 2>R 2R> 2R@ :NONAME <> ?DO DEFER DEFER FALSE NIP PARSE PARSE-NAME    )
-( PICK REFILL RESTORE-INPUT ROLL S\" SAVE-INPUT SOURCE-ID TRUE UNUSED VALUE   )
-
 : \ 13 parse 2drop ; immediate ( TODO K-RETURN? )
+
+\ The following words are implemented internally:                             
+\
+\ 0<> 0> 2>R 2R> 2R@ :NONAME <> ?DO DEFER DEFER FALSE NIP PARSE PARSE-NAME    
+\ PICK REFILL RESTORE-INPUT ROLL S\" SAVE-INPUT SOURCE-ID TRUE UNUSED VALUE   
 
 : defer@ ( xt1 -- xt2 ) >body @ ;
 
 : defer! ( xt2 xt1 -- ) >body ! ;
 
-( *************************************************************************** )
+\ *************************************************************************** 
 
 \ .( see core.f
 

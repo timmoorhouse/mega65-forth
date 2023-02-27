@@ -384,12 +384,16 @@ _RPSTORE
         +WORD "rp@"
 W_RPAT
         !word *+2
+        clc
         stx <XSAVE
         tsx
-        phx
+        txa
         ldx <XSAVE
+        adc #1
+        pha
         tsy
         tya
+        adc #0
         jmp PUSH
         
 ; TODO some sort of RPICK (like PICK but for the return stack) for J, I, LEAVE, PLOOP, PPLOOP

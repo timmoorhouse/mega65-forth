@@ -895,6 +895,13 @@ W_TRUE
 ; ANSI 6.2.2395
 
 !if ENABLE_CORE_EXT {
+        +WORD "unused"
+W_UNUSED
+        !word DO_COLON
+        +LITERAL DAREA
+        !word W_HERE
+        !word W_SUB
+        !word W_PSEMI        
 }
 
 ; ****************************************************************************

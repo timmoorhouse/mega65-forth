@@ -864,7 +864,7 @@ _accept_not_delete
 
         ; Check for and handle return
         !word W_DUP
-        !word W_K_RETURN
+        +LITERAL K_RETURN
         !word W_EQUAL
         +ZBRANCH _accept_not_return
 

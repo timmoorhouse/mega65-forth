@@ -1,9 +1,9 @@
 
-( The following words are implemented internally:                             )
+\ The following words are implemented internally:                             
 
-( D+ DNEGATE )
+\ D+ DNEGATE 
 
-( *************************************************************************** )
+\ *************************************************************************** 
 
 \ TODO 2CONSTANT
 

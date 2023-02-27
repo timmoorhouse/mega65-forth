@@ -14,8 +14,12 @@ die() {
 }
 
 cmd() {
-    [ -n "${opt[quiet]}" ] || echo "$@"
+    [ -n "${opt[quiet]}"  ] || echo "$@"
     [ -n "${opt[dryrun]}" ] || "$@"
+}
+
+bg() {
+    "$@" &
 }
 
 thisdir=$(dirname $(readlink -f "$0"))
@@ -161,12 +165,12 @@ EOF
         src/block.f         src/block-ext.f \
         src/core.f          src/core-ext.f \
         src/double.f        src/double-ext.f \
-        src/exception.f     src/exception-ext.f \
+        src/exception.f \
         src/facility.f      src/facility-ext.f \
         src/file.f          src/file-ext.f \
         src/floating.f      src/floating-ext.f \
         src/locals.f        src/locals-ext.f \
-        src/memory.f        src/memory-ext.f \
+        src/memory.f \
         src/search.f        src/search-ext.f \
         src/string.f        src/string-ext.f \
         src/tools.f         src/tools-ext.f \
@@ -195,6 +199,7 @@ EOF
     cmd ls -l "${opt[builddir]}/forth-skeletal.prg"
 }
 
+# could run xemu headless, full speed to do these ...
 do_build_minimal() {
     # TODO
     :
@@ -220,7 +225,11 @@ do_test() {
     if [ -n "${opt[emulate]}" ]; then
 
         cmd "${opt[xmega65]}" "${xmega65opts[@]}" -8 "${opt[builddir]}/mega65-forth.d81"
+        # -prg "${opt[builddir]}/forth.prg"
 
+        # cmd bg "${opt[xmega65]}" "${xmega65opts[@]}" -8 "${opt[builddir]}/mega65-forth.d81"
+        # cmd sleep 10
+        # cmd "${opt[m65]}" "${m65opts[@]}" -t 'require "bootstrap.f"'
     else
         "${opt[m65]}" --quiet --reset
 
