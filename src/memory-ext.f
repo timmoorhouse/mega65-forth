@@ -1,4 +1,4 @@
 
 
 
-.( end of memory-ext.f )
+.( ... end of memory-ext.f ) cr

@@ -1,4 +1,4 @@
 
 
 
-.( end of xchar-ext.f )
+.( ... end of xchar-ext.f ) cr

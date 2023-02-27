@@ -1,4 +1,4 @@
 
 
 
-.( end of string-ext.f )
+.( ... end of string-ext.f ) cr

@@ -1,4 +1,4 @@
 
 
 
-.( end of block-ext.f )
+.( ... end of block-ext.f ) cr

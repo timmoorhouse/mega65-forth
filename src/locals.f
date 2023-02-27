@@ -1,4 +1,4 @@
 
 
 
-.( end of locals.f )
+.( ... end of locals.f ) cr

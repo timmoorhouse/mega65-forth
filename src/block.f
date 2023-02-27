@@ -1,4 +1,4 @@
 
 
 
-.( end of block.f )
+.( ... end of block.f ) cr

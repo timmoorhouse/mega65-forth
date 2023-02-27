@@ -1,4 +1,6 @@
 
+\ TODO CATCH
 
+\ TODO THROW
 
-.( end of exception.f )
+.( ... end of exception.f ) cr

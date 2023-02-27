@@ -1,4 +1,8 @@
 
+\ TODO 2ROT
 
+\ TODO 2VALUE
 
-.( end of double-ext.f )
+\ TODO DU<
+
+.( ... end of double-ext.f ) cr

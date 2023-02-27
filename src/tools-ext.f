@@ -1,4 +1,4 @@
 
 
 
-.( end of tools-ext.f )
+.( ... end of tools-ext.f ) cr

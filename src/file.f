@@ -1,4 +1,4 @@
 
 
 
-.( end of file.f )
+.( ... end of file.f ) cr

@@ -1,4 +1,4 @@
 
 
 
-.( end of string.f )
+.( ... end of string.f ) cr

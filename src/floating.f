@@ -1,4 +1,4 @@
 
 
 
-.( end of floating.f )
+.( ... end of floating.f ) cr

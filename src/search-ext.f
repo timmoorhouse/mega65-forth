@@ -1,4 +1,4 @@
 
 
 
-.( end of search-ext.f )
+.( ... end of search-ext.f ) cr

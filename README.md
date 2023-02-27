@@ -60,7 +60,6 @@ that the build process will get more involved:
 
 These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
 - CORE
-  - [ ] `DOES>` needs some more testing and cleanup.
   - [ ] `UM/MOD` gets things wrong for large inputs
   - [ ] Handle `RESTORE-INPUT` failures
   - [ ] Need to reimplement the multiplication/division operations using the math unit
@@ -144,11 +143,11 @@ The code is getting to the point where automating the test suite makes sense.  I
 
 Test | Status | Comments
 :-- | :--: | :--
-[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | PASS[^petscii] | [foo](#
+[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | PASS[^petscii] |
 [BLOCK](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/blocktest.fth) | TBD |
 [CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | FAIL | [Some problems with `UM/MOD`](README.md#ummod)
-[CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | TBD |
-[CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | FAIL | A lot still to implement.
+[CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | FAIL[^petscii] | A few failures
+[CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | FAIL | Getting closer - a fair bit still to implement (`MARKER` in particular).
 [DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD |
 [EXCEPTION](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/exceptiontest.fth) | TBD |
 [FACILITY](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/facilitytest.fth) | TBD |

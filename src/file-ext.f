@@ -2,4 +2,4 @@
 
 
 
-.( end of file-ext.f )
+.( ... end of file-ext.f ) cr

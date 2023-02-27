@@ -5,5 +5,6 @@ include core.f
 ( Note that you can't use comments until after including core.f! )
 
 include core-ext.f
+include file.f
 
 .( ... end of bootstrap-min.f ) cr

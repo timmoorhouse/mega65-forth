@@ -1,4 +1,4 @@
 
 
 
-.( end of memory.f )
+.( ... end of memory.f ) cr
