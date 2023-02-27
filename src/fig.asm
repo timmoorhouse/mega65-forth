@@ -9,11 +9,6 @@
 ;               Continue interpretation with the next disc screen.  
 ;               (pronounced next-screen).
 
-;;
-;;                                       -->
-;;                                       SCREEN 62 LINE 6
-;;
-
 !if 0 {
         +WORD "-->"
 W_DASHDASH
@@ -34,37 +29,11 @@ W_DASHDASH
 }
 
 ; ****************************************************************************
-; -BCD
-
-;;
-;;                                       -BCD
-;;                             Convert binary value to BCD
-;;
-
-!if 0 {
-        +WORD "-bcd"
-W_DBCD
-        !word DO_COLON
-;          !word ZERO,CLIT
-;          !byte 10
-;          !word USLAS,CLIT
-;          !byte 16
-;          !word STAR,OR
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; B/BUF
 
 ;      B/BUF         ---  n
 ;               This constant leaves the number of bytes per disc buffer, 
 ;               the byte count read from disc by BLOCK.
-
-;;
-;;                                       B/BUF
-;;                                       SCREEN 35 LINE 9
-;;                                       Bytes per Buffer
-;;
 
 !if 0 {
         +WORD "b/buf"
@@ -81,12 +50,6 @@ W_BBUF
 ;               screen.  By convention, an editing screen is 1024 bytes 
 ;               organised as 16 lines of 64 characters each.
 
-;;
-;;                                       B/SCR
-;;                                       SCREEN 35 LINE 10
-;;                                       Blocks per screen
-;;
-
 !if 0 {
         +WORD "b/scr"
 W_BSCR
@@ -102,13 +65,6 @@ W_BSCR
 ;               Advance the disc buffer address addr1 to the address of 
 ;               the next buffer addr2.  Boolean f is false when addr2 is 
 ;               the buffer presently pointed to by variable PREV.
-
-
-;;
-;;                                       +BUF
-;;                                       SCREEN 58 LINE 4
-;;
-;;
 
 !if 0 {
         +WORD "+buf"
@@ -132,39 +88,10 @@ W_PBUF
 }
 
 ; ****************************************************************************
-; <BUILDS
-
-;      <BUILDS                                               C,L0
-;               Used within a colon-definition:
-;                         : cccc  <BUILDS  ...  DOES>  ...  ;
-;               Each time cccc is executed, <BUILDS defines a new word 
-;               with a high-level execution procedure.  Executing cccc in 
-;               the form:
-;                         cccc  nnnn
-;               uses <BUILDS to create a dictionary entry for nnnn with a 
-;               call to the DOES> part for nnnn.  When nnnn is later 
-;               executed, it has the address of its parameter area on the 
-;               stack and executes the words after DOES> in cccc.  <BUILDS 
-;               and DOES> allow run-time procedures to be written in high-
-;               level rather than in assembler code (as required by 
-;               ;CODE ).
-
-!if 0 {
-        +WORD "<builds"
-W_BUILD
-        !word DO_COLON
-;          !word ZERO
-;          !word W_CONSTANT
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; C/L
 
-;;
-;;                                       C/L
-;;                                       SCREEN 35 LINE 5
-;;                                       Characters per line
+; Characters per line
+; TODO remove this?
 
         +WORD "c/l"
 W_CSLL
@@ -178,79 +105,11 @@ W_CSLL
 ;               A user variable containing a pointer to the vocabulary 
 ;               within which dictionary searches will first begin.
 
-;;
-;;                                       CONTEXT
-;;                                       SCREEN 37 LINE 2
-;;
-
 !if 0 {
         +WORD "context"
 W_CONTEXT
         !word DO_USER
 ;          !byte $20
-}
-
-; ****************************************************************************
-; DLITERAL
-
-;      DLITERAL      d  ---  d           (executing)
-;                    d  ---              (compiling)         P
-;               If compiling, compile a stack double number into a 
-;               literal.  Later execution of the definition containing 
-;               the literal will push it to the stack.  If executing, the 
-;               number will remain on the stack.
-
-;;
-;;                                       DLITERAL
-;;                                       SCREEN 51 LINE 8
-;;
-
-!if 0 {
-        +WORD "dliteral"
-W_DLITERAL
-        !word DO_COLON
-;          !word STATE
-;          !word AT
-;          !word ZBRAN
-;L2238:    !word 8        ; L2242-L2238
-;          !word SWAP
-;          !word LITER
-;          !word LITER
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; -DISC
-
-;;
-;;                                       -DISC
-;;                                       machine level sector R/W
-;;
-
-!if 0 {
-        +WORD "-disc"
-W_DDISC
-        !word *+2
-;          LDA 0,X
-;          STA $C60C
-;          STA $C60D      ; store sector number
-;          LDA 2,X
-;          STA $C60A
-;          STA $C60B      ; store track number
-;          LDA 4,X
-;          STA $C4CD
-;          STA $C4CE      ; store drive number
-;          STX XSAVE
-;          LDA $C4DA      ; sense read or write
-;          BNE L3032
-;          JSR $E1FE
-;          JMP L3040
-;L3032:    JSR $E262
-;L3040:    JSR $E3EF      ; head up motor off
-;          LDX XSAVE
-;          LDA $C4E1      ; report error code
-;          STA 4,X
-        jmp POPTWO
 }
 
 ; ****************************************************************************
@@ -278,11 +137,6 @@ W_DPL
 ;               FORGETting is trapped.  To forget below this point the 
 ;               user must alter the contents of FENCE.
 
-;;
-;;                                       FENCE
-;;                                       SCREEN 36 LINE 7
-;;
-
 !if 0 {
         +WORD "fence"
 W_FENCE
@@ -296,10 +150,6 @@ W_FENCE
 ;      FIRST         ---  n
 ;               A constant that leaves the address of the first (lowest) 
 ;               block buffer.
-
-;;
-;;                                       FIRST
-;;                                       SCREEN 35 LINE 7
 
 !if 0 {
         +WORD "first"
@@ -315,76 +165,11 @@ W_FIRST
 ;               A user variable for control of number output field width.  
 ;               Presently unused in fig-FORTH.
 
-;;
-;;                                       FLD
-;;                                       SCREEN 37 LINE 7
-
 !if 0 {
         +WORD "fld"
 W_FLD
         !word DO_USER
 ;          !byte $2A
-}
-
-; ****************************************************************************
-; HLD
-
-;      HLD           ---  addr                               L0
-;               A user variable that holds the address of the latest 
-;               character of text during numeric output conversion.
-
-;;
-;;                                       HLD
-;;                                       SCREEN 37 LINE 10
-;;
-
-!if 0 {
-        +WORD "hld"
-W_HLD
-        !word DO_USER
-;          !byte $30
-}
-
-; ****************************************************************************
-; INDEX
-
-;      INDEX         from  to  ---
-;               Print the first line of each screen over the range from, 
-;               to.  This is used to view the comment lines of an area of 
-;               text on disc screens.
-
-;;
-;;                                       INDEX
-;;                                       SCREEN 77 LINE 7
-;;
-
-!if 0 {
-        +WORD "index"
-W_INDEX
-        !word DO_COLON
-;          !word CR
-;          !word 1PLUS
-;          !word SWAP
-;          !word PDO
-;L3647:    !word CR
-;          !word I
-;          !word THREE
-;          !word DOTR
-;          !word SPACE
-;          !word ZERO
-;          !word I
-;          !word DLINE
-;          !word QTERM
-;          !word ZBRAN
-;L3657:    !word 4        ; L3659-L3657
-;          !word LEAVE
-;L3659:    !word PLOOP
-;L3660:    !word $FFE6    ; L3647-L3660
-;          !word CLIT
-;          !byte $0A      ; PT WAS HERE
-;;          !byte $0C      ; form feed for printer
-;          !word EMIT
-        !word W_PSEMI
 }
 
 ; ****************************************************************************
@@ -394,11 +179,6 @@ W_INDEX
 ;               A constant leaving the address just above the highest 
 ;               memory available for a disc buffer.  Usually this is the 
 ;               highest system memory.
-
-;;
-;;                                       LIMIT
-;;                                       SCREEN 35 LINE 8
-;;
 
 !if 0 {
         +WORD "limit"
@@ -415,12 +195,6 @@ W_LIMIT
 ;               Convert the line number n1 and the screen n2 to the disc 
 ;               buffer address containing the data.  A count of 64 
 ;               indicates the full line text length.
-
-;;
-;;
-;;                                       (LINE)
-;;                                       SCREEN 61 LINE 2
-;;
 
 !if 0 {
         +WORD "(line)"
@@ -448,11 +222,6 @@ W_PLINE
 ;               by its line and screen number.  Trailing blanks are 
 ;               suppressed.
 
-;;
-;;                                       .LINE
-;;                                       SCREEN 61 LINE 6
-;;
-
 !if 0 {
         +WORD ".line"
 W_DLINE
@@ -468,11 +237,6 @@ W_DLINE
 
 ;      ?LOADING
 ;               Issue an error message if not loading.
-
-;;
-;;                                       ?LOADING
-;;                                       SCREEN 40 LINE 14
-;;
 
 !if 0 {
         +WORD "?loading"
@@ -496,11 +260,6 @@ W_QLOAD
 ;               negative.  MESSAGE may be used to print incidental text 
 ;               such as report headers.  IF WARNING is zero, the message 
 ;               will simply be printed as a number (disc-unavailable).
-
-;;
-;;                                       MESSAGE
-;;                                       SCREEN 61 LINE 9
-;;
 
 !if 0 {
         +WORD "message"
@@ -537,11 +296,6 @@ W_MESSAGE
 ;               recently referenced.  The UPDATE command marks this buffer 
 ;               to be later written to disc.
 
-;;
-;;                                       PREV
-;;                                       SCREEN 58 LINE 2
-;;
-
 !if 0 {
         +WORD "prev"
 W_PREV
@@ -555,57 +309,12 @@ W_PREV
 ;      R#            ---  addr                               U
 ;               A user variable which may contain the location of an 
 ;               editing cursor, or other file related function.
-;
-;;
-;;                                       R#
-;;                                       SCREEN 37  LINE 9
-;;
 
 !if 0 {
         +WORD "r#"
 W_RNUM
         !word DO_USER
 ;          !byte $2E
-}
-
-; ****************************************************************************
-; ?TERMINAL
-
-;      ?TERMINAL     ---  f
-;               Perform a test of the terminal keyboard for actuation of 
-;               the break key.  A true flag indicates actuation.  This 
-;               definition is installation dependent.
-
-;;
-;;                                       ?TERMINAL
-;;                                       SCREEN 21 LINE 9
-;;
-
-!if 0 {
-        +WORD "?terminal"
-W_QTERMINAL
-;    !word XQTER    ; Vector to code for ?TERMINAL
-}
-
-; ****************************************************************************
-; TOGGLE
-
-;      TOGGLE        c-addr  b  ---
-;               Complement the contents of addr by the bit pattern b.
-
-;;
-;;                                       TOGGLE
-;;                                       SCREEN 31 LINE 7
-;;
-
-!if 0 {
-        +WORD "toggle"
-W_TOGGLE
-        !word *+2
-;          LDA (2,X)      ; complement bits in memory address
-;          EOR 0,X        ; second on stack, by pattern on
-;          STA (2,X)      ; bottom of stack.
-        jmp POPTWO
 }
 
 ; ****************************************************************************
@@ -618,11 +327,6 @@ W_TOGGLE
 ;               high memory; if n= -1, the motion is toward low memory.  
 ;               The addr2 resulting is address of the other end of the 
 ;               name.
-
-;;
-;;                                       TRAVERSE
-;;                                       SCREEN 39 LINE 14
-;;
 
 !if 0 {
         +WORD "traverse"
@@ -644,48 +348,11 @@ W_TRAVERSE
 }
 
 ; ****************************************************************************
-; UPPER
-
-;;
-;;                                       UPPER
-;;                                       SCREEN 47 LINE 12
-;;
-
-!if 0 {
-        +WORD "upper"
-W_UPPER
-        !word DO_COLON
-;          !word OVER     ; This routine converts text to U case
-;          !word PLUS     ; It allows interpretation from a term.
-;          !word SWAP     ; without a shift-lock.
-;          !word PDO
-;L1950:    !word I
-;          !word CAT
-;          !word CLIT
-;          !byte $5F
-;          !word GREAT
-;          !word ZBRAN
-;L1956:    !word 09       ; L1961-L1956
-;          !word I
-;          !word CLIT
-;          !byte $20
-;          !word TOGGL
-;L1961:    !word PLOOP
-;L1962:    !word $FFEA    ; L1950-L1962
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; USE
 
 ;      USE           ---  addr
 ;               A variable containing the address of the block buffer to 
 ;               use next, as the least recently written.
-
-;;
-;;                                       USE
-;;                                       SCREEN 58 LINE 1
-;;
 
 !if 0 {
         +WORD "use"
@@ -702,11 +369,6 @@ W_USE
 ;               definition of the most recently created vocabulary.  All 
 ;               vocabulary names are linked by these fields to allow 
 ;               control for FORGETting through multiple vocabularies.
-
-;;
-;;                                       VOC-LINK
-;;                                       SCREEN 36 LINE 9
-;;
 
 !if 0 {
         +WORD "voc-link"
@@ -726,11 +388,6 @@ W_VOCL
 ;               execute (ABORT) for a user specified procedure.  See 
 ;               MESSAGE, ERROR.
 
-;;
-;;                                       WARNING
-;;                                       SCREEN 36 LINE 6
-;;
-
 !if 0 {
         +WORD "warning"
 W_WARNING
@@ -747,12 +404,6 @@ W_WARNING
 ;               execution procedure to terminate interpretation of a line 
 ;               of text from the terminal or within a disc buffer, as both 
 ;               buffers always have a null at the end.
-
-;;
-;;                                       X
-;;                                       SCREEN 45 LINE 11
-;;                                       Actually Ascii Null
-;;
 
 !if 0 {
         +WORD "x"

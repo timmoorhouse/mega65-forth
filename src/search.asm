@@ -19,10 +19,6 @@
 ;               the example, executing vocabulary name cccc made it the 
 ;               CONTEXT vocabulary and executing DEFINITIONS made both 
 ;               specify vocabulary cccc.
-;
-;;
-;;                                       DEFINITIONS
-;;                                       SCREEN 53 LINE 11
 
 !if ENABLE_SEARCH {
 !if 0 {
@@ -38,25 +34,13 @@ W_DEFINITIONS
 }
 
 ; ****************************************************************************
-; FIND
-; (c-addr -- c-addr 0 | xt 1 | xt -1)
-; ANSI 16.6.1.1550
-
-!if ENABLE_SEARCH {
-}
-
-; ****************************************************************************
 ; FORTH-WORDLIST
 ; (-- wid)
 ; 16.6.1.1595
 
-; The word itself is required by the implementation but will only be visible if SEARCH is enabled
+; Required by lots of things currently
 
-!if ENABLE_SEARCH {
         +WORD "forth-wordlist"
-} else {
-        +NONAME
-}
 W_FORTH_WORDLIST
         !word DO_VARIABLE
 FORTH_WORDLIST

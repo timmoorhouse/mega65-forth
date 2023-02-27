@@ -27,10 +27,7 @@
 ;               part of FORTH.  FORTH is immediate, so it will execute 
 ;               during the creation of a colon-definition, to select this 
 ;               vocabulary at compile-time.
-;
-;;
-;;                                       FORTH
-;;                                       SCREEN 53 LINE 9
+
         +WORD_IMM "forth"
 W_FORTH
 ;      !word DODOE

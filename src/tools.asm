@@ -9,6 +9,8 @@
 
 ; See also tools.f
 
+; TODO remove the defer once enough has been moved to forth that we don't need it for debugging?
+
         +WORD ".s"
 W_DOTS
         !word DO_DEFER

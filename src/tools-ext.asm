@@ -52,7 +52,7 @@ W_SCODE
 W_PSCODE
         !word DO_COLON
         !word W_RFROM
-        !word W_LATEST
+        !word W_LATEST          ; TODO LATESTXT
         !word W_NAME_TO_INTERPRET
         !word W_STORE
         !word W_PSEMI
@@ -90,7 +90,6 @@ W_PSCODE
 ; ANSI 15.6.2.0830
 ; Return control to the host operating system
 
-!if ENABLE_TOOLS_EXT {
         +WORD "bye"
 W_BYE
         !word *+2
@@ -106,7 +105,6 @@ W_BYE
 
         ; TODO restore memory map?
         rts
-}
 
 ; ****************************************************************************
 ; CODE

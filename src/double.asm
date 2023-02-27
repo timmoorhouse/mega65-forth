@@ -21,6 +21,29 @@
 !if ENABLE_DOUBLE {
 }
 
+; FIG
+
+;      DLITERAL      d  ---  d           (executing)
+;                    d  ---              (compiling)         P
+;               If compiling, compile a stack double number into a 
+;               literal.  Later execution of the definition containing 
+;               the literal will push it to the stack.  If executing, the 
+;               number will remain on the stack.
+
+!if 0 {
+        +WORD "dliteral"
+W_DLITERAL
+        !word DO_COLON
+;          !word STATE
+;          !word AT
+;          !word ZBRAN
+;L2238:    !word 8        ; L2242-L2238
+;          !word SWAP
+;          !word LITER
+;          !word LITER
+        !word W_PSEMI
+}
+
 ; ****************************************************************************
 ; 2VARIABLE
 ; (???)
@@ -146,13 +169,9 @@ W_DMINUS
 ; (d -- ud)
 ; ANSI 8.6.1.1160
 
-; The word itself is required by the implmentation (of .) but is only visible if DOUBLE is enabled
+; Required by the implementation of . (core)
 
-!if ENABLE_DOUBLE {
         +WORD "dabs"
-} else {
-        +NONAME
-}
 W_DABS
         !word DO_COLON
         !word W_DUP
@@ -182,13 +201,9 @@ W_DABS
 ; (d_1 -- d_2)
 ; ANSI 8.6.1.1230
 
-; The word itself is required by . (core) but is only visible if DOUBLE is enabled
+; Required by the implementation of . (core)
 
-!if ENABLE_DOUBLE {
         +WORD "dnegate"
-} else {
-        +NONAME
-}
 W_DNEGATE
         !word *+2
         ; ldy #0 ; TODO

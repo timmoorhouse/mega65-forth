@@ -229,10 +229,6 @@ W_NONAME
         !word W_PSEMI
 }
 
-; : :noname ( -- xt ) align ] 
-;     \ $80 , \ end marker flag, zero length name \ TODO skip these??
-;     here ['] : @ , ; \ assumes the code field of : is DO_COLON
-
 ; ****************************************************************************
 ; <>
 ; (x_1 x_2 -- flag)
@@ -296,8 +292,7 @@ W_PQDO
 ; (???)
 ; Forth 2012 6.2.0698
 
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; AGAIN
@@ -311,8 +306,7 @@ W_PQDO
 ; (???)
 ; Forth 2012 6.2.0825
 
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; C"
@@ -327,8 +321,7 @@ W_PQDO
 ; (???)
 ; ANSI 6.2.0873
 
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; COMPILE,
@@ -383,39 +376,27 @@ DO_DEFER
 ; DEFER!
 ; Forth 2012 6.2.1175
 
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; DEFER@
 ; Forth 2012 6.2.1177
 
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; ENDCASE
 ; (???)
 ; ANSI 6.2.1342
 
-; From discussion in ANSI A.3.2.3.2:
-;
-;    : ENDCASE POSTPONE DROP 0 ?DO POSTPONE THEN LOOP ; IMMEDIATE
-
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; ENDOF
 ; (???)
 ; ANSI 6.2.1343
 
-; From discussion in ANSI A.3.2.3.2:
-;
-;   : ENDOF >R POSTPONE ELSE R> ; IMMEDIATE
-
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; ERASE
@@ -488,19 +469,14 @@ W_NIP
 ; (???)
 ; ANSI 6.2.1950
 
-; From discussion in ANSI A.3.2.3.2:
-;
-;     : OF 1+ >R POSTPONE OVER POSTPONE = POSTPONE IF POSTPONE DROP R> ; IMMEDIATE
-
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; PAD
 ; (-- c-addr)
 ; ANSI 6.2.2000
 
-; See core-ext.f
+; TODO move to core-ext.f
 
 ; Used by WORD
 ; At the moment, there needs to be a gap between HERE and PAD since HOLD starts at PAD and goes back in memory
@@ -907,7 +883,6 @@ W_RESTORE_INPUT
         !word W_STORE
         +LITERAL &SOURCE_ID
         !word W_STORE
-        ; TODO SOURCE?
         !word W_ZERO            ; input successfully restored
         !word W_PSEMI
 
@@ -997,7 +972,6 @@ W_ROLL
 W_SAVE_INPUT
         !word DO_COLON
         ; TODO this could be made much smaller
-        ; TODO SOURCE?
         !word W_SOURCE_ID
         !word W_IN
         !word W_AT
@@ -1059,8 +1033,7 @@ W_TRUE
 ; (u n --)
 ; ANSI 6.2.2300
 
-!if ENABLE_CORE_EXT {
-}
+; See core.f (required by U.)
 
 ; ****************************************************************************
 ; U>
@@ -1105,8 +1078,7 @@ DO_VALUE
 ; (n_1 n_2 n_3 -- flag)
 ; ANSI 6.2.2440
 
-!if ENABLE_CORE_EXT {
-}
+; See core-ext.f
 
 ; ****************************************************************************
 ; \

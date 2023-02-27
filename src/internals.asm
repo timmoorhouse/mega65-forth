@@ -770,6 +770,23 @@ W_QSTACK
 }
 
 ; ****************************************************************************
+; FIG
+; ?TERMINAL
+
+;      ?TERMINAL     ---  f
+;               Perform a test of the terminal keyboard for actuation of 
+;               the break key.  A true flag indicates actuation.  This 
+;               definition is installation dependent.
+
+; TODO kernel call to query stop key
+
+!if 0 {
+        +WORD "?terminal"
+W_QTERMINAL
+;    !word XQTER    ; Vector to code for ?TERMINAL
+}
+
+; ****************************************************************************
 
 ; FIG:
 ;      ?ERROR        f  n  ---

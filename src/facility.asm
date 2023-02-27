@@ -7,6 +7,8 @@
 ; (u_1 u_2 --)
 ; ANSI 10.6.1.0742
 
+; TODO use plot (kernel)
+
 !if ENABLE_FACILITY {
         +WORD "at-xy"
 W_AT_XY
@@ -43,5 +45,5 @@ W_PAGE
 
 PAGE
         lda #147
-        +KERNEL_CALL $ffd2
+        +KERNEL_CALL $ffd2 ; TODO use BASOUT (kernel)
         rts
