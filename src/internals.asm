@@ -68,6 +68,11 @@ fail_runtime_check
         brk
 }
 
+; TODO timer
+; check Clear_TI, start_timer  CIA2_CRA (dd0e), CIA2_CRB (dd0f), CIA_TALO (dd04), Get_TI_CIA
+; see https://www.c64-wiki.com/wiki/CIA
+; Something like execute that counts clock ticks?
+
 ; ****************************************************************************
 ; 0
 
