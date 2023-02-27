@@ -106,6 +106,8 @@ variable hld ( TODO can we remove this? )
 
 : chars ( n_1 -- n_2 ) ;
 
+: dabs dup 0< if dnegate then ; ( DOUBLE )
+
 ( TODO might be simpler to do this one in assembler )
 : environment? 2drop false ;
 ( TODO /COUNTED-STRING )

@@ -7,21 +7,15 @@
 ;
 
 ; TODO things marked 'common usage' in Forth Programmer's Handbook:
-; 2+                    OK
-; 2-                    OK
 ; .'
-; [DEFINED]             in 2012
-; [UNDEFINED]           in 2012
 ; BEGIN (assembler)
 ; c+!                   skip?
 ; CURRENT               skip? also in gforth - should be fine with just get-current/set-current though?
 ; CVARIABLE             skip?
 ; DASM
-; DEFER <name>          in 2012
 ; ELSE (assembler)
 ; END-CODE
 ; IF (assembler)
-; INCLUDE <filename>
 ; INTERRUPT
 ; IS <name>
 ; L
@@ -39,8 +33,6 @@
 ; WH <name>
 ; WHERE <name>
 ; 
-
-; TODO some sort of RPICK (like PICK but for the return stack) for J, I, LEAVE, PLOOP, PPLOOP
 
 ; Is this a whitespace character?
 ; Used by PARSE-NAME
@@ -399,6 +391,8 @@ W_RPAT
         tsy
         tya
         jmp PUSH
+        
+; TODO some sort of RPICK (like PICK but for the return stack) for J, I, LEAVE, PLOOP, PPLOOP
 
 ; TODO gforth also has fp@, rp@, etc
 
