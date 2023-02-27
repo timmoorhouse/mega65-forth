@@ -85,9 +85,21 @@ W_DPLUS
 
 !if ENABLE_DOUBLE {
         +WORD "d-"
-W_DMINUS
+W_DSUB
         !word *+2
-        ; TODO
+        sec
+        lda 6,x
+        sbc 2,x
+        sta 6,x
+        lda 7,x
+        sbc 3,x
+        sta 7,x
+        lda 4,x
+        sbc 0,x
+        sta 4,x
+        lda 5,x
+        sbc 1,x
+        sta 5,x
         jmp POP2
 }
 

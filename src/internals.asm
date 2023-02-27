@@ -73,6 +73,52 @@ fail_runtime_check
 ; see https://www.c64-wiki.com/wiki/CIA
 ; Something like execute that counts clock ticks?
 
+        +WORD "timer"
+W_TIMER
+        !word *+2
+        jsr read_timer
+!if 0 {
+        lda <TEMP1
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+        lda <TEMP1+1
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+        lda <TEMP1+2
+        jsr put_hex
+        lda #' '
+        jsr EMIT
+        lda <TEMP1+3
+        jsr put_hex
+        jsr CR
+}
+        dex
+        dex
+        dex
+        dex
+        lda <TEMP1
+        sta 2,x
+        lda <TEMP1+1
+        sta 3,x
+        lda <TEMP1+2
+        sta 0,x
+        lda <TEMP1+3
+        sta 1,x
+        jmp NEXT
+
+read_timer
+        stx <XSAVE
+        lda #$ff
+        tax
+        tay
+        taz
+        sbcq $dd04
+        stq  <TEMP1
+        ldx <XSAVE
+        rts
+
 ; ****************************************************************************
 ; 0
 
@@ -127,6 +173,13 @@ W_2MINUS
         !word W_TWO
         !word W_SUB
         !word W_PSEMI
+
+; ****************************************************************************
+
+        +WORD "benchmark"
+W_BENCHMARK
+        !word *+2
+        jmp NEXT
 
 ; ****************************************************************************
 ; 0BRANCH
