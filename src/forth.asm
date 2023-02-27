@@ -555,7 +555,7 @@ AUTOBOOT_FILENAME
 !src "double.asm"
 !src "double-ext.asm"
 !src "exception.asm"
-!src "exception-ext.asm"
+; !src "exception-ext.asm"              ; TODO no need for one yet
 !src "facility.asm"
 !src "facility-ext.asm"
 !src "fig.asm"
@@ -569,12 +569,12 @@ AUTOBOOT_FILENAME
 !src "locals-ext-obsolescent.asm"
 !src "mega65.asm"
 !src "memory.asm"
-!src "memory-ext.asm"
+; !src "memory-ext.asm"                 ; TODO no need for one yet
 !src "search.asm"
 !src "search-ext.asm"
 !src "string.asm"
 !src "string-ext.asm"
-!src "tools.asm"
+; !src "tools.asm"                      ; TODO no need for one yet
 !src "tools-ext.asm"
 !src "tools-ext-obsolescent.asm"
 !src "xchar.asm"

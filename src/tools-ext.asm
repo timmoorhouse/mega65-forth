@@ -58,25 +58,6 @@ W_PSCODE
         !word W_PSEMI
 
 ; ****************************************************************************
-; AHEAD
-; (???)
-; ANSI 15.6.2.0702
-;
-; Compilation: (C: -- orig)
-;       Put the location of a new unresolved forward reference onto the control flow stack.
-; Run-time: (--)
-;       Continue execution at the location speicifed by the resolution of orig.
-;
-;
-;
-
-; This just uses the data stack for the compilation stack
-
-; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
-
-; See core.f
-
-; ****************************************************************************
 ; ASSEMBLER
 ; (--)
 ; ANSI 15.6.2.0740
@@ -289,13 +270,6 @@ W_NRFROM
 +       phy
         lda #0
         jmp PUSH
-
-; ****************************************************************************
-; STATE
-; (-- a-addr)
-; ANSI 15.6.2.2250
-
-; See core
 
 ; ****************************************************************************
 ; SYNONYM

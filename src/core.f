@@ -19,7 +19,7 @@
 ( CONSTANT COUNT CR CREATE DECIMAL DEPTH <DO> DOES> DROP DUP EMIT EVALUATE    )
 ( EXECUTE EXIT FILL HERE I IMMEDIATE INVERT J KEY LEAVE <LOOP> LSHIFT MIN     )
 ( NEGATE OR OVER POSTPONE QUIT R> R@ ROT RSHIFT <S"> SOURCE SPACE STATE SWAP  )
-( TYPE U< UM* UM/MOD UNLOOP VARIABLE WORD XOR [ ]                             )
+( TYPE U< UM* UM/MOD UNLOOP VARIABLE XOR [ ]                                  )
 
 ( *************************************************************************** )
 ( * internal helper words                                                   * )
@@ -132,6 +132,8 @@ variable hld ( TODO can we remove this? )
 ( TODO cmove is in STRING but move is in CORE - make move the native one )
 : move ( src dst len -- ) >r 2dup < r> swap if cmove> else cmove then ;
 
+: pad here 68 + ; ( CORE-EXT ) ( TODO remove the 68 + once we change hold? )
+
 : recurse latestxt , ; immediate
 
 ( TODO use sliteral! )
@@ -181,6 +183,8 @@ variable hld ( TODO can we remove this? )
 : u.r ( u n -- ) >r 0 <# #s #> r> over - spaces type ; ( CORE-EXT )
 : u. 0 u.r space ;
 : . s>d d. ;
+
+: word (parse-name) dup pad c! pad 1+ swap cmove pad ;
 
 : ['] ' postpone literal ; immediate
 

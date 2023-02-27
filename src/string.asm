@@ -208,31 +208,7 @@ _cmoveg_dst
 ; -1 if char from str 1 < char from str 2
 ; 1 otherwise
 
-
 ; The word itself is required by the implementation (of FIND) but is only visible if SEARCH is enabled
-
-!if 0 {
-W_COMPARE_TEST
-        !word DO_COLON
-        +DOTQ "<compare>["
-        +LITERAL str1
-        !word W_COUNT
-        !word W_2DUP
-        !word W_TYPE
-        +DOTQ "]["
-        +LITERAL str2
-        !word W_COUNT
-        !word W_2DUP
-        !word W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT
-        !word W_COMPARE
-        !word W_DOTS
-        !word W_PSEMI
-
-str1    +STRING "foocar"
-str2    +STRING "foobar"
-}
 
 !if ENABLE_STRING {
         +WORD "compare"

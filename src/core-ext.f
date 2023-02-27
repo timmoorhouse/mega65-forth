@@ -1,9 +1,8 @@
 
 ( The following words are implemented internally:                             )
 
-( 0<> 0> 2>R 2R> 2R@ :NONAME <> ?DO DEFER DEFER FALSE NIP PAD PARSE           )
-( PARSE-NAME PICK REFILL RESTORE-INPUT ROLL S\" SAVE-INPUT SOURCE-ID TRUE     )
-( UNUSED VALUE                                                                )
+( 0<> 0> 2>R 2R> 2R@ :NONAME <> ?DO DEFER DEFER FALSE NIP PARSE PARSE-NAME    )
+( PICK REFILL RESTORE-INPUT ROLL S\" SAVE-INPUT SOURCE-ID TRUE UNUSED VALUE   )
 
 : \ 13 parse 2drop ; immediate ( TODO K-RETURN? )
 
@@ -70,7 +69,7 @@
 : of postpone over postpone = postpone 0branch here 0 , 
     postpone drop ; immediate
 
-\ : pad here 68 + ; \ TODO FIG uses some space in the gap for WORDS ... clean this up
+\ PAD see core.f
 
 \ TODO s\"
 

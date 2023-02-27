@@ -7,7 +7,7 @@ include block-ext.f
 include double.f
 include double-ext.f
 include exception.f
-include exception-ext.f
+\ include exception-ext.f           \ TODO no need for one yet
 include facility.f
 include facility-ext.f
 \ include file.f
@@ -17,7 +17,7 @@ include floating-ext.f
 include locals.f
 include locals-ext.f
 include memory.f
-include memory-ext.f
+\ include memory-ext.f              \ TODO no need for one yet
 include search.f
 include search-ext.f
 include string.f

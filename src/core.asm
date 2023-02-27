@@ -197,32 +197,6 @@ W_SUB
         jmp POP
 
 ; ****************************************************************************
-; . 
-; (n --)
-; ANSI 6.1.0180
-
-; See core.f
-
-; TODO this should get removed ... just keeping it for a while
-; in case we want it for debugging builtins
-
-!if 0 {
-        +WORD "."
-W_DOT
-        !word DO_DEFER
-        !word W_SIMPLE_DOT
-
-        :NONAME
-W_SIMPLE_DOT
-        !word *+2
-        lda 1,x
-        jsr put_hex
-        lda 0,x
-        jsr put_hex
-        jmp POP
-}
-
-; ****************************************************************************
 ; ." 
 ; ("text" --)
 ; ANSI 6.1.0190
@@ -2099,16 +2073,6 @@ beq +
 ; ANSI 6.1.2165
 ; ANSI 11.6.1.2165
 
-!if 0 {
-        +WORD_IMM "s\""
-W_SQUOTE
-        !word DO_COLON
-        +CLITERAL '"'  ; for colourization ... "
-        !word W_PARSE
-        ; TODO ...
-        !word W_PSEMI
-}
-
         +WORD "(s\")"
 W_PSQ
         ; see also (.")
@@ -2342,31 +2306,6 @@ DO_VARIABLE
         tya
         adc <W+1
         jmp PUSH
-
-; ****************************************************************************
-; WORD
-; (char "<chars>ccc<char>" -- c-addr)
-; ANSI 6.1.2450
-
-; TODO move to core.f
-
-        +WORD "word"
-W_WORD
-        !word DO_COLON
-
-        !word W_PPARSE_NAME     ; (c-addr u)
-        !word W_DUP
-        !word W_PAD
-        !word W_CSTORE          ; (c-addr u)
-
-        !word W_PAD
-        !word W_1PLUS
-        !word W_SWAP
-        !word W_CMOVE           ; ()
-
-        !word W_PAD
-
-        !word W_PSEMI
 
 ; ****************************************************************************
 ; XOR

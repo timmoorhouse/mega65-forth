@@ -364,23 +364,6 @@ W_NIP
         jmp POP
 
 ; ****************************************************************************
-; PAD
-; (-- c-addr)
-; ANSI 6.2.2000
-
-; TODO move to core-ext.f
-
-; Used by WORD
-; At the moment, there needs to be a gap between HERE and PAD since HOLD starts at PAD and goes back in memory
-        +WORD "pad"
-W_PAD
-        !word DO_COLON
-        !word W_HERE
-        +CLITERAL 68
-        !word W_PLUS
-        !word W_PSEMI
-
-; ****************************************************************************
 ; PARSE
 ; (char "ccc<char>" -- c-addr u)
 ; ANSI 6.2.2008
@@ -511,7 +494,7 @@ W_PARSE_NAME
         !word W_PPARSE_NAME
         !word W_PSEMI
 
-        +NONAME
+        +WORD "(parse-name)"
 W_PPARSE_NAME ; (char "<chars>name<char>" -- c-addr u)
         !word *+2
 
