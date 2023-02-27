@@ -463,9 +463,13 @@ WARM
         lda #>W_STARTUP+2
         sta <I+1
 
-        lda #14 ; Lower case
+        lda #14                 ; Lower case
         jsr EMIT
-        lda #11 ; Disable shift-mega case changes
+        lda #11                 ; Disable shift-mega case changes TODO skip this?
+        jsr EMIT
+        lda #27                 ; ESC 5 - switch to 80x50
+        jsr EMIT
+        lda #53
         jsr EMIT
 
         ; TODO a FONT word that switches font

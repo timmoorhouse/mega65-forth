@@ -144,11 +144,11 @@ The code is getting to the point where automating the test suite makes sense.  I
 
 Test | Status | Comments
 :-- | :--: | :--
-[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | PASS | `[CHAR] A` complains about a PETSCII vs ASCII difference.
+[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | PASS[^petscii] | [foo](#
 [BLOCK](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/blocktest.fth) | TBD |
-[CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | FAIL | Getting close.  Some problems with `UM/MOD`.  Some things still to implement.
-[CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | FAIL | A lot still to implement.
+[CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | FAIL | [Some problems with `UM/MOD`](README.md#ummod)
 [CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | TBD |
+[CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | FAIL | A lot still to implement.
 [DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD |
 [EXCEPTION](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/exceptiontest.fth) | TBD |
 [FACILITY](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/facilitytest.fth) | TBD |
@@ -158,6 +158,56 @@ Test | Status | Comments
 [SEARCH](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/searchordertest.fth) | TBD |
 [STRING](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/stringtest.fth) | TBD |
 [TOOLS](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/toolstest.fth) | TBD |
+
+[^petscii]: Some failures will occur because we are using PETSCII and not ASCII.  See [the section below](#petscii-vs-ascii-expected-failures) for details.
+
+## Failures to look at
+
+The cause of these failures has not yet been determined.
+
+From core plus:
+```
+INCORRECT RESULT: t[ 0 max-uint 0 ustep gd8 -> 256 ]t
+INCORRECT RESULT: t[ 0 0 max-uint -ustep gd8 -> 256 ]t
+INCORRECT RESULT: t[ 0 max-int min-int step gd8 -> 256 ]t
+INCORRECT RESULT: t [ 0 min-int max-int -step gd8 -> 256 ]t
+INCORRECT RESULT: t[ 0 0 0 ustep +uwrap? 256 gd9
+INCORRECT RESULT: t[ 0 -max-int negate -max-int over gd8 -2> 2 ]t
+INCORRECT RESULT: t[ 0 min-int 1+ 1 min-int gd8 -> 2 ]t
+``` 
+
+## `UM/MOD`
+
+```
+INCORRECT RESULT: t[ max-uint max-uint um* max-uint um/mod -> 0 max-uint ]t
+```
+
+## PETSCII vs ASCII (expected failures)
+
+Because we are using the PETSCII character set and not ASCII some tests will fail, including the following.
+
+From preliminaries:
+```
+error #47: testing [CHAR]
+```
+
+From core:
+```
+INCORRECT RESULT: t[ char X -> 58 ]t
+INCORRECT RESULT: t[ char HELLO -> 48 ]t
+INCORRECT RESULT: t[ gc1 -> 58 ]t
+INCORRECT RESULT: t[ gc2 -> 48 ]t
+INCORRECT RESULT: t[ gc3 -> 58 ]t
+INCORRECT RESULT: t[ gc4 drop dup c@ swap char+ c@ -> 58 59 ]t
+INCORRECT RESULT: t[ gp1 -> <true> ]t
+```
+
+From core plus:
+```
+INCORRECT RESULT: t[ 'z' -> 122 ]t
+INCORRECT RESULT: t[ 'z' -> 7a ]t
+```
+
 
 # CREDITS
 

@@ -1,4 +1,6 @@
 
+: \ 13 parse 2drop ; immediate ( TODO K-RETURN? )
+
 : buffer: ( u "<name>" -- ; -- addr ) create allot ;
 
 \ TODO c"

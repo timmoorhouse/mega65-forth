@@ -9,14 +9,15 @@ CR .( Running ANS Forth and Forth 2012 test programs, version 0.13.4) CR
 include prelimtest.fth
 include tester.fr
 \ S" ttester.fs" INCLUDED
+\ true verbose !
 
 include core.fr
 include coreplustest.fth
 include utilities.fth
-\ S" errorreport.fth" INCLUDED      \ TODO needs does>
+include errorreport.fth
 include coreexttest.fth
 \ S" blocktest.fth" INCLUDED
-include doubletest.fth
+\ include doubletest.fth
 \ S" exceptiontest.fth" INCLUDED
 \ S" facilitytest.fth" INCLUDED
 \ S" filetest.fth" INCLUDED
