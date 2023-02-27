@@ -197,7 +197,7 @@ W_ZBRANCH
         inx
         lda $fe,x
         ora $ff,x
-        beq W_BRANCH+2
+        beq BRANCH
 BUMP             ; used by (loop) and LEAVE  TODO MESSY !!!!!!!!!!!!!!
         inw <I
         inw <I
@@ -213,19 +213,18 @@ BUMP             ; used by (loop) and LEAVE  TODO MESSY !!!!!!!!!!!!!!
         +WORD "branch"
 W_BRANCH
         !word *+2
-BRANCH  ; used by (loop)  TODO MESSY !!!!!!!!
+BRANCH  ; used by (loop), 0branch  TODO MESSY !!!!!!!!
         ; ldy #0 ; TODO
         clc
         lda (<I),y
         adc <I
-        pha
+        taz
         iny
         lda (<I),y
         adc <I+1
         sta <I+1
-        pla
-        sta <I
-        jmp NEXT ; NEXT +2 ????????
+        stz <I
+        jmp NEXT
 
 ;
 ;    CLITERAL pushes the next inline byte to data stack
