@@ -18,7 +18,7 @@ include errorreport.fth
 include coreexttest.fth
 \ S" blocktest.fth" INCLUDED
 \ include doubletest.fth
-include exceptiontest.fth
+include exceptiontest.ft            \ note file name truncation
 \ S" facilitytest.fth" INCLUDED
 \ S" filetest.fth" INCLUDED
 \ S" localstest.fth" INCLUDED
@@ -38,7 +38,7 @@ include internalstest.f
 \ S" core.fr" INCLUDED
 \ S" coreplustest.fth" INCLUDED
 \ S" utilities.fth" INCLUDED
-\ \ S" errorreport.fth" INCLUDED      \ TODO needs does>
+\ \ S" errorreport.fth" INCLUDED
 \ S" coreexttest.fth" INCLUDED
 \ \ S" blocktest.fth" INCLUDED
 \ S" doubletest.fth" INCLUDED
