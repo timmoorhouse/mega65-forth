@@ -176,6 +176,18 @@ INCORRECT RESULT: t[ 0 min-int 1+ 1 min-int gd8 -> 2 ]t
 INCORRECT RESULT: t[ max-uint max-uint um* max-uint um/mod -> 0 max-uint ]t
 ```
 
+## `MARKER`
+
+`MARKER` has not yet been implemented.  This will cause the following errors.
+
+From core extensions:
+```
+WRONG NUMBER OF RESULTS: t[ ma1 ma2 ma1 -> 222 111 ]t
+INCORRECT RESULT: t[ ma? MA0 ma? MA1 ma? MA2 -> true true false ]t
+WRONG NUMBER OF RESULTS: t[ ma0 -> ]t
+INCORRECT RESULT: t[ ma? MA0 ma? MA1 ma? MA2 -> false false false ]t
+```
+
 ## PETSCII
 
 Because we are using the PETSCII character set and not ASCII some tests are expected to fail, including the following.

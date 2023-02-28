@@ -63,6 +63,7 @@
    then ; immediate
 
 \ TODO marker
+: marker create does> ;
 
 \ TODO From discussion in ANSI A.3.2.3.2:
 \     : OF 1+ >R POSTPONE OVER POSTPONE = POSTPONE IF POSTPONE DROP R> ; IMMEDIATE
