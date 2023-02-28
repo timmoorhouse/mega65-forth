@@ -30,7 +30,7 @@ T{ #-100 2- -> #-102 }T
 \ TODO out
 \ TODO rp!
 
-: rp1 >r >r >r >r rp@ @ rp@ cell+ @ 2r> 2r> 2drop 2drop ;
+: rp1 >r >r >r >r rp@ 1+ @ rp@ cell+ 1+ @ 2r> 2r> 2drop 2drop ;
 T{ 1234 5678 $abc $def rp1 -> 1234 5678 }T
 
 \ TODO s>number?

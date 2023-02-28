@@ -1958,6 +1958,8 @@ QUIT
 
 _quit_read_loop
 
+        +LITERAL &R0
+        !word W_AT
         !word W_RPSTORE
 
         !word W_REFILL

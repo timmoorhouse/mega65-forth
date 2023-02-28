@@ -178,6 +178,10 @@ DAREA              = SBUF - DAREA_LEN
 ; floating point stack is allowed to be on the data stack or separate
 ; (might want to look at using the math register area directly?)
 
+; TODO should we have X point to the byte below the type entry on the data stack 
+; (like how the hardware return stack pointer behaves)?  It might let us move the
+; data stack right up to the end of a page.  We'd need to adjust SP@.
+
 !macro STRING .text {
         !byte len(.text)
         !text .text
@@ -425,11 +429,8 @@ COLD
 WARM
 
         ; Save return stack pointer in R0
-        stx <XSAVE
-        tsx
-        stx <R0
-        ldx <XSAVE
-        tsy
+        jsr RPAT
+        sta <R0
         sty <R0+1
 
         ; Reposition data stack

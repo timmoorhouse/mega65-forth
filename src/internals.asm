@@ -462,42 +462,44 @@ W_OUT
 
 ; ****************************************************************************
 ; RP!
-; (--)      TODO (addr --)
-;      RP! (from FIG)
-;               A computer dependent procedure to initialise the return 
-;               stack pointer from user variable R0.
+; (addr --)
 
         +WORD "rp!"
-        +NONAME
 W_RPSTORE
         !word *+2
+        lda 0,x
+        ldy 1,x
         jsr _RPSTORE
         jmp NEXT
 
 RPSTORE
+        ; Restores return stack from R0
+        lda <R0
+        ldy <R0+1
         jsr _RPSTORE
         rts
 
 _RPSTORE
+        ; A - new SPL, Y - new SPH
         ; We need to save two levels of return pointer so the return from RPSTORE
         ; goes to the right place
-        pla
-        sta <TEMP1
-        pla
-        sta <TEMP1+1
-        pla
-        sta <TEMP2
-        pla
-        sta <TEMP2+1
+        plz
+        stz <TEMP1
+        plz
+        stz <TEMP1+1
+        plz
+        stz <TEMP2
+        plz
+        stz <TEMP2+1
         ; Now reset the SPH & SPL from R0
         stx <XSAVE      
-        lda <R0      
+        ; lda <R0      
         tax
         txs
-        lda <R0+1
-        tay
-        tys
         ldx <XSAVE
+        ; lda <R0+1
+        ; tay
+        tys
         ; And finally put the original return pointer onto the new stack
         lda <TEMP2+1
         pha
@@ -517,19 +519,28 @@ _RPSTORE
         +WORD "rp@"
 W_RPAT
         !word *+2
-        clc
+        jsr RPAT
+!if 0 {        
+        clc    ; TODO should we skip the +1 ????
+        adc #1 ; we want the value returned by rp@ to point to the top value on the return stack, not the byte below
+}        
+        pha
+        tya
+        jmp PUSH
+
+RPAT
+        ; Leaves SPH in Y and SPL in A (actually what was SPL at the time of the call to RPAT)
+        ; SP points to the location the next pushed byte will be copied to.  
+        ; The byte at the top of the stack is at (SP+1).
+        ; We want the value of SP at the time of the call to get_SP, so we need to add 2 to
+        ; account for the return address for the call to get_SP.
         stx <XSAVE
         tsx
         txa
         ldx <XSAVE
-        adc #1
-        pha
+        clc
+        adc #2
         tsy
-        tya
-        adc #0
-        jmp PUSH
-
-RPAT
         rts
 
         
