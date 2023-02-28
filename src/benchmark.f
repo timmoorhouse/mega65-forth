@@ -15,7 +15,7 @@
 
 : benchmark timer 2>r execute timer 2r> d- ;
 
-\ desktop         TBD
+\ desktop   4 468 645
 \ laptop    4 468 742
 \ MEGA65    5 644 686
 

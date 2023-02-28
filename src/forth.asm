@@ -211,6 +211,10 @@ DAREA              = SBUF - DAREA_LEN
 ;      |
 ;      +---------------
 
+; TODO add a bank field?  It might make sense to keep the wordlists in bank 0 but allow the
+; data fields to be in other banks.  We'd need to allow code fields to reference things in other
+; banks too (to support does>).
+
 ; FIG puts the name (and the associated length/flags) before the link, we put it after
 ; This makes it a bit tougher to get to the flags, but easier to get to the code field
 

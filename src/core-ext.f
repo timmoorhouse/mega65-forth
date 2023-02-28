@@ -1,5 +1,5 @@
 
-: \ 13 parse 2drop ; immediate ( k-return is not available yet )
+: \ ( "ccc<eol>" -- ) 13 parse 2drop ; immediate ( k-return is not available yet )
 
 \ The following words are implemented internally:                             
 \
@@ -17,7 +17,8 @@
 \ .R see core.f
 
 \ see also do in core.f
-: ?do postpone (?do) 0 , here ( 3 ) ; immediate
+: ?do ( C: -- do-sys ) ( n1|u1 n2|u2 -- ) ( R: loop-sys ) 
+  postpone (?do) 0 , here ( 3 ) ; immediate ( compile-only )
 
 : action-of ( "<spaces>name" -- )
    state @ if
@@ -31,18 +32,19 @@
 : buffer: ( u "<name>" -- ; -- addr ) create allot ;
 
 \ TODO c"
-: c" [char] " parse postpone (c") ( addr u ) dup c, swap over here swap ( u addr here u ) cmove allot ; immediate
+: c" ( "ccc<quote>" -- ) ( -- c-addr ) 
+  [char] " parse postpone (c") ( addr u ) dup c, swap over here swap cmove allot ; immediate ( compile-only )
 
-: case 0 ; immediate
+: case ( C: -- case-sys ) ( -- ) 0 ; immediate ( compile-only )
 
-: compile, , ;
+: compile, ( xt -- ) , ; ( compile-only )
 
 \ TODO From discussion in ANSI A.3.2.3.2:
 \     : ENDCASE POSTPONE DROP 0 ?DO POSTPONE THEN LOOP ; IMMEDIATE
-: endcase 
+: endcase ( C: case-sys1 of-sys -- case-sys2 ) ( -- )
     postpone drop
     ?dup if 0 do here over - swap ! loop then \ TODO ?do
-    ; immediate
+    ; immediate ( compile-only )
 
 \ TODO duplication with then
 \ TODO From discussion in ANSI A.3.2.3.2:
@@ -50,11 +52,11 @@
 : endof postpone branch here rot 1+ rot 0 , \ branch to endcase
   here over - swap ! ; immediate \ branch of chained condition checks
 
-: erase ( c-addr u ) 0 fill ;
+: erase ( addr u ) 0 fill ;
 
 : hex 16 base ! ;
 
-: holds ( addr u -- ) begin dup while 1- 2dup + c@ hold repeat 2drop ;
+: holds ( c-addr u -- ) begin dup while 1- 2dup + c@ hold repeat 2drop ;
 
 : is ( xt "<spaces>name" -- )
    state @ if
@@ -64,17 +66,18 @@
    then ; immediate
 
 \ TODO marker
-: marker create does> ;
+: marker ( "<spaces>name" -- ) ( -- ) create does> ;
 
 \ TODO From discussion in ANSI A.3.2.3.2:
 \     : OF 1+ >R POSTPONE OVER POSTPONE = POSTPONE IF POSTPONE DROP R> ; IMMEDIATE
-: of postpone over postpone = postpone 0branch here 0 , 
+: of ( C: -- of-sys ) ( x1 x1 -- | x1 ) postpone over postpone = postpone 0branch here 0 , 
     postpone drop ; immediate
 
 \ PAD see core.f
 
 \ TODO s\"
-: s\" postpone s" ; immediate
+\ see http://www.forth200x.org/escaped-strings.html
+: s\" ( "ccc<quote>" -- ) ( -- c-addr u ) postpone s" ; immediate
 
 : to ( x "<spaces>name" -- ) 
   state @ if
@@ -83,12 +86,12 @@
     ' >body ! 
   then ; immediate
 
-: tuck swap over ;
+: tuck ( x1 x2 -- x2 x1 x2 ) swap over ;
 
 \ U.R see core.f
 
-: u> swap u< ;
+: u> ( u1 u2 -- flag ) swap u< ;
 
-: within ( test low high -- flag ) over - >r - r> u< ;
+: within ( n1|u1 n2|u2 n3|u3 -- flag ) over - >r - r> u< ;
 
 .( ... end of core-ext.f ) cr

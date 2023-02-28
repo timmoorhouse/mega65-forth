@@ -30,15 +30,15 @@ T{ #-100 2- -> #-102 }T
 \ TODO out
 \ TODO rp!
 
-\ : rp1 >r >r >r >r rp@ @ rp@ cell+ @ 2r> 2r> 2drop 2drop ;
-\ T{ 1234 5678 $abc $def rp1 -> 1234 5678 }T
+: rp1 >r >r >r >r rp@ @ rp@ cell+ @ 2r> 2r> 2drop 2drop ;
+T{ 1234 5678 $abc $def rp1 -> 1234 5678 }T
 
 \ TODO s>number?
 
-\ T{ 1 2 3 sp@ @ -> 1 2 3 3 }T
-\ T{ 1 2 3 sp@ cell+ @ -> 1 2 3 2 }T
+T{ 1 2 3 sp@ @ -> 1 2 3 3 }T
+T{ 1 2 3 sp@ cell+ @ -> 1 2 3 2 }T
 
-\ T{ 1 2 3 sp@ 4 5 rot sp! -> 1 2 3 }T
+T{ 1 2 3 sp@ 4 5 rot sp! -> 1 2 3 }T
 
 \ TODO !csp
 \ TODO ?csp

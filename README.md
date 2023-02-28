@@ -32,6 +32,8 @@ An attempt will be made to:
 
 I haven't looked at geoForth yet, but intend to at some point.  Making some sort of equivalent for the MEGA65 GEOS might be interesting, and give me an excuse to dig into GEOS a bit.  No promises here though.
 
+Eventually, I want to sort out how to take advantage of more than 64K without breaking compliance with the Forth 2012 specification.
+
 # BUILDING
 
 ## Requirements
@@ -169,6 +171,11 @@ INCORRECT RESULT: t[ 0 0 0 ustep +uwrap? 256 gd9
 INCORRECT RESULT: t[ 0 -max-int negate -max-int over gd8 -2> 2 ]t
 INCORRECT RESULT: t[ 0 min-int 1+ 1 min-int gd8 -> 2 ]t
 ``` 
+
+From core extension:
+```
+INCORRECT RESULT: t[ pad chars/pad 0 checkpad -> true ]t
+```
 
 ## `MARKER`
 

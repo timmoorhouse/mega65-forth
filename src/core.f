@@ -6,16 +6,17 @@
 : [char] postpone char postpone literal ; immediate
 
 : ( [char] ) parse 2drop ; immediate
+( "ccc<paren>" -- )
 ( TODO allow multiline comments when parsing from a file )
 
 ( TODO - move to top )
-( : postpone parse-name find-name ?dup if \ TODO error if not found )
+( : postpone parse-name find-name ?dup if \ TODO error if not found ) ( "<spaces>name" -- )
 (     dup ?immediate if )
 (       name>interpret , )
 (     else )
 (       name>interpret ...... )
 (     then )
-(   then ; )
+(   then ; ) ( compile-only )
 
 : .( ( "ccc<paren>" -- ) 
   [char] ) parse type ; immediate ( CORE-EXT )
@@ -56,41 +57,41 @@
 
 ( Marks the origin of a conditional forward branch )
 : if ( C: -- orig ) ( x -- )
-  ( ?comp ) postpone 0branch here 0 , ( 2 ) ; immediate
+  ( ?comp ) postpone 0branch here 0 , ( 2 ) ; immediate ( compile-only )
 
-( Resolves an IF or AHEAD )
+( Resolves a forward branch, from IF or AHEAD )
 : then ( C: orig -- ) ( -- )
-  ( ?comp 2 ?pairs ) here over - swap ! ; immediate
+  ( ?comp 2 ?pairs ) here over - swap ! ; immediate ( compile-only )
 
-: else ( C: orig_1 -- orig_2 ) ( -- )
-  ( ?comp 2 ?pairs ) postpone ahead swap ( 2 ) postpone then ( 2 ) ; immediate
+: else ( C: orig1 -- orig2 ) ( -- )
+  ( ?comp 2 ?pairs ) postpone ahead swap ( 2 ) postpone then ( 2 ) ; immediate ( compile-only )
 
 ( Marks the destination of a backwards branch )
 : begin ( C: -- dest ) ( -- ) 
   ( ?comp ) here ( 1 ) ; immediate
 
-( Resolves a BEGIN with an unconditional backwards branch )
+( Resolves an unconditional backwards branch to BEGIN )
 : again ( C: dest -- ) ( -- )
-  ( ?comp 1 ?pairs ) postpone branch back ; immediate ( TODO CORE-EXT )
+  ( ?comp 1 ?pairs ) postpone branch back ; immediate ( compile-only ) ( TODO CORE-EXT )
 
-( Resolves a BEGIN with a conditional backwards branch )
+( Resolves a conditional backwards branch to BEGIN )
 : until ( C: dest -- ) ( x -- ) 
-  ( ?comp 1 ?pairs ) postpone 0branch back ; immediate
+  ( ?comp 1 ?pairs ) postpone 0branch back ; immediate ( compile-only )
 
 : while ( C: dest -- orig dest ) ( x -- )
-  postpone if swap ; immediate
+  postpone if swap ; immediate ( compile-only )
 
-: repeat 
+: repeat ( C: orig dest -- ) ( -- )
   postpone again postpone then ; immediate
 
-: do 
+: do ( C: -- do-sys ) ( n1|u2 n2|u2 -- ) ( R: -- loop-sys )
   postpone (do) 0 , here ( 3 ) ; immediate
 
-: loop 
-  ( 3 ?pairs ) postpone (loop) dup 2 - here 2 + swap ! back ; immediate
+: loop ( C: do-sys -- ) ( -- ) ( R: loop-sys1 -- | loop-sys2 )
+  ( 3 ?pairs ) postpone (loop) dup 2 - here 2 + swap ! back ; immediate ( compile-only )
 
-: +loop 
-  ( 3 ?pairs ) postpone (+loop) dup 2 - here 2 + swap ! back ; immediate
+: +loop ( C: do-sys -- )
+  ( 3 ?pairs ) postpone (+loop) dup 2 - here 2 + swap ! back ; immediate ( compile-only )
 
 ( *************************************************************************** )
 ( * more internal helper words                                              * )
@@ -106,34 +107,34 @@ variable hld ( TODO can we remove this? )
 
 : ' ( "<spaces>name" -- xt ) parse-name find-name name>interpret ;
 
-: 2! swap over ! 2+ ! ;
+: 2! ( x1 x2 a-addr -- ) swap over ! 2+ ! ;
 
-: 2@ dup 2+ @ swap @ ;
+: 2@ ( a-addr -- x1 x2 ) dup 2+ @ swap @ ;
 
 ( TODO )
-( : abort" ; )
+( : abort" ; ) ( "ccc<quote>" -- ) ( compile-only )
 
-: > swap < ;
+: > ( n1 n2 -- flag ) swap < ;
 
 : >body ( xt -- a-addr ) 2+ ;
 
-: abs dup +- ;
+: abs ( n -- u ) dup +- ;
 ( : abs dup 0< if negate then ; )
 
-: c, here c! 1 allot ;
+: c, ( char -- ) here c! 1 allot ;
 
-: cell+ ( a-addr_1 -- a-addr_2 ) 2+ ;
+: cell+ ( a-addr1 -- a-addr2 ) 2+ ;
 
 : cells ( n_1 -- n_2 ) 2* ;
 
-: char+ ( c-addr_1 -- c-addr_2 ) 1+ ;
+: char+ ( c-addr1 -- c-addr2 ) 1+ ;
 
-: chars ( n_1 -- n_2 ) ;
+: chars ( n1 -- n2 ) ;
 
 : dabs dup 0< if dnegate then ; ( DOUBLE )
 
 ( TODO might be simpler to do this one in assembler )
-: environment? 2drop false ;
+: environment? ( c-addr u -- false | i*x true ) 2drop false ;
 ( TODO /COUNTED-STRING )
 ( TODO /HOLD )
 ( TODO /PAD )
@@ -147,26 +148,26 @@ variable hld ( TODO can we remove this? )
 ( TODO RETURN-STACK-CELLS )
 ( TODO STACK-CELLS )
 
-: find dup count forth-wordlist search-wordlist dup if rot drop then ;
+: find ( c-addr -- c-addr 0 | xt 1 | xt -1 ) dup count forth-wordlist search-wordlist dup if rot drop then ;
 
-: m* 2dup xor >r abs swap abs um* r> 0< if dnegate then ;
+: m* ( n1 n2 -- d ) 2dup xor >r abs swap abs um* r> 0< if dnegate then ;
 
-: max ( n_1 n_2 -- n_3 ) 2dup < if swap then drop ;
+: max ( n1 n2 -- n3 ) 2dup < if swap then drop ;
 
 ( TODO cmove is in STRING but move is in CORE - make move the native one )
-: move ( src dst len -- ) >r 2dup < r> swap if cmove> else cmove then ;
+: move ( addr1 addr2 u -- ) >r 2dup < r> swap if cmove> else cmove then ;
 
 ( TODO remove the 68 + once we change hold? )
-: pad here 68 + ; ( CORE-EXT ) 
+: pad ( -- c-addr ) here 68 + ; ( CORE-EXT ) 
 
-: recurse latestxt , ; immediate
+: recurse ( -- ) latestxt , ; immediate
 
 ( TODO use sliteral! )
 ( TODO alignment after string? )
 ( TODO s" broken when interpreting )
-: s" [char] " parse postpone (s") dup c, swap over here swap cmove allot ; immediate
+: s" ( "ccc<quote>" -- ) ( -- c-addr u ) [char] " parse postpone (s") dup c, swap over here swap cmove allot ; immediate
 
-: ." postpone s" postpone type ; immediate
+: ." ( "ccc<quote>" -- ) postpone s" postpone type ; immediate ( compile-only )
 
 : s>d dup 0< ;
 
@@ -174,11 +175,11 @@ variable hld ( TODO can we remove this? )
 
 : spaces ( n -- ) 0 max ?dup if 0 do space loop then ; ( TODO use ?do )
 
-: * 2dup 2>r abs swap abs um* drop r> +- r> +- ; ( TODO SLOW )
+: * ( n1|u1 n2|u2 -- n3|u3 ) 2dup 2>r abs swap abs um* drop r> +- r> +- ; ( TODO SLOW )
 
-: sm/rem over >r >r dabs r@ abs um/mod r> r@ xor +- swap r> +- swap ; ( TODO )
+: sm/rem ( d1 n1 -- n2 n3 ) over >r >r dabs r@ abs um/mod r> r@ xor +- swap r> +- swap ; ( TODO )
 
-: fm/mod ( d n -- rem quot )
+: fm/mod ( d1 n1 -- n2 n3 )
   dup >r sm/rem
   ( if the remainder is not zero and has a different sign than the divisor )
   over dup 0<> swap 0< r@ 0< xor and if
@@ -192,15 +193,15 @@ variable hld ( TODO can we remove this? )
 ( : */mod >r m* r> fm/mod ; )
 
 ( For symmetric )
-: /mod >r s>d r> sm/rem ; ( TODO )
+: /mod ( n1 n2 -- n3 n4 ) >r s>d r> sm/rem ; ( TODO )
 
-: */mod >r m* r> sm/rem ; ( TODO )
+: */mod ( n1 n2 n3 -- n4 n5 ) >r m* r> sm/rem ; ( TODO )
 
-: / /mod nip ; ( TODO - depends on nip from CORE-EXT )
+: / ( n1 n2 -- n3 ) /mod nip ; ( TODO - depends on nip from CORE-EXT )
 
-: mod /mod drop ; ( TODO )
+: mod ( n1 n2 -- n3 ) /mod drop ; ( TODO )
 
-: */ */mod nip ; ( TODO - depends on nip from CORE-EXT )
+: */ ( n1 n2 n3 -- n4 ) */mod nip ; ( TODO - depends on nip from CORE-EXT )
 
 : hold ( char -- ) -1 hld +! hld @ c! ; ( hmm ... this goes backwards.  OK with the gap, but might want to change this )
 
@@ -218,16 +219,16 @@ variable hld ( TODO can we remove this? )
 
 : d. 0 d.r space ; ( DOUBLE )
 
-: .r >r s>d r> d.r ; ( CORE-EXT )
+: .r ( n1 n2 -- ) >r s>d r> d.r ; ( CORE-EXT )
 
 : u.r ( u n -- ) >r 0 <# #s #> r> over - spaces type ; ( CORE-EXT )
 
-: u. 0 u.r space ;
+: u. ( u -- ) 0 u.r space ;
 
-: . s>d d. ;
+: . ( n -- ) s>d d. ;
 
-: word (parse-name) dup pad c! pad 1+ swap cmove pad ;
+: word ( char "<chars>ccc<char>" -- c-addr ) (parse-name) dup pad c! pad 1+ swap cmove pad ;
 
-: ['] ' postpone literal ; immediate
+: ['] ( "<spaces>name" -- ) ( -- xt ) ' postpone literal ; immediate ( compile-only )
 
 .( ... end of core.f ) cr

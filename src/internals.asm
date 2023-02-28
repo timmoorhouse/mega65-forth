@@ -466,8 +466,8 @@ W_OUT
 ;      RP! (from FIG)
 ;               A computer dependent procedure to initialise the return 
 ;               stack pointer from user variable R0.
-;        +WORD "rp!"
 
+        +WORD "rp!"
         +NONAME
 W_RPSTORE
         !word *+2
@@ -528,10 +528,14 @@ W_RPAT
         tya
         adc #0
         jmp PUSH
-        
-; TODO some sort of RPICK (like PICK but for the return stack) for J, I, LEAVE, PLOOP, PPLOOP
 
-; TODO gforth also has fp@, rp@, etc
+RPAT
+        rts
+
+        
+; TODO use RP@ for J, I, LEAVE, PLOOP, PPLOOP, etc?
+
+; TODO gforth also has fp@, etc
 
 ; ****************************************************************************
 ; S>NUMBER?
