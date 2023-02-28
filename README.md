@@ -20,9 +20,8 @@ This is still in the early stages of developement:
 - The [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) test case runs mostly clean.  There's one minor problem caused by a PETSCII vs ASCII difference.
 
 The next priorities are:
-- Getting the [core](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) test results cleaned up.  This is coming along nicely but there are still a number of things in CORE to implement and some known bugs.
-- As more and more of the implementation moves to Forth, getting a functional `SEE` would be very helpful.  Even if it's just a hex dump at first, getting something in place might soon be a priority.
-- Now that `DEFER` is implemented, we might be able to move many parts of the outer interpreter from assembler to Forth.
+- Being able to run the complete [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth), [core](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr), [core plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) and [core extension](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) tests unmodified, and cleaning up the results from them.  This is coming along nicely but there are still a number of things to implement and some known bugs.
+- Move more of the implementation from assembler to Forth.  As this happens, getting a functional `SEE` is becoming more and more important (even if it's just a hex dump at first).
 
 My apologies if this isn't the greatest Forth implementation.  I don't really have much experience with Forth.  I'm doing this because I've always been intrigued by Forth, and with a new MEGA65 sitting on the dining room table, it seemed the perfect project to learn about Forth, shake decades of dust off my 6502 programming skills, and learn about some of the MEGA65-specific features.
 
@@ -60,41 +59,39 @@ that the build process will get more involved:
 
 These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
 - CORE
-  - [ ] `UM/MOD` [gets things wrong](#ummod) for large inputs
-  - [ ] Handle `RESTORE-INPUT` failures
-  - [ ] Need to reimplement the multiplication/division operations using the math unit
-  - [ ] We should be able to get rid of the hidden flag pretty easily by changing when we link new words into the dictionary
+  - [ ] `UM/MOD` [gets things wrong](#ummod) for large inputs.
+  - [ ] Need to reimplement the multiplication/division operations using the math unit.
+  - [ ] We should be able to get rid of the hidden flag by changing when we link new words into the dictionary.
 - CORE-EXT
 - DOUBLE
-  - [ ] Need to support double literals (eg `123.`)
+  - [ ] Need to support double literals (eg `123.`).
 - FILE
-  - [ ] `S"` is incorrect when interpreting
-  - [ ] Need two separate transient areas for `S"` and `S\"` and implement their interpretation semantics
-  - [ ] Handle file access modes
-  - [ ] Fix I/O status handling (when is status from READSS reset?)
-  - [ ] Fix handling of I/O error cases
+  - [ ] `S"` is incorrect when interpreting.
+  - [ ] Need two separate transient areas for `S"` and `S\"` and implement their interpretation semantics.
+  - [ ] Handle file access modes.
+  - [ ] Fix I/O status handling (when is status from READSS reset?).
+  - [ ] Fix handling of I/O error cases.
 - SEARCH
 - Bootstrapping with portions of the dictionary written in Forth
-  - [ ] A "skeletal" configuration with just the builtins
-  - [ ] A "minimal" configuration
-  - [ ] A "complete" configuration
-  - [ ] Move things we can from assembler to Forth
+  - [ ] A "skeletal" configuration with just the builtins.
+  - [ ] A "minimal" configuration.
+  - [ ] A "complete" configuration.
+  - [ ] Move things we can from assembler to Forth.
 - Error checking
-  - [ ] Data stack overflow/underflow
-  - [ ] Return stack overflow/underflow
-  - [ ] `ALLOT` overflow/underflow
-  - [ ] Mismatched control structures
+  - [ ] Data stack overflow/underflow.
+  - [ ] Return stack overflow/underflow.
+  - [ ] `ALLOT` overflow/underflow.
+  - [ ] Mismatched control structures.
 - Making `SAVESYSTEM` output deterministic? (it might not make sense to do this)
   - [ ] Move basepage to top of memory?
   - [ ] What to do about DMA lists?
 - Tests
   - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
-  - [ ] Some reasonable way of capturing test results 
-    - It might make sense to have a way to redirect `EMIT` to a file (this would need to persist across an `ABORT` though, so may need a compilation option)   gforth makes `EMIT` a deferred, which might be the cleanest option (once we support `DEFER`).
+  - [ ] Some reasonable way of capturing test results. 
+    - It might make sense to have a way to redirect `EMIT` to a file.  gforth makes `EMIT` a deferred, which might be the cleanest option.
 - Benchmarks
   - [ ] Compiling the dictionary?
   - [ ] Something without I/O?
-  - [ ] A naive fibonnaci might be nice for inner interpreter performance
 
 There'll be lots more to do after that.
 
@@ -102,7 +99,7 @@ There'll be lots more to do after that.
 
 Note that some of these are implemented in Forth and the bootstrap process is not yet automated.
 
-Wordset | Implemented | Not (Yet?) Implemented
+Word Set | Implemented | Not (Yet?) Implemented
 -- | -- | --
 BLOCK | | [`BLK`](https://forth-standard.org/standard/block/BLK) [`BLOCK`](https://forth-standard.org/standard/block/BLOCK) [`BUFFER`](https://forth-standard.org/standard/block/BUFFER) [`FLUSH`](https://forth-standard.org/standard/block/FLUSH) [`LOAD`](https://forth-standard.org/standard/block/LOAD) [`SAVE-BUFFERS`](https://forth-standard.org/standard/block/SAVE-BUFFERS) [`UPDATE`](https://forth-standard.org/standard/block/UPDATE)
 BLOCK-EXT | | [`EMPTY-BUFFERS`](https://forth-standard.org/standard/block/EMPTY-BUFFERS) [`LIST`](https://forth-standard.org/standard/block/LIST) [`SCR`](https://forth-standard.org/standard/block/SCR) [`THRU`](https://forth-standard.org/standard/block/THRU)
@@ -145,7 +142,7 @@ Test | Status | Comments
 [BLOCK](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/blocktest.fth) | TBD | Too early to attempt
 [CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | **FAIL** | Some [problems](#ummod) with `UM/MOD`
 [CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | **FAIL**[^petscii] | A few failures
-[CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | **FAIL** | Getting closer - a fair bit still to implement (`MARKER` in particular).
+[CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | **FAIL** | Getting closer - a fair bit still to implement (`MARKER` in particular).  Can't yet attempt the full test.
 [DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD | Too early to attempt
 [EXCEPTION](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/exceptiontest.fth) | TBD | Too early to attempt
 [FACILITY](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/facilitytest.fth) | TBD | Too early to attempt

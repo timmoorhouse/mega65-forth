@@ -54,6 +54,7 @@ SIMPLE_DOTS
 }
 
 ; Dump return stack
+; TODO can be done in forth using rp@
 !if DEBUG {
         +NONAME
 W_RDUMP
@@ -106,5 +107,3 @@ RDUMP
         ldx <XSAVE
         rts
 }
-
-

@@ -7,7 +7,7 @@
 ;
 
 ; TODO things marked 'common usage' in Forth Programmer's Handbook:
-; .'
+; .'                    might want this, but could be tricky
 ; BEGIN (assembler)
 ; c+!                   skip?
 ; CURRENT               skip? also in gforth - should be fine with just get-current/set-current though?
@@ -25,8 +25,8 @@
 ; NEXT
 ; NOT
 ; NOT (assembler)
-; T*                    triple precision, for m*/
-; T/                    triple precision, for m*/
+; T*                    triple precision, for m*/ - might want this
+; T/                    triple precision, for m*/ - might want this
 ; THEN (assembler)
 ; UNTIL (assembler)
 ; VOCABULARY <name>
