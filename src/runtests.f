@@ -89,7 +89,7 @@ T{ 1234 5678 $abc $def rp1 -> 1234 5678 }T
 T{ 1 2 3 sp@ @ -> 1 2 3 3 }T
 T{ 1 2 3 sp@ cell+ @ -> 1 2 3 2 }T
 
-\ T{ 1 2 3 sp@ >r 4 5 6 r> sp! -> 1 2 3 }T
+T{ 1 2 3 sp@ 4 5 rot sp! -> 1 2 3 }T
 
 \ TODO !csp
 \ TODO ?csp

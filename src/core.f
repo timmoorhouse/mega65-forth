@@ -17,7 +17,8 @@
 (     then )
 (   then ; )
 
-: .( [char] ) parse type ; immediate ( CORE-EXT )
+: .( ( "ccc<paren>" -- ) 
+  [char] ) parse type ; immediate ( CORE-EXT )
 
 .( Starting bootstrap... ) cr
 
@@ -34,7 +35,9 @@
 ( * internal helper words                                                   * )
 ( *************************************************************************** )
 
-: back ( ?comp ) here - , ; ( Resolve backward branch ) ( TODO REMOVE? )
+( Resolve backward branch ) 
+: back ( -- )  
+  ( ?comp ) here - , ; ( TODO REMOVE? )
 
 ( *************************************************************************** )
 ( * control flow                                                            * )
@@ -48,34 +51,46 @@
 ( TODO use CS-PICK/CS-ROLL )
 
 ( Marks the origin of an unconditional forward branch )
-: ahead ( ?comp ) postpone branch here 0 , ( 2 ) ; immediate ( TOOLS-EXT )
+: ahead ( C: -- orig ) ( -- ) 
+  ( ?comp ) postpone branch here 0 , ( 2 ) ; immediate ( TOOLS-EXT )
 
 ( Marks the origin of a conditional forward branch )
-: if ( ?comp ) postpone 0branch here 0 , ( 2 ) ; immediate
+: if ( C: -- orig ) ( x -- )
+  ( ?comp ) postpone 0branch here 0 , ( 2 ) ; immediate
 
 ( Resolves an IF or AHEAD )
-: then ( ?comp 2 ?pairs ) here over - swap ! ; immediate
+: then ( C: orig -- ) ( -- )
+  ( ?comp 2 ?pairs ) here over - swap ! ; immediate
 
-: else ( ?comp 2 ?pairs ) postpone ahead swap ( 2 ) postpone then ( 2 ) ; immediate
+: else ( C: orig_1 -- orig_2 ) ( -- )
+  ( ?comp 2 ?pairs ) postpone ahead swap ( 2 ) postpone then ( 2 ) ; immediate
 
 ( Marks the destination of a backwards branch )
-: begin ( ?comp ) here ( 1 ) ; immediate
+: begin ( C: -- dest ) ( -- ) 
+  ( ?comp ) here ( 1 ) ; immediate
 
 ( Resolves a BEGIN with an unconditional backwards branch )
-: again ( ?comp 1 ?pairs ) postpone branch back ; immediate ( TODO CORE-EXT )
+: again ( C: dest -- ) ( -- )
+  ( ?comp 1 ?pairs ) postpone branch back ; immediate ( TODO CORE-EXT )
 
 ( Resolves a BEGIN with a conditional backwards branch )
-: until ( ?comp 1 ?pairs ) postpone 0branch back ; immediate
+: until ( C: dest -- ) ( x -- ) 
+  ( ?comp 1 ?pairs ) postpone 0branch back ; immediate
 
-: while postpone if swap ; immediate
+: while ( C: dest -- orig dest ) ( x -- )
+  postpone if swap ; immediate
 
-: repeat postpone again postpone then ; immediate
+: repeat 
+  postpone again postpone then ; immediate
 
-: do postpone (do) 0 , here ( 3 ) ; immediate
+: do 
+  postpone (do) 0 , here ( 3 ) ; immediate
 
-: loop ( 3 ?pairs ) postpone (loop) dup 2 - here 2 + swap ! back ; immediate
+: loop 
+  ( 3 ?pairs ) postpone (loop) dup 2 - here 2 + swap ! back ; immediate
 
-: +loop ( 3 ?pairs ) postpone (+loop) dup 2 - here 2 + swap ! back ; immediate
+: +loop 
+  ( 3 ?pairs ) postpone (+loop) dup 2 - here 2 + swap ! back ; immediate
 
 ( *************************************************************************** )
 ( * more internal helper words                                              * )
@@ -141,7 +156,8 @@ variable hld ( TODO can we remove this? )
 ( TODO cmove is in STRING but move is in CORE - make move the native one )
 : move ( src dst len -- ) >r 2dup < r> swap if cmove> else cmove then ;
 
-: pad here 68 + ; ( CORE-EXT ) ( TODO remove the 68 + once we change hold? )
+( TODO remove the 68 + once we change hold? )
+: pad here 68 + ; ( CORE-EXT ) 
 
 : recurse latestxt , ; immediate
 
@@ -149,6 +165,7 @@ variable hld ( TODO can we remove this? )
 ( TODO alignment after string? )
 ( TODO s" broken when interpreting )
 : s" [char] " parse postpone (s") dup c, swap over here swap cmove allot ; immediate
+
 : ." postpone s" postpone type ; immediate
 
 : s>d dup 0< ;
@@ -176,23 +193,37 @@ variable hld ( TODO can we remove this? )
 
 ( For symmetric )
 : /mod >r s>d r> sm/rem ; ( TODO )
+
 : */mod >r m* r> sm/rem ; ( TODO )
 
 : / /mod nip ; ( TODO - depends on nip from CORE-EXT )
+
 : mod /mod drop ; ( TODO )
+
 : */ */mod nip ; ( TODO - depends on nip from CORE-EXT )
 
 : hold ( char -- ) -1 hld +! hld @ c! ; ( hmm ... this goes backwards.  OK with the gap, but might want to change this )
+
 : <# ( -- ) pad hld ! ;
+
 : #> ( xd -- c-addr u ) 2drop hld @ pad over - ;
+
 : # ( ud1 -- ud2 ) base @ m/mod rot 9 over < if 7 + then '0' + hold ; ( TODO 7 is the gap between '9' and 'A' )
+
 : sign ( n -- ) 0< if '-' hold then ;
+
 : #s ( ud1 -- ud2 ) begin # 2dup or 0= until ; ( TODO d0= instead of 2dup or 0= )
+
 : d.r ( d n -- ) >r swap over dabs <# #s rot sign #> r> over - spaces type ; ( DOUBLE )
+
 : d. 0 d.r space ; ( DOUBLE )
+
 : .r >r s>d r> d.r ; ( CORE-EXT )
+
 : u.r ( u n -- ) >r 0 <# #s #> r> over - spaces type ; ( CORE-EXT )
+
 : u. 0 u.r space ;
+
 : . s>d d. ;
 
 : word (parse-name) dup pad c! pad 1+ swap cmove pad ;
