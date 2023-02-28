@@ -14,7 +14,7 @@
 
 
 \ desktop         TBD
-\ laptop    4 483 749
+\ laptop    4 468 742
 \ MEGA65    5 644 686
 
 : bm1 25 ['] fib benchmark . cr ;

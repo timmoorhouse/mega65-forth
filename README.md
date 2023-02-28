@@ -14,7 +14,7 @@ Note that we have actually switched to font A (the ASCII font).  The `\` word sh
 
 This is still in the early stages of developement:
 
-- The interpreter is working well enough to support development.  It needs better error handling, etc.
+- The interpreter is working well enough to support development.  It needs better error handling, etc.  I'm hoping to get exceptions going before putting in much error handling.
 - File input is mostly functional but slow.  Improving I/O speed likely won't be a priority until I can get more of the test suite passing and automated.
 - Words can be defined (`:`, `;`, `CREATE`, `VARIABLE`, `CONSTANT`, etc are functional).  Many of the basic control structures are working (`IF`/`ELSE`/`THEN`, `BEGIN`/`AGAIN`, etc). Check the status table below.
 - The [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) test case runs mostly clean.  There's one minor problem caused by a PETSCII vs ASCII difference.

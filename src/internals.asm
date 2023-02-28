@@ -258,6 +258,82 @@ _inc_I_PUSH
         jmp PUSH
 
 ; ****************************************************************************
+
+; TODO
+; See https://forth-standard.org/proposals/find-name#contribution-58
+; (this is pretty much the proposed FIND-NAME, FIND-NAME-IN)
+
+; Like SEARCH-WORDLIST but returns 0|nt
+
+        +WORD "find-name"
+W_FIND_NAME     ; ( c-addr u -- 0 | nt )
+        !word DO_COLON
+        !word W_FORTH_WORDLIST ; TODO
+        !word W_FIND_NAME_IN
+        !word W_PSEMI
+
+        +WORD "find-name-in"
+W_FIND_NAME_IN  ; (c-addr u wid -- 0 | nt)
+        !word DO_COLON
+
+!if CASE_INSENSITIVE {
+        !word W_TOR
+        !word W_2DUP
+        !word W_LOWER
+        !word W_RFROM
+}
+
+        ; this zero is the default return value
+
+        !word W_ZERO
+        !word W_SWAP
+
+        ; (c-addr u 0 wid)
+
+        +LITERAL W_PSEARCH_WORDLIST
+        !word W_SWAP
+
+        ; (c-addr u 0 xt wid)
+
+        !word W_TRAVERSE_WORDLIST
+        ; (c-addr u 0)  if not found
+        ; (c-addr u nt) if found
+
+        !word W_NIP
+        !word W_NIP
+        !word W_PSEMI
+
+; Search wordlist and return name token of a match
+; Caller must place (c-addr u 0) on stack before TRAVERSE-WORDLIST, cleanup after
+        +NONAME
+W_PSEARCH_WORDLIST
+        !word DO_COLON
+        ; (c-addr u 0 nt -- c-addr u 0 true)   if not found
+        ; (c-addr u 0 nt -- c-addr u nt false) if found
+
+        !word W_TOR     ; (c-addr u 0) (R: nt)
+        !word W_DROP    ; (c-addr u) (R: nt)
+        !word W_2DUP
+        !word W_RAT     ; (c-addr u c-addr u nt) (R: nt)
+
+        !word W_NAME_TO_STRING
+        !word W_COMPARE ; (c-addr u flag) (R: nt)
+
+        +ZBRANCH +
+
+        ; not found
+        !word W_RFROM,W_DROP
+        !word W_ZERO
+        !word W_TRUE
+        !word W_PSEMI
+
++
+        ; found
+        !word W_RFROM
+        !word W_FALSE
+        !word W_PSEMI
+
+; ****************************************************************************
 ; ?HIDDEN
 ; (nt -- flag)
 
@@ -656,17 +732,15 @@ W_SMUDGE
         !word W_PSEMI
 
 ; ****************************************************************************
-;      SP! (from FIG)
-;               A computer dependent procedure to initialise the stack 
-;               pointer from S0.
-;        +WORD "sp!"
+; SP!
+; (addr --)
 
-        +NONAME
+        +WORD "sp!"
 W_SPSTORE
         !word *+2
 SPSTORE
-        lda <S0         ; load data stack pointer (X reg) from
-        tax             ; silent user variable S0.
+        lda 0,x
+        tax
         jmp NEXT
 
 ; ****************************************************************************

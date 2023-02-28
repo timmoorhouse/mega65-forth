@@ -18,7 +18,7 @@ include errorreport.fth
 include coreexttest.fth
 \ S" blocktest.fth" INCLUDED
 \ include doubletest.fth
-\ S" exceptiontest.fth" INCLUDED
+\ include exceptiontest.fth
 \ S" facilitytest.fth" INCLUDED
 \ S" filetest.fth" INCLUDED
 \ S" localstest.fth" INCLUDED
@@ -85,10 +85,11 @@ T{ #-100 2- -> #-102 }T
 T{ 1234 5678 $abc $def rp1 -> 1234 5678 }T
 
 \ TODO s>number?
-\ TODO sp!
 
 T{ 1 2 3 sp@ @ -> 1 2 3 3 }T
 T{ 1 2 3 sp@ cell+ @ -> 1 2 3 2 }T
+
+\ T{ 1 2 3 sp@ >r 4 5 6 r> sp! -> 1 2 3 }T
 
 \ TODO !csp
 \ TODO ?csp

@@ -767,6 +767,8 @@ W_AT
         +WORD "abort"
 W_ABORT
         !word DO_COLON
+        +LITERAL &S0
+        !word W_AT
         !word W_SPSTORE
         !word W_DECIMAL
 ;          !word FORTH ; from search-ext
@@ -822,11 +824,6 @@ _accept_loop
         !word W_KEY
 
         ; (index key)
-
-!if 0 {
-        !word W_SPACE,W_DUP,W_DOT,W_SPACE
-        !word W_DOTS,W_CR
-}
 
 !if 0 { ; don't need any of this if using BASIN (line buffered)...
 
@@ -941,8 +938,8 @@ W_ALIGN
 W_ALIGNED
         !word *+2
         lda 0,x
-        and #1
-        beq +
+        ror
+        bcc +
         inc 0,x
         bne +
         inc 1,x
@@ -1520,7 +1517,7 @@ _pevaluate_error
         +CLITERAL COLOUR_ERROR
         !word W_FOREGROUND
 }
-        !word W_SPACE
+        !word W_BL,W_EMIT
         !word W_2RAT
         !word W_TYPE
         +DOTQ "? "
@@ -1602,16 +1599,11 @@ W_EXIT
         +WORD "fill"
 W_FILL
         !word *+2
-!if 1 {
-        ; TODO dma fills of length 0 look to be happily ignored on a MEGA65
-        ; but cause bad things to happen with xemu - check this case
-        ; explicitly for now
-        lda 2,x
-        ora 3,x
+        lda 2,x                 ; Skip if len = 0
+        ora 3,x                 ; TODO could move check below and save a byte or two
         bne +
         jmp POP3
 +
-}
         lda 0,x
         sta _fill_value
         lda 2,x
@@ -1623,7 +1615,7 @@ W_FILL
         lda 5,x
         sta _fill_dst+1
         +dma_inline
-        !byte $0b               ; F018B 12-byte format
+        !byte $0b               ; F018B 12-byte format ; TODO use 11-byte?
         +dma_options_end
         !byte dma_cmd_fill      ; cmd
 _fill_count
@@ -1910,8 +1902,7 @@ W_POSTPONE
         !word W_EMIT
 }        
 
-        !word W_FORTH_WORDLIST ; TODO
-        !word W_SEARCH_WORDLIST_NT ; (0 | nt) ; TODO FIND-NAME
+        !word W_FIND_NAME
         !word W_QDUP
         +ZBRANCH _postpone_done ; TODO error if not found
 
@@ -1925,9 +1916,9 @@ W_POSTPONE
         +BRANCH _postpone_done
 
 _postpone_nonimmediate
-        !word W_NAME_TO_INTERPRET
         +LITERAL W_PLITERAL
         !word W_COMMA
+        !word W_NAME_TO_INTERPRET
         !word W_COMMA
         +LITERAL W_COMMA
         !word W_COMMA
@@ -2099,20 +2090,6 @@ W_SOURCE
         +LITERAL &INPUT_LEN
         !word W_AT
         ; TODO should we ripping of >IN leading chars?
-        !word W_PSEMI
-
-; ****************************************************************************
-; SPACE
-; (--)
-; ANSI 6.1.2220
-
-; TODO move to core.f
-
-        +WORD "space"
-W_SPACE
-        !word DO_COLON
-        !word W_BL
-        !word W_EMIT
         !word W_PSEMI
 
 ; ****************************************************************************

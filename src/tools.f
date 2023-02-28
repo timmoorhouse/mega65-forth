@@ -40,7 +40,7 @@
 \     - might not be able to do anything sensible for this case?
 : see ( "<spaces>name" -- )
     base @ >r hex cr
-    parse-name forth-wordlist search-wordlist-nt ?dup if
+    parse-name find-name ?dup if
         .s cr
         dup 4 u.r space ':' emit space dup name>string type
         \ TODO show name, flags

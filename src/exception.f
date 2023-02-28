@@ -1,29 +1,49 @@
 
+\ active exception handler
+variable handler
+0 handler !
+
+\ -1    ABORT
+\ -2    ABORT"
+\ -3    stack overflow
+\ -4    stack underflow
+\ -5    return stack overflow
+\ -6    return stack underflow
+\ -7    do loops nested too deeply during execution
+\ -8    dictionary overflow
+\ -9    invalid memory address
+\ -10   division by zero
+\ -11   result out of range
+\ -12   argument type mismatch
+\ -13   undefined word
+\ -14   interpreting a compile-only word
+\ -15   invalid FORGET
+\ -16   attempt to use zero length string as a name
+\ -17   pictured numeric output string overflow
+\ ...
+
+
+
 \ TODO CATCH
-
-\ VARIABLE HANDLER 0 HANDLER ! \ last exception handler
-
-\ : CATCH ( xt -- exception# | 0 )   \ return addr on stack
-\    SP@ >R             ( xt )       \ save data stack pointer
-\    HANDLER @ >R       ( xt )       \ and previous handler
-\    RP@ HANDLER !      ( xt )       \ set current handler
-\    EXECUTE            ( )          \ execute returns if no THROW
-\    R> HANDLER !       ( )          \ restore previous handler
-\    R> DROP            ( )          \ discard saved stack ptr
-\     0                 ( 0 )        \ normal completion
-\ ;
+\ : catch     ( xt -- exception# | 0 )
+\     sp@ >r              ( xt )       \ save data stack pointer
+\     handler @ >r        ( xt )       \ and previous handler
+\     rp@ handler !       ( xt )       \ set current handler
+\     execute             ( )          \ execute returns if no THROW
+\     r> handler !        ( )          \ restore previous handler
+\     r> drop             ( )          \ discard saved stack ptr
+\     0 ;                 ( 0 )        \ normal completion
 
 \ TODO THROW
-\ : THROW ( ??? exception# -- ??? exception# )
-\     ?DUP IF          ( exc# )     \ 0 THROW is no-op
-\       HANDLER @ RP!   ( exc# )     \ restore prev return stack
-\       R> HANDLER !    ( exc# )     \ restore prev handler
-\       R> SWAP >R      ( saved-sp ) \ exc# on return stack
-\       SP! DROP R>     ( exc# )     \ restore stack
-\       \ Return to the caller of CATCH because return
-\       \ stack is restored to the state that existed
-\        \ when CATCH began execution
-\     THEN
-\ ;
+\ : throw     ( ??? exception# -- ??? exception# )
+\     ?dup if             ( exc# )     \ 0 THROW is no-op
+\         handler @ rp!   ( exc# )     \ restore prev return stack
+\         r> handler !    ( exc# )     \ restore prev handler
+\         r> swap >r      ( saved-sp ) \ exc# on return stack
+\         sp! drop r>     ( exc# )     \ restore stack
+\         \ Return to the caller of CATCH because return
+\         \ stack is restored to the state that existed
+\         \ when CATCH began execution
+\     then ;
 
 .( ... end of exception.f ) cr

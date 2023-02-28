@@ -8,6 +8,15 @@
 : ( [char] ) parse 2drop ; immediate
 ( TODO allow multiline comments when parsing from a file )
 
+( TODO - move to top )
+( : postpone parse-name find-name ?dup if \ TODO error if not found )
+(     dup ?immediate if )
+(       name>interpret , )
+(     else )
+(       name>interpret ...... )
+(     then )
+(   then ; )
+
 : .( [char] ) parse type ; immediate ( CORE-EXT )
 
 .( Starting bootstrap... ) cr
@@ -18,8 +27,8 @@
 ( >NUMBER >R ?DUP @ ABORT ACCEPT ALIGN ALIGNED ALLOT AND BASE BL C! C@        )
 ( CONSTANT COUNT CR CREATE DECIMAL DEPTH <DO> DOES> DROP DUP EMIT EVALUATE    )
 ( EXECUTE EXIT FILL HERE I IMMEDIATE INVERT J KEY LEAVE <LOOP> LSHIFT MIN     )
-( NEGATE OR OVER POSTPONE QUIT R> R@ ROT RSHIFT <S"> SOURCE SPACE STATE SWAP  )
-( TYPE U< UM* UM/MOD UNLOOP VARIABLE XOR [ ]                                  )
+( NEGATE OR OVER POSTPONE QUIT R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP TYPE   )
+( U< UM* UM/MOD UNLOOP VARIABLE XOR [ ]                                       )
 
 ( *************************************************************************** )
 ( * internal helper words                                                   * )
@@ -80,7 +89,7 @@ variable hld ( TODO can we remove this? )
 
 ( *************************************************************************** )
 
-: ' ( "<spaces>name" -- xt ) parse-name forth-wordlist search-wordlist drop ;
+: ' ( "<spaces>name" -- xt ) parse-name find-name name>interpret ;
 
 : 2! swap over ! 2+ ! ;
 
@@ -143,6 +152,8 @@ variable hld ( TODO can we remove this? )
 : ." postpone s" postpone type ; immediate
 
 : s>d dup 0< ;
+
+: space bl emit ;
 
 : spaces ( n -- ) 0 max ?dup if 0 do space loop then ; ( TODO use ?do )
 

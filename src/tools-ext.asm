@@ -24,10 +24,6 @@
 ;               nnnn is executed, it does so by jumping to the code after 
 ;               nnnn.  An existing defining word must exist in cccc prior 
 ;               to ;CODE.
-;
-;;
-;;                                       ;CODE
-;;                                       SCREEN 42 LINE 6
 
 !if ENABLE_TOOLS_EXT {
 !if 0 {
