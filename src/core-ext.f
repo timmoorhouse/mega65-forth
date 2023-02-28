@@ -1,5 +1,5 @@
 
-: \ 13 parse 2drop ; immediate ( TODO K-RETURN? )
+: \ 13 parse 2drop ; immediate ( k-return is not available yet )
 
 \ The following words are implemented internally:                             
 \
@@ -31,6 +31,7 @@
 : buffer: ( u "<name>" -- ; -- addr ) create allot ;
 
 \ TODO c"
+: c" [char] " parse postpone (c") ( addr u ) dup c, swap over here swap ( u addr here u ) cmove allot ; immediate
 
 : case 0 ; immediate
 
@@ -73,6 +74,7 @@
 \ PAD see core.f
 
 \ TODO s\"
+: s\" postpone s" ; immediate
 
 : to ( x "<spaces>name" -- ) 
   state @ if
@@ -86,8 +88,6 @@
 \ U.R see core.f
 
 : u> swap u< ;
-
-\ TODO unused
 
 : within ( test low high -- flag ) over - >r - r> u< ;
 
