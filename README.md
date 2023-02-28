@@ -61,7 +61,6 @@ that the build process will get more involved:
 
 These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
 - CORE
-  - [ ] `UM/MOD` [gets things wrong](#ummod) for large inputs.
   - [ ] Need to reimplement the multiplication/division operations using the math unit.
   - [ ] We should be able to get rid of the hidden flag by changing when we link new words into the dictionary.
 - CORE-EXT
@@ -79,7 +78,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] A "minimal" configuration.
   - [ ] A "complete" configuration.
   - [ ] Move things we can from assembler to Forth.
-- Error checking
+- Error checking (after we get exceptions working)
   - [ ] Data stack overflow/underflow.
   - [ ] Return stack overflow/underflow.
   - [ ] `ALLOT` overflow/underflow.

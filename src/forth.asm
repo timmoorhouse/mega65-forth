@@ -441,6 +441,14 @@ WARM
         ldy #0
         sty <S0+1
 
+        ; TODO if we're loading a saved system, don't reset these!
+        ; we can assume if HERE has already been changed from 0, it's the
+        ; one from a SAVESYSTEM
+
+        lda <HERE
+        ora <HERE+1
+        bne +
+
         lda INITIAL_FORTH_WORDLIST
         sta FORTH_WORDLIST
         lda INITIAL_FORTH_WORDLIST+1
@@ -450,6 +458,8 @@ WARM
         sta <HERE
         lda #>INITIAL_HERE
         sta <HERE+1
+
++
 
         ; ldy #0 ; still 0 from above
         sty <SOURCE_ID
@@ -472,10 +482,12 @@ WARM
         jsr EMIT
         lda #11                 ; Disable shift-mega case changes TODO skip this?
         jsr EMIT
+!if 0 {
         lda #27                 ; ESC 5 - switch to 80x50
         jsr EMIT
         lda #53
         jsr EMIT
+}
 
         ; TODO a FONT word that switches font
         +dma_inline             ; copy from $0029000 to $ff7e000
