@@ -18,7 +18,7 @@ include errorreport.fth
 include coreexttest.fth
 \ S" blocktest.fth" INCLUDED
 \ include doubletest.fth
-\ include exceptiontest.fth
+include exceptiontest.fth
 \ S" facilitytest.fth" INCLUDED
 \ S" filetest.fth" INCLUDED
 \ S" localstest.fth" INCLUDED
