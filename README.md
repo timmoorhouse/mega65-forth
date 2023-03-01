@@ -69,6 +69,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
 - EXCEPTION
   - [ ] Need to be able to throw exceptions from assembler.  This likely means changing the `THROW` implementation to be native code instead of Forth bytecode.
   - [ ] Many bits of code need to be updated to throw an exception for error conditions.
+  - [ ] Need to handle propagating exceptions after restoring input in `INCLUDE-FILE` like we do for `EVALUATE`
 - FILE
   - [ ] `S"` is incorrect when interpreting.
   - [ ] Need two separate transient areas for `S"` and `S\"` and implement their interpretation semantics.
@@ -162,7 +163,7 @@ Test | Status | Comments
 [CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | **FAIL**[^petscii] | A few failures
 [CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | **FAIL** | Getting closer - a fair bit still to implement (`MARKER` in particular).  Can't yet attempt the full test.
 [DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD | Too early to attempt
-[EXCEPTION](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/exceptiontest.fth) | **FAIL** | Getting close.  There's some work to be done in `EVALUATE`.
+[EXCEPTION](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/exceptiontest.fth) | PASS | 
 [FACILITY](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/facilitytest.fth) | TBD | Too early to attempt
 [FILE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/filetest.fth) | TBD | Too early to attempt
 [LOCALS](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/localstest.fth) | TBD | Too early to attempt

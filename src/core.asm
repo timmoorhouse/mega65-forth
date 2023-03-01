@@ -758,30 +758,6 @@ W_AT
         jmp PUT
 
 ; ****************************************************************************
-; ABORT 
-; (???)
-; ANSI 6.1.0670
-;
-; Empties the data stack and performs a QUIT
-
-        +WORD "abort"
-W_ABORT
-        !word DO_COLON
-        +LITERAL E_ABORT
-        !word W_THROW
-
-; ****************************************************************************
-; ABORT" 
-; (???)
-; ANSI 6.1.0680
-
-!if 0 {
-        +WORD "abort\""
-        !word *+2
-        rts
-}
-
-; ****************************************************************************
 ; ACCEPT 
 ; (c-addr +n_1 -- +n_2)
 ; ANSI 6.1.0695
@@ -1372,20 +1348,11 @@ W_EVALUATE
 
         !word W_CATCH
 
-        !word W_QDUP
-        +ZBRANCH +
-
-        ; TODO
-        +DOTQ "exception in evaluate"
-        !word W_SIMPLE_DOT
-        !word W_CR
-
-+
-
-
         !word W_NRFROM
         !word W_RESTORE_INPUT
         !word W_DROP            ; TODO check status from restore
+
+        !word W_THROW           ; Propagate an exception if there was one
 
         !word W_PSEMI
 

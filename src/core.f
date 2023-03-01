@@ -27,11 +27,11 @@
 ( The following words are implemented internally:                             )
 (                                                                             )
 ( ! * + +! +LOOP , - . / 0< 0= 1+ 1- 2* 2/ 2DROP 2DUP 2OVER 2SWAP : ; < = >IN )
-( >NUMBER >R ?DUP @ ABORT ACCEPT ALIGN ALIGNED ALLOT AND BASE BL C! C@        )
-( CONSTANT COUNT CR CREATE DECIMAL DEPTH <DO> DOES> DROP DUP EMIT EVALUATE    )
-( EXECUTE EXIT FILL HERE I IMMEDIATE INVERT J KEY LEAVE <LOOP> LSHIFT MIN     )
-( NEGATE OR OVER POSTPONE QUIT R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP TYPE   )
-( U< UM* UM/MOD UNLOOP VARIABLE XOR [ ]                                       )
+( >NUMBER >R ?DUP @ ACCEPT ALIGN ALIGNED ALLOT AND BASE BL C! C@ CONSTANT     )
+( COUNT CR CREATE DECIMAL DEPTH <DO> DOES> DROP DUP EMIT EVALUATE EXECUTE     )
+( EXIT FILL HERE I IMMEDIATE INVERT J KEY LEAVE <LOOP> LSHIFT MIN NEGATE OR   )
+( OVER POSTPONE QUIT R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP TYPE U< UM*      )
+( UM/MOD UNLOOP VARIABLE XOR [ ]                                              )
 
 ( *************************************************************************** )
 ( * internal helper words                                                   * )
@@ -112,16 +112,18 @@ variable hld ( TODO can we remove this? )
 
 : 2@ ( a-addr -- x1 x2 ) dup 2+ @ swap @ ;
 
+: > ( n1 n2 -- flag ) swap < ;
+
+: >body ( xt -- a-addr ) 2+ ;
+
+: abort ( i*x -- ) ( R: j*x -- ) -1 throw ;
+
 ( TODO this is just a no-op so far )
 : abort" ( "ccc<quote>" -- ) 
   [char] " parse 2drop postpone if 
     -2 postpone literal
     ( postpone 1 ) postpone throw
   postpone then ; immediate compile-only
-
-: > ( n1 n2 -- flag ) swap < ;
-
-: >body ( xt -- a-addr ) 2+ ;
 
 : abs ( n -- u ) dup +- ;
 ( : abs dup 0< if negate then ; )
