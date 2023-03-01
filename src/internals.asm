@@ -470,7 +470,7 @@ W_RPSTORE
         lda 0,x
         ldy 1,x
         jsr _RPSTORE
-        jmp NEXT
+        jmp POP
 
 RPSTORE
         ; Restores return stack from R0
@@ -756,7 +756,7 @@ W_SPSTORE
 SPSTORE
         lda 0,x
         tax
-        jmp NEXT
+        jmp NEXT ; note that we don't POP here since SP is already reset
 
 ; ****************************************************************************
 ; SP@
