@@ -1087,6 +1087,8 @@ W_CREATE
 
         !word W_PARSE_NAME
 
+        ; TODO check for zero length and throw E_ZERO_LENGTH_NAME
+
 !if CASE_INSENSITIVE {
         !word W_2DUP
         !word W_LOWER
@@ -1120,7 +1122,7 @@ W_CREATE
         !word W_STORE
 
         +CLITERAL NAME_LEN_MASK ; limit the length
-        !word W_MIN
+        !word W_MIN ; TODO throw E_NAME_TOO_LONG if > max len
 
         ; (c-addr u)
 
@@ -1366,7 +1368,20 @@ W_EVALUATE
         +LITERAL &SOURCE_ID
         !word W_STORE
 
-        !word W_PEVALUATE
+        +LITERAL W_PEVALUATE
+
+        !word W_CATCH
+
+        !word W_QDUP
+        +ZBRANCH +
+
+        ; TODO
+        +DOTQ "exception in evaluate"
+        !word W_SIMPLE_DOT
+        !word W_CR
+
++
+
 
         !word W_NRFROM
         !word W_RESTORE_INPUT
@@ -1431,6 +1446,8 @@ _pevaluate_loop
 
         !word W_QDUP
         +ZBRANCH _pevaluate_word_not_found
+
+        ; TODO check compile-only and throw E_INTERPRET_COMPILE_ONLY where appropriate
         
         ; TODO clean up the immediate/non-immediate handling
 
@@ -1501,6 +1518,8 @@ _pevaluate_error
         !word W_DOTS,W_CR
 }
 
+        ; TODO should this be printed in the handler?
+
 !ifdef COLOUR_ERROR {
         +CLITERAL COLOUR_ERROR
         !word W_FOREGROUND
@@ -1513,6 +1532,10 @@ _pevaluate_error
         +CLITERAL COLOUR_OUTPUT
         !word W_FOREGROUND
 }
+
+        +LITERAL E_UNDEFINED_WORD
+        !word W_THROW
+
         ; jmp _evaluate_done_word
 
 _pevaluate_done_word
@@ -1939,6 +1962,8 @@ W_QUIT
 W_PQUIT
         !word DO_COLON
 
+        ; The return stack will already have been cleared by the exception
+
 !if ENABLE_BLOCK {
         !word W_ZERO
         !word W_BLK
@@ -1953,13 +1978,9 @@ W_PQUIT
 
 _pquit_read_loop
 
-        ; +LITERAL &R0
-        ; !word W_AT
-        ; !word W_RPSTORE
-
         !word W_REFILL
         !word W_DROP
-        !word W_PEVALUATE
+        !word W_PEVALUATE               ; any exception will be caught in W_MAIN
 
         !word W_STATE
         !word W_AT

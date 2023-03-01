@@ -15,6 +15,8 @@ include runtests.f
 
 include benchmark.f
 
+6 7 ' T9 C6 3 .s cr \ expecting 6 7 13 3
+
 \ HEX
 \ : rp1 >r >r >r >r rp@ 1+ @ rp@ cell+ 1+ @ 2r> 2r> 2drop 2drop ;
 \ 1234 5678 $abc $def rp1 .s

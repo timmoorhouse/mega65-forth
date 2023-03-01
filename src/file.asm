@@ -306,7 +306,7 @@ W_INCLUDE_FILE
 
 -       !word W_REFILL
         +ZBRANCH +
-        !word W_PEVALUATE
+        !word W_PEVALUATE       ; TODO this should be wrapped in a catch
         +BRANCH -
 +
 

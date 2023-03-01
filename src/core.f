@@ -1,9 +1,11 @@
 
-: literal postpone (literal) , ; immediate
+: compile-only ;
 
-: char parse-name drop c@ ; immediate
+: literal postpone (literal) , ; immediate compile-only
 
-: [char] postpone char postpone literal ; immediate
+: char parse-name drop c@ ;
+
+: [char] char postpone literal ; immediate compile-only
 
 : ( [char] ) parse 2drop ; immediate
 ( "ccc<paren>" -- )
@@ -37,7 +39,7 @@
 
 ( Resolve backward branch ) 
 : back ( -- )  
-  ( ?comp ) here - , ; ( TODO REMOVE? )
+  here - , ; compile-only ( TODO REMOVE? )
 
 ( *************************************************************************** )
 ( * control flow                                                            * )
@@ -52,51 +54,51 @@
 
 ( Marks the origin of an unconditional forward branch )
 : ahead ( C: -- orig ) ( -- ) 
-  ( ?comp ) postpone branch here 0 , ( 2 ) ; immediate ( TOOLS-EXT )
+  postpone branch here 0 , ( 2 ) ; immediate compile-only ( TOOLS-EXT )
 
 ( Marks the origin of a conditional forward branch )
 : if ( C: -- orig ) ( x -- )
-  ( ?comp ) postpone 0branch here 0 , ( 2 ) ; immediate ( compile-only )
+  postpone 0branch here 0 , ( 2 ) ; immediate compile-only
 
 ( Resolves a forward branch, from IF or AHEAD )
 : then ( C: orig -- ) ( -- )
-  ( ?comp 2 ?pairs ) here over - swap ! ; immediate ( compile-only )
+  ( ?pairs ) here over - swap ! ; immediate compile-only 
 
 : else ( C: orig1 -- orig2 ) ( -- )
-  ( ?comp 2 ?pairs ) postpone ahead swap ( 2 ) postpone then ( 2 ) ; immediate ( compile-only )
+  ( ?pairs ) postpone ahead swap ( 2 ) postpone then ( 2 ) ; immediate compile-only
 
 ( Marks the destination of a backwards branch )
 : begin ( C: -- dest ) ( -- ) 
-  ( ?comp ) here ( 1 ) ; immediate
+  here ( 1 ) ; immediate compile-only
 
 ( Resolves an unconditional backwards branch to BEGIN )
 : again ( C: dest -- ) ( -- )
-  ( ?comp 1 ?pairs ) postpone branch back ; immediate ( compile-only ) ( TODO CORE-EXT )
+  ( 1 ?pairs ) postpone branch back ; immediate compile-only ( TODO CORE-EXT )
 
 ( Resolves a conditional backwards branch to BEGIN )
 : until ( C: dest -- ) ( x -- ) 
-  ( ?comp 1 ?pairs ) postpone 0branch back ; immediate ( compile-only )
+  ( 1 ?pairs ) postpone 0branch back ; immediate compile-only
 
 : while ( C: dest -- orig dest ) ( x -- )
-  postpone if swap ; immediate ( compile-only )
+  postpone if swap ; immediate compile-only
 
 : repeat ( C: orig dest -- ) ( -- )
-  postpone again postpone then ; immediate
+  postpone again postpone then ; immediate compile-only
 
 : do ( C: -- do-sys ) ( n1|u2 n2|u2 -- ) ( R: -- loop-sys )
-  postpone (do) 0 , here ( 3 ) ; immediate
+  postpone (do) 0 , here ( 3 ) ; immediate compile-only
 
 : loop ( C: do-sys -- ) ( -- ) ( R: loop-sys1 -- | loop-sys2 )
-  ( 3 ?pairs ) postpone (loop) dup 2 - here 2 + swap ! back ; immediate ( compile-only )
+  ( 3 ?pairs ) postpone (loop) dup 2 - here 2 + swap ! back ; immediate compile-only
 
 : +loop ( C: do-sys -- )
-  ( 3 ?pairs ) postpone (+loop) dup 2 - here 2 + swap ! back ; immediate ( compile-only )
+  ( 3 ?pairs ) postpone (+loop) dup 2 - here 2 + swap ! back ; immediate compile-only
 
 ( *************************************************************************** )
 ( * more internal helper words                                              * )
 ( *************************************************************************** )
 
-: +- 0< if negate then ; ( TODO REMOVE )
+: +- ( n1 n2 -- n3 ) 0< if negate then ; ( TODO REMOVE )
 
 variable hld ( TODO can we remove this? )
 
@@ -111,7 +113,11 @@ variable hld ( TODO can we remove this? )
 : 2@ ( a-addr -- x1 x2 ) dup 2+ @ swap @ ;
 
 ( TODO this is just a no-op so far )
-: abort" ( "ccc<quote>" -- ) [char] " parse 2drop ( postpone abort ) postpone drop ; immediate ( compile-only )
+: abort" ( "ccc<quote>" -- ) 
+  [char] " parse 2drop postpone if 
+    -2 postpone literal
+    ( postpone 1 ) postpone throw
+  postpone then ; immediate compile-only
 
 : > ( n1 n2 -- flag ) swap < ;
 
@@ -164,9 +170,10 @@ variable hld ( TODO can we remove this? )
 ( TODO use sliteral! )
 ( TODO alignment after string? )
 ( TODO s" broken when interpreting )
-: s" ( "ccc<quote>" -- ) ( -- c-addr u ) [char] " parse postpone (s") dup c, swap over here swap cmove allot ; immediate
+: s" ( "ccc<quote>" -- ) ( -- c-addr u ) 
+  [char] " parse postpone (s") dup c, swap over here swap cmove allot ; immediate
 
-: ." ( "ccc<quote>" -- ) postpone s" postpone type ; immediate ( compile-only )
+: ." ( "ccc<quote>" -- ) postpone s" postpone type ; immediate compile-only
 
 : s>d dup 0< ;
 
@@ -228,6 +235,6 @@ variable hld ( TODO can we remove this? )
 
 : word ( char "<chars>ccc<char>" -- c-addr ) (parse-name) dup pad c! pad 1+ swap cmove pad ;
 
-: ['] ( "<spaces>name" -- ) ( -- xt ) ' postpone literal ; immediate ( compile-only )
+: ['] ( "<spaces>name" -- ) ( -- xt ) ' postpone literal ; immediate compile-only
 
 .( ... end of core.f ) cr

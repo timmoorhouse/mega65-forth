@@ -634,12 +634,19 @@ _startup_text2
 W_MAIN
         !word DO_COLON
 
+        !word W_DECIMAL
+
 !if AUTOBOOT {
-        !word W_DECIMAL         ; TODO abort will do this but we need it before autobooting
         +LITERAL AUTOBOOT_FILENAME
         !word W_COUNT
         !word W_INCLUDED        ; TODO this should be wrapped in a catch
 }        
+
+_main_clear_stack_and_enter_loop
+
+        +LITERAL &S0
+        !word W_AT
+        !word W_SPSTORE
 
 _main_loop
 
@@ -661,14 +668,7 @@ _main_loop
         !word W_CR
         !word W_DROP
 
-
-        ; +LITERAL &S0
-        ; !word W_AT
-        ; !word W_SPSTORE
-        ; !word W_DECIMAL
-
-
-        +BRANCH _main_do_quit
+        +BRANCH _main_clear_stack_and_enter_loop
 
 +
 
@@ -681,15 +681,7 @@ _main_loop
         !word W_CR
         !word W_DROP
 
-
-        ; +LITERAL &S0
-        ; !word W_AT
-        ; !word W_SPSTORE
-        ; !word W_DECIMAL
-
-
-        +BRANCH _main_do_quit
-
+        +BRANCH _main_clear_stack_and_enter_loop
 
 +
 

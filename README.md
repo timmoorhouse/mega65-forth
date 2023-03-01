@@ -66,6 +66,9 @@ These should get us to the point of bootstrapping with a dictionary written in f
 - CORE-EXT
 - DOUBLE
   - [ ] Need to support double literals (eg `123.`).
+- EXCEPTION
+  - [ ] Need to be able to throw exceptions from assembler.  This likely means changing the `THROW` implementation to be native code instead of Forth bytecode.
+  - [ ] Many bits of code need to be updated to throw an exception for error conditions.
 - FILE
   - [ ] `S"` is incorrect when interpreting.
   - [ ] Need two separate transient areas for `S"` and `S\"` and implement their interpretation semantics.
@@ -79,11 +82,24 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] A "minimal" configuration.
   - [ ] A "complete" configuration.
   - [ ] Move things we can from assembler to Forth.
-- Error checking (after we get exceptions working)
+- Error checking (and throwing the appropriate exception)
   - [ ] Data stack overflow/underflow.
   - [ ] Return stack overflow/underflow.
   - [ ] `ALLOT` overflow/underflow.
+  - [ ] Unaligned address.
+  - [ ] Divide by zero.
+  - [ ] Interpreting a compile-only word.
+  - [ ] Attempt to `CREATE` with a zero length name.
+  - [ ] Pictured numeric output string overflow.
+  - [ ] Parsed string overflow?
+  - [ ] Name too long.
   - [ ] Mismatched control structures.
+  - [ ] Return stack imbalance.
+  - [ ] User interrupt.
+  - [ ] Invalid name.
+  - [ ] Non-existent file.
+  - [ ] File I/O error.
+  - [ ] Unexpected EOF.
 - Making `SAVESYSTEM` output deterministic? (it might not make sense to do this)
   - [ ] Move basepage to top of memory?
   - [ ] What to do about DMA lists?
@@ -110,7 +126,7 @@ CORE-EXT | [`.(`](https://forth-standard.org/standard/core/Dotp) [`.R`](https://
 CORE-EXT obsolescent | | [`[COMPILE]`](https://forth-standard.org/standard/core/BracketCOMPILE)
 DOUBLE | [`D+`](https://forth-standard.org/standard/double/DPlus) [`D-`](https://forth-standard.org/standard/double/DMinus) [`D.`](https://forth-standard.org/standard/double/Dd) [`D.R`](https://forth-standard.org/standard/double/DDotR) [`DABS`](https://forth-standard.org/standard/double/DABS) [`DNEGATE`](https://forth-standard.org/standard/double/DNEGATE) | [`2CONSTANT`](https://forth-standard.org/standard/double/TwoCONSTANT) [`2LITERAL`](https://forth-standard.org/standard/double/TwoLITERAL) [`2VARIABLE`](https://forth-standard.org/standard/double/TwoVARIABLE) [`D0<`](https://forth-standard.org/standard/double/DZeroless) [`D0=`](https://forth-standard.org/standard/double/DZeroEqual) [`D2*`](https://forth-standard.org/standard/double/DTwoTimes) [`D2/`](https://forth-standard.org/standard/double/DTwoDiv) [`D<`](https://forth-standard.org/standard/double/Dless) [`D=`](https://forth-standard.org/standard/double/DEqual) [`D>S`](https://forth-standard.org/standard/double/DtoS) [`DMAX`](https://forth-standard.org/standard/double/DMAX) [`DMIN`](https://forth-standard.org/standard/double/DMIN) [`M*/`](https://forth-standard.org/standard/double/MTimesDiv) [`M+`](https://forth-standard.org/standard/double/MPlus)
 DOUBLE-EXT | | [`2ROT`](https://forth-standard.org/standard/double/TwoROT) [`2VALUE`](https://forth-standard.org/standard/double/TwoVALUE) [`DU<`](https://forth-standard.org/standard/double/DUless)
-EXCEPTION | | [`CATCH`](https://forth-standard.org/standard/exception/CATCH) [`THROW`](https://forth-standard.org/standard/exception/THROW)
+EXCEPTION | [`CATCH`](https://forth-standard.org/standard/exception/CATCH) [`THROW`](https://forth-standard.org/standard/exception/THROW) |
 FACILITY | [`PAGE`](https://forth-standard.org/standard/facility/PAGE) | [`AT-XY`](https://forth-standard.org/standard/facility/AT-XY) [`KEY?`](https://forth-standard.org/standard/facility/KEYq)
 FACILITY-EXT | [`K-DELETE`](https://forth-standard.org/standard/facility/K-DELETE) [`K-DOWN`](https://forth-standard.org/standard/facility/K-DOWN) [`K-F1`](https://forth-standard.org/standard/facility/K-F1) [`K-F10`](https://forth-standard.org/standard/facility/K-F10) [`K-F11`](https://forth-standard.org/standard/facility/K-F11) [`K-F12`](https://forth-standard.org/standard/facility/K-F12) [`K-F2`](https://forth-standard.org/standard/facility/K-F2) [`K-F3`](https://forth-standard.org/standard/facility/K-F3) [`K-F4`](https://forth-standard.org/standard/facility/K-F4) [`K-F5`](https://forth-standard.org/standard/facility/K-F5) [`K-F6`](https://forth-standard.org/standard/facility/K-F6) [`K-F7`](https://forth-standard.org/standard/facility/K-F7) [`K-F8`](https://forth-standard.org/standard/facility/K-F8) [`K-F9`](https://forth-standard.org/standard/facility/K-F9) [`K-HOME`](https://forth-standard.org/standard/facility/K-HOME) [`K-INSERT`](https://forth-standard.org/standard/facility/K-INSERT) [`K-LEFT`](https://forth-standard.org/standard/facility/K-LEFT) [`K-RIGHT`](https://forth-standard.org/standard/facility/K-RIGHT) [`K-UP`](https://forth-standard.org/standard/facility/K-UP) | [`+FIELD`](https://forth-standard.org/standard/facility/PlusFIELD) [`BEGIN-STRUCTURE`](https://forth-standard.org/standard/facility/BEGIN-STRUCTURE) [`CFIELD:`](https://forth-standard.org/standard/facility/CFIELDColon) [`EKEY`](https://forth-standard.org/standard/facility/EKEY) [`EKEY>CHAR`](https://forth-standard.org/standard/facility/EKEYtoCHAR) [`EKEY>FKEY`](https://forth-standard.org/standard/facility/EKEYtoFKEY) [`EKEY?`](https://forth-standard.org/standard/facility/EKEYq) [`EMIT?`](https://forth-standard.org/standard/facility/EMITq) [`END-STRUCTURE`](https://forth-standard.org/standard/facility/END-STRUCTURE) [`FIELD:`](https://forth-standard.org/standard/facility/FIELDColon) [`K-ALT-MASK`](https://forth-standard.org/standard/facility/K-ALT-MASK) [`K-CTRL-MASK`](https://forth-standard.org/standard/facility/K-CTRL-MASK) [`K-END`](https://forth-standard.org/standard/facility/K-END) [`K-NEXT`](https://forth-standard.org/standard/facility/K-NEXT) [`K-PRIOR`](https://forth-standard.org/standard/facility/K-PRIOR) [`K-SHIFT-MASK`](https://forth-standard.org/standard/facility/K-SHIFT-MASK) [`MS`](https://forth-standard.org/standard/facility/MS) [`TIME&DATE`](https://forth-standard.org/standard/facility/TIMEandDATE)
 FILE | [`BIN`](https://forth-standard.org/standard/file/BIN) [`CLOSE-FILE`](https://forth-standard.org/standard/file/CLOSE-FILE) [`INCLUDE-FILE`](https://forth-standard.org/standard/file/INCLUDE-FILE) [`INCLUDED`](https://forth-standard.org/standard/file/INCLUDED) [`OPEN-FILE`](https://forth-standard.org/standard/file/OPEN-FILE)[^partial] [`R/O`](https://forth-standard.org/standard/file/RDivO) [`R/W`](https://forth-standard.org/standard/file/RDivW) [`READ-FILE`](https://forth-standard.org/standard/file/READ-FILE) [`READ-LINE`](https://forth-standard.org/standard/file/READ-LINE) [`W/O`](https://forth-standard.org/standard/file/WDivO) [`WRITE-FILE`](https://forth-standard.org/standard/file/WRITE-FILE) [`WRITE-LINE`](https://forth-standard.org/standard/file/WRITE-LINE) | [`CREATE-FILE`](https://forth-standard.org/standard/file/CREATE-FILE) [`DELETE-FILE`](https://forth-standard.org/standard/file/DELETE-FILE) [`FILE-POSITION`](https://forth-standard.org/standard/file/FILE-POSITION) [`FILE-SIZE`](https://forth-standard.org/standard/file/FILE-SIZE) [`REPOSITION-FILE`](https://forth-standard.org/standard/file/REPOSITION-FILE) [`RESIZE-FILE`](https://forth-standard.org/standard/file/RESIZE-FILE)
@@ -146,7 +162,7 @@ Test | Status | Comments
 [CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | **FAIL**[^petscii] | A few failures
 [CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | **FAIL** | Getting closer - a fair bit still to implement (`MARKER` in particular).  Can't yet attempt the full test.
 [DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD | Too early to attempt
-[EXCEPTION](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/exceptiontest.fth) | **FAIL** | Making progress.  I need to move `CATCH` and `THROW` to assembler so we can integrate it into the outer interpreter.
+[EXCEPTION](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/exceptiontest.fth) | **FAIL** | Getting close.  There's some work to be done in `EVALUATE`.
 [FACILITY](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/facilitytest.fth) | TBD | Too early to attempt
 [FILE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/filetest.fth) | TBD | Too early to attempt
 [LOCALS](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/localstest.fth) | TBD | Too early to attempt
