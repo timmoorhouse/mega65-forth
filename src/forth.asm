@@ -70,7 +70,8 @@ COLOUR_ERROR  =   4 ; purple
 ; may not be a good way to use them (no jump vectors to them so they could move) - might be able to execute a token for them
 
 ; TODO inw/dew to increment/decrement words!
-; TODO inq/deq for quads
+; TODO inq/deq for quads !!!
+; TODO rolq, rorq, aslq
 ; TODO asw for asl on a word!
 ; TODO row for rol on a word!
 ; TODO neg for twos complement
@@ -466,6 +467,7 @@ WARM
         sty <SOURCE_ID+1
 
         cld
+        ; see ; TODO
 
 !if AUTOBOOT {
         W_STARTUP = W_AUTOBOOT

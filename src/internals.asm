@@ -483,24 +483,28 @@ _RPSTORE
         ; A - new SPL, Y - new SPH
         ; We need to save two levels of return pointer so the return from RPSTORE
         ; goes to the right place
+        ; TODO should just need to save one ??????
+!if 1 {        
         plz
-        stz <TEMP1
+        stz <TEMP1              ; TODO could use plw / phw here
         plz
         stz <TEMP1+1
         plz
         stz <TEMP2
         plz
         stz <TEMP2+1
+} else {
+        plw &TEMP1
+        plw &TEMP2
+}
         ; Now reset the SPH & SPL from R0
         stx <XSAVE      
-        ; lda <R0      
         tax
         txs
         ldx <XSAVE
-        ; lda <R0+1
-        ; tay
         tys
         ; And finally put the original return pointer onto the new stack
+!if 1 {        
         lda <TEMP2+1
         pha
         lda <TEMP2
@@ -509,6 +513,10 @@ _RPSTORE
         pha
         lda <TEMP1
         pha
+} else {
+        phw &TEMP2
+        phw &TEMP1
+}
         rts
 
 ; ****************************************************************************
@@ -521,7 +529,7 @@ W_RPAT
         !word *+2
         jsr RPAT
         clc
-        adc #2 ; account for the call to rp@
+        adc #2 ; account for the call to rp@ ???????
 !if 0 {        
         ; clc    ; TODO should we skip the +1 ????
         adc #1 ; we want the value returned by rp@ to point to the top value on the return stack, not the byte below
