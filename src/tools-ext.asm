@@ -72,7 +72,9 @@ W_BYE
         !word *+2
 
         ; Restore the hardware stack ... an RTS should then return to basic
-        jsr RPSTORE
+        lda <R0
+        ldy <R0+1
+        jsr RPSTORE        
 
         ; restore base page
         lda #0

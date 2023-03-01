@@ -466,17 +466,10 @@ W_RPSTORE
         !word *+2
         lda 0,x
         ldy 1,x
-        jsr _RPSTORE
+        jsr RPSTORE
         jmp POP
 
 RPSTORE
-        ; Restores return stack from R0
-        lda <R0
-        ldy <R0+1
-        jsr _RPSTORE
-        rts
-
-_RPSTORE
         ; A - new SPL, Y - new SPH
         ; We need to save one level of return pointer so the return from RPSTORE
         ; goes to the right place
@@ -515,7 +508,7 @@ W_RPAT
         !word *+2
         jsr RPAT
 !if 0 {        
-        ; clc    ; TODO should we skip the +1 ????
+        clc    ; TODO should we skip the +1 ????
         adc #1 ; we want the value returned by rp@ to point to the top value on the return stack, not the byte below
 }        
         pha
