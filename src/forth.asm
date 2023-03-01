@@ -442,13 +442,16 @@ WARM
         ldy #0
         sty <S0+1
 
-        ; TODO if we're loading a saved system, don't reset these!
-        ; we can assume if HERE has already been changed from 0, it's the
-        ; one from a SAVESYSTEM
+        ; If we're loading a saved system, don't reset FORTH_WORDLIST and HERE.
+        ; We can assume if HERE has already been changed from 0, it's the
+        ; one from a SAVESYSTEM.
 
         lda <HERE
         ora <HERE+1
         bne +
+
+        ; TODO we could move the one time initialization code past HERE
+        ; (it would get overwritten but wouldn't be needed once we bootstrap)
 
         lda INITIAL_FORTH_WORDLIST
         sta FORTH_WORDLIST
@@ -602,3 +605,9 @@ AUTOBOOT_FILENAME
 INITIAL_FORTH_WORDLIST
         !word _here ; TODO can we get away without storing this?
 INITIAL_HERE
+
+        ; TODO move one-time initialization code here (things that won't be done after a bootstrap)
+
+        ; TODO embed the minimal bootstrap code at a sufficiently high memory address 
+        ; so we don't need to have file I/O as builtins
+

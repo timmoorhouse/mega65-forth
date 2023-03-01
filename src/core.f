@@ -18,8 +18,7 @@
 (     then )
 (   then ; ) ( compile-only )
 
-: .( ( "ccc<paren>" -- ) 
-  [char] ) parse type ; immediate ( CORE-EXT )
+: .( ( "ccc<paren>" -- ) [char] ) parse type ; immediate ( CORE-EXT )
 
 .( Starting bootstrap... ) cr
 
@@ -111,8 +110,8 @@ variable hld ( TODO can we remove this? )
 
 : 2@ ( a-addr -- x1 x2 ) dup 2+ @ swap @ ;
 
-( TODO )
-( : abort" ; ) ( "ccc<quote>" -- ) ( compile-only )
+( TODO this is just a no-op so far )
+: abort" ( "ccc<quote>" -- ) [char] " parse 2drop ( postpone abort ) ; immediate ( compile-only )
 
 : > ( n1 n2 -- flag ) swap < ;
 
