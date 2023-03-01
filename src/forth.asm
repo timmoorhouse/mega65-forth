@@ -4,6 +4,8 @@
 
 ; TODO clean up the symbol names - what does acme allow?
 
+; TODO remove these ENABLE flags
+
 !ifndef ENABLE_BLOCK                    { ENABLE_BLOCK                  = 0 }
 !ifndef ENABLE_BLOCK_EXT                { ENABLE_BLOCK_EXT              = 0 }
 !if 1                                   { ENABLE_CORE                   = 1 } ; Required
@@ -11,8 +13,8 @@
 !ifndef ENABLE_CORE_EXT_OBSOLESCENT     { ENABLE_CORE_EXT_OBSOLESCENT   = 0 }
 !ifndef ENABLE_DOUBLE                   { ENABLE_DOUBLE                 = 1 }
 !ifndef ENABLE_DOUBLE_EXT               { ENABLE_DOUBLE_EXT             = 1 }
-!ifndef ENABLE_EXCEPTION                { ENABLE_EXCEPTION              = 0 }
-!ifndef ENABLE_EXCEPTION_EXT            { ENABLE_EXCEPTION_EXT          = 0 }
+!ifndef ENABLE_EXCEPTION                { ENABLE_EXCEPTION              = 1 }
+!ifndef ENABLE_EXCEPTION_EXT            { ENABLE_EXCEPTION_EXT          = 1 }
 !ifndef ENABLE_FACILITY                 { ENABLE_FACILITY               = 1 }
 !ifndef ENABLE_FACILITY_EXT             { ENABLE_FACILITY_EXT           = 1 }
 !ifndef ENABLE_FIG                      { ENABLE_FIG                    = 1 } ; TODO remove
@@ -91,6 +93,86 @@ PUSH_MSB_FIRST = 1 ; Enabled is the current expectation
 !source "dma.asm"
 !source "vic4.asm"
 !source "gpio.asm"
+
+E_ABORT                          =  -1 ; ABORT
+E_ABORTQ                         =  -2 ; ABORT"
+E_DATA_STACK_OVERFLOW            =  -3 ; stack overflow
+E_DATA_STACK_UNDERFLOW           =  -4 ; stack underflow
+E_RETURN_STACK_OVERFLOW          =  -5 ; return stack overflow
+E_RETURN_STACK_UNDERFLOW         =  -6 ; return stack underflow
+E_LOOP_NESTING_TOO_DEEP          =  -7 ; do loops nested too deeply during execution
+E_DICTIONARY_OVERFLOW            =  -8 ; dictionary overflow
+E_INVALID_ADDRESS                =  -9 ; invalid memory address
+E_DIVIDE_BY_ZERO                 = -10 ; division by zero
+E_OUT_OF_RANGE                   = -11 ; result out of range
+E_TYPE_MISMATCH                  = -12 ; argument type mismatch
+E_UNDEFINED_WORD                 = -13 ; undefined word
+E_INTERPRET_COMPILE_ONLY         = -14 ; interpreting a compile-only word
+E_INVALID_FORGET                 = -15 ; invalid FORGET
+E_ZERO_LENGTH_NAME               = -16 ; attempt to use zero length string as a name
+E_PICTURED_NUMERIC_OVERFLOW      = -17 ; pictured numeric output string overflow
+E_PARSED_STRING_OVERFLOW         = -18 ; parsed string overflow
+E_NAME_TOO_LONG                  = -19 ; definition name too long
+E_WRITE_TO_READ_ONLY             = -20 ; write to a read-only location
+E_UNSUPPORTED_OPERATION          = -21 ; unsupported operation (eg AT-XY on a too-dumb terminal)
+E_CONTROL_STRUCTURE_MISMATCH     = -22 ; control structure mismatch
+E_ADDRESS_ALIGNMENT              = -23 ; address alignment exception
+E_INVALID_NUMERIC_ARGUMENT       = -24 ; invalid numeric argument
+E_RETURN_STACK_IMBALANCE         = -25 ; return stack imbalance
+E_LOOP_PARAMETERS_UNAVAILABLE    = -26 ; loop parameters unavailable
+E_INVALID_RECURSION              = -27 ; invalid recursion
+E_USER_INTERRUPT                 = -28 ; user interrupt
+E_COMPILER_NESTING               = -29 ; compiler nesting
+E_OSBSOLESCENT_FEATURE           = -30 ; obsolescent feature
+; E_                               = -31 ; >BODY used on non-CREATEd definition
+E_INVALID_NAME                   = -32 ; invalid name argument (eg TO name)
+E_BLOCK_READ                     = -33 ; block read exception
+E_BLOCK_WRITE                    = -34 ; block write exception
+E_INVALID_BLOCK                  = -35 ; invalid block number
+E_INVALID_FILE_POSITION          = -36 ; invalid file position
+E_FILE_IO                        = -37 ; file I/O exception
+E_NONEXISTENT_FILE               = -38 ; non-existent file
+E_UNEXPECTED_EOF                 = -39 ; unexpected end of file
+E_FP_INVALID_BASE                = -40 ; invalid BASE for floating point conversion
+E_LOSS_OF_PRECISION              = -41 ; loss of precision
+E_FP_DIVIDE_BY_ZERO              = -42 ; floating point divide by zero
+E_FP_OUT_OF_RANGE                = -43 ; floating point result out of range
+E_FP_STACK_OVERFLOW              = -44 ; floating point stack overflow
+E_FP_STACK_UNDERFLOW             = -45 ; floating point stack underflow
+E_FP_INVALID_ARGUMENT            = -46 ; floating point invalid argument
+E_COMPILATION_WORDLIST_DELETED   = -47 ; compilation word list deleted
+E_INVALID_POSTPONE               = -48 ; invalid POSTPONE
+E_SEARCH_ORDER_OVERFLOW          = -49 ; search order overflow
+E_SEARCH_ORDER_UNDERFLOW         = -50 ; search order underflow
+E_COMPILATION_WORDLIST_CHANGED   = -51 ; compilation word list changed
+E_CONTROL_FLOW_STACK_OVERFLOW    = -52 ; control flow stack overflow
+E_EXCEPTION_STACK_OVERFLOW       = -53 ; exception stack overflow
+E_FP_UNDERFLOW                   = -54 ; floating point underflow
+E_FP_UNIDENTIFIED_FAULT          = -55 ; floating point unidentified fault
+E_QUIT                           = -56 ; QUIT
+; E_                               = -57 ; exception in sending or receiving a character
+; E_                               = -58 ; [IF], [ELSE] or [THEN] exception
+E_ALLOCATE                       = -59 ; ALLOCATE
+E_FREE                           = -60 ; FREE
+E_RESIZE                         = -61 ; RESIZE
+E_CLOSE_FILE                     = -62 ; CLOSE-FILE
+E_CREATE_FILE                    = -63 ; CREATE-FILE
+E_DELETE_FILE                    = -64 ; DELETE-FILE
+E_FILE_POSITION                  = -65 ; FILE-POSITION
+E_FILE_SIZE                      = -66 ; FILE-SIZE
+E_FILE_STATUS                    = -67 ; FILE-STATUS
+E_FLUSH_FILE                     = -68 ; FLUSH-FILE
+E_OPEN_FILE                      = -69 ; OPEN-FILE
+E_READ_FILE                      = -70 ; READ-FILE
+E_READ_LINE                      = -71 ; READ-LINE
+E_RENAME_FILE                    = -72 ; RENAME-FILE
+E_REPOSITION_FILE                = -73 ; REPOSITION-FILE
+E_RESIZE_FILE                    = -74 ; RESIZE-FILE
+E_WRITE_FILE                     = -75 ; WRITE-FILE
+E_WRITE_LINE                     = -76 ; WRITE-LINE
+E_MALFORMED_XCHAR                = -77 ; malformed xchar
+E_SUBSTITUTE                     = -78 ; SUBSTITUTE
+E_REPLACES                       = -79 ; REPLACES
 
 * = $2001
         +upstart entry
@@ -472,22 +554,16 @@ WARM
         cld
         ; see ; TODO
 
-!if AUTOBOOT {
-        W_STARTUP = W_AUTOBOOT
-} else {
-        W_STARTUP = W_ABORT
-}
-
-        lda #<W_STARTUP+2
+        lda #<W_MAIN+2
         sta <I
-        lda #>W_STARTUP+2
+        lda #>W_MAIN+2
         sta <I+1
 
         lda #14                 ; Lower case
         jsr EMIT
         lda #11                 ; Disable shift-mega case changes TODO skip this?
         jsr EMIT
-!if 0 {
+!if 1 {                         ; TODO this seems to cause problems on a real MEGA65
         lda #27                 ; ESC 5 - switch to 80x50
         jsr EMIT
         lda #53
@@ -554,17 +630,93 @@ _startup_text2
 !src "revision.asm"
 }
 
+        +NONAME
+W_MAIN
+        !word DO_COLON
 
 !if AUTOBOOT {
-        +NONAME
-W_AUTOBOOT
-        !word DO_COLON
-        !word W_DECIMAL ; abort will do this but we need it before autobooting
+        !word W_DECIMAL         ; TODO abort will do this but we need it before autobooting
         +LITERAL AUTOBOOT_FILENAME
         !word W_COUNT
-        !word W_INCLUDED
-        !word W_ABORT
+        !word W_INCLUDED        ; TODO this should be wrapped in a catch
+}        
 
+_main_loop
+
+        +LITERAL W_PQUIT
+        !word W_CATCH
+
+        !word W_SIMPLE_DOTS
+        !word W_CR
+
+        !word W_QDUP
+        +ZBRANCH _main_loop
+
+        !word W_DUP
+        +LITERAL E_ABORT
+        !word W_EQUAL
+        +ZBRANCH +
+
+        +DOTQ "looks like an ABORT"
+        !word W_CR
+        !word W_DROP
+
+
+        ; +LITERAL &S0
+        ; !word W_AT
+        ; !word W_SPSTORE
+        ; !word W_DECIMAL
+
+
+        +BRANCH _main_do_quit
+
++
+
+        !word W_DUP
+        +LITERAL E_ABORTQ
+        !word W_EQUAL
+        +ZBRANCH +
+
+        +DOTQ "looks like an ABORT\""
+        !word W_CR
+        !word W_DROP
+
+
+        ; +LITERAL &S0
+        ; !word W_AT
+        ; !word W_SPSTORE
+        ; !word W_DECIMAL
+
+
+        +BRANCH _main_do_quit
+
+
++
+
+        !word W_DUP
+        +LITERAL E_QUIT
+        !word W_EQUAL
+        +ZBRANCH +
+
+        +DOTQ "looks like a QUIT"
+        !word W_CR
+        !word W_DROP
+
+_main_do_quit
+        +DOTQ "do QUIT stuff ..."
+        !word W_CR
+        +BRANCH _main_loop
+
++
+
+        +DOTQ "exception "
+        !word W_SIMPLE_DOT
+        !word W_CR
+
+
+        +BRANCH _main_loop
+
+!if AUTOBOOT {
 AUTOBOOT_FILENAME
         +STRING "autoboot.f"
 }
@@ -607,6 +759,10 @@ INITIAL_FORTH_WORDLIST
 INITIAL_HERE
 
         ; TODO move one-time initialization code here (things that won't be done after a bootstrap)
+
+        ; TODO move SIMPLE_DOT, SIMPLE_DOTS here?
+
+        ; TODO move builtin CATCH, THROW here?
 
         ; TODO embed the minimal bootstrap code at a sufficiently high memory address 
         ; so we don't need to have file I/O as builtins

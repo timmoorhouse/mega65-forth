@@ -54,7 +54,7 @@
 
 : erase ( addr u ) 0 fill ;
 
-: hex 16 base ! ;
+: hex ( -- ) 16 base ! ;
 
 : holds ( c-addr u -- ) begin dup while 1- 2dup + c@ hold repeat 2drop ;
 

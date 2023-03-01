@@ -767,13 +767,8 @@ W_AT
         +WORD "abort"
 W_ABORT
         !word DO_COLON
-        +LITERAL &S0
-        !word W_AT
-        !word W_SPSTORE
-        !word W_DECIMAL
-;          !word FORTH ; from search-ext
-;          !word DEFIN ; from search
-        +BRANCH QUIT
+        +LITERAL E_ABORT
+        !word W_THROW
 
 ; ****************************************************************************
 ; ABORT" 
@@ -1091,13 +1086,6 @@ W_CREATE
 ;          !word QERR     ;)
 
         !word W_PARSE_NAME
-
-!if 0 {
-        +DOTQ "create["
-        !word W_2DUP,W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT,W_CR
-}
 
 !if CASE_INSENSITIVE {
         !word W_2DUP
@@ -1657,6 +1645,8 @@ W_I
 ; (--)
 ; ANSI 6.1.1710
 
+; TODO can this be moved to core.f?
+
         +WORD "immediate"
 W_IMMEDIATE
         !word DO_COLON
@@ -1942,7 +1932,12 @@ _postpone_done
         +WORD "quit"
 W_QUIT
         !word DO_COLON
-QUIT
+        +LITERAL E_QUIT
+        !word W_THROW
+
+        +NONAME
+W_PQUIT
+        !word DO_COLON
 
 !if ENABLE_BLOCK {
         !word W_ZERO
@@ -1956,11 +1951,11 @@ QUIT
         +LITERAL &SOURCE_ID
         !word W_STORE
 
-_quit_read_loop
+_pquit_read_loop
 
-        +LITERAL &R0
-        !word W_AT
-        !word W_RPSTORE
+        ; +LITERAL &R0
+        ; !word W_AT
+        ; !word W_RPSTORE
 
         !word W_REFILL
         !word W_DROP
@@ -1979,7 +1974,7 @@ _quit_read_loop
         +DOTQ " ok"
         !word W_CR
 +
-        +BRANCH _quit_read_loop
+        +BRANCH _pquit_read_loop
 
 ; ****************************************************************************
 ; R>

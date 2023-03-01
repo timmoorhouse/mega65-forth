@@ -146,7 +146,7 @@ Test | Status | Comments
 [CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | **FAIL**[^petscii] | A few failures
 [CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | **FAIL** | Getting closer - a fair bit still to implement (`MARKER` in particular).  Can't yet attempt the full test.
 [DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD | Too early to attempt
-[EXCEPTION](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/exceptiontest.fth) | TBD | Too early to attempt
+[EXCEPTION](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/exceptiontest.fth) | **FAIL** | Making progress.  I need to move `CATCH` and `THROW` to assembler so we can integrate it into the outer interpreter.
 [FACILITY](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/facilitytest.fth) | TBD | Too early to attempt
 [FILE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/filetest.fth) | TBD | Too early to attempt
 [LOCALS](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/localstest.fth) | TBD | Too early to attempt

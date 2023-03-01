@@ -1,5 +1,8 @@
 
-!if DEBUG {
+; TODO we could make . and .s deferred and move these simple implementations to high mem
+; (then drop them after bootstrap)
+
+; !if DEBUG {
         :NONAME
 W_SIMPLE_DOT
         !word *+2
@@ -8,9 +11,9 @@ W_SIMPLE_DOT
         lda 0,x
         jsr put_hex
         jmp POP
-}
+; }
 
-!if DEBUG {
+; !if DEBUG {
         +NONAME
 W_SIMPLE_DOTS
         !word *+2
@@ -51,7 +54,7 @@ SIMPLE_DOTS
         jmp -
 +        
         rts
-}
+; }
 
 ; Dump return stack
 ; TODO can be done in forth using rp@

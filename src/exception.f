@@ -1,7 +1,7 @@
 
 \ active exception handler
-variable handler
-0 handler !
+\ variable handler
+\ 0 handler !
 
 \ -1    ABORT
 \ -2    ABORT"
@@ -87,27 +87,27 @@ variable handler
 \ TODO we should move CATCH to assembler so we can use it in ABORT
 
 \ TODO CATCH
-: catch     ( xt -- exception# | 0 )
-    sp@ >r              ( xt )       \ save data stack pointer
-    handler @ >r        ( xt )       \ and previous handler
-    rp@ handler !       ( xt )       \ set current handler
-    execute             ( )          \ execute returns if no THROW
-    r> handler !        ( )          \ restore previous handler
-    r> drop             ( )          \ discard saved stack ptr
-    0 ;                 ( 0 )        \ normal completion
+\ : catch     ( xt -- exception# | 0 )
+\     sp@ >r              ( xt )       \ save data stack pointer
+\     handler @ >r        ( xt )       \ and previous handler
+\     rp@ handler !       ( xt )       \ set current handler
+\     execute             ( )          \ execute returns if no THROW
+\     r> handler !        ( )          \ restore previous handler
+\     r> drop             ( )          \ discard saved stack ptr
+\     0 ;                 ( 0 )        \ normal completion
 
 \ TODO we should move THROW to assembler for use everywhere
 
 \ TODO THROW
-: throw     ( ??? exception# -- ??? exception# )
-    ?dup if             ( exc# )     \ 0 THROW is no-op
-        handler @ rp!   ( exc# )     \ restore prev return stack
-        r> handler !    ( exc# )     \ restore prev handler
-        r> swap >r      ( saved-sp ) \ exc# on return stack
-        sp! drop r>     ( exc# )     \ restore stack
-        \ Return to the caller of CATCH because return
-        \ stack is restored to the state that existed
-        \ when CATCH began execution
-    then ;
+\ : throw     ( ??? exception# -- ??? exception# )
+\     ?dup if             ( exc# )     \ 0 THROW is no-op
+\         handler @ rp!   ( exc# )     \ restore prev return stack
+\         r> handler !    ( exc# )     \ restore prev handler
+\         r> swap >r      ( saved-sp ) \ exc# on return stack
+\         sp! drop r>     ( exc# )     \ restore stack
+\         \ Return to the caller of CATCH because return
+\         \ stack is restored to the state that existed
+\         \ when CATCH began execution
+\     then ;
 
 .( ... end of exception.f ) cr
