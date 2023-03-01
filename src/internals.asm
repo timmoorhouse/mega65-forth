@@ -520,8 +520,10 @@ _RPSTORE
 W_RPAT
         !word *+2
         jsr RPAT
+        clc
+        adc #2 ; account for the call to rp@
 !if 0 {        
-        clc    ; TODO should we skip the +1 ????
+        ; clc    ; TODO should we skip the +1 ????
         adc #1 ; we want the value returned by rp@ to point to the top value on the return stack, not the byte below
 }        
         pha
