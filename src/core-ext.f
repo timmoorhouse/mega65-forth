@@ -41,18 +41,15 @@
 
 : compile, ( xt -- ) , ; ( compile-only )
 
-: endcase ( C: case-sys1 of-sys -- case-sys2 ) ( -- )
+: endcase ( C: case-sys -- ) ( x -- )
   postpone drop 0 ?do postpone then loop ; immediate compile-only
 
-\ TODO duplication with then
-\ TODO From discussion in ANSI A.3.2.3.2:
-\   : ENDOF >R POSTPONE ELSE R> ; IMMEDIATE
-: endof postpone branch here rot 1+ rot 0 , \ branch to endcase
-  here over - swap ! ; immediate compile-only \ branch of chained condition checks
+: endof  ( C: case-sys1 of-sys -- case-sys2 ) ( -- )
+  >r postpone else r> ; immediate compile-only
 
 : erase ( addr u ) 0 fill ;
 
-: hex ( -- ) 16 base ! ;
+: hex ( -- ) #16 base ! ;
 
 : holds ( c-addr u -- ) begin dup while 1- 2dup + c@ hold repeat 2drop ;
 
@@ -66,10 +63,8 @@
 \ TODO marker
 : marker ( "<spaces>name" -- ) ( -- ) create does> ;
 
-\ TODO From discussion in ANSI A.3.2.3.2:
-\     : OF 1+ >R POSTPONE OVER POSTPONE = POSTPONE IF POSTPONE DROP R> ; IMMEDIATE
 : of ( C: -- of-sys ) ( x1 x1 -- | x1 ) 
-  postpone over postpone = postpone if postpone drop ; immediate compile-only
+  1+ >r postpone over postpone = postpone if postpone drop r> ; immediate compile-only
 
 \ PAD see core.f
 
