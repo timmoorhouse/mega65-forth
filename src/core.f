@@ -29,9 +29,9 @@
 ( ! * + +! +LOOP , - . / 0< 0= 1+ 1- 2* 2/ 2DROP 2DUP 2OVER 2SWAP : ; < = >IN )
 ( >NUMBER >R ?DUP @ ACCEPT ALIGN ALIGNED ALLOT AND BASE BL C! C@ CONSTANT     )
 ( COUNT CR CREATE DECIMAL DEPTH <DO> DOES> DROP DUP EMIT EVALUATE EXECUTE     )
-( EXIT FILL HERE I IMMEDIATE INVERT J KEY LEAVE <LOOP> LSHIFT MIN NEGATE OR   )
-( OVER POSTPONE QUIT R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP TYPE U< UM*      )
-( UM/MOD UNLOOP VARIABLE XOR [ ]                                              )
+( EXIT FILL HERE I IMMEDIATE INVERT J KEY LEAVE <LOOP> LSHIFT NEGATE OR OVER  )
+( POSTPONE QUIT R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP TYPE U< UM* UM/MOD    )
+( UNLOOP VARIABLE XOR [ ]                                                     )
 
 ( *************************************************************************** )
 ( * internal helper words                                                   * )
@@ -159,7 +159,7 @@ variable hld ( TODO can we remove this? )
 
 : m* ( n1 n2 -- d ) 2dup xor >r abs swap abs um* r> 0< if dnegate then ;
 
-( TODO min - once create is no longer using it)
+: min ( n1 n2 -- n3 ) 2dup > if swap then drop ;
 
 : max ( n1 n2 -- n3 ) 2dup < if swap then drop ;
 

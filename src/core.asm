@@ -1804,24 +1804,6 @@ beq +
 +       jmp POP
 
 ; ****************************************************************************
-; MIN 
-; (n_1 n_2 -- n_3)
-; ANSI 6.1.1880
-
-; TODO move to core.f? it's used by create currently
-
-        +WORD "min"
-W_MIN
-        !word DO_COLON
-        !word W_2DUP
-        !word W_SWAP
-        !word W_LESS
-        +ZBRANCH +
-        !word W_SWAP
-+       !word W_DROP
-        !word W_PSEMI
-
-; ****************************************************************************
 ; NEGATE
 ; (n_1 -- n_2)
 ; ANSI 6.1.1910
