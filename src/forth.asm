@@ -79,6 +79,7 @@ COLOUR_ERROR  =   4 ; purple
 ; TODO neg for twos complement
 ; TODO phw to push a word? only out of memory (maybe not so useful) or immediate (could be useful)
 ; TODO quad stuff for double precision things
+; TODO bit supports $nn,x
 
 ; TODO when pushing words onto the return stack, we've been pushing MSB then LSB (so the result will have LSB first in memory)
 ; BUT it looks like phw pushes the LSB first then the MSB.  Should we switch the order we use the return stack in?

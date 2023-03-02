@@ -122,13 +122,6 @@ read_timer
 ; ****************************************************************************
 ; 0
 
-; TODO remove 0 1 2 3 and just use W_CLITERAL?
-
-;      0 1 2 3        ---  n
-;               These small numbers are used so often that it is 
-;               attractive to define them by name in the dictionary as 
-;               constants.
-
         +WORD "0"
 W_ZERO
         !word DO_CONSTANT
@@ -173,13 +166,6 @@ W_2MINUS
         !word W_TWO
         !word W_SUB
         !word W_PSEMI
-
-; ****************************************************************************
-
-        +WORD "benchmark"
-W_BENCHMARK
-        !word *+2
-        jmp NEXT
 
 ; ****************************************************************************
 ; 0BRANCH
@@ -332,6 +318,12 @@ W_PSEARCH_WORDLIST
         !word W_RFROM
         !word W_FALSE
         !word W_PSEMI
+
+; ****************************************************************************
+; ?COMPILE-ONLY
+; (nt -- flag)
+
+; TODO
 
 ; ****************************************************************************
 ; ?HIDDEN
@@ -816,25 +808,6 @@ W_QCSP
 W_CSP
         !word DO_USER
 ;          !byte $2C
-}
-
-; ****************************************************************************
-; ?COMP
-
-;      ?COMP
-;               Issue error message if not compiling.
-
-!if 0 {
-        +WORD "?comp"
-W_QCOMP
-        !word DO_COLON
-;          !word STATE
-;          !word AT
-;          !word ZEQU
-;          !word CLIT
-;          !byte $11
-;          !word QERR
-        !word W_PSEMI
 }
 
 ; ****************************************************************************

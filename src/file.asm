@@ -339,7 +339,10 @@ W_INCLUDED
         !word DO_COLON
         !word W_RSLO
         !word W_OPEN_FILE
-        !word W_DROP            ; TODO check status
+        +ZBRANCH +
+        +LITERAL E_NONEXISTENT_FILE ; TODO what error? need to figure out what status byte looks like
+        !word W_THROW
++
         !word W_TOR             ; need to move to return stack since include-file can do arbitrary things to the data stack
         !word W_RAT
         !word W_INCLUDE_FILE
@@ -403,6 +406,9 @@ W_OPEN_FILE
         !word W_SETLFS
 
         !word W_OPEN 
+
+        ; TODO if fam includes read, check that file exists
+
         ; max 10 channels open
         ; $98  ldtnd = # open channels
         ; $35a lat   = logical channel table

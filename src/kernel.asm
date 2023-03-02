@@ -8,6 +8,7 @@
 ; TODO pntr = $00ec (used by OUT in fig)
 ; TODO interrupt vectors
 ; TODO some of these can be implemented ourselves without much risk of future compatability problems (SETBANK, etc)
+; TODO capture carry flag on kernel call return
 
 ; C64 jump table https://sta.c64.org/cbm64krnfunc.html
 ; C128 jump table
