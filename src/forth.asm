@@ -328,8 +328,6 @@ DAREA              = SBUF - DAREA_LEN
 
 !macro NONAME {
         +ALIGN
-        ; TODO should we have a byte for flags (+ len 0 name) then a pad byte for alignment?
-        ; this would ensure we'd have flags before every word
 }
 
 !set _here = $0

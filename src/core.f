@@ -159,6 +159,8 @@ variable hld ( TODO can we remove this? )
 
 : m* ( n1 n2 -- d ) 2dup xor >r abs swap abs um* r> 0< if dnegate then ;
 
+( TODO min - once create is no longer using it)
+
 : max ( n1 n2 -- n3 ) 2dup < if swap then drop ;
 
 ( TODO cmove is in STRING but move is in CORE - make move the native one )
