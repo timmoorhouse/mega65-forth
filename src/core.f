@@ -164,7 +164,7 @@ variable hld ( TODO can we remove this? )
 ( TODO cmove is in STRING but move is in CORE - make move the native one )
 : move ( addr1 addr2 u -- ) >r 2dup < r> swap if cmove> else cmove then ;
 
-( TODO remove the 68 + once we change hold? )
+( TODO the 68 is enough space for WORD and HOLD transient regions )
 : pad ( -- c-addr ) here 68 + ; ( CORE-EXT ) 
 
 : recurse ( -- ) latestxt , ; immediate
@@ -235,7 +235,7 @@ variable hld ( TODO can we remove this? )
 
 : . ( n -- ) s>d d. ;
 
-: word ( char "<chars>ccc<char>" -- c-addr ) (parse-name) dup pad c! pad 1+ swap cmove pad ;
+: word ( char "<chars>ccc<char>" -- c-addr ) (parse-name) dup here c! here 1+ swap cmove here ;
 
 : ['] ( "<spaces>name" -- ) ( -- xt ) ' postpone literal ; immediate compile-only
 

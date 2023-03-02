@@ -306,13 +306,24 @@ W_INCLUDE_FILE
 
 -       !word W_REFILL
         +ZBRANCH +
-        !word W_PEVALUATE       ; TODO this should be wrapped in a catch
-        +BRANCH -
-+
+
+        +LITERAL W_PEVALUATE       ; TODO this should be wrapped in a catch
+        !word W_CATCH
+
+        !word W_QDUP
+        +ZBRANCH -
+        
+        +BRANCH ++
+
++       !word W_ZERO
+
+++
 
         !word W_NRFROM
         !word W_RESTORE_INPUT
         !word W_DROP            ; TODO check status from restore
+
+        !word W_THROW           ; Propagate an exception if there was one
 
         !word W_PSEMI
 }

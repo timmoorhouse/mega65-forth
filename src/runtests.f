@@ -50,6 +50,7 @@ include internalstest.f
 \ \ S" toolstest.fth" INCLUDED
 \ \ S" searchordertest.fth" INCLUDED
 \ \ S" stringtest.fth" INCLUDED
-\ \ REPORT-ERRORS
+
+REPORT-ERRORS
 
 CR .( Forth tests completed ) CR CR

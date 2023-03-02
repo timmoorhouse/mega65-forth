@@ -69,7 +69,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
 - EXCEPTION
   - [ ] Need to be able to throw exceptions from assembler.  This likely means changing the `THROW` implementation to be native code instead of Forth bytecode.
   - [ ] Many bits of code need to be updated to throw an exception for error conditions.
-  - [ ] Need to handle propagating exceptions after restoring input in `INCLUDE-FILE` like we do for `EVALUATE`
 - FILE
   - [ ] `S"` is incorrect when interpreting.
   - [ ] Need two separate transient areas for `S"` and `S\"` and implement their interpretation semantics.
@@ -188,11 +187,6 @@ INCORRECT RESULT: t[ 0 0 0 ustep +uwrap? 256 gd9
 INCORRECT RESULT: t[ 0 -max-int negate -max-int over gd8 -2> 2 ]t
 INCORRECT RESULT: t[ 0 min-int 1+ 1 min-int gd8 -> 2 ]t
 ``` 
-
-From core extension:
-```
-INCORRECT RESULT: t[ pad chars/pad 0 checkpad -> true ]t
-```
 
 ## `MARKER`
 
