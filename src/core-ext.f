@@ -35,16 +35,14 @@
 : c" ( "ccc<quote>" -- ) ( -- c-addr ) 
   [char] " parse postpone (c") ( addr u ) dup c, swap over here swap cmove allot ; immediate compile-only
 
+\ TODO From discussion in ANSI A.3.2.3.2:
+\ 0 CONSTANT CASE IMMEDIATE
 : case ( C: -- case-sys ) ( -- ) 0 ; immediate compile-only
 
 : compile, ( xt -- ) , ; ( compile-only )
 
-\ TODO From discussion in ANSI A.3.2.3.2:
-\     : ENDCASE POSTPONE DROP 0 ?DO POSTPONE THEN LOOP ; IMMEDIATE
 : endcase ( C: case-sys1 of-sys -- case-sys2 ) ( -- )
-    postpone drop
-    ?dup if 0 do here over - swap ! loop then \ TODO ?do
-    ; immediate compile-only
+  postpone drop 0 ?do postpone then loop ; immediate compile-only
 
 \ TODO duplication with then
 \ TODO From discussion in ANSI A.3.2.3.2:
@@ -70,8 +68,8 @@
 
 \ TODO From discussion in ANSI A.3.2.3.2:
 \     : OF 1+ >R POSTPONE OVER POSTPONE = POSTPONE IF POSTPONE DROP R> ; IMMEDIATE
-: of ( C: -- of-sys ) ( x1 x1 -- | x1 ) postpone over postpone = postpone 0branch here 0 , 
-    postpone drop ; immediate compile-only
+: of ( C: -- of-sys ) ( x1 x1 -- | x1 ) 
+  postpone over postpone = postpone if postpone drop ; immediate compile-only
 
 \ PAD see core.f
 

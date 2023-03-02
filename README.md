@@ -156,9 +156,9 @@ The code is getting to the point where automating the test suite makes sense.  I
 
 Test | Status | Comments
 :-- | :--: | :--
-[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | PASS[^petscii] |
+[Preliminaries](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) | PASS[^petscii] | 1 expected error reported.
 [BLOCK](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/blocktest.fth) | TBD | Too early to attempt
-[CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | **FAIL** | Some [problems](#ummod) with `UM/MOD`
+[CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr) | **FAIL** | Some [problems](#ummod) with `UM/MOD`.  17 errors reported.
 [CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | **FAIL**[^petscii] | A few failures
 [CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | **FAIL** | Getting closer - a fair bit still to implement (`MARKER` in particular).  Can't yet attempt the full test.
 [DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD | Too early to attempt
@@ -202,7 +202,7 @@ INCORRECT RESULT: t[ ma? MA0 ma? MA1 ma? MA2 -> false false false ]t
 
 ## PETSCII
 
-Because we are using the PETSCII character set and not ASCII some tests are expected to fail, including the following.
+Because we are using the PETSCII character set and not ASCII some tests are expected to fail.  I'm not considering these as errors.
 
 From preliminaries:
 ```
