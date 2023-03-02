@@ -1063,7 +1063,24 @@ W_CREATE
 
         !word W_PARSE_NAME
 
-        ; TODO check for zero length and throw E_ZERO_LENGTH_NAME
+;!if ENABLE_RUNTIME_CHECKS {
+        !word W_DUP
+        !word W_ZEQUAL
+        +ZBRANCH +
+        +LITERAL E_ZERO_LENGTH_NAME
+        !word W_THROW
++
+;}
+
+;!if ENABLE_RUNTIME_CHECKS {
+        +CLITERAL NAME_LEN_MASK ; limit the length
+        !word W_OVER
+        !word W_LESS
+        +ZBRANCH +
+        +LITERAL E_NAME_TOO_LONG
+        !word W_THROW
++
+;}
 
 !if CASE_INSENSITIVE {
         !word W_2DUP
@@ -1096,9 +1113,6 @@ W_CREATE
         !word W_AT
         !word W_COMMA
         !word W_STORE
-
-        +CLITERAL NAME_LEN_MASK ; limit the length
-        !word W_MIN ; TODO throw E_NAME_TOO_LONG if > max len
 
         ; (c-addr u)
 
