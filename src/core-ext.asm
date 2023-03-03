@@ -526,7 +526,7 @@ W_PPARSE_NAME ; (char "<chars>name<char>" -- c-addr u)
         sta 1,x                 ; (addr)
 
         ; initialize len
-        dex
+        dex                     ; TODO stack check
         dex
         sty 1,x
         sty 0,x                 ; (addr len)

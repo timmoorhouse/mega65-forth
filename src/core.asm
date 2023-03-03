@@ -153,7 +153,7 @@ W_PPLOOP
 
         ldx <XSAVE
         inx                     ; pop increment from data stack
-        inx
+        inx                     ; TODO stack check
 
         ; now if y & 1 is set, exactly one of the conditions was true
         ; meaning we crossed the boundary and so should exit the loop
@@ -1563,7 +1563,7 @@ W_EXECUTE
         sta <W
         lda 1,x
         sta <W+1
-        inx
+        inx             ; TODO stack check
         inx
         jmp &DO_JUMP_W
 
@@ -1982,7 +1982,7 @@ _pquit_read_loop
 W_RFROM
         !word *+2
         ; see also 2r> (core-ext), nr> (tools-ext)
-        dex
+        dex ; TODO data stack check
         dex ; TODO PUSH_MSB_FIRST
 !if PUSH_MSB_FIRST {        
         pla
