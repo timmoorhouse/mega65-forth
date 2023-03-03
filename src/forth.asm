@@ -413,6 +413,9 @@ POP2
 POP
         inx
         inx
+!if ENABLE_RUNTIME_CHECKS {
+        ; TODO check for underflow here (would need to check that words aren't bypassing this)
+}
         bra NEXT
 
         ; A + top of stack is the 16-bit value
@@ -420,6 +423,9 @@ PUSH
         dex
         dex
         ; jmp PUT
+!if ENABLE_RUNTIME_CHECKS {
+        ; TODO check for overflow here (would need to check that words aren't bypassing this)
+}
 
 PUT
 
@@ -705,7 +711,8 @@ _main_do_quit
         !word W_CR
 
 
-        +BRANCH _main_loop
+        ; +BRANCH _main_loop
+        +BRANCH _main_clear_stack_and_enter_loop
 
 !if AUTOBOOT {
 AUTOBOOT_FILENAME

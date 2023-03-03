@@ -1452,6 +1452,7 @@ _pevaluate_loop
 _pevaluate_nonimmediate_interpreting
 
         !word W_EXECUTE
+        !word W_QSTACK
         +BRANCH _pevaluate_done_word
 
 _pevaluate_immediate
@@ -1461,6 +1462,7 @@ _pevaluate_immediate
         !word W_DOTS,W_CR
 }
         !word W_EXECUTE
+        !word W_QSTACK
         +BRANCH _pevaluate_done_word
 
 _pevaluate_word_not_found
@@ -1506,7 +1508,8 @@ _pevaluate_error
         !word W_FOREGROUND
 }
         !word W_BL,W_EMIT
-        !word W_2RAT
+        ; !word W_2RAT
+        !word W_2RFROM
         !word W_TYPE
         +DOTQ "? "
 !ifdef COLOUR_ERROR {
@@ -1514,6 +1517,9 @@ _pevaluate_error
         !word W_FOREGROUND
 }
 
+        ; TODO clean up this ... maybe always leave an exception # on the stack
+        ; and throw in done_word?
+        ; !word W_2RFROM,W_2DROP
         +LITERAL E_UNDEFINED_WORD
         !word W_THROW
 

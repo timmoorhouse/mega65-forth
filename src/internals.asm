@@ -848,30 +848,27 @@ W_QPAIR
 
 ; ****************************************************************************
 ; ?STACK
+; ( -- )
+;               Check if the stack is out of bounds.  
 
-;      ?STACK
-;               Issue an error message if the stack is out of bounds.  
-;               This definition may be installation dependent.
-
-!if 0 {
         +WORD "?stack"
 W_QSTACK
         !word DO_COLON
-;          !word CLIT
-;          !byte TOS
-;          !word SPAT
-;          !word ULESS
-;          !word ONE
-;          !word QERR
-;          !word SPAT
-;          !word CLIT
-;          !byte BOS
-;          !word ULESS
-;          !word CLIT
-;          !byte 7
-;          !word QERR
-        !word W_PSEMI
+!if 1 {
+        +LITERAL base_page + TOS - 2
+        !word W_SPAT
+        !word W_ULESS
+        +LITERAL E_DATA_STACK_UNDERFLOW
+        !word W_AND
+        !word W_THROW
+        !word W_SPAT
+        +LITERAL base_page + BOS
+        !word W_ULESS
+        +LITERAL E_DATA_STACK_OVERFLOW
+        !word W_AND
+        !word W_THROW
 }
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; FIG
