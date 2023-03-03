@@ -83,7 +83,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Rename/delete the autoboot.f file used to compile the dictionary after bootstrapping completes.[^alpha]
   - [ ] Automate build of the release disk image.[^alpha]
 - Error checking (and throwing the appropriate exception)
-  - [ ] Data stack overflow/underflow.[^alpha]
+  - [ ] Data stack overflow/underflow.[^alpha] (partially implemented)
   - [ ] Return stack overflow/underflow.[^alpha]
   - [ ] `ALLOT` overflow/underflow.[^alpha]
   - [ ] Unaligned address.

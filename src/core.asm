@@ -1165,7 +1165,7 @@ W_DECIMAL
 W_DEPTH
         !word *+2
         ; ldy #0 ; TODO
-        lda #TOS
+        lda #TOS-2
         stx <XSAVE
         sec
         sbc XSAVE
@@ -1350,6 +1350,7 @@ W_EVALUATE
         !word W_SAVE_INPUT
         !word W_NTOR
 
+        ; TODO we might want to move the setting of INPUT_LEN and INPUT_BUFFER to PEVALUATE?
         +LITERAL &INPUT_LEN
         !word W_STORE
         +LITERAL &INPUT_BUFFER
@@ -1389,6 +1390,8 @@ W_PEVALUATE             ; ( -- )
 _pevaluate_loop
         !word W_PARSE_NAME
 
+        ; TODO this is desperately in need of a cleanup
+
         ; (c-addr u)
 
         !word W_QDUP
@@ -1427,6 +1430,8 @@ _pevaluate_loop
 
         !word W_QDUP
         +ZBRANCH _pevaluate_word_not_found
+
+        ; (xt 1 | xt -1) (R: c-addr u)
 
         ; TODO check compile-only and throw E_INTERPRET_COMPILE_ONLY where appropriate
         
@@ -1472,6 +1477,8 @@ _pevaluate_word_not_found
         !word W_2RAT
         !word W_STONUMBER
         +ZBRANCH _pevaluate_stonumber_failed
+
+        ; (d) (R: c-addr u)
 
         !word W_DROP ; drop MSW
 

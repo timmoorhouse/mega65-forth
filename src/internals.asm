@@ -855,7 +855,7 @@ W_QPAIR
 W_QSTACK
         !word DO_COLON
 !if 1 {
-        +LITERAL base_page + TOS - 2
+        +LITERAL base_page + TOS - 4
         !word W_SPAT
         !word W_ULESS
         +LITERAL E_DATA_STACK_UNDERFLOW

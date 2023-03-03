@@ -522,7 +522,7 @@ WARM
         sty <R0+1
 
         ; Reposition data stack
-        ldx #TOS
+        ldx #TOS-2
 
         ; Save data stack pointer in S0
         stx <S0

@@ -36,13 +36,6 @@ IN              !word 0 ; Offset of start of parse area within input buffer
 
 HERE            !word 0
 
-TEMP1           !word 0 ; temporaries
-TEMP2           !word 0
-TEMP3           !word 0
-
-WORDP           !word 0 ; temporary pointer to iterate over words TODO REMOVE
-STRING          !word 0 ; pointer to string to print, etc TODO REMOVE
-
 BASE            !word 0
 STATE           !word 0
 R0              !word 0
@@ -50,13 +43,15 @@ S0              !word 0
 LATEST          !word 0
 LATEST_XT       !word 0
 
-!ifdef DEBUG {
-;XW        =$12           ; scratch reg. to next code field add
-;NP        =$14           ; scratch reg. pointing to name field
-}
-
 ; BOS       = $20                         ; bottom of data stack, in zero-page.
 ; TOS       = $9E                         ; top of data stack, in zero-page.
+
+TEMP1           !word 0 ; temporaries
+TEMP2           !word 0
+TEMP3           !word 0
+
+WORDP           !word 0 ; temporary pointer to iterate over words TODO REMOVE
+STRING          !word 0 ; pointer to string to print, etc TODO REMOVE
 
 BOS = * ; Bottom of data stack
 
@@ -64,6 +59,7 @@ BOS = * ; Bottom of data stack
                 !align $ff, $9E
 
 TOS = * ; Top of data stack
+        ;!word 0
 
 }
         ; !align 255, 0
