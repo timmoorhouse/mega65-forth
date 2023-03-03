@@ -88,7 +88,7 @@ W_CMOVE
         sta _cmove_src+1
 
         +dma_inline
-        !byte $0b               ; F018B 12-byte format        
+        !byte $0b               ; F018B 12-byte format ; TODO 11-byte?   
         +dma_options_end
         !byte dma_cmd_copy
 _cmove_count

@@ -190,6 +190,12 @@ INCORRECT RESULT: t[ 0 -max-int negate -max-int over gd8 -2> 2 ]t
 INCORRECT RESULT: t[ 0 min-int 1+ 1 min-int gd8 -> 2 ]t
 ``` 
 
+From string (these might be PETSCII things?):
+```
+INCORRECT RESULT: t[ s11 s12 compare -> 1 ]t
+INCORRECT RESULT: t[ s12 s11 compare -> -1 ]t
+```
+
 ## `MARKER`
 
 `MARKER` has not yet been implemented.  This will cause the following errors.
