@@ -41,7 +41,7 @@ declare -A opt=(
     [xmega65]=$(realpath -m "$topdir/../xemu/build/bin/xmega65.native")
 )
 
-ARGS=$(getopt -o fhnqv -l acme:,build,builddir:,c1541:,debug,dry-run,force,help,m65:,m65dbg:,mega65_ftp:,quiet,screenshot,test,verbose,xmega65: -n $(basename "$0") -- "$@") || ARGS='-?'
+ARGS=$(getopt -o fhnqv -l acme:,build,builddir:,c1541:,debug,dry-run,force,help,m65:,m65dbg:,mega65_ftp:,quiet,release,release-test,screenshot,test,verbose,xmega65: -n $(basename "$0") -- "$@") || ARGS='-?'
 eval set -- "$ARGS"
 
 while [ $# -gt 0 ]; do
@@ -52,7 +52,7 @@ while [ $# -gt 0 ]; do
         shift 2
         ;;
 
-    --build|--debug|--screenshot|--test)
+    --build|--debug|--release|--release-test|--screenshot|--test)
         opt[${1#--}]=1
         unset opt[all]
         shift
@@ -154,13 +154,64 @@ EOF
         src/forth.asm
 
     # TODO generate d81 image with everything
-    cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "${opt[builddir]}/mega65-forth.d81"
+    cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "${opt[builddir]}/mega65-forth-build.d81"
     # cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" autoboot.c65
-    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth-skeletal.prg" forth-skeletal
-    add_text_files "${opt[builddir]}/mega65-forth.d81" \
+    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth-build.d81" -write "${opt[builddir]}/forth-skeletal.prg" forth-skeletal
+    add_text_files "${opt[builddir]}/mega65-forth-build.d81" \
         src/autoboot.f \
         src/benchmark.f \
-        src/bootstrap.f \
+        src/bootstrap-min.f \
+        src/bootstrap-full.f \
+        src/block.f         src/block-ext.f \
+        src/core.f          src/core-ext.f \
+        src/double.f        src/double-ext.f \
+        src/exception.f \
+        src/facility.f      src/facility-ext.f \
+        src/file.f          src/file-ext.f \
+        src/floating.f      src/floating-ext.f \
+        src/internalstest.f \
+        src/locals.f        src/locals-ext.f \
+        src/memory.f \
+        src/search.f        src/search-ext.f \
+        src/string.f        src/string-ext.f \
+        src/tools.f         src/tools-ext.f \
+        src/xchar.f         src/xchar-ext.f \
+        src/runtests.f \
+        "$topdir/test/forth2012-test-suite/src/prelimtest.fth" \
+        "$topdir/test/forth2012-test-suite/src/tester.fr" \
+        "$topdir/test/forth2012-test-suite/src/ttester.fs" \
+        "$topdir/test/forth2012-test-suite/src/core.fr" \
+        "$topdir/test/forth2012-test-suite/src/coreplustest.fth" \
+        "$topdir/test/forth2012-test-suite/src/utilities.fth" \
+        "$topdir/test/forth2012-test-suite/src/errorreport.fth" \
+        "$topdir/test/forth2012-test-suite/src/coreexttest.fth" \
+        "$topdir/test/forth2012-test-suite/src/blocktest.fth" \
+        "$topdir/test/forth2012-test-suite/src/doubletest.fth" \
+        "$topdir/test/forth2012-test-suite/src/exceptiontest.fth" \
+        "$topdir/test/forth2012-test-suite/src/facilitytest.fth" \
+        "$topdir/test/forth2012-test-suite/src/filetest.fth" \
+        "$topdir/test/forth2012-test-suite/src/localstest.fth" \
+        "$topdir/test/forth2012-test-suite/src/memorytest.fth" \
+        "$topdir/test/forth2012-test-suite/src/toolstest.fth" \
+        "$topdir/test/forth2012-test-suite/src/searchordertest.fth" \
+        "$topdir/test/forth2012-test-suite/src/stringtest.fth"
+    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth-build.d81" -dir > "${opt[builddir]}/mega65-forth-build.txt"
+
+    cmd ls -l "${opt[builddir]}/forth-skeletal.prg"
+}
+
+do_release() {
+    # Generate a release disk image from the build one ...
+    # TODO copy disk image back from the MEGA65
+    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth-build.d81" -read forth-minimal,p "${opt[builddir]}/forth-minimal"
+    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth-build.d81" -read forth-complete,p "${opt[builddir]}/forth-complete"
+
+    cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "${opt[builddir]}/mega65-forth.d81"
+    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth-complete" forth-complete,p
+    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth-minimal" forth-minimal,p
+    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth-skeletal.prg" forth-skeletal
+    add_text_files "${opt[builddir]}/mega65-forth.d81" \
+        src/benchmark.f \
         src/bootstrap-min.f \
         src/bootstrap-full.f \
         src/block.f         src/block-ext.f \
@@ -198,7 +249,6 @@ EOF
         "$topdir/test/forth2012-test-suite/src/stringtest.fth"
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -dir > "${opt[builddir]}/mega65-forth.txt"
 
-    cmd ls -l "${opt[builddir]}/forth-skeletal.prg"
 }
 
 # could run xemu headless, full speed to do these ...
@@ -224,6 +274,33 @@ do_bootstrap() {
 }
 
 do_test() {
+    if [ -n "${opt[emulate]}" ]; then
+
+        cmd "${opt[xmega65]}" "${xmega65opts[@]}" -8 "${opt[builddir]}/mega65-forth-build.d81"
+        # -prg "${opt[builddir]}/forth.prg"
+
+        # cmd bg "${opt[xmega65]}" "${xmega65opts[@]}" -8 "${opt[builddir]}/mega65-forth.d81"
+        # cmd sleep 10
+        # cmd "${opt[m65]}" "${m65opts[@]}" -t 'require "bootstrap.f"'
+    else
+        "${opt[m65]}" --quiet --reset
+
+        cmd "${opt[mega65_ftp]}" \
+            -c "put ${opt[builddir]}/mega65-forth-build.d81" \
+            -c "mount mega65-forth-build.d81" \
+            -c quit
+
+        local -a m65opts_
+        [ -n "${opt[debug]}" ] || m65opts_+=(--run)
+        cmd "${opt[m65]}" "${m65opts[@]}" "${m65opts_[@]}" --quiet "${opt[builddir]}/forth-skeletal.prg"
+
+        # TODO
+        # "${opt[m65dbg]}" load "${opt[builddir]}/forth-skeletal.prg"
+
+    fi
+}
+
+do_release_test() {
     if [ -n "${opt[emulate]}" ]; then
 
         cmd "${opt[xmega65]}" "${xmega65opts[@]}" -8 "${opt[builddir]}/mega65-forth.d81"
@@ -257,5 +334,7 @@ do_debug() {
 [ -z "${opt[all]}" -a -z "${opt[build]}"       ] || do_build
 [ -z "${opt[all]}" -a -z "${opt[test]}"        ] || do_test
 
-[ -z "${opt[debug]}"       ] || do_debug
-[ -z "${opt[screenshot]}"  ] || do_screenshot
+[ -z "${opt[debug]}"        ] || do_debug
+[ -z "${opt[screenshot]}"   ] || do_screenshot
+[ -z "${opt[release]}"      ] || do_release
+[ -z "${opt[release-test]}" ] || do_release_test  

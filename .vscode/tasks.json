@@ -29,6 +29,28 @@
 		},
 		{
 			"type": "shell",
+			"label": "Release",
+			"linux": {
+				"command": "./bin/build.sh",
+				"args": ["--release"]
+			},
+			"windows": {
+				"command": "./bin/test.cmd"
+			}
+		},			
+		{
+			"type": "shell",
+			"label": "Release Test",
+			"linux": {
+				"command": "./bin/build.sh",
+				"args": ["--release-test"]
+			},
+			"windows": {
+				"command": "./bin/test.cmd"
+			}
+		},		
+		{
+			"type": "shell",
 			"label": "Screenshot",
 			"linux": {
 				"command": "./bin/build.sh",
