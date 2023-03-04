@@ -730,6 +730,7 @@ _stonumber_check_base_set
 ; ( -- c-addr )
 ;
 ; Return the location of the next string buffer
+; TODO return the length also?
 
         +WORD "sbuf"
 W_SBUF

@@ -189,7 +189,7 @@ variable hld ( TODO can we remove this? )
   state @ if
     postpone sliteral
   else
-    sbuf swap 2dup 2>r cmove 2r>
+    sbuf swap 2dup 2>r cmove 2r> ( TODO klunky )
   then ; immediate
 
 : ." ( "ccc<quote>" -- ) postpone s" postpone type ; immediate compile-only

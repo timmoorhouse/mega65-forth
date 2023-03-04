@@ -70,7 +70,9 @@
 
 \ TODO s\"
 \ see http://www.forth200x.org/escaped-strings.html
-: s\" ( "ccc<quote>" -- ) ( -- c-addr u ) postpone s" ; immediate
+: s\" ( "ccc<quote>" -- ) ( -- c-addr u ) 
+  postpone s" 
+  ; immediate compile-only
 
 : to ( x "<spaces>name" -- ) 
   state @ if
