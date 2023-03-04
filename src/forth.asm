@@ -559,7 +559,7 @@ WARM
         jsr EMIT
         lda #11                 ; Disable shift-mega case changes TODO skip this?
         jsr EMIT
-!if 1 {                         ; TODO this seems to cause problems on a real MEGA65
+!if 0 {                         ; TODO this seems to cause problems on a real MEGA65
         lda #27                 ; ESC 5 - switch to 80x50
         jsr EMIT
         lda #53
