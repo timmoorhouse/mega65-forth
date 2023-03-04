@@ -33,7 +33,7 @@
 
 \ TODO c"
 : c" ( "ccc<quote>" -- ) ( -- c-addr ) 
-  [char] " parse postpone (c") ( addr u ) dup c, swap over here swap cmove allot ; immediate compile-only
+  [char] " parse postpone csliteral ; immediate compile-only
 
 \ TODO From discussion in ANSI A.3.2.3.2:
 \ 0 CONSTANT CASE IMMEDIATE

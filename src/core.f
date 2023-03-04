@@ -98,11 +98,24 @@
 ( * more internal helper words                                              * )
 ( *************************************************************************** )
 
+: c, ( char -- ) here c! 1 allot ;
+
 : +- ( n1 n2 -- n3 ) 0< if negate then ; ( TODO REMOVE )
 
 variable hld ( TODO can we remove this? )
 
 : m/mod ( ud1 u2 -- u3 ud4 ) >r 0 r@ um/mod r> swap >r um/mod r> ; ( TODO just for # so far )
+
+( counted string literal )
+: csliteral ( c-addr u -- ) ( -- c-addr )
+  postpone (csliteral) dup c, swap over here swap cmove allot
+  ; immediate compile-only
+
+( string literal )
+( TODO this only works for len <= 255 )
+: sliteral ( c-addr u -- ) ( -- c-addr u ) 
+  postpone csliteral postpone count
+  ; immediate compile-only ( STRING )
 
 ( *************************************************************************** )
 
@@ -121,15 +134,13 @@ variable hld ( TODO can we remove this? )
 
 ( TODO this is just a no-op so far )
 : abort" ( "ccc<quote>" -- ) 
-  [char] " parse 2drop postpone if 
-    -2 postpone literal
-    ( postpone 1 ) postpone throw
+  postpone if 
+    [char] " parse postpone sliteral postpone type ( TODO postpone ." )
+    -2 postpone literal postpone throw
   postpone then ; immediate compile-only
 
 : abs ( n -- u ) dup +- ;
 ( : abs dup 0< if negate then ; )
-
-: c, ( char -- ) here c! 1 allot ;
 
 : cell+ ( a-addr1 -- a-addr2 ) 2+ ;
 
@@ -176,7 +187,7 @@ variable hld ( TODO can we remove this? )
 ( TODO alignment after string? )
 ( TODO s" broken when interpreting )
 : s" ( "ccc<quote>" -- ) ( -- c-addr u ) 
-  [char] " parse postpone (s") dup c, swap over here swap cmove allot ; immediate
+  [char] " parse postpone sliteral ; immediate
 
 : ." ( "ccc<quote>" -- ) postpone s" postpone type ; immediate compile-only
 

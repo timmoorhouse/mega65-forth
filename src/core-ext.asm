@@ -274,24 +274,6 @@ W_PQDO
 }
 
 ; ****************************************************************************
-; C"
-; (???)
-; ANSI 6.2.0855
-
-!if ENABLE_CORE_EXT {
-        +WORD "(c\")"
-W_PCQ
-        ; see also (.")
-        !word DO_COLON
-        !word W_RFROM
-        !word W_DUP 
-        !word W_COUNT
-        !word W_PLUS 
-        !word W_TOR
-        !word W_PSEMI        
-}
-
-; ****************************************************************************
 ; DEFER
 ; Forth 2012 6.2.1173
 

@@ -243,6 +243,27 @@ _inc_I_PUSH
         inw <I
         jmp PUSH
 
+;
+;       SLITERAL pushes an inline counted string to the data stack
+;
+
+        +WORD "(csliteral)"
+W_SLITERAL:
+        !word *+2
+        ; ldy #0 ; TODO
+        lda <I
+        pha
+        ldz &I+1
+        lda (<I),y
+        sec
+        adc <I
+        sta <I
+        bcc +
+        inc <I+1
++
+        tza
+        jmp PUSH
+
 ; ****************************************************************************
 
 ; TODO
