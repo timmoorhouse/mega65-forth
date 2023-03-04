@@ -152,7 +152,7 @@ W_NTOR
         taz
         beq +
 
--       lda 3,x ; TODO PUSH_MSB_FIRST
+-       lda 3,x
         pha
         lda 2,x
         pha
@@ -257,7 +257,7 @@ W_NRFROM
 
 -       dex
         dex
-        pla ; TODO PUSH_MSB_FIRST
+        pla
         sta 0,x
         pla
         sta 1,x

@@ -455,22 +455,10 @@ DO_COLON
         
         ; Start executing the word with the code field pointed to by W
         ; (in a new stack frame)
-!if PUSH_MSB_FIRST {
         lda <I+1 ; push I
         pha
         lda <I
         pha
-} else {
-        phw &I ; TODO why doesn't this work? looks like phw uses the opposite byte order
-}
-
-!if 0 { ; TODO debugging why phw isn't working ...
-        phw &I ; 
-        jsr RDUMP
-        pla
-        pla
-        ldy #0
-}
 
         clc ; ???
         lda <W ; I = W + 2 ; TODO faster to copy then inw?
@@ -506,19 +494,10 @@ W_SEMI
 W_PSEMI
         ; See also exit
         !word *+2
-!if PUSH_MSB_FIRST {        
         pla
         sta <I
         pla
         sta <I+1
-} else {
-        ; TODO plw &I
-        pla
-        sta <I+1
-        pla
-        sta <I
-
-}        
         jmp NEXT
 
 ; ****************************************************************************
@@ -699,17 +678,10 @@ _digit_bad
 W_TOR
         !word *+2
         ; see also 2>r (core-ext), n>r (tools-ext)
-!if PUSH_MSB_FIRST {        
-        lda 1,x ; TODO PUSH_MSB_FIRST
+        lda 1,x
         pha
         lda 0,x
         pha
-} else {
-        lda 0,x ; TODO PUSH_MSB_FIRST
-        pha
-        lda 1,x
-        pha
-}
         jmp POP
 
 ; ****************************************************************************
@@ -1188,15 +1160,13 @@ W_PDO
         !word *+2
 PDO     ; used by (?do)
         ; See also unloop
-!if 1 {
         ; ldy #0 ; TODO
         lda (<I),y
-        pha ; TODO PUSH_MSB_FIRST - looks like this one is backwards!!!
+        pha ; TODO looks like this one is backwards!!!
         inw <I
         lda (<I),y
         pha
         inw <I
-}
 
         lda 3,x
         pha
@@ -1265,17 +1235,10 @@ DO_DOES
         jsr EMIT
 }
         
-!if PUSH_MSB_FIRST {
         lda <I+1
         pha
         lda <I
         pha
-} else {
-        lda <I
-        pha
-        lda <I+1
-        pha
-}
 
         lda <TEMP1
         sta <I
@@ -1581,19 +1544,10 @@ W_EXIT
         jsr CR
         ldy #0
 }
-!if PUSH_MSB_FIRST {        
-        pla
+        pla ; TODO backwards???
         sta <I
         pla
         sta <I+1
-} else {
-        ; TODO plw &I
-        pla
-        sta <I+1
-        pla
-        sta <I
-
-}
         jmp NEXT
 
 ; ****************************************************************************
@@ -1708,15 +1662,9 @@ W_J
         !word *+2
         stx <XSAVE
         tsx
-!if PUSH_MSB_FIRST {        
         lda $107,x
         pha
         lda $108,x
-} else {
-        lda $108,x
-        pha
-        lda $107,x
-}        
         ldx <XSAVE
         jmp PUSH
 
@@ -1747,17 +1695,10 @@ LEAVE                   ; used by (loop) and (+loop)
         pla
         pla
         pla
-!if 1 { ; TODO PUSH_MSB_FIRST {        
         pla ; TODO new I
         sta <I+1 ; TODO BACKWARDS???
         pla
         sta <I
-} else {
-        pla ; TODO new I
-        sta <I
-        pla
-        sta <I+1
-}        
         jmp NEXT
 
 ; ****************************************************************************
@@ -1983,18 +1924,11 @@ W_RFROM
         !word *+2
         ; see also 2r> (core-ext), nr> (tools-ext)
         dex ; TODO data stack check
-        dex ; TODO PUSH_MSB_FIRST
-!if PUSH_MSB_FIRST {        
+        dex
         pla
         sta 0,x ; TODO can we use PUSH and avoid some dex's here?  would save a bit of code size
         pla
         sta 1,x
-} else {
-        pla
-        sta 1,x ; TODO can we use PUSH and avoid some dex's here?  would save a bit of code size
-        pla
-        sta 0,x
-}        
         jmp NEXT
 
 ; ****************************************************************************
@@ -2006,16 +1940,10 @@ W_RFROM
 W_RAT ; TODO rename to W_RFETCH?
         !word *+2
         stx <XSAVE
-        tsx  ; TODO PUSH_MSB_FIRST
-!if PUSH_MSB_FIRST {        
+        tsx
         lda $101,x
         pha
         lda $102,x
-} else {
-        lda $102,x
-        pha
-        lda $101,x
-}        
         ldx <XSAVE
         jmp PUSH
 

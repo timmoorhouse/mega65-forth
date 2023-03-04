@@ -81,15 +81,6 @@ COLOUR_ERROR  =   4 ; purple
 ; TODO quad stuff for double precision things
 ; TODO bit supports $nn,x
 
-; TODO when pushing words onto the return stack, we've been pushing MSB then LSB (so the result will have LSB first in memory)
-; BUT it looks like phw pushes the LSB first then the MSB.  Should we switch the order we use the return stack in?
-; This would mean we'd be free to use phw, but it would also mean we couldn't use words in place as they sit on the
-; return stack.  Should the data stack follow the same convention?  It seems more problematic to do this for the data stack.
-;
-; HOWEVER jsr pushes the MSB of the PC first????
-
-PUSH_MSB_FIRST = 1 ; Enabled is the current expectation
-
 !source "util.asm"
 !source "dma.asm"
 !source "vic4.asm"
