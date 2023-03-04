@@ -71,8 +71,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Many bits of code need to be updated to throw an exception for error conditions.
   - [ ] Clean up the displayed messsages a bit.[^alpha]
 - FILE
-  - [ ] `S"` is incorrect when interpreting.[^alpha]
-  - [ ] Need two separate transient areas for `S"` and `S\"` and implement their interpretation semantics.[^alpha]
+  - [ ] Need two separate transient areas for `S"` and `S\"`.[^alpha]
   - [ ] Handle file access modes.
   - [ ] Fix I/O status handling (when is status from READSS reset?).
   - [ ] Fix handling of I/O error cases.

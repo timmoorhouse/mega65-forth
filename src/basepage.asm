@@ -25,7 +25,7 @@ XSAVE           !byte 0 ; temporary to save S when we need to reuse X
 ; TODO separate XSAVE for kernel calls
 KERNEL_XSAVE    !byte 0 ; just for use in kernel calls
 
-                !byte 0         ; TODO alignment
+NEXT_SBUF       !byte 0
 
 ; TODO input buffer stack (need to support depth of 8)
 ; TODO open file info

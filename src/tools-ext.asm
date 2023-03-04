@@ -48,8 +48,7 @@ W_SCODE
 W_PSCODE
         !word DO_COLON
         !word W_RFROM
-        !word W_LATEST          ; TODO LATESTXT
-        !word W_NAME_TO_INTERPRET
+        !word W_LATESTXT
         !word W_STORE
         !word W_PSEMI
 

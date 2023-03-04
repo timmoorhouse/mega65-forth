@@ -183,11 +183,14 @@ variable hld ( TODO can we remove this? )
 
 : recurse ( -- ) latestxt , ; immediate
 
-( TODO use sliteral! )
 ( TODO alignment after string? )
-( TODO s" broken when interpreting )
 : s" ( "ccc<quote>" -- ) ( -- c-addr u ) 
-  [char] " parse postpone sliteral ; immediate
+  [char] " parse 
+  state @ if
+    postpone sliteral
+  else
+    sbuf swap 2dup 2>r cmove 2r>
+  then ; immediate
 
 : ." ( "ccc<quote>" -- ) postpone s" postpone type ; immediate compile-only
 

@@ -12,11 +12,7 @@
 ;               flag for f=0 write and f=1 for read.  R/W determines the 
 ;               location on mass storage, performs the read-write and 
 ;               performs any error checking.
-;
-;;
-;;                                       R/W
-;;                              Read or write one sector
-;;
+
 !if 0 {
         +WORD "r/w"
 W_RSLW
@@ -48,11 +44,7 @@ W_RSLW
 ;               A user variable containing the block number being 
 ;               interpreted.  If zero, input is being taken from the 
 ;               terminal input buffer.
-;
-;;
-;;                                       BLK
-;;                                       SCREEN 36 LINE 10
-;;
+
         +WORD "blk"
 W_BLK
         !word DO_USER
@@ -73,11 +65,7 @@ W_BLK
 ;               been marked as being updated, it is re-written to disc 
 ;               before block n is read into the buffer.  See also BUFFER, 
 ;               R/W  UPDATE  FLUSH
-;
-;;
-;;                                       BLOCK
-;;                                       SCREEN 60 LINE 1
-;;
+
         +WORD "block"
 W_BLOCK
         !word DO_COLON
@@ -138,11 +126,7 @@ W_BLOCK
 ;               written to the disc.  The block is not read from the disc.  
 ;               The address left is the first cell within the buffer for 
 ;               data storage.
-;
-;;
-;;                                       BUFFER
-;;                                       SCREEN 59 LINE 1
-;;
+
         +WORD "buffer"
 W_BUFFER
         !word DO_COLON
@@ -178,18 +162,10 @@ W_BUFFER
         !word W_PSEMI
 
 ; ****************************************************************************
-; EVALUATE
-; ANSI 7.6.1.1360
-
-; ****************************************************************************
 ; FLUSH
 ; (--)
 ; ANSI 7.6.1.1559
 
-; FIG:
-;;
-;;                                       FLUSH
-;;
         +WORD "flush"
 W_FLUSH
         !word DO_COLON
@@ -212,11 +188,7 @@ W_FLUSH
 ;      LOAD          n  ---                                  L0
 ;               Begin interpretation of screen n.  Loading will terminate 
 ;               at the end of the screen or at ;S.  See ;S and -->.
-;
-;;
-;;                                       LOAD
-;;                                       SCREEN 62 LINE 2
-;;
+
         +WORD "load"
 W_LOAD
         !word DO_COLON
@@ -258,11 +230,7 @@ W_LOAD
 ;               PREV) as altered.  The block will subsequently be 
 ;               transferred automatically to disc should its buffer be 
 ;               required for storage of a different block.
-;
-;;
-;;                                       UPDATE
-;;                                       SCREEN 58 LINE 8
-;;
+
         +WORD "update"
 W_UPDATE
         !word DO_COLON

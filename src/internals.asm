@@ -726,6 +726,21 @@ _stonumber_check_base_set
         !word W_PSEMI
 
 ; ****************************************************************************
+; SBUF
+; ( -- c-addr )
+;
+; Return the location of the next string buffer
+
+        +WORD "sbuf"
+W_SBUF
+        !word *+2
+        ; TODO swap between two buffers
+        lda #<SBUF
+        pha
+        lda #>SBUF
+        jmp PUSH
+
+; ****************************************************************************
 ;      SMUDGE (from FIG)
 ;               Used during word definition to toggle the "smudge bit" in 
 ;               a definition's name field.  This prevents an un-completed 
@@ -906,68 +921,4 @@ W_QSTACK
         +WORD "?terminal"
 W_QTERMINAL
 ;    !word XQTER    ; Vector to code for ?TERMINAL
-}
-
-; ****************************************************************************
-
-; FIG:
-;      ?ERROR        f  n  ---
-;               Issue an error message number n, if the boolean flag is 
-;               true.
-
-; TODO remove, replace with ABORT"
-
-!if 0 {
-        +WORD "?error"
-W_QERROR
-        !word DO_COLON
-;          !word SWAP
-;          !word ZBRANCH
-;L1402:    !word 8        ; L1406-L1402
-;          !word ERROR
-;          !word BRANCH
-;L1405:    !word 4        ; L1407-L1405
-;L1406:    !word DROP
-        !word W_PSEMI
-}
-
-;      ERROR         line  ---  in  blk
-;               Execute error notification and restart of system.  WARNING 
-;               is first examined.  If 1, the text of line n, relative to 
-;               screen 4 of drive 0 is printed.  This line number may be 
-;               positive or negative, and beyond just screen 4.  If 
-;               WARNING=0, n is just printed as a message number (non-disc 
-;               installation).  If WARNING is -1, the definition (ABORT) 
-;               is executed, which executes the system ABORT.  The user 
-;               may cautiously modify this execution by altering (ABORT).  
-;               fig-FORTH saves the contents of IN and BLK to assist in 
-;               determining the location of the error.  Final action is 
-;               execution of QUIT.
-
-; TODO remove, replace with ABORT"
-
-!if 0 {
-;        +WORD "error"
-W_ERROR
-        !word DO_COLON
-;          !word WARN
-;          !word AT
-;          !word ZLESS
-;          !word ZBRAN
-;L2094:    !word $4       ; L2096-L2094
-;          !word W_ABORT
-;L2096:    !word HERE
-;          !word COUNT
-;          !word TYPE
-;          !word PDOTQ
-;          !byte 4,"  ? "
-;          !word MESS
-;          !word SPSTO
-;          !word DROP,DROP; make room for 2 error values
-;          !word IN
-;          !word AT
-;          !word BLK
-;          !word AT
-;          !word QUIT
-        !word W_PSEMI
 }

@@ -1,4 +1,18 @@
 
+64 constant c/l     \ characters per line, used by words
+
+: id. ( nt -- ) name>string type ;
+
+\ TODO use a :noname ...
+: print-name ( nt -- u ) 
+    out c@ 
+    dup if space then
+    c/l > if cr then
+    id.
+    true ;
+
+\ *************************************************************************** 
+
 \ TODO if base is 10 used signed output, otherwise unsigned?
 : .s '<' emit depth 0 u.r '>' emit space depth if 0 depth 2- do i pick . -1 +loop then ;
 
@@ -49,16 +63,6 @@
         ?immediate if ." immediate" then
         cr
     then r> base ! ;
-
-: id. ( nt -- ) name>string type ;
-
-\ TODO use a :noname ...
-: print-name ( nt -- u ) 
-    out c@ 
-    dup if space then
-    c/l > if cr then
-    id.
-    true ;
 
 : words ( -- ) ['] print-name forth-wordlist traverse-wordlist ;
 
