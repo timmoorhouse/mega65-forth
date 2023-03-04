@@ -5,7 +5,7 @@
 
 \ ***************************************************************************
 
-: /string ( c-addr1 u1 n -- c-addr2 u2 ) dup >r - swap r> + swap ;
+\ /STRING see core-ext.f
 
 : blank ( c-addr u ) bl fill ;
 
