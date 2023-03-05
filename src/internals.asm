@@ -248,7 +248,7 @@ _inc_I_PUSH
 ;
 
         +WORD "(csliteral)"
-W_SLITERAL:
+W_PCSLITERAL:
         !word *+2
         ; ldy #0 ; TODO
         lda <I
@@ -341,10 +341,41 @@ W_PSEARCH_WORDLIST
         !word W_PSEMI
 
 ; ****************************************************************************
+; COMPILE-ONLY 
+; (--)
+
+        +WORD "compile-only"
+W_COMPILE_ONLY
+        !word DO_COLON
+        ; see also immediate (core)
+        !word W_LATEST
+        !word W_QDUP
+        +ZBRANCH +
+        !word W_2PLUS
+        !word W_DUP
+        !word W_CAT
+        +CLITERAL F_COMPILE_ONLY
+        !word W_OR
+        !word W_SWAP
+        !word W_CSTORE
++
+        !word W_PSEMI
+
+; ****************************************************************************
 ; ?COMPILE-ONLY
 ; (nt -- flag)
 
-; TODO
+; Check if a name token is compile-only
+
+        +WORD "?compile-only"
+W_QCOMPILE_ONLY
+        !word DO_COLON
+        !word W_2PLUS
+        !word W_CAT
+        +CLITERAL F_COMPILE_ONLY
+        !word W_AND
+        ; !word W_ZNOTEQUAL
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; ?IMMEDIATE
@@ -360,6 +391,7 @@ W_QIMMEDIATE
         !word W_CAT
         +CLITERAL F_IMMEDIATE
         !word W_AND
+        ; !word W_ZNOTEQUAL
         !word W_PSEMI
 
 ; ****************************************************************************

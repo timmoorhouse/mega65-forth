@@ -1,6 +1,4 @@
 
-: compile-only ;
-
 : literal postpone (literal) , ; immediate compile-only
 
 : char parse-name drop c@ ;
@@ -119,7 +117,6 @@ variable hld ( TODO can we remove this? )
 
 ( *************************************************************************** )
 
-( TODO check and fail if compile-only?  or should name>interpret do that? )
 : ' ( "<spaces>name" -- xt ) parse-name find-name name>interpret ;
 
 : 2! ( x1 x2 a-addr -- ) swap over ! 2+ ! ;

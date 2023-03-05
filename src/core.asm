@@ -197,34 +197,6 @@ W_SUB
         jmp POP
 
 ; ****************************************************************************
-; ." 
-; ("text" --)
-; ANSI 6.1.0190
-
-; See core.f
-
-; TODO remove this! it's only used for hardcoded words
-
-; (.")
-;               The run-time procedure, compiled by ." which transmits the 
-;               following in-line text to the selected output device.  See 
-;               ."
-
-        +WORD "(.\")"
-W_PDOTQ
-        ; see also (s") ; TODO just use (s") and postpone the extra type?
-        !word DO_COLON
-        !word W_RAT
-        !word W_COUNT
-        !word W_DUP
-        !word W_1PLUS ; account for length field
-        !word W_RFROM
-        !word W_PLUS
-        !word W_TOR
-        !word W_TYPE
-        !word W_PSEMI
-
-; ****************************************************************************
 ; / 
 ; (n_1 n_2 -- n_3)
 ; ANSI 6.1.0230
@@ -1721,7 +1693,7 @@ W_I
         +WORD "immediate"
 W_IMMEDIATE
         !word DO_COLON
-        ; see also smudge (internals)
+        ; see also compile-only (internals)
         !word W_LATEST
         !word W_QDUP
         +ZBRANCH +

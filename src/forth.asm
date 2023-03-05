@@ -328,9 +328,9 @@ PAD_LEN            = 84
 !set _here = $0
 
 ; Control bits
-F_IMMEDIATE   = $80
-; <unused>      $40 ; TODO compile-only
-; <unused>      $20 ; TODO
+F_IMMEDIATE    = $80
+F_COMPILE_ONLY = $40
+; <unused>       $20 ; TODO
 NAME_LEN_MASK = $1f ; use lower bits for name length
 
 !macro WORD2 .name, .flags {
@@ -375,9 +375,11 @@ NAME_LEN_MASK = $1f ; use lower bits for name length
         !byte .char
 }
 
-!macro DOTQ .text {    ; TODO CLEAN THIS UP
-        !word W_PDOTQ
+!macro DOTQ .text {
+        !word W_PCSLITERAL
         +STRING .text
+        !word W_COUNT
+        !word W_TYPE
 }
 
 !ifdef DEBUG                { !src "debug.asm"         }
@@ -629,7 +631,13 @@ W_MAIN
 !if AUTOBOOT {
         +LITERAL AUTOBOOT_FILENAME
         !word W_COUNT
-        !word W_INCLUDED        ; TODO this should be wrapped in a catch
+        +LITERAL W_INCLUDED
+        !word W_CATCH
+        !word W_QDUP
+        +ZBRANCH +
+        +DOTQ "exception in autoboot "
+        !word W_SIMPLE_DOT
++
 }        
 
 _main_clear_stack_and_enter_loop

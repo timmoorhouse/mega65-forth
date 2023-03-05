@@ -9,7 +9,7 @@
 
 !if ENABLE_CORE_EXT {
         +WORD "0<>"
-W_ZNOTEQUALS
+W_ZNOTEQUAL
         !word *+2
         ; see also 0= (core)
         ; ldy #0 ; TODO
