@@ -730,10 +730,8 @@ W_ACCEPT
         
         ; (0)
 
-!ifdef COLOUR_INPUT {
-        +CLITERAL COLOUR_INPUT
-        !word W_FOREGROUND
-}
+        +LITERAL THEME_INPUT
+        !word W_THEME
 
 _accept_loop
 
@@ -819,10 +817,8 @@ _accept_after_loop ; TODO remove
         !word W_CR
 }
 
-!ifdef COLOUR_OUTPUT {
-        +CLITERAL COLOUR_OUTPUT
-        !word W_FOREGROUND
-}
+        +LITERAL THEME_OUTPUT
+        !word W_THEME
 
 !if 1 {
         ; TODO this is a hack - why do we need to do this???
@@ -1561,21 +1557,21 @@ _pevaluate_word_not_found
 
 _pevaluate_stonumber_failed
         ; (c-addr u d)
+!if 0 {
         !word W_2DROP
         ; (c-addr u)
 
         ; TODO should this be printed in the handler?
-!ifdef COLOUR_ERROR {
-        +CLITERAL COLOUR_ERROR
-        !word W_FOREGROUND
-}
+        +LITERAL THEME_ERROR
+        !word W_THEME
+
         !word W_BL,W_EMIT
         !word W_TYPE
         +DOTQ "? "
-!ifdef COLOUR_ERROR {
-        +CLITERAL COLOUR_OUTPUT
-        !word W_FOREGROUND
-}
+
+        +LITERAL THEME_OUTPUT
+        !word W_THEME
+} 
 
         +LITERAL E_UNDEFINED_WORD
         !word W_THROW
@@ -1976,10 +1972,8 @@ _pquit_read_loop
         !word W_ZEQUAL
         +ZBRANCH +
 
-!ifdef COLOUR_PROMPT {
-        +CLITERAL COLOUR_PROMPT
-        !word W_FOREGROUND
-}
+        +LITERAL THEME_PROMPT
+        !word W_THEME
 
         +DOTQ " ok"
         !word W_CR

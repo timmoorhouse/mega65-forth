@@ -43,20 +43,17 @@ S0              !word 0
 LATEST          !word 0
 LATEST_XT       !word 0
 
-; BOS       = $20                         ; bottom of data stack, in zero-page.
-; TOS       = $9E                         ; top of data stack, in zero-page.
-
 TEMP1           !word 0 ; temporaries
 TEMP2           !word 0
 TEMP3           !word 0
 
-WORDP           !word 0 ; temporary pointer to iterate over words TODO REMOVE
 STRING          !word 0 ; pointer to string to print, etc TODO REMOVE
 
 BOS = * ; Bottom of data stack
 
                 ; stack
-                !align $ff, $9E
+                ; !align $ff, $9E
+                !align $ff, $fe
 
 TOS = * ; Top of data stack
         ;!word 0

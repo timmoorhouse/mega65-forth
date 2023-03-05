@@ -42,6 +42,20 @@ FOREGROUND
         sta $00f1
         rts
 
+!ifdef ENABLE_MEGA65 {
+        +WORD "theme", 0
+} else {
+        +NONAME
+}
+W_THEME                 ; (u --)
+        !word DO_DEFER
+        !word W_NOOP_THEME
+
+W_NOOP_THEME
+        !word DO_COLON
+        !word W_DROP
+        !word W_PSEMI
+
 ; ****************************************************************************
 ; MON
 

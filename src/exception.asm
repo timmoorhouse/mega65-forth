@@ -5,16 +5,28 @@
 HANDLER
         !word 0
 
-!if NICE_ERROR_MESSAGES {
-        ; TODO input buffer, input len and >in at the time of a throw
-}
+        +WORD "report-exception", 0
+W_REPORT_EXCEPTION
+        !word DO_DEFER
+        !word W_SIMPLE_REPORT_EXCEPTION
 
-; TODO clear-exception-location
-;
-; TODO save-exception-location
-;
-; TODO exception-message
-;
+        +NONAME
+W_SIMPLE_REPORT_EXCEPTION        ; (n --)
+        !word DO_COLON
+        +DOTQ "exception "
+        !word W_DOT
+        !word W_CR
+        !word W_PSEMI
+
+        +WORD "save-location", 0
+W_SAVE_LOCATION
+        !word DO_DEFER
+        !word W_NOOP
+
+        +WORD "clear-location", 0
+W_CLEAR_LOCATION
+        !word DO_DEFER
+        !word W_NOOP
 
 ; ****************************************************************************
 ; CATCH
@@ -27,6 +39,7 @@ HANDLER
 }
 W_CATCH
         !word DO_COLON
+        !word W_CLEAR_LOCATION
         !word W_SPAT
         !word W_TOR
         +LITERAL HANDLER
@@ -70,6 +83,7 @@ W_THROW
         !word DO_COLON
         !word W_QDUP
         +ZBRANCH +
+        !word W_SAVE_LOCATION
         +LITERAL HANDLER
         !word W_AT
         !word W_RPSTORE

@@ -240,6 +240,8 @@ W_PQDO
 
 ; TODO move to core-ext.f once we have DOES> (see reference implementation)
 
+; TODO initialize defers to something that throws?
+
 !if ENABLE_CORE_EXT {
         +WORD "defer", 0
 } else {
@@ -248,7 +250,7 @@ W_PQDO
 W_DEFER
         !word DO_COLON
         !word W_CREATE
-        !word W_ZERO
+        +LITERAL W_DEFER_UNINITIALIZED
         !word W_COMMA
         !word W_PSCODE
 DO_DEFER
@@ -275,6 +277,13 @@ DO_DEFER
 
         ldy #0
         jmp &DO_JUMP_W
+
+        +NONAME
+W_DEFER_UNINITIALIZED
+        !word DO_COLON
+        +LITERAL E_INVALID_ADDRESS ; E_UNDEFINED_WORD?
+        !word W_THROW
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; FALSE
@@ -709,6 +718,8 @@ W_RESTORE_INPUT
         !word W_STORE
         !word W_IN
         !word W_STORE
+        !word W_SOURCE_LINE
+        !word W_STORE
         +LITERAL &SOURCE_ID
         !word W_STORE
         !word W_ZERO            ; input successfully restored
@@ -774,10 +785,12 @@ W_SAVE_INPUT
         !word DO_COLON
         ; TODO this could be made much smaller
         !word W_SOURCE_ID
+        !word W_SOURCE_LINE
+        !word W_AT
         !word W_IN
         !word W_AT
         !word W_SOURCE
-        +LITERAL 4             ; number of other cells pushed
+        +LITERAL 5             ; number of other cells pushed
         !word W_PSEMI
 
 ; ****************************************************************************

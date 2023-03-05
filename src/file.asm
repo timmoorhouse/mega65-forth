@@ -273,6 +273,10 @@ W_INCLUDE_FILE
         +LITERAL &SOURCE_ID
         !word W_STORE
 
+        !word W_ZERO
+        !word W_SOURCE_LINE
+        !word W_STORE
+
 -       !word W_REFILL
         +ZBRANCH +
 
@@ -485,6 +489,10 @@ _read_line_loop
         +LITERAL 13 ; TODO should be CR???
         !word W_EQUAL
         +ZBRANCH _read_line_not_return
+
+        !word W_ONE
+        !word W_SOURCE_LINE
+        !word W_PSTORE
 
         !word W_DROP ; drop the CR
         !word W_LEAVE

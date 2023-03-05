@@ -68,6 +68,11 @@ COLOUR_INPUT  =   7 ; yellow
 COLOUR_PROMPT =  14 ; lt blue
 COLOUR_ERROR  =   4 ; purple
 
+THEME_OUTPUT = 0
+THEME_INPUT  = 1
+THEME_PROMPT = 2
+THEME_ERROR  = 3
+
 ;
 ; TODO does it make sense to use the basic rom at all? I'm wondering about math routines in particular, but there
 ; may not be a good way to use them (no jump vectors to them so they could move) - might be able to execute a token for them
@@ -619,13 +624,7 @@ W_MAIN
         !word W_CATCH
         !word W_QDUP
         +ZBRANCH +
-        +DOTQ "exception in autoboot "
-        !word W_SIMPLE_DOT
-!if 0 { ; TODO
-        !word W_CR
-        !word W_SOURCE
-        !word W_TYPE
-}
+        !word W_REPORT_EXCEPTION
 +
 }        
 
@@ -688,10 +687,7 @@ _main_do_quit
 
 +
 
-        +DOTQ "exception "
-        !word W_SIMPLE_DOT
-        !word W_CR
-
+        !word W_REPORT_EXCEPTION
 
         ; +BRANCH _main_loop
         +BRANCH _main_clear_stack_and_enter_loop
@@ -764,10 +760,6 @@ _onetime
         ; area
 
         rts
-
-        ; TODO move SIMPLE_DOT, SIMPLE_DOTS here?
-
-        ; TODO move builtin CATCH, THROW here?
 
         ; TODO embed the minimal bootstrap code at a sufficiently high memory address 
         ; so we don't need to have file I/O as builtins

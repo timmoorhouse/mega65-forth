@@ -490,6 +490,16 @@ W_NAME_TO_XT
         !word W_PSEMI
 
 ; ****************************************************************************
+; NOOP
+; (--)
+; Used to initialize DEFERs that don't need to be set to something
+
+        +NONAME
+W_NOOP
+        !word DO_COLON
+        !word W_PSEMI
+
+; ****************************************************************************
 ; OUT   (from FIG)
 
 ;      OUT           ---  addr                               U
@@ -772,6 +782,14 @@ W_SBUF
         pha
         lda #>SBUF
         jmp PUSH
+
+; ****************************************************************************
+; SOURCE-LINE
+
+        +WORD "source-line", 0
+W_SOURCE_LINE
+        !word DO_VARIABLE
+        !word 0
 
 ; ****************************************************************************
 ; SP!

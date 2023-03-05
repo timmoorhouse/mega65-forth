@@ -3,38 +3,58 @@
 \ variable handler
 \ 0 handler !
 
-\ : exception-message ( n -- c-addr u )
-\     case
-\     -1  of s" ABORT"                                         endof
-\     -2  of s" ABORTq"                                        endof
-\     -3  of s" stack overflow"                                endof
-\     -4  of s" stack underflow"                               endof
-\     -5  of s" return stack overflow"                         endof
-\     -6  of s" return stack underflow"                        endof
-\     -7  of s" do loops nested too deeply during execution"   endof
-\     -8  of s" dictionary overflow"                           endof
-\     -9  of s" invalid memory address"                        endof
-\     -10 of s" division by zero"                              endof
-\     -11 of s" result out of range"                           endof
-\     -12 of s" argument type mismatch"                        endof
-\     -13 of s" undefined word"                                endof
-\     -14 of s" interpreting a compile-only word"              endof
-\     -15 of s" invalid FORGET"                                endof
-\     -16 of s" attempt to use zero length string as a name"   endof
-\     -17 of s" pictured numeric output string overflow"       endof
-\     -18 of s" parsed string overflow"                        endof
-\     -19 of s" definition name too long"                      endof
-\     -20 of s" write to a read-only location"                 endof
-\     -21 of s" unsupported operation"                         endof
-\     -22 of s" control structure mismatch"                    endof
-\     -23 of s" address alignment exception"                   endof
-\     -24 of s" invalid numeric argument"                      endof
-\     -25 of s" return stack imbalance"                        endof
-\     -26 of s" loop parameters unavailable"                   endof
-\     -27 of s" invalid recursion"                             endof
-\     -28 of s" user interrupt"                                endof
-\     -29 of s" compiler nesting"                              endof
-\     -30 of s" obsolescent feature"                           endof
+variable exception-line
+variable exception-in
+variable exception-input-buffer
+variable exception-input-len
+
+:noname ( -- )
+  exception-input-buffer @ 0= if
+    source-line @ exception-line !
+    >in @ exception-in !
+    source exception-input-len ! exception-input-buffer !
+  then
+  ; is save-location
+
+:noname ( -- )
+  0 exception-line !
+  0 exception-in !
+  0 exception-input-buffer !
+  0 exception-input-len !
+  ; is clear-location
+
+: exception-message ( n -- c-addr u )
+    case
+    -1  of s" ABORT"                                         endof
+    -2  of s" ABORTq"                                        endof
+    -3  of s" stack overflow"                                endof
+    -4  of s" stack underflow"                               endof
+    -5  of s" return stack overflow"                         endof
+    -6  of s" return stack underflow"                        endof
+    -7  of s" do loops nested too deeply during execution"   endof
+    -8  of s" dictionary overflow"                           endof
+    -9  of s" invalid memory address"                        endof
+    -10 of s" division by zero"                              endof
+    -11 of s" result out of range"                           endof
+    -12 of s" argument type mismatch"                        endof
+    -13 of s" undefined word"                                endof
+    -14 of s" interpreting a compile-only word"              endof
+    -15 of s" invalid FORGET"                                endof
+    -16 of s" attempt to use zero length string as a name"   endof
+    -17 of s" pictured numeric output string overflow"       endof
+    -18 of s" parsed string overflow"                        endof
+    -19 of s" definition name too long"                      endof
+    -20 of s" write to a read-only location"                 endof
+    -21 of s" unsupported operation"                         endof
+    -22 of s" control structure mismatch"                    endof
+    -23 of s" address alignment exception"                   endof
+    -24 of s" invalid numeric argument"                      endof
+    -25 of s" return stack imbalance"                        endof
+    -26 of s" loop parameters unavailable"                   endof
+    -27 of s" invalid recursion"                             endof
+    -28 of s" user interrupt"                                endof
+    -29 of s" compiler nesting"                              endof
+    -30 of s" obsolescent feature"                           endof
 \     -31 of s" >BODY used on non-CREATEd definition"          endof
 \     -32 of s" invalid name argument (eg TO name)"            endof
 \     -33 of s" block read exception"                          endof
@@ -63,29 +83,42 @@
 \     -56 of s" QUIT"                                          endof
 \     -57 of s" exception in sending or receiving a character" endof
 \     -58 of s" [IF], [ELSE] or [THEN] exception"              endof
-\     -59 of s" ALLOCATE"                                      endof
-\     -60 of s" FREE"                                          endof
-\     -61 of s" RESIZE"                                        endof
-\     -62 of s" CLOSE-FILE"                                    endof
-\     -63 of s" CREATE-FILE"                                   endof
-\     -64 of s" DELETE-FILE"                                   endof
-\     -65 of s" FILE-POSITION"                                 endof
-\     -66 of s" FILE-SIZE"                                     endof
-\     -67 of s" FILE-STATUS"                                   endof
-\     -68 of s" FLUSH-FILE"                                    endof
-\     -69 of s" OPEN-FILE"                                     endof
-\     -70 of s" READ-FILE"                                     endof
-\     -71 of s" READ-LINE"                                     endof
-\     -72 of s" RENAME-FILE"                                   endof
-\     -73 of s" REPOSITION-FILE"                               endof
-\     -74 of s" RESIZE-FILE"                                   endof
-\     -75 of s" WRITE-FILE"                                    endof
-\     -76 of s" WRITE-LINE"                                    endof
-\     -77 of s" malformed xchar"                               endof
-\     -78 of s" SUBSTITUTE"                                    endof
-\     -79 of s" REPLACES"                                      endof
-\         >r s" unknown" r>
-\     endcase ;
+    -59 of s" ALLOCATE"                                      endof
+    -60 of s" FREE"                                          endof
+    -61 of s" RESIZE"                                        endof
+    -62 of s" CLOSE-FILE"                                    endof
+    -63 of s" CREATE-FILE"                                   endof
+    -64 of s" DELETE-FILE"                                   endof
+    -65 of s" FILE-POSITION"                                 endof
+    -66 of s" FILE-SIZE"                                     endof
+    -67 of s" FILE-STATUS"                                   endof
+    -68 of s" FLUSH-FILE"                                    endof
+    -69 of s" OPEN-FILE"                                     endof
+    -70 of s" READ-FILE"                                     endof
+    -71 of s" READ-LINE"                                     endof
+    -72 of s" RENAME-FILE"                                   endof
+    -73 of s" REPOSITION-FILE"                               endof
+    -74 of s" RESIZE-FILE"                                   endof
+    -75 of s" WRITE-FILE"                                    endof
+    -76 of s" WRITE-LINE"                                    endof
+    -77 of s" malformed xchar"                               endof
+    -78 of s" SUBSTITUTE"                                    endof
+    -79 of s" REPLACES"                                      endof
+        >r 0 0 r>
+    endcase ;
+
+:noname ( n -- )
+  cr
+  2 theme \ prompt
+  exception-line @ ?dup if ." line " . ." : " then
+  3 theme \ error
+  dup exception-message ?dup if type drop else drop ." exception " . then cr
+  0 theme \ output
+  exception-input-buffer @ exception-input-len @ type cr
+  3 theme \ error
+  exception-in @ 2- spaces '^' emit cr
+  0 theme \ output
+  ; is report-exception
 
 \ TODO we should move CATCH to assembler so we can use it in ABORT
 
