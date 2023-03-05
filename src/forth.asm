@@ -44,6 +44,7 @@
 !ifndef USE_BASIC                       { USE_BASIC                     = 0 } ; not used - REMOVE?
 !ifndef CASE_INSENSITIVE                { CASE_INSENSITIVE              = 1 } ; map names to lower case when defining/resolving
 !ifndef AUTOBOOT                        { AUTOBOOT                      = 1 } ; Attempt to include autoboot.f on startup
+!ifndef NICE_ERROR_MESSAGES             { NICE_ERROR_MESSAGES           = 1 }
 
 ; Runtime checks
 ; - For anything taking an aligned address, check that it's aligned
@@ -331,23 +332,15 @@ PAD_LEN            = 84
 F_IMMEDIATE    = $80
 F_COMPILE_ONLY = $40
 ; <unused>       $20 ; TODO
-NAME_LEN_MASK = $1f ; use lower bits for name length
+NAME_LEN_MASK  = $1f ; use lower bits for name length
 
-!macro WORD2 .name, .flags {
+!macro WORD .name, .flags {
         +ALIGN
         !word _here
         !set _here = *-2
         !byte len(.name) | .flags
         !text .name
         +ALIGN
-}
-
-!macro WORD .name {
-        +WORD2 .name, 0
-}
-
-!macro WORD_IMM .name {
-        +WORD2 .name, F_IMMEDIATE
 }
 
 !macro BRANCH .target {
@@ -375,11 +368,27 @@ NAME_LEN_MASK = $1f ; use lower bits for name length
         !byte .char
 }
 
-!macro DOTQ .text {
+!macro CSLITERAL .text {
         !word W_PCSLITERAL
         +STRING .text
+}
+
+!macro DOTQ .text {
+        +CSLITERAL .text
         !word W_COUNT
         !word W_TYPE
+}
+
+!macro DEFER .name, .default {
+        +WORD .name
+        !word DO_DEFER
+        !word .default
+}
+
+!macro VARIABLE .name, .value {
+        +WORD .name
+        !word DO_VARIABLE
+        !word .value
 }
 
 !ifdef DEBUG                { !src "debug.asm"         }

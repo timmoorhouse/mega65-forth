@@ -7,39 +7,6 @@ MAX_OPEN_FILES   = 10  ; kernel limit
 
 ; TODO separate kernel stuff into separate file
 
-!if DEBUG {
-W_FILE_TEST
-        !word DO_COLON
-        +DOTQ "<file-test>"
-        !word W_CR
-
-        +LITERAL _test_filename
-        !word W_COUNT
-        !word W_RSLO
-        !word W_OPEN_FILE
-
-        !word W_DROP ; TODO check status?
-
-        !word W_TOR     ; (R: fileid)
-
-!if 1 {
-        !word W_RAT
-        !word W_INCLUDE_FILE
-}
-
-        ; TODO this isn't getting done if we include!
-        !word W_RFROM
-        !word W_CLOSE_FILE
-        !word W_DROP ; TODO check status?
-
-        !word W_SIMPLE_DOTS,W_CR
-        !word W_CR
-        !word W_PSEMI
-}
-
-_test_filename
-        +STRING "bootstrap.f"
-
 FAM_BIN = 4
 FAM_RO  = 1
 FAM_WO  = 2
@@ -165,7 +132,7 @@ W_BUFFER_OF_FILEID ; (fileid -- c-addr u)
 ; ANSI 11.6.1.0765
 
 !if ENABLE_FILE {
-        +WORD "bin"
+        +WORD "bin", 0
 W_BIN
         !word DO_COLON
         +LITERAL FAM_BIN
@@ -179,7 +146,7 @@ W_BIN
 ; ANSI 11.6.1.0900
 
 !if ENABLE_FILE {
-        +WORD "close-file"
+        +WORD "close-file", 0
 W_CLOSE_FILE
         !word DO_COLON
 !if DEBUG {
@@ -200,7 +167,7 @@ W_CLOSE_FILE
 ; ANSI 11.6.1.1010
 
 !if ENABLE_FILE {
-        +WORD "create-file"
+        +WORD "create-file", 0
 W_CREATE_FILE
         !word DO_COLON
 !if DEBUG {
@@ -224,7 +191,7 @@ W_CREATE_FILE
 ; ANSI 11.6.1.1190
 
 !if ENABLE_FILE {
-        +WORD "delete-file"
+        +WORD "delete-file", 0
 W_DELETE_FILE
         !word DO_COLON
 !if DEBUG {
@@ -246,7 +213,7 @@ W_DELETE_FILE
 ; ANSI 11.6.1.1520
 
 !if ENABLE_FILE {
-        +WORD "file-position"
+        +WORD "file-position", 0
 W_FILE_POSITION
         !word DO_COLON
 !if DEBUG {
@@ -270,7 +237,7 @@ W_FILE_POSITION
 ; ANSI 11.6.1.1522
 
 !if ENABLE_FILE {
-        +WORD "file-size"
+        +WORD "file-size", 0
 W_FILE_SIZE
         !word DO_COLON
 !if DEBUG {
@@ -293,8 +260,10 @@ W_FILE_SIZE
 ; (i*x fileid -- j*x)
 ; ANSI 11.6.1.1717
 
+; TODO track line number for error reporting?
+
 !if ENABLE_FILE {
-        +WORD "include-file"
+        +WORD "include-file", 0
 W_INCLUDE_FILE
         !word DO_COLON
 
@@ -334,7 +303,7 @@ W_INCLUDE_FILE
 ; ANSI 11.6.1718
 
 !if ENABLE_FILE {
-        +WORD "included"
+        +WORD "included", 0
 W_INCLUDED
         !word DO_COLON
         !word W_RSLO
@@ -358,7 +327,7 @@ W_INCLUDED
 ; ANSI 11.6.1.1970
 
 !if ENABLE_FILE {
-        +WORD "open-file"
+        +WORD "open-file", 0
 W_OPEN_FILE
         !word DO_COLON
 !if DEBUG {
@@ -432,7 +401,7 @@ W_OPEN_FILE
 ; ANSI 11.6.1.2054
 
 !if ENABLE_FILE {
-        +WORD "r/o"
+        +WORD "r/o", 0
 W_RSLO
         !word DO_CONSTANT
         !word FAM_RO
@@ -444,7 +413,7 @@ W_RSLO
 ; ANSI 11.6.1.2056
 
 !if ENABLE_FILE {
-        +WORD "r/w"
+        +WORD "r/w", 0
 W_RSLW
         !word DO_CONSTANT
         !word FAM_RW
@@ -456,7 +425,7 @@ W_RSLW
 ; ANSI 11.6.1.2080
 
 !if ENABLE_FILE {
-        +WORD "read-file"
+        +WORD "read-file", 0
 W_READ_FILE
         !word DO_COLON
 !if DEBUG {
@@ -487,7 +456,7 @@ W_READ_FILE
 ; If u_2 < u_1 the line ending has been reached.  If u_2 = u_1, the line ending has not been reached.
 
 !if ENABLE_FILE {
-        +WORD "read-line"
+        +WORD "read-line", 0
 W_READ_LINE
         !word DO_COLON
 !if DEBUG {
@@ -554,7 +523,7 @@ _read_line_after_loop
 ; ANSI 11.6.1.2142
 
 !if ENABLE_FILE {
-        +WORD "reposition-file"
+        +WORD "reposition-file", 0
 W_REPOSITION_FILE
         !word DO_COLON
 !if DEBUG {
@@ -577,7 +546,7 @@ W_REPOSITION_FILE
 ; ANSI 11.6.1.2147
 
 !if ENABLE_FILE {
-        +WORD "resize-file"
+        +WORD "resize-file", 0
 W_RESIZE_FILE
         !word DO_COLON
 !if DEBUG {
@@ -600,7 +569,7 @@ W_RESIZE_FILE
 ; ANSI 11.6.1.2425
 
 !if ENABLE_FILE {
-        +WORD "w/o"
+        +WORD "w/o", 0
 W_WSLO
         !word DO_CONSTANT
         !word FAM_WO
@@ -612,7 +581,7 @@ W_WSLO
 ; ANSI 11.6.1.2480
 
 !if ENABLE_FILE {
-        +WORD "write-file"
+        +WORD "write-file", 0
 W_WRITE_FILE
         !word DO_COLON
 !if DEBUG {
@@ -658,7 +627,7 @@ _write_file_after_loop
 ; ANSI 11.6.1.2485
 
 !if ENABLE_FILE {
-        +WORD "write-line"
+        +WORD "write-line", 0
 W_WRITE_LINE
         !word DO_COLON
 !if DEBUG {

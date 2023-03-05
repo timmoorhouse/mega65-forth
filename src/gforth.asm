@@ -14,7 +14,7 @@
 ; TODO do this in forth
 
 !if ENABLE_GFORTH {
-        +WORD_IMM "savesystem"
+        +WORD "savesystem", F_IMMEDIATE
 W_SAVESYSTEM
         !word DO_COLON
 !if DEBUG {

@@ -73,7 +73,7 @@ fail_runtime_check
 ; see https://www.c64-wiki.com/wiki/CIA
 ; Something like execute that counts clock ticks?
 
-        +WORD "timer"
+        +WORD "timer", 0
 W_TIMER
         !word *+2
         jsr read_timer
@@ -122,7 +122,7 @@ read_timer
 ; ****************************************************************************
 ; 0
 
-        +WORD "0"
+        +WORD "0", 0
 W_ZERO
         !word DO_CONSTANT
         !word 0
@@ -130,7 +130,7 @@ W_ZERO
 ; ****************************************************************************
 ; 1
 
-        +WORD "1"
+        +WORD "1", 0
 W_ONE
         !word DO_CONSTANT
         !word 1
@@ -138,7 +138,7 @@ W_ONE
 ; ****************************************************************************
 ; 2
 
-        +WORD "2"
+        +WORD "2", 0
 W_TWO
         !word DO_CONSTANT
         !word 2
@@ -148,7 +148,7 @@ W_TWO
 
 ; TODO native implementation?
 
-        +WORD "2+"
+        +WORD "2+", 0
 W_2PLUS
         !word DO_COLON
         !word W_TWO
@@ -160,7 +160,7 @@ W_2PLUS
 
 ; TODO native implementation?
 
-        +WORD "2-"
+        +WORD "2-", 0
 W_2MINUS
         !word DO_COLON
         !word W_TWO
@@ -176,7 +176,7 @@ W_2MINUS
 ;               the interpretive pointer to branch ahead or back.  
 ;               Compiled by IF, UNTIL, and WHILE.
 
-        +WORD "0branch"
+        +WORD "0branch", 0
 W_ZBRANCH
         !word *+2
         inx
@@ -196,7 +196,7 @@ BUMP             ; used by (loop) and LEAVE  TODO MESSY !!!!!!!!!!!!!!
 ;               branch ahead or back.  BRANCH is compiled by ELSE, AGAIN, 
 ;               REPEAT.
 
-        +WORD "branch"
+        +WORD "branch", 0
 W_BRANCH
         !word *+2
 BRANCH  ; used by (loop), 0branch  TODO MESSY !!!!!!!!
@@ -231,7 +231,7 @@ W_PCLITERAL
 ;    LITERAL pushes the next inline word to data stack
 ;
 
-        +WORD "(literal)"
+        +WORD "(literal)", 0
 W_PLITERAL:
         !word *+2
         ; ldy #0 ; TODO
@@ -247,7 +247,7 @@ _inc_I_PUSH
 ;       SLITERAL pushes an inline counted string to the data stack
 ;
 
-        +WORD "(csliteral)"
+        +WORD "(csliteral)", 0
 W_PCSLITERAL:
         !word *+2
         ; ldy #0 ; TODO
@@ -272,14 +272,14 @@ W_PCSLITERAL:
 
 ; Like SEARCH-WORDLIST but returns 0|nt
 
-        +WORD "find-name"
+        +WORD "find-name", 0
 W_FIND_NAME     ; ( c-addr u -- 0 | nt )
         !word DO_COLON
         !word W_FORTH_WORDLIST ; TODO
         !word W_FIND_NAME_IN
         !word W_PSEMI
 
-        +WORD "find-name-in"
+        +WORD "find-name-in", 0
 W_FIND_NAME_IN  ; (c-addr u wid -- 0 | nt)
         !word DO_COLON
 
@@ -344,7 +344,7 @@ W_PSEARCH_WORDLIST
 ; COMPILE-ONLY 
 ; (--)
 
-        +WORD "compile-only"
+        +WORD "compile-only", 0
 W_COMPILE_ONLY
         !word DO_COLON
         ; see also immediate (core)
@@ -367,7 +367,7 @@ W_COMPILE_ONLY
 
 ; Check if a name token is compile-only
 
-        +WORD "?compile-only"
+        +WORD "?compile-only", 0
 W_QCOMPILE_ONLY
         !word DO_COLON
         !word W_2PLUS
@@ -384,7 +384,7 @@ W_QCOMPILE_ONLY
 ; Check if a name token is immediate
 ; Used by NAME>COMPILE and (soon) POSTPONE
 
-        +WORD "?immediate"
+        +WORD "?immediate", 0
 W_QIMMEDIATE
         !word DO_COLON
         !word W_2PLUS
@@ -401,7 +401,7 @@ W_QIMMEDIATE
 
 ; Will be 0 if the last definition had no name (:NONAME)
 
-        +WORD "latest"
+        +WORD "latest", 0
 W_LATEST
         !word DO_COLON
         +LITERAL &LATEST
@@ -413,7 +413,7 @@ W_LATEST
 ; (-- xt)
 ; Also in gforth
 
-        +WORD "latestxt"
+        +WORD "latestxt", 0
 W_LATESTXT
         !word DO_COLON
         +LITERAL &LATEST_XT
@@ -425,7 +425,7 @@ W_LATESTXT
 ; (c-addr u --)
 ; Convert to lower case
 
-        +WORD "lower"
+        +WORD "lower", 0
 W_LOWER
         !word DO_COLON
 
@@ -479,6 +479,7 @@ _lower_zero_length
 ; (nt -- xt)
 ; This is like name>interpret but will not throw
 
+        ; +NAME "name>xt"
         +NONAME
 W_NAME_TO_XT
         !word DO_COLON
@@ -496,7 +497,7 @@ W_NAME_TO_XT
 ;               The user may alter and examine OUT to control display 
 ;               formatting.
 
-        +WORD "out"
+        +WORD "out", 0
 W_OUT
         !word DO_CONSTANT
         !word $00ec ; pntr TODO symbol?
@@ -505,7 +506,7 @@ W_OUT
 ; RP!
 ; (addr --)
 
-        +WORD "rp!"
+        +WORD "rp!", 0
 W_RPSTORE
         !word *+2
         lda 0,x
@@ -547,7 +548,7 @@ RPSTORE
 ; (-- addr)
 ; From gforth
 
-        +WORD "rp@"
+        +WORD "rp@", 0
 W_RPAT
         !word *+2
         jsr RPAT
@@ -608,7 +609,7 @@ RPAT
 
 ; TODO it might be more convenient if d was not left on the stack on failures
 
-        +WORD "s>number?"
+        +WORD "s>number?", 0
 W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
         !word DO_COLON
 
@@ -763,7 +764,7 @@ _stonumber_check_base_set
 ; Return the location of the next string buffer
 ; TODO return the length also?
 
-        +WORD "sbuf"
+        +WORD "sbuf", 0
 W_SBUF
         !word *+2
         ; TODO swap between two buffers
@@ -776,7 +777,7 @@ W_SBUF
 ; SP!
 ; (addr --)
 
-        +WORD "sp!"
+        +WORD "sp!", 0
 W_SPSTORE
         !word *+2
 SPSTORE
@@ -797,7 +798,7 @@ SPSTORE
 ;               2 2 1 )
 
 !if ENABLE_GFORTH {
-        +WORD "sp@"
+        +WORD "sp@", 0
 W_SPAT
         !word *+2
         phx
@@ -813,7 +814,7 @@ W_SPAT
 ;
 
 !if 0 {
-        +WORD "!csp"
+        +WORD "!csp", 0
 W_SCSP
         !word DO_COLON
 ;          !word SPAT
@@ -830,7 +831,7 @@ W_SCSP
 ;               saved in CSP.
 
 !if 0 {
-        +WORD "?csp"
+        +WORD "?csp", 0
 W_QCSP
         !word DO_COLON
 ;          !word SPAT
@@ -851,7 +852,7 @@ W_QCSP
 ;               position, for compilation error checking.
 
 !if 0 {
-        +WORD "csp"
+        +WORD "csp", 0
 W_CSP
         !word DO_USER
 ;          !byte $2C
@@ -864,7 +865,7 @@ W_CSP
 ;               Issue an error message if not executing.
 
 !if 0 {
-        +WORD "?exec"
+        +WORD "?exec", 0
 W_QEXEC
         !word DO_COLON
 ;          !word STATE
@@ -883,7 +884,7 @@ W_QEXEC
 ;               message indicates that compiled conditionals do not match.
 
 !if 0 {
-        +WORD "?pairs"
+        +WORD "?pairs", 0
 W_QPAIR
         !word DO_COLON
 ;          !word SUB
@@ -898,7 +899,7 @@ W_QPAIR
 ; ( -- )
 ;               Check if the stack is out of bounds.  
 
-        +WORD "?stack"
+        +WORD "?stack", 0
 W_QSTACK
         !word DO_COLON
 !if 1 {
@@ -929,7 +930,7 @@ W_QSTACK
 ; TODO kernel call to query stop key
 
 !if 0 {
-        +WORD "?terminal"
+        +WORD "?terminal", 0
 W_QTERMINAL
 ;    !word XQTER    ; Vector to code for ?TERMINAL
 }

@@ -9,15 +9,6 @@
 ( "ccc<paren>" -- )
 ( TODO allow multiline comments when parsing from a file )
 
-( TODO - move to top )
-( : postpone parse-name find-name ?dup if \ TODO error if not found ) ( "<spaces>name" -- )
-(     dup ?immediate if )
-(       name>interpret , )
-(     else )
-(       name>interpret ...... )
-(     then )
-(   then ; ) ( compile-only )
-
 : .( ( "ccc<paren>" -- ) [char] ) parse type ; immediate ( CORE-EXT )
 
 .( Starting bootstrap... ) cr
@@ -165,7 +156,6 @@ variable hld ( TODO can we remove this? )
 
 : recurse ( -- ) latestxt , ; immediate
 
-( TODO alignment after string? )
 : s" ( "ccc<quote>" -- ) ( -- c-addr u ) 
   [char] " parse 
   state @ if

@@ -6,7 +6,7 @@
 
 
 !ifdef ENABLE_MEGA65 {
-        +WORD "background"
+        +WORD "background", 0
 } else {
         +NONAME
 }
@@ -17,7 +17,7 @@ W_BACKGROUND
         jmp POP
 
 !ifdef ENABLE_MEGA65 {
-        +WORD "border"
+        +WORD "border", 0
 } else {
         +NONAME
 }
@@ -28,7 +28,7 @@ W_BORDER                ; (c --)
         jmp POP
 
 !ifdef ENABLE_MEGA65 {
-        +WORD "foreground"
+        +WORD "foreground", 0
 } else {
         +NONAME
 }
@@ -50,7 +50,7 @@ FOREGROUND
 ;               if possible.
 
 !if ENABLE_MEGA65 {
-        +WORD "mon"
+        +WORD "mon", 0
 W_MON
         !word *+2
         jsr MON

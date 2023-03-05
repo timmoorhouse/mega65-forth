@@ -8,7 +8,7 @@
 ; ANSI 11.6.2.1524
 
 !if ENABLE_FILE_EXT {
-        +WORD "file-status"
+        +WORD "file-status", 0
 W_FILE_STATUS
         !word DO_COLON
 !if DEBUG {
@@ -32,7 +32,7 @@ W_FILE_STATUS
 ; ANSI 11.6.2.1560
 
 !if ENABLE_FILE_EXT {
-        +WORD "flush-file"
+        +WORD "flush-file", 0
 W_FLUSH_FILE
         !word DO_COLON
 !if DEBUG {
@@ -54,7 +54,7 @@ W_FLUSH_FILE
 ; Forth 2012 11.6.2.1714
 
 !if ENABLE_FILE_EXT {
-        +WORD_IMM "include"
+        +WORD "include", 0
 W_INCLUDE
         !word DO_COLON
         !word W_PARSE_NAME
@@ -68,7 +68,7 @@ W_INCLUDE
 ; ANSI 11.6.2.2130
 
 !if ENABLE_FILE_EXT {
-        +WORD "rename-file"
+        +WORD "rename-file", 0
 W_RENAME_FILE
         !word DO_COLON
 !if DEBUG {
@@ -91,7 +91,7 @@ W_RENAME_FILE
 ; Forth 2012 11.6.2.2144.10
 
 !if ENABLE_FILE_EXT {
-        +WORD "require"
+        +WORD "require", 0
 W_REQUIRE
         !word DO_COLON
 !if DEBUG {
@@ -137,7 +137,7 @@ W_REQUIRE
 ; See reference implementation
 
 !if ENABLE_FILE_EXT {
-        +WORD "required"
+        +WORD "required", 0
 W_REQUIRED
         !word DO_COLON
 !if DEBUG {

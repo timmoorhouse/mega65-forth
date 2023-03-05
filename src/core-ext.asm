@@ -8,7 +8,7 @@
 ; ANSI 6.2.0260
 
 !if ENABLE_CORE_EXT {
-        +WORD "0<>"
+        +WORD "0<>", 0
 W_ZNOTEQUAL
         !word *+2
         ; see also 0= (core)
@@ -28,7 +28,7 @@ W_ZNOTEQUAL
 ; ANSI 6.2.0280
 
 !if ENABLE_CORE_EXT {
-        +WORD "0>"
+        +WORD "0>", 0
 W_ZGREATER
         !word *+2
         ; ldy #0 ; TODO
@@ -51,7 +51,7 @@ W_ZGREATER
 ; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "2>r"
+        +WORD "2>r", 0
 } else {
         +NONAME
 }
@@ -76,7 +76,7 @@ W_2TOR
 ; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "2r>"
+        +WORD "2r>", 0
 } else {
         +NONAME
 }
@@ -105,7 +105,7 @@ W_2RFROM
 ; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "2r@"
+        +WORD "2r@", 0
 } else {
         +NONAME
 }
@@ -159,7 +159,7 @@ W_2RAT
 ; TODO could move this to core-ext.f if we have a way of setting latest, latextxt from forth
 
 !if ENABLE_CORE_EXT {
-        +WORD ":noname"
+        +WORD ":noname", 0
 W_NONAME
         !word DO_COLON
         !word W_ALIGN
@@ -182,7 +182,7 @@ W_NONAME
 ; ANSI 6.2.0500
 
 !if ENABLE_CORE_EXT {
-        +WORD "<>"
+        +WORD "<>", 0
 W_NOTEQUAL
         !word *+2
         ; see also = (core)
@@ -208,7 +208,7 @@ W_NOTEQUAL
 ; ANSI 6.2.0620
 
 !if ENABLE_CORE_EXT {
-        +WORD "(?do)"
+        +WORD "(?do)", 0
 W_PQDO
         !word *+2
 
@@ -241,7 +241,7 @@ W_PQDO
 ; TODO move to core-ext.f once we have DOES> (see reference implementation)
 
 !if ENABLE_CORE_EXT {
-        +WORD "defer"
+        +WORD "defer", 0
 } else {
         +NONAME
 }
@@ -282,7 +282,7 @@ DO_DEFER
 ; ANSI 6.2.1485
 
 !if ENABLE_CORE_EXT {
-        +WORD "false"
+        +WORD "false", 0
 }
 W_FALSE
         !word DO_CONSTANT
@@ -304,7 +304,7 @@ W_FALSE
 ; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "nip"
+        +WORD "nip", 0
 } else {
         +NONAME
 }
@@ -326,7 +326,7 @@ W_NIP
 ; The word itself is required by the implementation but will only be visible if CORE-EXT is enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "parse"
+        +WORD "parse", 0
 } else {
         +NONAME
 }
@@ -437,7 +437,7 @@ _parse_done
 ; The word itself is required by the implementation but will only be visible if CORE-EXT is enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "parse-name"
+        +WORD "parse-name", 0
 } else {
         +NONAME
 }
@@ -447,7 +447,7 @@ W_PARSE_NAME
         !word W_PPARSE_NAME
         !word W_PSEMI
 
-        +WORD "(parse-name)"
+        +WORD "(parse-name)", 0
 W_PPARSE_NAME ; (char "<chars>name<char>" -- c-addr u)
         !word *+2
 
@@ -584,7 +584,7 @@ _parse_name_all_done
 ; ANSI 6.2.2030
 
 !if ENABLE_CORE_EXT {
-        +WORD "pick"
+        +WORD "pick", 0
 } else {
         +NONAME
 }
@@ -610,7 +610,7 @@ W_PICK
 ; ANSI 11.6.2.2125
 
 !if ENABLE_CORE_EXT {
-        +WORD "refill"
+        +WORD "refill", 0
 } else {
         +NONAME
 }
@@ -696,7 +696,7 @@ _refill_done
 ; TODO always enable?
 
 !if ENABLE_CORE_EXT {
-        +WORD "restore-input"
+        +WORD "restore-input", 0
 } else {
         +NONAME
 }
@@ -720,7 +720,7 @@ W_RESTORE_INPUT
 ; ANSI 6.2.2150
 
 !if ENABLE_CORE_EXT {
-        +WORD "roll"
+        +WORD "roll", 0
 } else {
         +NONAME
 }
@@ -759,33 +759,6 @@ W_ROLL
 +       jmp POP
 
 ; ****************************************************************************
-; S\"
-; Forth 2012 6.2.2266
-; Forth 2012 11.6.2.2266
-
-; See http://www.forth200x.org/escaped-strings.html for a reference implementation
-
-; Needs to handle escape sequences:
-; \a    BEL     7                               OK
-; \b    BS      8                               OK use 20 (delete)
-; \e    ESC     27                              OK
-; \f    FF      12                              OK
-; \l    LF      10                              OK
-; \m    CR/LF   13 10                           OK just use 13
-; \n    newline (implementation dependent)      OK just use 13
-; \q            34 (quote)                      OK
-; \r    CR      13                              OK
-; \t    HT      9 (horizontal tab)              OK
-; \v    VT      11 (vertical tab)               ??
-; \z    NUL     0                               OK
-; \"            34 (quote)                      OK
-; \xNN          hex digit NN                    OK?
-; \\            92 (backslash)                  OK
-
-!if ENABLE_CORE_EXT {
-}
-
-; ****************************************************************************
 ; SAVE-INPUT
 ; (-- x_n...x_1 n)
 ; ANSI 6.2.2182
@@ -793,7 +766,7 @@ W_ROLL
 ; TODO always enable?
 
 !if ENABLE_CORE_EXT {
-        +WORD "save-input"
+        +WORD "save-input", 0
 } else {
         +NONAME
 }
@@ -817,7 +790,7 @@ W_SAVE_INPUT
 ; TODO extension to allow fileid if FILE enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "source-id"
+        +WORD "source-id", 0
 } else {
         +NONAME
 }
@@ -834,7 +807,7 @@ W_SOURCE_ID
 ; ANSI 6.2.2298
 
 !if ENABLE_CORE_EXT {
-        +WORD "true"
+        +WORD "true", 0
 } else {
         +NONAME
 }
@@ -848,7 +821,7 @@ W_TRUE
 ; ANSI 6.2.2395
 
 !if ENABLE_CORE_EXT {
-        +WORD "unused"
+        +WORD "unused", 0
 W_UNUSED
         !word DO_COLON
         +LITERAL DAREA
@@ -865,7 +838,7 @@ W_UNUSED
 ; See also constant (core)
 
 !if ENABLE_CORE_EXT {
-        +WORD "value"
+        +WORD "value", 0
 W_VALUE
         !word DO_COLON
         !word W_CREATE

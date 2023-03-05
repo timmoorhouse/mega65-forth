@@ -3,86 +3,89 @@
 \ variable handler
 \ 0 handler !
 
-\ -1    ABORT
-\ -2    ABORT"
-\ -3    stack overflow
-\ -4    stack underflow
-\ -5    return stack overflow
-\ -6    return stack underflow
-\ -7    do loops nested too deeply during execution
-\ -8    dictionary overflow
-\ -9    invalid memory address
-\ -10   division by zero
-\ -11   result out of range
-\ -12   argument type mismatch
-\ -13   undefined word
-\ -14   interpreting a compile-only word
-\ -15   invalid FORGET
-\ -16   attempt to use zero length string as a name
-\ -17   pictured numeric output string overflow
-\ -18   parsed string overflow
-\ -19   definition name too long
-\ -20   write to a read-only location
-\ -21   unsupported operation (eg AT-XY on a too-dumb terminal)
-\ -22   control structure mismatch
-\ -23   address alignment exception
-\ -24   invalid numeric argument
-\ -25   return stack imbalance
-\ -26   loop parameters unavailable
-\ -27   invalid recursion
-\ -28   user interrupt
-\ -29   compiler nesting
-\ -30   obsolescent feature
-\ -31   >BODY used on non-CREATEd definition
-\ -32   invalid name argument (eg TO name)
-\ -33   block read exception
-\ -34   block write exception
-\ -35   invalid block number
-\ -36   invalid file position
-\ -37   file I/O exception
-\ -38   non-existent file
-\ -39   unexpected end of file
-\ -40   invalid BASE for floating point conversion
-\ -41   loss of precision
-\ -42   floating point divide by zero
-\ -43   floating point result out of range
-\ -44   floating point stack overflow
-\ -45   floating point stack underflow
-\ -46   floating point invalid argument
-\ -47   compilation word list deleted
-\ -48   invalid POSTPONE
-\ -49   search order overflow
-\ -50   search order underflow
-\ -51   compilation word list changed
-\ -52   control flow stack overflow
-\ -53   exception stack overflow
-\ -54   floating point underflow
-\ -55   floating point unidentified fault
-\ -56   QUIT
-\ -57   exception in sending or receiving a character
-\ -58   [IF], [ELSE] or [THEN] exception
-\ -59   ALLOCATE
-\ -60   FREE
-\ -61   RESIZE
-\ -62   CLOSE-FILE
-\ -63   CREATE-FILE
-\ -64   DELETE-FILE
-\ -65   FILE-POSITION
-\ -66   FILE-SIZE
-\ -67   FILE-STATUS
-\ -68   FLUSH-FILE
-\ -69   OPEN-FILE
-\ -70   READ-FILE
-\ -71   READ-LINE
-\ -72   RENAME-FILE
-\ -73   REPOSITION-FILE
-\ -74   RESIZE-FILE
-\ -75   WRITE-FILE
-\ -76   WRITE-LINE
-\ -77   malformed xchar
-\ -78   SUBSTITUTE
-\ -79   REPLACES
-
+\ : exception-message ( n -- c-addr u )
+\     case
+\     -1  of s" ABORT"                                         endof
+\     -2  of s" ABORTq"                                        endof
+\     -3  of s" stack overflow"                                endof
+\     -4  of s" stack underflow"                               endof
+\     -5  of s" return stack overflow"                         endof
+\     -6  of s" return stack underflow"                        endof
+\     -7  of s" do loops nested too deeply during execution"   endof
+\     -8  of s" dictionary overflow"                           endof
+\     -9  of s" invalid memory address"                        endof
+\     -10 of s" division by zero"                              endof
+\     -11 of s" result out of range"                           endof
+\     -12 of s" argument type mismatch"                        endof
+\     -13 of s" undefined word"                                endof
+\     -14 of s" interpreting a compile-only word"              endof
+\     -15 of s" invalid FORGET"                                endof
+\     -16 of s" attempt to use zero length string as a name"   endof
+\     -17 of s" pictured numeric output string overflow"       endof
+\     -18 of s" parsed string overflow"                        endof
+\     -19 of s" definition name too long"                      endof
+\     -20 of s" write to a read-only location"                 endof
+\     -21 of s" unsupported operation"                         endof
+\     -22 of s" control structure mismatch"                    endof
+\     -23 of s" address alignment exception"                   endof
+\     -24 of s" invalid numeric argument"                      endof
+\     -25 of s" return stack imbalance"                        endof
+\     -26 of s" loop parameters unavailable"                   endof
+\     -27 of s" invalid recursion"                             endof
+\     -28 of s" user interrupt"                                endof
+\     -29 of s" compiler nesting"                              endof
+\     -30 of s" obsolescent feature"                           endof
+\     -31 of s" >BODY used on non-CREATEd definition"          endof
+\     -32 of s" invalid name argument (eg TO name)"            endof
+\     -33 of s" block read exception"                          endof
+\     -34 of s" block write exception"                         endof
+\     -35 of s" invalid block number"                          endof
+\     -36 of s" invalid file position"                         endof
+\     -37 of s" file I/O exception"                            endof
+\     -38 of s" non-existent file"                             endof
+\     -39 of s" unexpected end of file"                        endof
+\     -40 of s" invalid BASE for floating point conversion"    endof
+\     -41 of s" loss of precision"                             endof
+\     -42 of s" floating point divide by zero"                 endof
+\     -43 of s" floating point result out of range"            endof
+\     -44 of s" floating point stack overflow"                 endof
+\     -45 of s" floating point stack underflow"                endof
+\     -46 of s" floating point invalid argument"               endof
+\     -47 of s" compilation word list deleted"                 endof
+\     -48 of s" invalid POSTPONE"                              endof
+\     -49 of s" search order overflow"                         endof
+\     -50 of s" search order underflow"                        endof
+\     -51 of s" compilation word list changed"                 endof
+\     -52 of s" control flow stack overflow"                   endof
+\     -53 of s" exception stack overflow"                      endof
+\     -54 of s" floating point underflow"                      endof
+\     -55 of s" floating point unidentified fault"             endof
+\     -56 of s" QUIT"                                          endof
+\     -57 of s" exception in sending or receiving a character" endof
+\     -58 of s" [IF], [ELSE] or [THEN] exception"              endof
+\     -59 of s" ALLOCATE"                                      endof
+\     -60 of s" FREE"                                          endof
+\     -61 of s" RESIZE"                                        endof
+\     -62 of s" CLOSE-FILE"                                    endof
+\     -63 of s" CREATE-FILE"                                   endof
+\     -64 of s" DELETE-FILE"                                   endof
+\     -65 of s" FILE-POSITION"                                 endof
+\     -66 of s" FILE-SIZE"                                     endof
+\     -67 of s" FILE-STATUS"                                   endof
+\     -68 of s" FLUSH-FILE"                                    endof
+\     -69 of s" OPEN-FILE"                                     endof
+\     -70 of s" READ-FILE"                                     endof
+\     -71 of s" READ-LINE"                                     endof
+\     -72 of s" RENAME-FILE"                                   endof
+\     -73 of s" REPOSITION-FILE"                               endof
+\     -74 of s" RESIZE-FILE"                                   endof
+\     -75 of s" WRITE-FILE"                                    endof
+\     -76 of s" WRITE-LINE"                                    endof
+\     -77 of s" malformed xchar"                               endof
+\     -78 of s" SUBSTITUTE"                                    endof
+\     -79 of s" REPLACES"                                      endof
+\         >r s" unknown" r>
+\     endcase ;
 
 \ TODO we should move CATCH to assembler so we can use it in ABORT
 

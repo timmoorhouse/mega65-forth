@@ -2,17 +2,29 @@
 ; ****************************************************************************
 ; EXCEPTION
 
-!if ENABLE_EXCEPTION {
 HANDLER
         !word 0
+
+!if NICE_ERROR_MESSAGES {
+        ; TODO input buffer, input len and >in at the time of a throw
 }
+
+; TODO clear-exception-location
+;
+; TODO save-exception-location
+;
+; TODO exception-message
+;
 
 ; ****************************************************************************
 ; CATCH
 ; ANSI 9.6.1.0875
 
 !if ENABLE_EXCEPTION {
-        +WORD "catch"
+        +WORD "catch", 0
+} else {
+        +NONAME
+}
 W_CATCH
         !word DO_COLON
         !word W_SPAT
@@ -31,7 +43,6 @@ W_CATCH
         !word W_DROP
         !word W_ZERO
         !word W_PSEMI
-}
 
 ; : catch     ( xt -- exception# | 0 )
 ;     sp@ >r              ( xt )       \ save data stack pointer
@@ -51,7 +62,10 @@ W_CATCH
 ; TODO need to be able to throw from assembler
 
 !if ENABLE_EXCEPTION {
-        +WORD "throw"
+        +WORD "throw", 0
+} else {
+        +NONAME
+}
 W_THROW
         !word DO_COLON
         !word W_QDUP
@@ -70,7 +84,6 @@ W_THROW
         !word W_RFROM
 +        
         !word W_PSEMI
-}
 
 ; : throw     ( ??? exception# -- ??? exception# )
 ;     ?dup if             ( exc# )     \ 0 THROW is no-op

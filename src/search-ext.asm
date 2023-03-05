@@ -28,7 +28,7 @@
 ;               during the creation of a colon-definition, to select this 
 ;               vocabulary at compile-time.
 
-        +WORD_IMM "forth"
+        +WORD "forth", 0
 W_FORTH
 ;      !word DODOE
 ;          !word DOVOC

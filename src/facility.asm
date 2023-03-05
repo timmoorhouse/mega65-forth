@@ -10,7 +10,7 @@
 ; TODO use plot (kernel)
 
 !if ENABLE_FACILITY {
-        +WORD "at-xy"
+        +WORD "at-xy", 0
 W_AT_XY
         !word *+2
 !if 0 {
@@ -36,7 +36,7 @@ W_AT_XY
 ; ANSI 10.6.1.2005
 
 !if ENABLE_FACILITY {
-        +WORD "page"
+        +WORD "page", 0
 W_PAGE
         !word *+2
         jsr PAGE

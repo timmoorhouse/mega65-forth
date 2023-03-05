@@ -22,7 +22,7 @@
 
 !if ENABLE_SEARCH {
 !if 0 {
-        +WORD "definitions"
+        +WORD "definitions", 0
 W_DEFINITIONS
         !word DO_COLON
 ;          !word CON
@@ -40,7 +40,7 @@ W_DEFINITIONS
 
 ; Required by lots of things currently
 
-        +WORD "forth-wordlist"
+        +WORD "forth-wordlist", 0
 W_FORTH_WORDLIST
         !word DO_VARIABLE
 FORTH_WORDLIST
@@ -53,7 +53,7 @@ FORTH_WORDLIST
 
 ;!if ENABLE_SEARCH {
 !if 1 {
-         +WORD "get-current"
+         +WORD "get-current", 0
 W_GET_CURRENT
 !if 0 {
         !word DO_USER
@@ -88,7 +88,7 @@ W_GET_CURRENT
 ; The word itself is required by the implementation (of FIND) but is only visible if SEARCH is enabled
 
 !if ENABLE_SEARCH {
-        +WORD "search-wordlist"
+        +WORD "search-wordlist", 0
 } else {
         +NONAME
 }
@@ -156,7 +156,7 @@ W_SEARCH_WORDLIST
 
 !if ENABLE_SEARCH {
 !if 0 {
-        +WORD "vocabulary"
+        +WORD "vocabulary", 0
 W_VOCABULARY
         !word DO_COLON
 ;          !word BUILD
