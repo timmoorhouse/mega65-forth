@@ -6,10 +6,6 @@
 \ 0<> 0> 2>R 2R> 2R@ :NONAME <> ?DO DEFER DEFER FALSE NIP PARSE PARSE-NAME    
 \ PICK REFILL RESTORE-INPUT ROLL S\" SAVE-INPUT SOURCE-ID TRUE UNUSED VALUE   
 
-: defer@ ( xt1 -- xt2 ) >body @ ;
-
-: defer! ( xt2 xt1 -- ) >body ! ;
-
 : /string ( c-addr1 u1 n -- c-addr2 u2 ) 
   dup >r - swap r> + swap ; ( STRING )
 
@@ -44,6 +40,10 @@
 
 : compile, ( xt -- ) , ; ( compile-only )
 
+\ DEFER@ see core.f
+
+\ DEFER! see core.f
+
 : endcase ( C: case-sys -- ) ( x -- )
   postpone drop 0 ?do postpone then loop ; immediate compile-only
 
@@ -56,12 +56,7 @@
 
 : holds ( c-addr u -- ) begin dup while 1- 2dup + c@ hold repeat 2drop ;
 
-: is ( xt "<spaces>name" -- )
-   state @ if
-     postpone ['] postpone defer!
-   else
-     ' defer!
-   then ; immediate
+\ IS see core.f
 
 \ TODO marker
 : marker ( "<spaces>name" -- ) ( -- ) create does> ;

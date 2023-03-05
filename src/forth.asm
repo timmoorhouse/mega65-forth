@@ -379,18 +379,6 @@ NAME_LEN_MASK  = $1f ; use lower bits for name length
         !word W_TYPE
 }
 
-!macro DEFER .name, .default {
-        +WORD .name
-        !word DO_DEFER
-        !word .default
-}
-
-!macro VARIABLE .name, .value {
-        +WORD .name
-        !word DO_VARIABLE
-        !word .value
-}
-
 !ifdef DEBUG                { !src "debug.asm"         }
 
 ;POP4
@@ -753,11 +741,16 @@ AUTOBOOT_FILENAME
 !src "search-ext.asm"
 !src "string.asm"
 !src "string-ext.asm"
-; !src "tools.asm"                      ; TODO no need for one yet
+!src "tools.asm"
 !src "tools-ext.asm"
 !src "tools-ext-obsolescent.asm"
 !src "xchar.asm"
 !src "xchar-ext.asm"
+
+
+; TODO move this above HERE
+!src "bootstrap.asm"
+
 
 INITIAL_FORTH_WORDLIST
         !word _here ; TODO can we get away without storing this?

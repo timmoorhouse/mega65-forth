@@ -110,6 +110,8 @@ variable hld ( TODO can we remove this? )
 
 : ' ( "<spaces>name" -- xt ) parse-name find-name name>interpret ;
 
+: ['] ( "<spaces>name" -- ) ( -- xt ) ' postpone literal ; immediate compile-only
+
 : 2! ( x1 x2 a-addr -- ) swap over ! 2+ ! ;
 
 : 2@ ( a-addr -- x1 x2 ) dup 2+ @ swap @ ;
@@ -140,7 +142,18 @@ variable hld ( TODO can we remove this? )
 
 : dabs dup 0< if dnegate then ; ( DOUBLE )
 
+: defer@ ( xt1 -- xt2 ) >body @ ; ( CORE-EXT )
+
+: defer! ( xt2 xt1 -- ) >body ! ; ( CORE-EXT )
+
 : find ( c-addr -- c-addr 0 | xt 1 | xt -1 ) dup count forth-wordlist search-wordlist dup if rot drop then ;
+
+: is ( xt "<spaces>name" -- )
+   state @ if
+     postpone ['] postpone defer!
+   else
+     ' defer!
+   then ; immediate ( CORE-EXT )
 
 : m* ( n1 n2 -- d ) 2dup xor >r abs swap abs um* r> 0< if dnegate then ;
 
@@ -222,10 +235,8 @@ variable hld ( TODO can we remove this? )
 
 : u. ( u -- ) 0 u.r space ;
 
-: . ( n -- ) s>d d. ;
+:noname ( n -- ) s>d d. ; is .
 
 : word ( char "<chars>ccc<char>" -- c-addr ) (parse-name) dup here c! here 1+ swap cmove here ;
-
-: ['] ( "<spaces>name" -- ) ( -- xt ) ' postpone literal ; immediate compile-only
 
 .( ... end of core.f ) cr
