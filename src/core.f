@@ -122,6 +122,7 @@ variable hld ( TODO can we remove this? )
 
 : abort ( i*x -- ) ( R: j*x -- ) -1 throw ;
 
+( TODO the message should not get displayed if caught ??? )
 ( TODO this is just a no-op so far )
 : abort" ( "ccc<quote>" -- ) 
   postpone if 

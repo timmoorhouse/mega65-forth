@@ -522,20 +522,7 @@ WARM
         lda <HERE
         ora <HERE+1
         bne +
-
-        ; TODO we could move the one time initialization code past HERE
-        ; (it would get overwritten but wouldn't be needed once we bootstrap)
-
-        lda INITIAL_FORTH_WORDLIST
-        sta FORTH_WORDLIST
-        lda INITIAL_FORTH_WORDLIST+1
-        sta FORTH_WORDLIST+1
-
-        lda #<INITIAL_HERE
-        sta <HERE
-        lda #>INITIAL_HERE
-        sta <HERE+1
-
+        jsr _onetime
 +
 
         ; ldy #0 ; still 0 from above
@@ -756,7 +743,27 @@ INITIAL_FORTH_WORDLIST
         !word _here ; TODO can we get away without storing this?
 INITIAL_HERE
 
-        ; TODO move one-time initialization code here (things that won't be done after a bootstrap)
+;
+; One-time initialization code that is safe to overwrite
+; once bootstrapping begins
+;
+
+_onetime
+
+        lda INITIAL_FORTH_WORDLIST
+        sta FORTH_WORDLIST
+        lda INITIAL_FORTH_WORDLIST+1
+        sta FORTH_WORDLIST+1
+
+        lda #<INITIAL_HERE
+        sta <HERE
+        lda #>INITIAL_HERE
+        sta <HERE+1
+
+        ; TODO move the code from bootstrap.asm up to a higher memory
+        ; area
+
+        rts
 
         ; TODO move SIMPLE_DOT, SIMPLE_DOTS here?
 

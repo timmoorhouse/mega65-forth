@@ -2053,25 +2053,6 @@ beq +
 +       jmp POP
 
 ; ****************************************************************************
-; S"
-; (???)
-; ANSI 6.1.2165
-; ANSI 11.6.1.2165
-
-        +WORD "(s\")", 0
-W_PSQ
-        ; see also (.")
-        !word DO_COLON
-        !word W_RAT
-        !word W_COUNT
-        !word W_DUP
-        !word W_1PLUS ; account for length field
-        !word W_RFROM
-        !word W_PLUS
-        !word W_TOR
-        !word W_PSEMI
-
-; ****************************************************************************
 ; SOURCE
 ; (-- c-addr u)
 ; ANSI 6.1.2216
