@@ -52,7 +52,7 @@ that the build process will get more involved:
 
 ## Recommendations
 
-- [Vice](https://vice-emu.sourceforge.io/) for c1541 and petcat to manipulate d81 images
+- [VICE](https://vice-emu.sourceforge.io/) for c1541 and petcat to manipulate d81 images
 - m65, mega65_ftp from [mega65-tools](https://github.com/MEGA65/mega65-tools)
 - [m65dbg](https://github.com/MEGA65/m65dbg)
 - [xemu](https://github.com/lgblgblgb/xemu)
@@ -62,8 +62,6 @@ that the build process will get more involved:
 These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
 - CORE
   - [ ] Need to reimplement the multiplication/division operations using the math unit.
-  - [ ] We should be able to get rid of the hidden flag by changing when we link new words into the dictionary.
-- CORE-EXT
 - EXCEPTION
   - [ ] Need to be able to throw exceptions from assembler.  This likely means changing the `THROW` implementation to be native code instead of Forth bytecode.
   - [ ] Many bits of code need to be updated to throw an exception for error conditions.
@@ -72,7 +70,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Fix I/O status handling (when is status from READSS reset?).
   - [ ] Fix handling of I/O error cases.
   - [ ] We might be able to move file I/O to forth by embedding the necessary bootstrapping code into the initial image and running it out of memory instead of reading it from a disk file.
-- SEARCH
 - Bootstrapping with portions of the dictionary written in Forth
   - [ ] Move things we can from assembler to Forth.
 - Error checking (and throwing the appropriate exception)

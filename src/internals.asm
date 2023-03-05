@@ -347,21 +347,6 @@ W_PSEARCH_WORDLIST
 ; TODO
 
 ; ****************************************************************************
-; ?HIDDEN
-; (nt -- flag)
-
-; Check if a name token is hidden
-
-        +WORD "?hidden"
-W_QHIDDEN
-        !word DO_COLON
-        !word W_2PLUS
-        !word W_CAT
-        +CLITERAL F_HIDDEN
-        !word W_AND
-        !word W_PSEMI
-
-; ****************************************************************************
 ; ?IMMEDIATE
 ; (nt -- flag)
 ;
@@ -740,27 +725,6 @@ W_SBUF
         pha
         lda #>SBUF
         jmp PUSH
-
-; ****************************************************************************
-;      SMUDGE (from FIG)
-;               Used during word definition to toggle the "smudge bit" in 
-;               a definition's name field.  This prevents an un-completed 
-;               definition  from being found during dictionary searches, 
-;               until compiling is completed without error.
-
-        +NONAME
-W_SMUDGE
-        !word DO_COLON
-        ; see also immediate (core)
-        !word W_LATEST
-        !word W_2PLUS
-        !word W_DUP
-        !word W_CAT
-        +CLITERAL F_HIDDEN
-        !word W_XOR
-        !word W_SWAP
-        !word W_CSTORE
-        !word W_PSEMI
 
 ; ****************************************************************************
 ; SP!

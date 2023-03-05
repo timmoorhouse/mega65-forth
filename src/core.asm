@@ -440,12 +440,7 @@ W_COLON
         !word DO_COLON
 ;          !word QEXEC
 ;          !word SCSP  ; !csp
-;          !word CURRENT
-;          !word AT
-        ; !word W_GET_CURRENT ; context - change to get-current?
-        ; !word W_STORE
-        !word W_CREATE
-        !word W_SMUDGE
+        !word W_PCREATE
         !word W_RBRACKET
         !word W_PSCODE
 DO_COLON
@@ -481,10 +476,9 @@ W_SEMI
         +LITERAL W_PSEMI
         !word W_COMMA ; COMPILEC?
         
-        !word W_LATEST          ; TODO CLEAN UP !!!!!!!!!
+        !word W_LATEST
         +ZBRANCH +
-        ; TODO link into word list here
-        !word W_SMUDGE
+        !word W_LINK
 +
 
         !word W_LBRACKET
@@ -1023,6 +1017,30 @@ CR
         +WORD "create"
 W_CREATE
         !word DO_COLON
+        !word W_PCREATE
+        !word W_LINK
+        !word W_PSEMI
+
+        +NONAME ; link the last definition into the dictionary
+W_LINK
+        !word DO_COLON
+
+        ; update the link in the word
+        !word W_GET_CURRENT
+        !word W_AT
+        !word W_LATEST
+        !word W_STORE
+
+        ; add it to the front of the list
+        !word W_LATEST
+        !word W_GET_CURRENT
+        !word W_STORE
+
+        !word W_PSEMI
+
+        +NONAME ; like create but doesn't link into the dictionary
+W_PCREATE
+        !word DO_COLON
 
 ;          !word TIB      ;)
 ;          !word HERE     ;|
@@ -1073,18 +1091,12 @@ W_CREATE
 
         !word W_ALIGN           
 
-        ; TODO turn latest into a var and set it here? (so it will work with :noname)
-
         !word W_HERE
         +LITERAL &LATEST
         !word W_STORE
 
-        !word W_HERE
-        !word W_GET_CURRENT
-        !word W_DUP
-        !word W_AT
-        !word W_COMMA
-        !word W_STORE
+        !word W_ZERO
+        !word W_COMMA           ; leave space for link field
 
         ; (c-addr u)
 

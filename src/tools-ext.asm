@@ -306,13 +306,6 @@ _traverse_loop
 
         ; (i*x) (R: xt wid)
 
-        !word W_RAT
-        !word W_QHIDDEN
-        !word W_ZEQUAL
-        +ZBRANCH _traverse_loop
-
-        ; (i*x) (R: xt wid)
-
         !word W_2RAT    ; (i*x xt wid=nt) (R: xt wid)
         !word W_SWAP    ; (i*x nt xt) (R: xt wid)
         !word W_EXECUTE ; (j*x flag) (R: xt wid)

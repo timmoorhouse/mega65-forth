@@ -137,7 +137,7 @@ add_text_files() {
 
 do_build() {
 
-    local rev=$(git show-ref --head -s --abbrev | head -n1)
+    local rev=$(git describe --tags)
     if [ -n "$rev" -a -z "${opt[dryrun]}" ]; then
         cat <<EOF > "${opt[builddir]}/revision.asm"
 _revision +STRING "$rev"

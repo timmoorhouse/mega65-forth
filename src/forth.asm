@@ -327,18 +327,11 @@ PAD_LEN            = 84
 
 !set _here = $0
 
-; Control bits:
-; - fig always sets bit 8 (so we can find the start of the name crawling back from the code field)
-; - precedence (fig uses bit 7 for immediate)
-; - smudge (fig uses bit 6 for hidden)
-; - length uses bits 1-5
-
-; TODO can we get rid of the hidden flag by just not linking the word until ; ?
-
+; Control bits
 F_IMMEDIATE   = $80
-F_HIDDEN      = $40 ; TODO remove this
-; <unused>      $20 ; TODO add a compile-only flag?
-NAME_LEN_MASK = $1f
+; <unused>      $40 ; TODO compile-only
+; <unused>      $20 ; TODO
+NAME_LEN_MASK = $1f ; use lower bits for name length
 
 !macro WORD2 .name, .flags {
         +ALIGN
@@ -595,8 +588,6 @@ WARM
         sta <STRING+1
         jsr put_string
 !ifdef HAVE_REVISION {
-        lda #'-'
-        jsr EMIT
         lda #<_revision
         sta <STRING
         lda #>_revision
@@ -622,7 +613,7 @@ WARM
         jmp NEXT
 
 _startup_text1
-        +STRING "MEGA65-Forth 0.1"
+        +STRING "MEGA65-Forth "
 _startup_text2
         +STRING "bye will exit to BASIC\r"
 !ifdef HAVE_REVISION {
