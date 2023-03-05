@@ -75,7 +75,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
 - Error checking (and throwing the appropriate exception)
   - [ ] Unaligned address.
   - [ ] Divide by zero.
-  - [ ] Interpreting a compile-only word.
   - [ ] Pictured numeric output string overflow.
   - [ ] Parsed string overflow?
   - [ ] Mismatched control structures.

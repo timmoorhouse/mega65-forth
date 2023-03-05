@@ -637,6 +637,11 @@ W_MAIN
         +ZBRANCH +
         +DOTQ "exception in autoboot "
         !word W_SIMPLE_DOT
+!if 0 { ; TODO
+        !word W_CR
+        !word W_SOURCE
+        !word W_TYPE
+}
 +
 }        
 

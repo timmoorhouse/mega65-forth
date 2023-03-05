@@ -1913,7 +1913,8 @@ W_POSTPONE
         +ZBRANCH _postpone_nonimmediate 
 
         ; immediate
-        !word W_NAME_TO_INTERPRET
+        ; TODO can we use name>compile?
+        !word W_NAME_TO_XT ; won't throw if compile-only
         !word W_COMMA
         +BRANCH _postpone_done
 

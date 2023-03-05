@@ -1,7 +1,7 @@
 
 ; TODO remove this stuff
 
-
+!if 0 {
 petscii_to_screencode
         ; TODO this is a bit of a mess
         cmp #128
@@ -70,6 +70,7 @@ _255
         ; 255           to 94?
         lda #94
         rts
+}
 
 ; TODO looks like the kernel has an equivalent?
 
@@ -96,6 +97,7 @@ put_hex_digit
         jmp EMIT
 
 
+!if 0 {
 ascii_to_petscii
         ; TODO this is a bit of a mess - should we just read scan codes and then a look up table?
         ; TODO
@@ -115,6 +117,7 @@ _61
 
 _7b
         rts        
+}
 
 put_string
         ; TODO

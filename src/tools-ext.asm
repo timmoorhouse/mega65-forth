@@ -182,10 +182,7 @@ W_NTOR
 W_NAME_TO_COMPILE
         !word DO_COLON
         !word W_DUP
-        !word W_NAME_TO_STRING  ; immediately after the name
-        !word W_ONE
-        !word W_OR              ; for alignment
-        !word W_PLUS
+        !word W_NAME_TO_XT
         !word W_SWAP
         !word W_QIMMEDIATE
         +ZBRANCH +
@@ -210,15 +207,12 @@ W_NAME_TO_INTERPRET
         !word W_DUP
         !word W_QCOMPILE_ONLY
         +ZBRANCH +
-!if 0 {
+!if 1 {
         +LITERAL E_INTERPRET_COMPILE_ONLY
         !word W_THROW
 }
 +
-        !word W_NAME_TO_STRING  ; immediately after the name
-        !word W_ONE
-        !word W_OR              ; for alignment
-        !word W_PLUS
+        !word W_NAME_TO_XT
         !word W_PSEMI
 
 ; ****************************************************************************

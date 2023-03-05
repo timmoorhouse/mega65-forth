@@ -6,10 +6,7 @@
         +NONAME
 W_SIMPLE_DOT
         !word *+2
-        ; jsr SIMPLE_DOTS
         ; stx <XSAVE
-        lda #'*'
-        jsr EMIT
         lda 1,x
         jsr put_hex
         ; ldx <XSAVE

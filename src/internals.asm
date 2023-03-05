@@ -475,6 +475,20 @@ _lower_zero_length
         !word W_PSEMI
 
 ; ****************************************************************************
+; NAME>XT
+; (nt -- xt)
+; This is like name>interpret but will not throw
+
+        +NONAME
+W_NAME_TO_XT
+        !word DO_COLON
+        !word W_NAME_TO_STRING  ; immediately after the name
+        !word W_ONE
+        !word W_OR              ; for alignment
+        !word W_PLUS
+        !word W_PSEMI
+
+; ****************************************************************************
 ; OUT   (from FIG)
 
 ;      OUT           ---  addr                               U
