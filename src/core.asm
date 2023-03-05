@@ -1295,11 +1295,160 @@ W_EMIT
 ; (c-addr u -- false | i*x true)
 ; ANSI 6.1.1345
 
-!if 0 {
         +WORD "environment?"
-        !word *+2
-        rts
-}
+        !word DO_COLON
+
+        !word W_2DUP
+        +LITERAL _environment_str_counted_string
+        !word W_COUNT
+        !word W_COMPARE
+        !word W_ZEQUAL
+        +ZBRANCH +
+        +LITERAL 255
+        !word W_TRUE
+        +BRANCH _environment_done
++
+        !word W_2DUP
+        +LITERAL _environment_str_hold
+        !word W_COUNT
+        !word W_COMPARE
+        !word W_ZEQUAL
+        +ZBRANCH +
+        +LITERAL HOLD_LEN
+        !word W_TRUE
+        +BRANCH _environment_done
++
+        !word W_2DUP
+        +LITERAL _environment_str_pad
+        !word W_COUNT
+        !word W_COMPARE
+        !word W_ZEQUAL
+        +ZBRANCH +
+        +LITERAL PAD_LEN
+        !word W_TRUE
+        +BRANCH _environment_done
++
+        !word W_2DUP
+        +LITERAL _environment_str_address_unit_bits
+        !word W_COUNT
+        !word W_COMPARE
+        !word W_ZEQUAL
+        +ZBRANCH +
+        +LITERAL 16
+        !word W_TRUE
+        +BRANCH _environment_done
++
+        !word W_2DUP
+        +LITERAL _environment_str_floored
+        !word W_COUNT
+        !word W_COMPARE
+        !word W_ZEQUAL
+        +ZBRANCH +
+        !word W_FALSE ; we're symmetric, not floored
+        !word W_TRUE
+        +BRANCH _environment_done
++
+        !word W_2DUP
+        +LITERAL _environment_str_max_char
+        !word W_COUNT
+        !word W_COMPARE
+        !word W_ZEQUAL
+        +ZBRANCH +
+        +LITERAL 255
+        !word W_TRUE
+        +BRANCH _environment_done
++
+        !word W_2DUP
+        +LITERAL _environment_str_max_d
+        !word W_COUNT
+        !word W_COMPARE
+        !word W_ZEQUAL
+        +ZBRANCH +
+        !word W_TRUE
+        +LITERAL $7fff
+        !word W_TRUE
+        +BRANCH _environment_done
++
+        !word W_2DUP
+        +LITERAL _environment_str_max_n
+        !word W_COUNT
+        !word W_COMPARE
+        !word W_ZEQUAL
+        +ZBRANCH +
+        +LITERAL $7fff
+        !word W_TRUE
+        +BRANCH _environment_done
++
+        !word W_2DUP
+        +LITERAL _environment_str_max_u
+        !word W_COUNT
+        !word W_COMPARE
+        !word W_ZEQUAL
+        +ZBRANCH +
+        !word W_TRUE
+        !word W_TRUE
+        +BRANCH _environment_done
++
+        !word W_2DUP
+        +LITERAL _environment_str_max_ud
+        !word W_COUNT
+        !word W_COMPARE
+        !word W_ZEQUAL
+        +ZBRANCH +
+        !word W_TRUE
+        !word W_TRUE
+        !word W_TRUE
+        +BRANCH _environment_done
++
+        !word W_2DUP
+        +LITERAL _environment_str_return_stack_cells
+        !word W_COUNT
+        !word W_COMPARE
+        !word W_ZEQUAL
+        +ZBRANCH +
+        +LITERAL 128
+        !word W_TRUE
+        +BRANCH _environment_done
++
+        !word W_2DUP
+        +LITERAL _environment_str_stack_cells
+        !word W_COUNT
+        !word W_COMPARE
+        !word W_ZEQUAL
+        +ZBRANCH +
+        +LITERAL (TOS - BOS) >> 1
+        !word W_TRUE
+        +BRANCH _environment_done
++
+        !word W_FALSE
+
+_environment_done
+        !word W_PSEMI
+
+_environment_str_counted_string
+        +STRING "/counted-string"
+_environment_str_hold
+        +STRING "/hold"
+_environment_str_pad
+        +STRING "/pad"
+_environment_str_address_unit_bits
+        +STRING "address-unit-bits"
+_environment_str_floored
+        +STRING "floored"
+_environment_str_max_char
+        +STRING "max-char"
+_environment_str_max_d
+        +STRING "max-d"
+_environment_str_max_n
+        +STRING "max-n"
+_environment_str_max_u
+        +STRING "max-u"
+_environment_str_max_ud
+        +STRING "max-ud"
+_environment_str_return_stack_cells
+        +STRING "return-stack-cells"
+_environment_str_stack_cells
+        +STRING "stack-cells"
 
 ; ****************************************************************************
 ; EVALUTATE 

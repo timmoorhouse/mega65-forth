@@ -28,10 +28,10 @@
 (                                                                             )
 ( ! * + +! +LOOP , - . / 0< 0= 1+ 1- 2* 2/ 2DROP 2DUP 2OVER 2SWAP : ; < = >IN )
 ( >NUMBER >R ?DUP @ ACCEPT ALIGN ALIGNED ALLOT AND BASE BL C! C@ CONSTANT     )
-( COUNT CR CREATE DECIMAL DEPTH <DO> DOES> DROP DUP EMIT EVALUATE EXECUTE     )
-( EXIT FILL HERE I IMMEDIATE INVERT J KEY LEAVE <LOOP> LSHIFT NEGATE OR OVER  )
-( POSTPONE QUIT R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP TYPE U< UM* UM/MOD    )
-( UNLOOP VARIABLE XOR [ ]                                                     )
+( COUNT CR CREATE DECIMAL DEPTH <DO> DOES> DROP DUP EMIT ENVIRONMENT?         )
+( EVALUATE EXECUTE EXIT FILL HERE I IMMEDIATE INVERT J KEY LEAVE <LOOP>       )
+( LSHIFT NEGATE OR OVER POSTPONE QUIT R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP )
+( TYPE U< UM* UM/MOD UNLOOP VARIABLE XOR [ ]                                  )
 
 ( *************************************************************************** )
 ( * internal helper words                                                   * )
@@ -151,21 +151,6 @@ variable hld ( TODO can we remove this? )
 : chars ( n1 -- n2 ) ;
 
 : dabs dup 0< if dnegate then ; ( DOUBLE )
-
-( TODO might be simpler to do this one in assembler )
-: environment? ( c-addr u -- false | i*x true ) 2drop false ;
-( TODO /COUNTED-STRING )
-( TODO /HOLD )
-( TODO /PAD )
-( TODO ADDRESS-UNIT-BITS )
-( TODO FLOORED )
-( TODO MAX-CHAR )
-( TODO MAX-D )
-( TODO MAX-N )
-( TODO MAX-U )
-( TODO MAX-UD )
-( TODO RETURN-STACK-CELLS )
-( TODO STACK-CELLS )
 
 : find ( c-addr -- c-addr 0 | xt 1 | xt -1 ) dup count forth-wordlist search-wordlist dup if rot drop then ;
 

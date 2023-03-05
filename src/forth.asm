@@ -237,6 +237,9 @@ SBUF_LEN           = NUM_STRING_BUFFERS * STRING_BUFFER_LEN
 SBUF               = TIB - SBUF_LEN
 DAREA_LEN          = MAX_OPEN_FILES * FILE_BUFFER_SIZE 
 DAREA              = SBUF - DAREA_LEN
+HOLD_LEN           = 34 ; min (2*16)+2 = 34
+WORD_LEN           = 33 ; min 33
+PAD_LEN            = 84
 
 ; TODO transient buffer for s", s\" (need 2 buffers so that two consecutive
 ; strings can be stored)
