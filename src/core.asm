@@ -1500,6 +1500,7 @@ W_PEVALUATE             ; ( -- )
         !word W_STORE
 
 _pevaluate_loop
+        !word W_QSTACK ; TODO where to put this? should we check for >= n available cells?
         !word W_PARSE_NAME
 
         ; (c-addr u)
@@ -1507,77 +1508,74 @@ _pevaluate_loop
         !word W_QDUP
         +ZBRANCH _pevaluate_done_loop
 
-        !word W_2TOR    ; TODO can we get rid of the swapping to the return stack?
-        
-        ; () (R: c-addr u)
-
-        !word W_2RAT
+        !word W_2DUP
         !word W_FIND_NAME
 
-        ; (0 | nt) (R: c-addr u)
+        ; (c-addr u 0 | c-addr u nt)
 
         !word W_QDUP
         +ZBRANCH _pevaluate_word_not_found
 
-        ; (0 | nt) (R: c-addr u)
+        ; (c-addr u nt)
+
+        !word W_NIP
+        !word W_NIP
+
+        ; (nt)
         
         !word W_STATE
         !word W_AT
-        +ZBRANCH _pevaluate_interpreting
+        +ZBRANCH _pevaluate_interpret
+
         ; compiling ...        
         !word W_NAME_TO_COMPILE
-        +BRANCH +
+        !word W_EXECUTE
+        +BRANCH _pevaluate_loop
 
-_pevaluate_interpreting
+_pevaluate_interpret
         ; TODO check compile-only and throw E_INTERPRET_COMPILE_ONLY where appropriate
         !word W_NAME_TO_INTERPRET
-
-+
         !word W_EXECUTE
-        !word W_QSTACK
-        +BRANCH _pevaluate_done_word
+        +BRANCH _pevaluate_loop
 
 _pevaluate_word_not_found
 
-        ; (R: c-addr u)
+        ; (c-addr u)
 
-        !word W_2RAT
+        !word W_2DUP
         !word W_STONUMBER
         +ZBRANCH _pevaluate_stonumber_failed
 
-        ; (d) (R: c-addr u)
+        ; (c-addr u d)
 
         !word W_DROP ; drop MSW
 
+        !word W_NIP  ; drop c-addr u
+        !word W_NIP
+
+        ; (n)
+
         !word W_STATE
         !word W_AT
-        +ZBRANCH _pevaluate_done_word
+        +ZBRANCH _pevaluate_loop ; if interpreting, we're done
 
+        ; compiling ...
         +LITERAL W_PLITERAL
         !word W_COMMA ; COMPILEC?
         !word W_COMMA
-
-        ; TODO if compiling postpone a pliteral, then the number
-        +BRANCH _pevaluate_done_word
+        +BRANCH _pevaluate_loop
 
 _pevaluate_stonumber_failed
-        ; (ud) (R: c-addr u)
-        !word W_NIP
-        !word W_NIP
-        ; +BRANCH _evaluate_error
-
-_pevaluate_error
-        ; (R: c-addr u)
+        ; (c-addr u d)
+        !word W_2DROP
+        ; (c-addr u)
 
         ; TODO should this be printed in the handler?
-
 !ifdef COLOUR_ERROR {
         +CLITERAL COLOUR_ERROR
         !word W_FOREGROUND
 }
         !word W_BL,W_EMIT
-        ; !word W_2RAT
-        !word W_2RFROM
         !word W_TYPE
         +DOTQ "? "
 !ifdef COLOUR_ERROR {
@@ -1585,17 +1583,8 @@ _pevaluate_error
         !word W_FOREGROUND
 }
 
-        ; TODO clean up this ... maybe always leave an exception # on the stack
-        ; and throw in done_word?
-        ; !word W_2RFROM,W_2DROP
         +LITERAL E_UNDEFINED_WORD
         !word W_THROW
-
-        ; jmp _evaluate_done_word
-
-_pevaluate_done_word
-        !word W_2RFROM,W_2DROP
-        +BRANCH _pevaluate_loop
 
 _pevaluate_done_loop
         ; (c-addr)
