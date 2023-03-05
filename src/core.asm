@@ -1502,82 +1502,37 @@ W_PEVALUATE             ; ( -- )
 _pevaluate_loop
         !word W_PARSE_NAME
 
-        ; TODO this is desperately in need of a cleanup
-
         ; (c-addr u)
 
         !word W_QDUP
         +ZBRANCH _pevaluate_done_loop
 
-!if DEBUG {
-        +DOTQ "pevaluate-name"
-        +CLITERAL '['
-        !word W_EMIT
-        !word W_2DUP
-        !word W_TYPE
-        +CLITERAL ']'
-        !word W_EMIT
-        ; !word W_DOTS,W_CR
-}
-
-!if CASE_INSENSITIVE { ; TODO move this to PARSE-NAME to get rid of duplication?
-        !word W_2DUP
-        !word W_LOWER
-}
-
-        !word W_2TOR    
+        !word W_2TOR    ; TODO can we get rid of the swapping to the return stack?
         
         ; () (R: c-addr u)
 
         !word W_2RAT
-        !word W_FORTH_WORDLIST ; TODO
-        !word W_SEARCH_WORDLIST
+        !word W_FIND_NAME
 
-        ; (0)     (R: c-addr u) - not found
-        ; (xt 1)  (R: c-addr u) - immediate
-        ; (xt -1) (R: c-addr u) - non-immediate
-
-        ; TODO turn the 1/-1 into EXECUTE/COMPILE, then just execute
-        ; (doing the same sort of thing as NAME>COMPILE)
+        ; (0 | nt) (R: c-addr u)
 
         !word W_QDUP
         +ZBRANCH _pevaluate_word_not_found
 
-        ; (xt 1 | xt -1) (R: c-addr u)
-
-        ; TODO check compile-only and throw E_INTERPRET_COMPILE_ONLY where appropriate
+        ; (0 | nt) (R: c-addr u)
         
-        ; TODO clean up the immediate/non-immediate handling
-
-        !word W_1MINUS
-        +ZBRANCH _pevaluate_immediate
-
-        ; non-immediate
-        ; TODO execute if interpreting, move to definition if compiling
-!if DEBUG {
-        +DOTQ "<non-immediate>"
-        !word W_DOTS,W_CR
-}
-
         !word W_STATE
         !word W_AT
-        +ZBRANCH _pevaluate_nonimmediate_interpreting
+        +ZBRANCH _pevaluate_interpreting
+        ; compiling ...        
+        !word W_NAME_TO_COMPILE
+        +BRANCH +
 
-        !word W_COMMA
-        +BRANCH _pevaluate_done_word
+_pevaluate_interpreting
+        ; TODO check compile-only and throw E_INTERPRET_COMPILE_ONLY where appropriate
+        !word W_NAME_TO_INTERPRET
 
-_pevaluate_nonimmediate_interpreting
-
-        !word W_EXECUTE
-        !word W_QSTACK
-        +BRANCH _pevaluate_done_word
-
-_pevaluate_immediate
-        ; TODO always execute
-!if DEBUG {
-        +DOTQ "<immediate>"
-        !word W_DOTS,W_CR
-}
++
         !word W_EXECUTE
         !word W_QSTACK
         +BRANCH _pevaluate_done_word
@@ -1613,12 +1568,6 @@ _pevaluate_stonumber_failed
 
 _pevaluate_error
         ; (R: c-addr u)
-        ; TODO error
-        ; TODO change colour to red?
-!if DEBUG {
-        +DOTQ "<not found>"
-        !word W_DOTS,W_CR
-}
 
         ; TODO should this be printed in the handler?
 
@@ -1649,7 +1598,8 @@ _pevaluate_done_word
         +BRANCH _pevaluate_loop
 
 _pevaluate_done_loop
-        !word W_DROP ; (c-addr) was left on stack
+        ; (c-addr)
+        !word W_DROP
 
         !word W_PSEMI
 
