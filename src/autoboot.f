@@ -54,9 +54,9 @@ savesystem forth-minimal,p,w
 .( ... saving forth-complete ) cr
 savesystem forth-complete,p,w
 
-unused . s" bytes free" type cr \ 26552
+unused . s" bytes free" type cr \ 26568
 
-\ include runtests.f
+include runtests.f
 
 include benchmark.f
 

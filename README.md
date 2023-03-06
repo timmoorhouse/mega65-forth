@@ -71,9 +71,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Handle file access modes.
   - [ ] Fix I/O status handling (when is status from READSS reset?).
   - [ ] Fix handling of I/O error cases.
-  - [ ] We might be able to move file I/O to forth by embedding the necessary bootstrapping code into the initial image and running it out of memory instead of reading it from a disk file.
-- Bootstrapping with portions of the dictionary written in Forth
-  - [ ] Move things we can from assembler to Forth.
 - Error checking (and throwing the appropriate exception)
   - [ ] Unaligned address.
   - [ ] Divide by zero.

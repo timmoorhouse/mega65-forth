@@ -10,7 +10,6 @@
 
 ; TODO can we move put_string here?
 
-; TODO move to volatile area
 W_SIMPLE_DOT
         !word *+2
         lda #'$'
@@ -67,8 +66,6 @@ SIMPLE_DOTS
 W_AUTOBOOT_BOOTSTRAP
         !word DO_COLON
 
-        ; TODO compile the embedded forth source
-
         +DOTQ "Starting bootstrap..."
         !word W_CR
 
@@ -82,16 +79,12 @@ W_AUTOBOOT_BOOTSTRAP
 
         !word W_PSEMI
 
-!if EMBED_BOOTSTRAP_MIN {
-
         +NONAME
 W_BOOTSTRAP_MIN
         !word DO_COLON
 
         +LITERAL BOOTSTRAP_MIN_START
         ; ( c-addr )
-
-        ; TODO loop until end
 
         !word W_TOR
 
@@ -171,5 +164,3 @@ BOOTSTRAP_MIN_START
 !byte $0a
 BOOTSTRAP_MIN_LEN = *-BOOTSTRAP_MIN_START
 BOOTSTRAP_MIN_END
-
-}
