@@ -10,6 +10,7 @@ W_REPORT_EXCEPTION
         !word DO_DEFER
         !word W_SIMPLE_REPORT_EXCEPTION
 
+; TODO move this to bootstrap? would require adding exception to the minimal config
         +NONAME
 W_SIMPLE_REPORT_EXCEPTION        ; (n --)
         !word DO_COLON
@@ -69,8 +70,6 @@ W_CATCH
 ; ****************************************************************************
 ; THROW
 ; ANSI 9.6.1.2275
-
-; See reference implementation
 
 ; TODO need to be able to throw from assembler
 

@@ -164,9 +164,9 @@ E_SUBSTITUTE                     = -78 ; SUBSTITUTE
 E_REPLACES                       = -79 ; REPLACES
 
 ; [-4095,-256] are reserved for the implementation
+E_WORDLIST_NOT_AVAILABLE         = -256
 ;
 ; Errors to create:
-; - wordlist unavailable
 ;
 ;
 
@@ -529,7 +529,7 @@ WARM
 +
 
         ; ldy #0 ; still 0 from above
-        sty <SOURCE_ID
+        sty <SOURCE_ID          ; TODO do we need this?
         sty <SOURCE_ID+1
 
         cld
@@ -595,6 +595,8 @@ WARM
         jsr put_string
         jsr CR
 
+        ; TODO report bytes free
+
         ; just in case the colour scheme is disabled ...
         lda #1 ; white
         jsr FOREGROUND
@@ -609,22 +611,16 @@ _startup_text2
 !src "revision.asm"
 }
 
+        +WORD "autoboot", 0
+W_AUTOBOOT
+        !word DO_DEFER
+        !word W_AUTOBOOT_BOOTSTRAP
+
         +NONAME
 W_MAIN
         !word DO_COLON
 
-        !word W_DECIMAL
-
-!if AUTOBOOT {
-        +LITERAL AUTOBOOT_FILENAME
-        !word W_COUNT
-        +LITERAL W_INCLUDED
-        !word W_CATCH
-        !word W_QDUP
-        +ZBRANCH +
-        !word W_REPORT_EXCEPTION
-+
-}        
+        !word W_AUTOBOOT
 
 _main_clear_stack_and_enter_loop
 
@@ -637,7 +633,7 @@ _main_loop
         +LITERAL W_PQUIT
         !word W_CATCH
 
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
         !word W_CR
 
         !word W_QDUP
@@ -648,8 +644,6 @@ _main_loop
         !word W_EQUAL
         +ZBRANCH +
 
-        ; +DOTQ "looks like an ABORT"
-        ; !word W_CR
         !word W_DROP
 
         +BRANCH _main_clear_stack_and_enter_loop
@@ -661,8 +655,6 @@ _main_loop
         !word W_EQUAL
         +ZBRANCH +
 
-        ; +DOTQ "looks like an ABORT\""
-        ; !word W_CR
         !word W_DROP
 
         +BRANCH _main_clear_stack_and_enter_loop
@@ -674,26 +666,16 @@ _main_loop
         !word W_EQUAL
         +ZBRANCH +
 
-        ;  +DOTQ "looks like a QUIT"
-        ; !word W_CR
         !word W_DROP
 
-_main_do_quit
-        ; +DOTQ "do QUIT stuff ..."
-        ; !word W_CR
         +BRANCH _main_loop
 
 +
 
         !word W_REPORT_EXCEPTION
 
-        ; +BRANCH _main_loop
-        +BRANCH _main_clear_stack_and_enter_loop
-
-!if AUTOBOOT {
-AUTOBOOT_FILENAME
-        +STRING "autoboot.f"
-}
+        +BRANCH _main_loop
+        ; +BRANCH _main_clear_stack_and_enter_loop
 
 !src "block.asm"
 !src "block-ext.asm"
@@ -728,9 +710,6 @@ AUTOBOOT_FILENAME
 !src "xchar.asm"
 !src "xchar-ext.asm"
 
-; TODO move this above HERE
-!src "bootstrap.asm"
-
 INITIAL_HERE
 
 ;
@@ -751,11 +730,26 @@ _onetime
         lda #>INITIAL_HERE
         sta <HERE+1
 
-        ; TODO move the code from bootstrap.asm up to a higher memory
-        ; area
+        ; Move the contents of bootstrap.asm up to higher memory so it will be undisturbed during
+        ; the bootstrap process (once bootstrapping is complete it is no longer needed)
+        +dma_inline
+        !byte $0a                       ; F018A 11-byte format
+        +dma_options_end
+        !byte dma_cmd_copy
+        !word BOOTSTRAP_LEN
+        !word BOOTSTRAP_SRC
+        !byte 0                         ; src bank/flags
+        !word BOOTSTRAP_DEST
+        !byte 0                         ; dst bank/flags
+        !word 0                         ; modulo
 
         rts
 
-        ; TODO embed the minimal bootstrap code at a sufficiently high memory address 
-        ; so we don't need to have file I/O as builtins
+BOOTSTRAP_DEST = $8000
+BOOTSTRAP_SRC
+!pseudopc BOOTSTRAP_DEST {
+!src "bootstrap.asm"
+}
+BOOTSTRAP_LEN = *-BOOTSTRAP_SRC
+
 

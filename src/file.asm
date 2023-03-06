@@ -151,12 +151,12 @@ W_CLOSE_FILE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<close-file>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }
         !word W_CLOSE
         !word W_READSS
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
@@ -172,7 +172,7 @@ W_CREATE_FILE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<create-file-file>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }        
         ; TODO
         !word W_DROP
@@ -180,7 +180,7 @@ W_CREATE_FILE
         !word W_ZERO
         !word W_ZERO
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
@@ -196,13 +196,13 @@ W_DELETE_FILE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<create-file-file>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }        
         ; TODO
         !word W_2DROP
         !word W_ZERO    
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }    
         !word W_PSEMI
 }
@@ -218,7 +218,7 @@ W_FILE_POSITION
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<create-file-file>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }
         ; TODO
         !word W_DROP
@@ -226,7 +226,7 @@ W_FILE_POSITION
         !word W_ZERO          
         !word W_ZERO   
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
@@ -242,7 +242,7 @@ W_FILE_SIZE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<file-size>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }        
         ; TODO
         !word W_DROP
@@ -250,7 +250,7 @@ W_FILE_SIZE
         !word W_ZERO          
         !word W_ZERO 
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
@@ -348,7 +348,7 @@ W_OPEN_FILE
         !word W_DOT
         +CLITERAL ']'
         !word W_EMIT
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }         
         !word W_DROP    ; TODO use fam?
 
@@ -393,7 +393,7 @@ W_OPEN_FILE
         !word W_READSS
 
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
@@ -434,7 +434,7 @@ W_READ_FILE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<read-file>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }           
         ; TODO       
 
@@ -444,7 +444,7 @@ W_READ_FILE
         !word W_ZERO
         !word W_ZERO
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
@@ -465,7 +465,7 @@ W_READ_LINE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<read-line>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }           
         ; TODO
 
@@ -520,7 +520,7 @@ _read_line_after_loop
         !word W_READSS
 
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
@@ -536,14 +536,14 @@ W_REPOSITION_FILE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<reposition-file>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }          
         ; TODO
         !word W_DROP
         !word W_2DROP
         !word W_ZERO
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
@@ -559,14 +559,14 @@ W_RESIZE_FILE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<resize-file>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }         
         ; TODO
         !word W_DROP
         !word W_2DROP
         !word W_ZERO
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
@@ -594,7 +594,7 @@ W_WRITE_FILE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<write-file>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }       
 
         !word W_CHKOUT
@@ -624,7 +624,7 @@ _write_file_after_loop
         !word W_READSS
 
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }       
         !word W_PSEMI
 }
@@ -640,7 +640,7 @@ W_WRITE_LINE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<write-line>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }       
         ; TODO rewrite using WRITE-FILE
 
@@ -674,7 +674,7 @@ _write_line_after_loop
         !word W_READSS
 
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }

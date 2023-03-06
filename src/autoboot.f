@@ -3,6 +3,8 @@ include bootstrap-min.f
 
 \ Note that you can't use comments until after including bootstrap-min!
 
+:noname ; is autoboot
+
 .( ... saving forth-minimal ) cr
 savesystem forth-minimal,p,w
 
@@ -10,8 +12,6 @@ include bootstrap-full.f
 
 .( ... saving forth-complete ) cr
 savesystem forth-complete,p,w
-
-include runtests.f
 
 :noname
   case
@@ -21,6 +21,9 @@ include runtests.f
   ( 0 ) 1 foreground       \ output - white
   endcase ; is theme
 
+unused . s" bytes free" type cr \ 26418
+
+\ include runtests.f
 
 include benchmark.f
 
@@ -31,4 +34,3 @@ include benchmark.f
 \ 1234 5678 $abc $def rp1 .s
 
 .( Completed bootstrap ) cr
-.( TODO autoboot.f should now be deleted or renamed ) cr

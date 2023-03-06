@@ -13,7 +13,7 @@ W_FILE_STATUS
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<file-status>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }       
         ; TODO
         !word W_DROP
@@ -21,7 +21,7 @@ W_FILE_STATUS
         !word W_ZERO
         !word W_ZERO
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI
 }
@@ -37,13 +37,13 @@ W_FLUSH_FILE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<flush-file>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }       
         ; TODO
         !word W_DROP
         !word W_ZERO
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI    
 }
@@ -73,14 +73,14 @@ W_RENAME_FILE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<rename-file>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }       
         ; TODO
         !word W_2DROP        
         !word W_2DROP
         !word W_ZERO    
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI    
 }
@@ -96,7 +96,7 @@ W_REQUIRE
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<require>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }       
         ; TODO
         !word W_PARSE_NAME
@@ -124,7 +124,7 @@ W_REQUIRE
         !word W_DROP ; TODO check status
 }
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI    
 }
@@ -142,12 +142,12 @@ W_REQUIRED
         !word DO_COLON
 !if DEBUG {
         +DOTQ "<required>"
-        !word W_SIMPLE_DOTS
+        !word W_DOTS
 }       
         ; TODO
         !word W_2DROP 
 !if DEBUG {
-        !word W_SIMPLE_DOTS,W_CR
+        !word W_DOTS,W_CR
 }
         !word W_PSEMI    
 }

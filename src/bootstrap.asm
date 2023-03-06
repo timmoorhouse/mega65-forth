@@ -61,3 +61,24 @@ SIMPLE_DOTS
         jmp -
 +        
         rts
+
+
+        +NONAME
+W_AUTOBOOT_BOOTSTRAP
+        !word DO_COLON
+
+        !word W_DECIMAL
+
+        +LITERAL AUTOBOOT_FILENAME
+        !word W_COUNT
+        +LITERAL W_INCLUDED
+        !word W_CATCH
+        !word W_QDUP
+        +ZBRANCH +
+        !word W_REPORT_EXCEPTION
++
+
+        !word W_PSEMI
+
+AUTOBOOT_FILENAME
+        +STRING "autoboot.f"
