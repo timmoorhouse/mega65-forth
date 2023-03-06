@@ -107,7 +107,17 @@ W_SEARCH_WORDLIST
 ; ****************************************************************************
 ; WORDLIST
 ; (-- wid)
-; ANSI 16.6.1.2460
+
+;
+; TODO 
+; - scan WORDLIST_TABLE
+;   - if we find a -1, return the address of that entry
+; - if we reach the end without finding a -1, throw something?
+;
+
+
+
+
 
 ;      VOCABULARY                                            E,L
 ;               A defining word used in the form:

@@ -82,6 +82,7 @@ THEME_ERROR  = 3
 !source "vic4.asm"
 !source "gpio.asm"
 
+; [-255,-1] are reserved for use by the standard
 E_ABORT                          =  -1 ; ABORT
 E_ABORTQ                         =  -2 ; ABORT"
 E_DATA_STACK_OVERFLOW            =  -3 ; stack overflow
@@ -161,6 +162,13 @@ E_WRITE_LINE                     = -76 ; WRITE-LINE
 E_MALFORMED_XCHAR                = -77 ; malformed xchar
 E_SUBSTITUTE                     = -78 ; SUBSTITUTE
 E_REPLACES                       = -79 ; REPLACES
+
+; [-4095,-256] are reserved for the implementation
+;
+; Errors to create:
+; - wordlist unavailable
+;
+;
 
 * = $2001
         +upstart entry

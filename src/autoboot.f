@@ -15,11 +15,10 @@ include runtests.f
 
 :noname
   case
-\ 0 of  1 foreground endof \ output
-  1 of  7 foreground endof \ input
-  2 of 14 foreground endof \ prompt
-  3 of  4 foreground endof \ error
-        1 foreground
+  3 of  4 foreground endof \ error  - purple
+  2 of 14 foreground endof \ prompt - lt blue
+  1 of  7 foreground endof \ input  - yellow
+  ( 0 ) 1 foreground       \ output - white
   endcase ; is theme
 
 
