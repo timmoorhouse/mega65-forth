@@ -25,10 +25,9 @@ XSAVE           !byte 0 ; temporary to save S when we need to reuse X
 ; TODO separate XSAVE for kernel calls
 KERNEL_XSAVE    !byte 0 ; just for use in kernel calls
 
-NEXT_SBUF       !byte 0
+NEXT_SBUF       !byte 0 ; TODO move out of base page?
 
-; TODO input buffer stack (need to support depth of 8)
-; TODO open file info
+; TODO move these out of basepage?
 SOURCE_ID       !word 0
 INPUT_BUFFER    !word 0 ; Address and length of input buffer
 INPUT_LEN       !word 0

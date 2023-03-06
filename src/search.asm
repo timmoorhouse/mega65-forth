@@ -41,7 +41,7 @@ W_DEFINITIONS
 
         +WORD "forth-wordlist", 0
 W_FORTH_WORDLIST
-        !word DO_VARIABLE
+        !word DO_VARIABLE ; TODO make this a constant
 FORTH_WORDLIST
         !word 0        
 
