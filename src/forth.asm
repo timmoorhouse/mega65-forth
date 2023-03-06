@@ -203,7 +203,7 @@ entry
 ;      |
 ;      | Transient workspace
 ;      +-----------------------------    <--- PAD 
-;          gap?  right now we need this since HOLD works backwards from PAD
+;          gap for HOLD and WORD transient areas
 ;      +-----------------------------    <--- HERE
 ;      |
 ;      | Dictionary
@@ -249,7 +249,6 @@ pre_basepage = *
 ; strings can be stored)
 ; so the following should work:
 ;     s" abc" s" def" rename-file
-; TODO can we use PAD and one additional buffer?
 
 ; VM Registers
 ; S - data stack pointer
@@ -321,9 +320,6 @@ pre_basepage = *
 ;     corresponding word (in our case xt will be either EXECUTE or COMPILE, and w
 ;     will be the execution token of the word)
 ;   - NAME>COMPILE will convert from a name token to a compilation token
-;
-; SEACH-WORDLIST gives you a flag for immediate/non-immediate instead.  We implment a SEARCH-WORDLIST-NT
-; that provides 0 | nt.
 
 !macro NONAME {
         +ALIGN
@@ -572,7 +568,6 @@ WARM
 ; B: 03D000
 ; C: 02D000
 
-        ; TODO move this to autoboot?
         jsr PAGE
 
         lda #3 ; cyan

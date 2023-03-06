@@ -110,29 +110,29 @@
 create EscapeTable ( -- addr )
        7 c, \ \a BEL (Alert)
      #20 c, \ \b BS  (Backspace)
-  char c c, \ \c
-  char d c, \ \d
+  char C c, \ \c
+  char D c, \ \d
      #27 c, \ \e ESC (Escape)
-     #12 c, \ \f FF  (Form feed) \ TODO !!!!!!!!
-  char g c, \ \g
-  char h c, \ \h
-  char i c, \ \i
-  char j c, \ \j
-  char k c, \ \k
+    #147 c, \ \f FF  (Form feed)
+  char G c, \ \g
+  char H c, \ \h
+  char I c, \ \i
+  char J c, \ \j
+  char K c, \ \k
      #10 c, \ \l LF  (Line feed)
-  char m c, \ \m
+     #13 c, \ \m
      #13 c, \ \n
-  char o c, \ \o
-  char p c, \ \p
+  char O c, \ \o
+  char P c, \ \p
   char " c, \ \q "   (Double quote)
      #13 c, \ \r CR  (Carriage Return)
-  char s c, \ \s
+  char S c, \ \s
        9 c, \ \t HT  (horizontal tab}
-  char u c, \ \u
+  char U c, \ \u
      #11 c, \ \v VT  (vertical tab) \ TODO !!!!!!!!!
-  char w c, \ \w
-  char x c, \ \x
-  char y c, \ \y
+  char W c, \ \w
+  char X c, \ \x
+  char Y c, \ \y
        0 c, \ \z NUL (no character)
 
 \ Add an escape sequence to the counted string at dest,
@@ -140,14 +140,14 @@ create EscapeTable ( -- addr )
 : addEscape ( c-addr len dest -- c-addr' len' )
   over 0= if drop exit then             \ zero length check
   >r                                    \ -- caddr len ; R: -- dest
-  over c@ [char] x = if                 \ hex number?
+  over c@ [char] X = if                 \ hex number?
     1 /string extract2H r> addchar exit
   then
-  over c@ [char] m = if                 \ CR/LF pair
-    1 /string  #13 r@ addchar #10 r> addchar exit
-  then
-  over c@ [char] a [char] z 1+ within if
-    over c@ [char] a - EscapeTable + c@ r> addchar
+  \ over c@ [char] M = if                 \ CR/LF pair
+  \   1 /string  #13 r@ addchar #10 r> addchar exit
+  \ then
+  over c@ [char] A [char] Z 1+ within if
+    over c@ [char] A - EscapeTable + c@ r> addchar
   else
     over c@ r> addchar
   then

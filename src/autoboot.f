@@ -1,10 +1,5 @@
 
-\ include bootstrap-min.f
-
-\ Note that you can't use comments until after including bootstrap-min!
-
-:noname ; is autoboot
-
+:noname ; is autoboot \ TODO could use decimal to save a few bytes
 
 : savesystem ( "<spaces>name" -- ) parse-name w/o open-file drop \ TODO check status from open-file
   >r ( R: fid )
