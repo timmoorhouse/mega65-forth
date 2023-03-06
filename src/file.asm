@@ -127,20 +127,6 @@ W_BUFFER_OF_FILEID ; (fileid -- c-addr u)
         !word W_PSEMI
 
 ; ****************************************************************************
-; BIN
-; (fam_1 -- fam_2)
-; ANSI 11.6.1.0765
-
-!if ENABLE_FILE {
-        +WORD "bin", 0
-W_BIN
-        !word DO_COLON
-        +LITERAL FAM_BIN
-        !word W_OR
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; CLOSE-FILE
 ; (fileid -- ior)
 ; ANSI 11.6.1.0900
@@ -149,15 +135,10 @@ W_BIN
         +WORD "close-file", 0
 W_CLOSE_FILE
         !word DO_COLON
-!if DEBUG {
-        +DOTQ "<close-file>"
-        !word W_DOTS
-}
+
         !word W_CLOSE
         !word W_READSS
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
+
         !word W_PSEMI
 }
 
@@ -170,18 +151,13 @@ W_CLOSE_FILE
         +WORD "create-file", 0
 W_CREATE_FILE
         !word DO_COLON
-!if DEBUG {
-        +DOTQ "<create-file-file>"
-        !word W_DOTS
-}        
+
         ; TODO
         !word W_DROP
         !word W_2DROP
         !word W_ZERO
         !word W_ZERO
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
+
         !word W_PSEMI
 }
 
@@ -194,16 +170,11 @@ W_CREATE_FILE
         +WORD "delete-file", 0
 W_DELETE_FILE
         !word DO_COLON
-!if DEBUG {
-        +DOTQ "<create-file-file>"
-        !word W_DOTS
-}        
+
         ; TODO
         !word W_2DROP
         !word W_ZERO    
-!if DEBUG {
-        !word W_DOTS,W_CR
-}    
+
         !word W_PSEMI
 }
 
@@ -216,18 +187,13 @@ W_DELETE_FILE
         +WORD "file-position", 0
 W_FILE_POSITION
         !word DO_COLON
-!if DEBUG {
-        +DOTQ "<create-file-file>"
-        !word W_DOTS
-}
+
         ; TODO
         !word W_DROP
         !word W_ZERO          
         !word W_ZERO          
         !word W_ZERO   
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
+
         !word W_PSEMI
 }
 
@@ -240,18 +206,13 @@ W_FILE_POSITION
         +WORD "file-size", 0
 W_FILE_SIZE
         !word DO_COLON
-!if DEBUG {
-        +DOTQ "<file-size>"
-        !word W_DOTS
-}        
+
         ; TODO
         !word W_DROP
         !word W_ZERO          
         !word W_ZERO          
         !word W_ZERO 
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
+
         !word W_PSEMI
 }
 
@@ -280,7 +241,7 @@ W_INCLUDE_FILE
 -       !word W_REFILL
         +ZBRANCH +
 
-        +LITERAL W_PEVALUATE       ; TODO this should be wrapped in a catch
+        +LITERAL W_PEVALUATE
         !word W_CATCH
 
         !word W_QDUP
@@ -302,30 +263,6 @@ W_INCLUDE_FILE
 }
 
 ; ****************************************************************************
-; INCLUDED
-; (i*x c-addr u -- j*x)
-; ANSI 11.6.1718
-
-!if ENABLE_FILE {
-        +WORD "included", 0
-W_INCLUDED
-        !word DO_COLON
-        !word W_RSLO
-        !word W_OPEN_FILE
-        +ZBRANCH +
-        +LITERAL E_NONEXISTENT_FILE ; TODO what error? need to figure out what status byte looks like
-        !word W_THROW
-+
-        !word W_TOR             ; need to move to return stack since include-file can do arbitrary things to the data stack
-        !word W_RAT
-        !word W_INCLUDE_FILE
-        !word W_RFROM
-        !word W_CLOSE_FILE
-        !word W_DROP            ; TODO check status
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; OPEN-FILE
 ; (c-addr u fam -- fileid ior)
 ; ANSI 11.6.1.1970
@@ -334,22 +271,7 @@ W_INCLUDED
         +WORD "open-file", 0
 W_OPEN_FILE
         !word DO_COLON
-!if DEBUG {
-        +DOTQ "<open-file>"
-        +CLITERAL '['
-        !word W_EMIT
-        !word W_TOR
-        !word W_2DUP
-        !word W_TYPE
-        +CLITERAL ','
-        !word W_EMIT
-        !word W_RFROM
-        !word W_DUP
-        !word W_DOT
-        +CLITERAL ']'
-        !word W_EMIT
-        !word W_DOTS
-}         
+
         !word W_DROP    ; TODO use fam?
 
         !word W_ZERO
@@ -362,20 +284,11 @@ W_OPEN_FILE
         ; TODO DOPEN# has a ,W flag for write access
 
         !word W_UNUSED_LOGICAL
-!if 0 {
-        +DOTQ "logical="
-        !word W_DUP
-        !word W_DOT
-}
 
         !word W_DUP
         +LITERAL 8 ; TODO how to select this?
         !word W_UNUSED_SECONDARY
-!if 0 {
-        +DOTQ "secondary="
-        !word W_DUP
-        !word W_DOT
-}
+
         !word W_SETLFS
 
         !word W_OPEN 
@@ -392,35 +305,7 @@ W_OPEN_FILE
 
         !word W_READSS
 
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
         !word W_PSEMI
-}
-
-
-; ****************************************************************************
-; R/O
-; (-- fam)
-; ANSI 11.6.1.2054
-
-!if ENABLE_FILE {
-        +WORD "r/o", 0
-W_RSLO
-        !word DO_CONSTANT
-        !word FAM_RO
-}
-
-; ****************************************************************************
-; R/W
-; (-- fam)
-; ANSI 11.6.1.2056
-
-!if ENABLE_FILE {
-        +WORD "r/w", 0
-W_RSLW
-        !word DO_CONSTANT
-        !word FAM_RW
 }
 
 ; ****************************************************************************
@@ -432,20 +317,14 @@ W_RSLW
         +WORD "read-file", 0
 W_READ_FILE
         !word DO_COLON
-!if DEBUG {
-        +DOTQ "<read-file>"
-        !word W_DOTS
-}           
-        ; TODO       
 
+        ; TODO       
 
         !word W_DROP
         !word W_2DROP
         !word W_ZERO
         !word W_ZERO
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
+
         !word W_PSEMI
 }
 
@@ -463,10 +342,7 @@ W_READ_FILE
         +WORD "read-line", 0
 W_READ_LINE
         !word DO_COLON
-!if DEBUG {
-        +DOTQ "<read-line>"
-        !word W_DOTS
-}           
+
         ; TODO
 
         !word W_CHKIN
@@ -519,9 +395,6 @@ _read_line_after_loop
 
         !word W_READSS
 
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
         !word W_PSEMI
 }
 
@@ -534,17 +407,12 @@ _read_line_after_loop
         +WORD "reposition-file", 0
 W_REPOSITION_FILE
         !word DO_COLON
-!if DEBUG {
-        +DOTQ "<reposition-file>"
-        !word W_DOTS
-}          
+
         ; TODO
         !word W_DROP
         !word W_2DROP
         !word W_ZERO
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
+
         !word W_PSEMI
 }
 
@@ -557,30 +425,13 @@ W_REPOSITION_FILE
         +WORD "resize-file", 0
 W_RESIZE_FILE
         !word DO_COLON
-!if DEBUG {
-        +DOTQ "<resize-file>"
-        !word W_DOTS
-}         
+
         ; TODO
         !word W_DROP
         !word W_2DROP
         !word W_ZERO
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
+
         !word W_PSEMI
-}
-
-; ****************************************************************************
-; W/O
-; (-- fam)
-; ANSI 11.6.1.2425
-
-!if ENABLE_FILE {
-        +WORD "w/o", 0
-W_WSLO
-        !word DO_CONSTANT
-        !word FAM_WO
 }
 
 ; ****************************************************************************
@@ -592,10 +443,6 @@ W_WSLO
         +WORD "write-file", 0
 W_WRITE_FILE
         !word DO_COLON
-!if DEBUG {
-        +DOTQ "<write-file>"
-        !word W_DOTS
-}       
 
         !word W_CHKOUT
 
@@ -623,9 +470,6 @@ _write_file_after_loop
 
         !word W_READSS
 
-!if DEBUG {
-        !word W_DOTS,W_CR
-}       
         !word W_PSEMI
 }
 
@@ -638,10 +482,7 @@ _write_file_after_loop
         +WORD "write-line", 0
 W_WRITE_LINE
         !word DO_COLON
-!if DEBUG {
-        +DOTQ "<write-line>"
-        !word W_DOTS
-}       
+
         ; TODO rewrite using WRITE-FILE
 
         !word W_CHKOUT
@@ -673,8 +514,5 @@ _write_line_after_loop
 
         !word W_READSS
 
-!if DEBUG {
-        !word W_DOTS,W_CR
-}
         !word W_PSEMI
 }

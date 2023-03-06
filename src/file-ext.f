@@ -1,17 +1,17 @@
 
 \ The following words are implemented internally:
 \
-\ FILE-STATUS FLUSH-FILE INCLUDE RENAME-FILE REQUIRE REQUIRED
+\ FILE-STATUS RENAME-FILE REQUIRED
 
 \ TODO file-status
 
-\ TODO flush-file
+: flush-file ( fileid -- ior ) drop 0 ; \ TODO
 
-\ TODO : include ( "<spaces>name" -- ) parse-name included ;
+: include ( "<spaces>name" -- ) parse-name included ;
 
 \ TODO rename-file
 
-\ TODO require
+: require ( "<spaces>name" -- ) parse-name required ;
 
 \ TODO required
 

@@ -43,6 +43,7 @@
 !ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS         = 0 } ; TODO lots of things are triggering this - need to clean them up before enabling
 !ifndef CASE_INSENSITIVE                { CASE_INSENSITIVE              = 1 } ; map names to lower case when defining/resolving
 !ifndef NICE_ERROR_MESSAGES             { NICE_ERROR_MESSAGES           = 1 }
+!ifndef EMBED_BOOTSTRAP_MIN             { EMBED_BOOTSTRAP_MIN           = 1 }
 
 ; Runtime checks
 ; - For anything taking an aligned address, check that it's aligned
@@ -510,7 +511,7 @@ WARM
         sty <R0+1
 
         ; Reposition data stack
-        ldx #TOS-2
+        ldx #TOS-2 ; TODO remove the -2?
 
         ; Save data stack pointer in S0
         stx <S0
@@ -533,7 +534,7 @@ WARM
         jsr EMIT
         lda #11                 ; Disable shift-mega case changes TODO skip this?
         jsr EMIT
-!if 0 {                         ; TODO this seems to cause problems on a real MEGA65
+!if 1 {                         ; TODO this seems to cause problems on a real MEGA65
         lda #27                 ; ESC 5 - switch to 80x50
         jsr EMIT
         lda #53
@@ -610,7 +611,12 @@ W_AUTOBOOT
 W_MAIN
         !word DO_COLON
 
-        !word W_AUTOBOOT
+        +LITERAL W_AUTOBOOT
+        !word W_CATCH
+        !word W_QDUP
+        +ZBRANCH +
+        !word W_REPORT_EXCEPTION
++
 
 _main_clear_stack_and_enter_loop
 
@@ -683,7 +689,6 @@ _main_loop
 !src "file-ext.asm"
 !src "floating.asm"
 !src "floating-ext.asm"
-!src "gforth.asm"
 !src "locals.asm"
 !src "locals-ext.asm"
 !src "locals-ext-obsolescent.asm"

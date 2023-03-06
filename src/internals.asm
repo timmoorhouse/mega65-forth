@@ -315,8 +315,18 @@ W_FIND_NAME_IN  ; (c-addr u wid -- 0 | nt)
         !word W_TOR
         !word W_2DUP
         !word W_LOWER
+!if 0 {
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_2DUP,W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT
+        !word W_CR
+}
+
         !word W_RFROM
 }
+
 
         ; this zero is the default return value
 
@@ -453,6 +463,8 @@ W_LATESTXT
 ; (c-addr u --)
 ; Convert to lower case
 
+        ; TODO CLEAN THIS UP!
+
         +WORD "lower", 0
 W_LOWER
         !word DO_COLON
@@ -470,7 +482,11 @@ W_LOWER
 _lower_loop
 
         !word W_I
-        !word W_CAT
+        !word W_CAT 
+        
+        ; Handle c1..da
+
+        !word W_DUP
         +CLITERAL 'A'
         !word W_LESS
         !word W_OVER
@@ -481,16 +497,43 @@ _lower_loop
         !word W_ZEQUAL
         +ZBRANCH +
 
-        ; TODO handle other char ranges
-        ; need to change case
         !word W_I
         !word W_CAT
         +CLITERAL 'A'-'a'
         !word W_SUB
         !word W_I
         !word W_CSTORE
+        +BRANCH _lower_loop_next
 
 +
+
+        ; Handle 61..7a
+        !word W_DUP
+        +CLITERAL 97
+        !word W_LESS
+        !word W_OVER
+        +CLITERAL 122
+        !word W_SWAP
+        !word W_LESS
+        !word W_OR
+        !word W_ZEQUAL
+        +ZBRANCH +
+
+        !word W_I
+        !word W_CAT
+        +CLITERAL 97-'a'
+        !word W_SUB
+        !word W_I
+        !word W_CSTORE
+        +BRANCH _lower_loop_next
+
++
+
+        ; TODO handle other char ranges
+
+
+_lower_loop_next
+        !word W_DROP
 
         !word W_PLOOP
         !word _lower_loop-*
@@ -843,14 +886,12 @@ SPSTORE
 ;               before SP@ was executed.  (e.g. 1 2 SP@ @ . . . would type 
 ;               2 2 1 )
 
-!if ENABLE_GFORTH {
         +WORD "sp@", 0
 W_SPAT
         !word *+2
         phx
         lda #>base_page
         jmp PUSH
-}
 
 ; ****************************************************************************
 ; !CSP

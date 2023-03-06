@@ -122,6 +122,15 @@ xmega65opts+=(-autoload 1)
 
 set -e
 
+add_raw_files() {
+    local image="$1"
+    shift
+    for src; do
+        local name=$(basename "$src")
+        cmd "${opt[c1541]}" "$image" -write "$src" "$name,s"
+    done
+}
+
 add_text_files() {
     local image="$1"
     shift
@@ -210,16 +219,26 @@ do_release() {
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth-complete" forth-complete,p
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth-minimal" forth-minimal,p
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth-skeletal.prg" forth-skeletal
+
+    add_raw_files "${opt[builddir]}/mega65-forth.d81" \
+        src/core.f \      
+        src/core-ext.f \
+        src/file.f
+
+    # add_text_files "${opt[builddir]}/mega65-forth.d81" \
+    #     src/core.f \      
+    #     src/core-ext.f \
+    #     src/file.f
+
     add_text_files "${opt[builddir]}/mega65-forth.d81" \
         src/benchmark.f \
         src/bootstrap-min.f \
         src/bootstrap-full.f \
         src/block.f         src/block-ext.f \
-        src/core.f          src/core-ext.f \
         src/double.f        src/double-ext.f \
         src/exception.f \
         src/facility.f      src/facility-ext.f \
-        src/file.f          src/file-ext.f \
+        src/file-ext.f \
         src/floating.f      src/floating-ext.f \
         src/internalstest.f \
         src/locals.f        src/locals-ext.f \

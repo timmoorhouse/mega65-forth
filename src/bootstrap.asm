@@ -67,14 +67,109 @@ SIMPLE_DOTS
 W_AUTOBOOT_BOOTSTRAP
         !word DO_COLON
 
-        !word W_DECIMAL
+        ; TODO compile the embedded forth source
+
+        +DOTQ "Starting bootstrap..."
+        !word W_CR
+
+        !word W_BOOTSTRAP_MIN
 
         +CSLITERAL "autoboot.f"
         !word W_COUNT
-        +LITERAL W_INCLUDED
-        !word W_CATCH
-        !word W_QDUP
-        +ZBRANCH +
-        !word W_REPORT_EXCEPTION
-+
+        +CSLITERAL "included"
+        !word W_COUNT
+        !word W_EVALUATE
+
         !word W_PSEMI
+
+!if EMBED_BOOTSTRAP_MIN {
+
+        +NONAME
+W_BOOTSTRAP_MIN
+        !word DO_COLON
+
+        +LITERAL BOOTSTRAP_MIN_START
+        ; ( c-addr )
+
+        ; TODO loop until end
+
+        !word W_TOR
+
+        ; (R: c-addr)
+
+_bootstrap_min_loop
+
+        ; (R: c-addr)
+
+        !word W_RAT
+        !word W_ZERO
+        ; ( c-addr u ) (R: c-addr)
+
+_bootstrap_min_extend_line
+
+        ; TODO this won't evaluate the last line
+        !word W_2DUP
+        !word W_PLUS
+        +LITERAL BOOTSTRAP_MIN_END
+        !word W_LESS
+        +ZBRANCH _bootstrap_min_done
+
+        ; TODO extend to newline
+        !word W_2DUP
+        !word W_PLUS
+        !word W_CAT
+        +CLITERAL $0a   ; ASCII LF
+        !word W_NOTEQUAL
+        +ZBRANCH _bootstrap_min_found_linefeed
+
+        !word W_1PLUS
+        +BRANCH _bootstrap_min_extend_line
+
+_bootstrap_min_found_linefeed
+
+!if 0 {
+        !word W_DOTS
+        !word W_2DUP
+        !word W_TYPE
+        !word W_CR
+}
+
+        !word W_DUP
+        !word W_TOR
+
+        ; (c-addr u) (R: c-addr u)
+        !word W_EVALUATE
+
+!if 0 {
+        +DOTQ "evaluate done"
+        !word W_CR
+}
+
+        !word W_2RFROM
+        !word W_PLUS
+        !word W_1PLUS ; eat the linefeed
+
+        !word W_TOR
+!if 0 {
+        !word W_DOTS,W_CR
+}
+
+        +BRANCH _bootstrap_min_loop
+
+_bootstrap_min_done
+
+        !word W_RFROM,W_DROP
+
+        !word W_2DROP
+
+        !word W_PSEMI
+
+BOOTSTRAP_MIN_START
+!binary "core.f"
+!binary "core-ext.f"
+!binary "file.f"
+!byte $0a
+BOOTSTRAP_MIN_LEN = *-BOOTSTRAP_MIN_START
+BOOTSTRAP_MIN_END
+
+}

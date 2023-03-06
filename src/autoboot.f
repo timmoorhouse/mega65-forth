@@ -1,14 +1,22 @@
 
-include bootstrap-min.f
+\ include bootstrap-min.f
 
 \ Note that you can't use comments until after including bootstrap-min!
 
 :noname ; is autoboot
 
+
+: savesystem ( "<spaces>name" -- ) parse-name w/o open-file drop \ TODO check status from open-file
+  >r ( R: fid )
+  sp@ 2 r@ write-file drop \ TODO check status from write-file
+  $2001 dup here swap - r@ write-file drop \ TODO check status
+  r> close-file drop \ TODO check status
+  ;
+
 .( ... saving forth-minimal ) cr
 savesystem forth-minimal,p,w
 
-include bootstrap-full.f
+s" bootstrap-full.f" included
 
 :noname
   case
@@ -21,7 +29,8 @@ include bootstrap-full.f
 .( ... saving forth-complete ) cr
 savesystem forth-complete,p,w
 
-unused . s" bytes free" type cr \ 26658
+unused . s" bytes free" type cr \ 26594 first, then 26460 after reload? getting fib, benchmark ?!?!?!
+\ HERE needs to get saved!
 
 \ include runtests.f
 

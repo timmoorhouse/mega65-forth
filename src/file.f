@@ -2,7 +2,18 @@
 \ The following words are implemented internally:
 \
 \ BIN CLOSE-FILE CREATE-FILE DELETE-FILE FILE-POSITION FILE-SIZE INCLUDE-FILE
-\ INCLUDED OPEN-FILE R/O R/W READ-FILE READ-LINE REPOSITION-FILE RESIZE-FILE
-\ W/O WRITE-FILE WRITE-LINE
+\ OPEN-FILE READ-FILE READ-LINE REPOSITION-FILE RESIZE-FILE
+\ WRITE-FILE WRITE-LINE
 
-.( ... end of file.f ) cr
+1 constant r/o
+2 constant w/o
+3 constant r/w
+
+: bin ( fam_1 -- fam_2 ) 4 or ;
+
+: included ( c-addr u ) r/o open-file if -38 throw then 
+  >r r@ include-file r> close-file drop ;
+
+\ : write-file ;
+
+.( ... END OF FILE.F ) cr

@@ -1,30 +1,30 @@
 \ This should only be run on a minimal system to turn it into a complete one
 
-include block.f
-include block-ext.f
+s" block.f"        included
+s" block-ext.f"    included
 \ include core.f
 \ include core-ext.f
-include double.f
-include double-ext.f
-include exception.f
+s" double.f"       included
+s" double-ext.f"   included
+s" exception.f"    included
 \ include exception-ext.f           \ TODO no need for one yet
-include facility.f
-include facility-ext.f
+s" facility.f"     included
+s" facility-ext.f" included
 \ include file.f
-include file-ext.f
-include floating.f
-include floating-ext.f
-include locals.f
-include locals-ext.f
-include memory.f
+s" file-ext.f"     included
+s" floating.f"     included
+s" floating-ext.f" included
+s" locals.f"       included
+s" locals-ext.f"   included
+s" memory.f"       included
 \ include memory-ext.f              \ TODO no need for one yet
-include search.f
-include search-ext.f
-include string.f
-include string-ext.f
-include tools.f
-include tools-ext.f
-include xchar.f
-include xchar-ext.f
+s" search.f"       included
+s" search-ext.f"   included
+s" string.f"       included
+s" string-ext.f"   included
+s" tools.f"        included
+s" tools-ext.f"    included
+s" xchar.f"        included
+s" xchar-ext.f"    included
 
 .( ... end of bootstrap-full.f ) cr

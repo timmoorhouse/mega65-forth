@@ -12,8 +12,6 @@
 
 : .( ( "ccc<paren>" -- ) [char] ) parse type ; immediate ( CORE-EXT )
 
-.( Starting bootstrap... ) cr
-
 ( The following words are implemented internally:                             )
 (                                                                             )
 ( ! * + +! +LOOP , - . / 0< 0= 1+ 1- 2* 2/ 2DROP 2DUP 2OVER 2SWAP : ; < = >IN )
@@ -249,4 +247,4 @@ variable hld ( TODO can we remove this? )
 : word ( char "<chars>ccc<char>" -- c-addr ) 
   (parse-name) dup here c! here 1+ swap cmove here ;
 
-.( ... end of core.f ) cr
+.( ... END OF CORE.F ) cr
