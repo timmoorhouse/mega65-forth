@@ -33,9 +33,7 @@ INPUT_BUFFER    !word 0 ; Address and length of input buffer
 INPUT_LEN       !word 0
 IN              !word 0 ; Offset of start of parse area within input buffer
 
-HERE            !word 0
-
-BASE            !word 0
+BASE            !word 0 ; TODO MOVE BELOW HERE?
 STATE           !word 0
 R0              !word 0
 S0              !word 0

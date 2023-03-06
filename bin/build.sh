@@ -169,8 +169,6 @@ EOF
     add_text_files "${opt[builddir]}/mega65-forth-build.d81" \
         src/autoboot.f \
         src/benchmark.f \
-        src/bootstrap-min.f \
-        src/bootstrap-full.f \
         src/block.f         src/block-ext.f \
         src/core.f          src/core-ext.f \
         src/double.f        src/double-ext.f \
@@ -232,8 +230,6 @@ do_release() {
 
     add_text_files "${opt[builddir]}/mega65-forth.d81" \
         src/benchmark.f \
-        src/bootstrap-min.f \
-        src/bootstrap-full.f \
         src/block.f         src/block-ext.f \
         src/double.f        src/double-ext.f \
         src/exception.f \

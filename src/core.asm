@@ -799,8 +799,12 @@ _accept_after_loop ; TODO remove
         +WORD "align", 0
 W_ALIGN
         !word *+2
-        bbr0 <HERE, +
-        inw <HERE
+        lda HERE ; TODO can be simplified
+        and #$01
+        beq +
+        inc HERE
+        bne +
+        inc HERE+1
 +       jmp NEXT
 
 ; ****************************************************************************
@@ -825,7 +829,7 @@ W_ALIGNED
         +WORD "allot", 0
 W_ALLOT
         !word DO_COLON
-        +LITERAL &HERE
+        +LITERAL HERE
         ; TODO check for overflow
         !word W_PSTORE
         !word W_PSEMI
@@ -1409,6 +1413,14 @@ _pevaluate_loop
         !word W_QSTACK ; TODO where to put this? should we check for >= n available cells?
         !word W_PARSE_NAME
 
+!if 0 {
+        +CLITERAL '['
+        !word W_EMIT
+        !word W_2DUP,W_TYPE
+        +CLITERAL ']'
+        !word W_EMIT,W_CR
+}
+
         ; (c-addr u)
 
         !word W_QDUP
@@ -1558,18 +1570,6 @@ _fill_dst
         !byte 0                 ; cmd msb
         !word 0                 ; modulo
         jmp POP3
-
-; ****************************************************************************
-; HERE 
-; (-- addr)
-
-        +WORD "here", 0
-W_HERE
-        !word *+2
-        lda <HERE
-        pha
-        lda <HERE+1
-        jmp PUSH
 
 ; ****************************************************************************
 ; I 

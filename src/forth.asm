@@ -499,6 +499,21 @@ COLD
         ; set our base page
         lda #>base_page
         tab
+
+        ; Zero fill basepage
+        +dma_inline
+        !byte $0a                       ; F018A 11-byte format
+        +dma_options_end
+        !byte dma_cmd_fill
+        !word $100
+        !word 0                         ; src (fill value in LSB)
+        !byte 0                         ; src bank/flags
+        !word BASEPAGE
+        !byte 0                         ; dst bank/flags
+        !word 0                         ; modulo
+
+        lda #$6c                        ; jmp (W)
+        sta &DO_JUMP_W
     
 JSR_ONETIME
         jsr _onetime            ; will be replaced with NOPs in _onetime
@@ -611,6 +626,8 @@ W_AUTOBOOT
 W_MAIN
         !word DO_COLON
 
+        !word W_DECIMAL ; TODO where to do this?
+
         +LITERAL W_AUTOBOOT
         !word W_CATCH
         !word W_QDUP
@@ -705,6 +722,13 @@ _main_loop
 !src "xchar.asm"
 !src "xchar-ext.asm"
 
+
+        +WORD "here", 0
+W_HERE
+        !word DO_CONSTANT
+HERE
+        !word 0
+
 INITIAL_HERE
 
 ;
@@ -733,21 +757,6 @@ _onetime
         !byte 0                         ; dst bank/flags
         !word 0                         ; modulo
 
-        ; Zero fill basepage
-        +dma_inline
-        !byte $0a                       ; F018A 11-byte format
-        +dma_options_end
-        !byte dma_cmd_fill
-        !word $100
-        !word 0                         ; src (fill value in LSB)
-        !byte 0                         ; src bank/flags
-        !word BASEPAGE
-        !byte 0                         ; dst bank/flags
-        !word 0                         ; modulo
-
-        lda #$6c                        ; jmp (W)
-        sta &DO_JUMP_W
-
         ; TODO clean this up
         lda #<_here
         sta FORTH_WORDLIST
@@ -755,9 +764,9 @@ _onetime
         sta FORTH_WORDLIST+1
 
         lda #<INITIAL_HERE
-        sta <HERE
+        sta HERE
         lda #>INITIAL_HERE
-        sta <HERE+1
+        sta HERE+1
 
         rts
 

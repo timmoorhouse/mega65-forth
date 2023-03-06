@@ -16,7 +16,32 @@
 .( ... saving forth-minimal ) cr
 savesystem forth-minimal,p,w
 
-s" bootstrap-full.f" included
+  s" block.f"         included
+  s" block-ext.f"     included
+\ s" core.f"          included    \ Embedded
+\ s" core-ext.f"      included    \ Embedded
+  s" double.f"        included
+  s" double-ext.f"    included
+  s" exception.f"     included
+\ s" exception-ext.f" included    \ TODO no need for one yet
+  s" facility.f"      included
+  s" facility-ext.f"  included
+\ s" file.f"          included    \ Embedded
+  s" file-ext.f"      included
+  s" floating.f"      included
+  s" floating-ext.f"  included
+  s" locals.f"        included
+  s" locals-ext.f"    included
+  s" memory.f"        included
+\ s" memory-ext.f"    included    \ TODO no need for one yet
+  s" search.f"        included
+  s" search-ext.f"    included
+  s" string.f"        included
+  s" string-ext.f"    included
+  s" tools.f"         included
+  s" tools-ext.f"     included
+  s" xchar.f"         included
+  s" xchar-ext.f"     included
 
 :noname
   case
@@ -29,8 +54,7 @@ s" bootstrap-full.f" included
 .( ... saving forth-complete ) cr
 savesystem forth-complete,p,w
 
-unused . s" bytes free" type cr \ 26594 first, then 26460 after reload? getting fib, benchmark ?!?!?!
-\ HERE needs to get saved!
+unused . s" bytes free" type cr \ 26552
 
 \ include runtests.f
 
