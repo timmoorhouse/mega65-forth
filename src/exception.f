@@ -54,35 +54,35 @@ variable exception-input-len
     -27 of s" invalid recursion"                             endof
     -28 of s" user interrupt"                                endof
     -29 of s" compiler nesting"                              endof
-    -30 of s" obsolescent feature"                           endof
-\     -31 of s" >BODY used on non-CREATEd definition"          endof
-\     -32 of s" invalid name argument (eg TO name)"            endof
-\     -33 of s" block read exception"                          endof
-\     -34 of s" block write exception"                         endof
-\     -35 of s" invalid block number"                          endof
-\     -36 of s" invalid file position"                         endof
-\     -37 of s" file I/O exception"                            endof
-\     -38 of s" non-existent file"                             endof
-\     -39 of s" unexpected end of file"                        endof
-\     -40 of s" invalid BASE for floating point conversion"    endof
-\     -41 of s" loss of precision"                             endof
-\     -42 of s" floating point divide by zero"                 endof
-\     -43 of s" floating point result out of range"            endof
-\     -44 of s" floating point stack overflow"                 endof
-\     -45 of s" floating point stack underflow"                endof
-\     -46 of s" floating point invalid argument"               endof
-\     -47 of s" compilation word list deleted"                 endof
-\     -48 of s" invalid POSTPONE"                              endof
-\     -49 of s" search order overflow"                         endof
-\     -50 of s" search order underflow"                        endof
-\     -51 of s" compilation word list changed"                 endof
-\     -52 of s" control flow stack overflow"                   endof
-\     -53 of s" exception stack overflow"                      endof
-\     -54 of s" floating point underflow"                      endof
-\     -55 of s" floating point unidentified fault"             endof
-\     -56 of s" QUIT"                                          endof
-\     -57 of s" exception in sending or receiving a character" endof
-\     -58 of s" [IF], [ELSE] or [THEN] exception"              endof
+    -30 of s" obsolescent feature"                           endof     
+    -31 of s" >BODY used on non-CREATEd definition"          endof
+    -32 of s" invalid name argument (eg TO name)"            endof
+    -33 of s" block read exception"                          endof
+    -34 of s" block write exception"                         endof
+    -35 of s" invalid block number"                          endof
+    -36 of s" invalid file position"                         endof
+    -37 of s" file I/O exception"                            endof
+    -38 of s" non-existent file"                             endof
+    -39 of s" unexpected end of file"                        endof
+    -40 of s" invalid BASE for floating point conversion"    endof
+    -41 of s" loss of precision"                             endof
+    -42 of s" floating point divide by zero"                 endof
+    -43 of s" floating point result out of range"            endof
+    -44 of s" floating point stack overflow"                 endof
+    -45 of s" floating point stack underflow"                endof
+    -46 of s" floating point invalid argument"               endof
+    -47 of s" compilation word list deleted"                 endof
+    -48 of s" invalid POSTPONE"                              endof
+    -49 of s" search order overflow"                         endof
+    -50 of s" search order underflow"                        endof
+    -51 of s" compilation word list changed"                 endof
+    -52 of s" control flow stack overflow"                   endof
+    -53 of s" exception stack overflow"                      endof
+    -54 of s" floating point underflow"                      endof
+    -55 of s" floating point unidentified fault"             endof
+    -56 of s" QUIT"                                          endof
+    -57 of s" exception in sending or receiving a character" endof
+    -58 of s" [IF], [ELSE] or [THEN] exception"              endof
     -59 of s" ALLOCATE"                                      endof
     -60 of s" FREE"                                          endof
     -61 of s" RESIZE"                                        endof
