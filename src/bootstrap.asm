@@ -69,7 +69,7 @@ W_AUTOBOOT_BOOTSTRAP
 
         !word W_DECIMAL
 
-        +LITERAL AUTOBOOT_FILENAME
+        +CSLITERAL "autoboot.f"
         !word W_COUNT
         +LITERAL W_INCLUDED
         !word W_CATCH
@@ -77,8 +77,4 @@ W_AUTOBOOT_BOOTSTRAP
         +ZBRANCH +
         !word W_REPORT_EXCEPTION
 +
-
         !word W_PSEMI
-
-AUTOBOOT_FILENAME
-        +STRING "autoboot.f"

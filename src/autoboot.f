@@ -10,9 +10,6 @@ savesystem forth-minimal,p,w
 
 include bootstrap-full.f
 
-.( ... saving forth-complete ) cr
-savesystem forth-complete,p,w
-
 :noname
   case
   3 of  4 foreground endof \ error  - purple
@@ -21,7 +18,10 @@ savesystem forth-complete,p,w
   ( 0 ) 1 foreground       \ output - white
   endcase ; is theme
 
-unused . s" bytes free" type cr \ 26418
+.( ... saving forth-complete ) cr
+savesystem forth-complete,p,w
+
+unused . s" bytes free" type cr \ 26658
 
 \ include runtests.f
 

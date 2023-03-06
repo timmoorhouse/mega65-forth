@@ -84,8 +84,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] File I/O error.
   - [ ] Unexpected EOF.
 - Making `SAVESYSTEM` output deterministic? (it might not make sense to do this)
-  - [ ] Move basepage to top of memory?
-  - [ ] What to do about DMA lists?
+  - [ ] What to do about inline DMA lists?
 - Tests
   - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
   - [ ] Some reasonable way of capturing test results. 

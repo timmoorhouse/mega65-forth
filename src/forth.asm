@@ -41,9 +41,7 @@
 
 !ifndef DEBUG                           { DEBUG                         = 0 }
 !ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS         = 0 } ; TODO lots of things are triggering this - need to clean them up before enabling
-!ifndef USE_BASIC                       { USE_BASIC                     = 0 } ; not used - REMOVE?
 !ifndef CASE_INSENSITIVE                { CASE_INSENSITIVE              = 1 } ; map names to lower case when defining/resolving
-!ifndef AUTOBOOT                        { AUTOBOOT                      = 1 } ; Attempt to include autoboot.f on startup
 !ifndef NICE_ERROR_MESSAGES             { NICE_ERROR_MESSAGES           = 1 }
 
 ; Runtime checks
@@ -175,9 +173,6 @@ E_WORDLIST_NOT_AVAILABLE         = -256
 entry
         jmp COLD
 
-; TODO a bunch of wasted space here
-!source "basepage.asm"
-
 ; MEMORY MAP
 ; THIS IS STILL EVOLVING
 ; 
@@ -189,8 +184,12 @@ entry
 ; D000 +-----------------------------
 ;      | Interface 
 ; C000 +-----------------------------    <--- LIMIT
-;      | TODO move basepage here?
-;      +-----------------------------
+;      |               Data stack 
+;      |                    |
+;      |                    V
+;      |
+;      | Basepage data - W, I, etc
+;      +-----------------------------    <--- BASEPAGE
 ;      | Terminal input buffer
 ;      +-----------------------------    <--- TIB
 ;      | String buffers for S", S\"
@@ -209,14 +208,7 @@ entry
 ;      | Dictionary
 ;      |
 ;      | predefined words
-; 2200 +-----------------------------
-;      |               Data stack       TODO move this region
-;      |                    |
-;      |                    V
 ;      |
-;      | Basepage data - W, I, etc
-; 2100 +-----------------------------
-;      | some unused space here
 ;      | basic stub
 ; 2001 +-----------------------------
 ;      | likely some space we could use for small things
@@ -233,8 +225,9 @@ entry
 ; 0000 +-----------------------------
 
 LIMIT              = $C000 ; TODO
+BASEPAGE           = LIMIT - $100
 TIB_LEN            = 80
-TIB                = LIMIT - TIB_LEN
+TIB                = BASEPAGE - TIB_LEN
 NUM_STRING_BUFFERS = 2
 STRING_BUFFER_LEN  = 80
 SBUF_LEN           = NUM_STRING_BUFFERS * STRING_BUFFER_LEN
@@ -244,6 +237,12 @@ DAREA              = SBUF - DAREA_LEN
 HOLD_LEN           = 34 ; min (2*16)+2 = 34
 WORD_LEN           = 33 ; min 33
 PAD_LEN            = 84
+
+pre_basepage = *
+!pseudopc BASEPAGE {
+!source "basepage.asm"
+}
+* = pre_basepage
 
 ; TODO transient buffer for s", s\" (need 2 buffers so that two consecutive
 ; strings can be stored)
@@ -282,7 +281,7 @@ PAD_LEN            = 84
 ;      |
 ;      |
 ;      +-------+-------
-;      | Flags | name length (5 bits)      this is still present for unnamed words?
+;      | Flags | name length (5 bits)
 ;      +-------+-------
 ;      | Name (0-31 bytes)
 ;      | 
@@ -485,9 +484,6 @@ COLD
         ldx #$00
         map
 
-!if USE_BASIC {
-        ; TODO
-}
         +vic4_enable
         +enable40MHz
         ; TODO bank I/O in
@@ -502,7 +498,10 @@ COLD
         ; set our base page
         lda #>base_page
         tab
-        
+    
+JSR_ONETIME
+        jsr _onetime            ; will be replaced with NOPs in _onetime
+    
 WARM
 
         ; Save return stack pointer in R0
@@ -517,16 +516,6 @@ WARM
         stx <S0
         ldy #0
         sty <S0+1
-
-        ; If we're loading a saved system, don't reset FORTH_WORDLIST and HERE.
-        ; We can assume if HERE has already been changed from 0, it's the
-        ; one from a SAVESYSTEM.
-
-        lda <HERE
-        ora <HERE+1
-        bne +
-        jsr _onetime
-+
 
         ; ldy #0 ; still 0 from above
         sty <SOURCE_ID          ; TODO do we need this?
@@ -567,6 +556,7 @@ WARM
 ; B: 03D000
 ; C: 02D000
 
+        ; TODO move this to autoboot?
         jsr PAGE
 
         lda #3 ; cyan
@@ -719,16 +709,11 @@ INITIAL_HERE
 
 _onetime
 
-        ; TODO clean this up
-        lda #<_here
-        sta FORTH_WORDLIST
-        lda #>_here
-        sta FORTH_WORDLIST+1
-
-        lda #<INITIAL_HERE
-        sta <HERE
-        lda #>INITIAL_HERE
-        sta <HERE+1
+        ; Replace the 'jsr _onetime' with NOPs so this won't be done again
+        lda #$ea                        ; NOP
+        sta JSR_ONETIME
+        sta JSR_ONETIME+1
+        sta JSR_ONETIME+2
 
         ; Move the contents of bootstrap.asm up to higher memory so it will be undisturbed during
         ; the bootstrap process (once bootstrapping is complete it is no longer needed)
@@ -743,6 +728,32 @@ _onetime
         !byte 0                         ; dst bank/flags
         !word 0                         ; modulo
 
+        ; Zero fill basepage
+        +dma_inline
+        !byte $0a                       ; F018A 11-byte format
+        +dma_options_end
+        !byte dma_cmd_fill
+        !word $100
+        !word 0                         ; src (fill value in LSB)
+        !byte 0                         ; src bank/flags
+        !word BASEPAGE
+        !byte 0                         ; dst bank/flags
+        !word 0                         ; modulo
+
+        lda #$6c                        ; jmp (W)
+        sta &DO_JUMP_W
+
+        ; TODO clean this up
+        lda #<_here
+        sta FORTH_WORDLIST
+        lda #>_here
+        sta FORTH_WORDLIST+1
+
+        lda #<INITIAL_HERE
+        sta <HERE
+        lda #>INITIAL_HERE
+        sta <HERE+1
+
         rts
 
 BOOTSTRAP_DEST = $8000
@@ -752,4 +763,5 @@ BOOTSTRAP_SRC
 }
 BOOTSTRAP_LEN = *-BOOTSTRAP_SRC
 
-
+; TODO embed the bootstrap forth code so we don't need to read it from disk?
+; That would all us to write the FILE code in forth.

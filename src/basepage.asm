@@ -1,6 +1,6 @@
 
                 ; our base page stuff
-                !align $ff, 0
+;                !align $ff, 0
 base_page
 !pseudopc $0000 {
 
@@ -12,7 +12,7 @@ I               !word 0
 
 ; TODO alignment
 DO_JUMP_W
-                !byte $6c       ; jmp (W)
+                !byte 0       ; set to $6c jmp (W) during _onetime
 ;      W        address of the code field pointer in zero-page.
 W               !word 0
 
