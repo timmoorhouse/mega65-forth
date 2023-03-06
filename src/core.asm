@@ -1557,21 +1557,6 @@ _pevaluate_word_not_found
 
 _pevaluate_stonumber_failed
         ; (c-addr u d)
-!if 0 {
-        !word W_2DROP
-        ; (c-addr u)
-
-        ; TODO should this be printed in the handler?
-        +LITERAL THEME_ERROR
-        !word W_THEME
-
-        !word W_BL,W_EMIT
-        !word W_TYPE
-        +DOTQ "? "
-
-        +LITERAL THEME_OUTPUT
-        !word W_THEME
-} 
 
         +LITERAL E_UNDEFINED_WORD
         !word W_THROW

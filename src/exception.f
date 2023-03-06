@@ -120,8 +120,6 @@ variable exception-input-len
   0 theme \ output
   ; is report-exception
 
-\ TODO we should move CATCH to assembler so we can use it in ABORT
-
 \ TODO CATCH
 \ : catch     ( xt -- exception# | 0 )
 \     sp@ >r              ( xt )       \ save data stack pointer
@@ -131,8 +129,6 @@ variable exception-input-len
 \     r> handler !        ( )          \ restore previous handler
 \     r> drop             ( )          \ discard saved stack ptr
 \     0 ;                 ( 0 )        \ normal completion
-
-\ TODO we should move THROW to assembler for use everywhere
 
 \ TODO THROW
 \ : throw     ( ??? exception# -- ??? exception# )

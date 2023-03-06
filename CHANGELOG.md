@@ -2,6 +2,7 @@
 v0.2 alpha TBD
 - Add COMPILE-ONLY
 - Catch exceptions in autoboot.f
+- Improve error reporting
 - CORE
   - Add ENVIRONMENT?
 - STRING

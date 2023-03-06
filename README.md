@@ -38,7 +38,7 @@ Eventually, I want to sort out how to take advantage of more than 64K without br
 
 ## Requirements
 
-- [Acme](https://sourceforge.net/projects/acme-crossass):  I was using the one from [MEGA65 github](https://github.com/MEGA65/acme) but switched to the svn version to get access to some of the more recent features, but I'm not certain I ended up using them.  It could be that the MEGA65 one will still work.
+- [ACME](https://sourceforge.net/projects/acme-crossass):  I was using the one from [MEGA65 github](https://github.com/MEGA65/acme) but switched to the svn version to get access to some of the more recent features, but I'm not certain I ended up using them.  It could be that the MEGA65 one will still work.
 
 There is a build script in `bin/build.sh` that can be used.  Right now it doesn't do a huge amount, but eventually I expect
 that the build process will get more involved:

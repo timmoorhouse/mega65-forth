@@ -650,8 +650,8 @@ _main_loop
         !word W_EQUAL
         +ZBRANCH +
 
-        +DOTQ "looks like an ABORT"
-        !word W_CR
+        ; +DOTQ "looks like an ABORT"
+        ; !word W_CR
         !word W_DROP
 
         +BRANCH _main_clear_stack_and_enter_loop
@@ -663,8 +663,8 @@ _main_loop
         !word W_EQUAL
         +ZBRANCH +
 
-        +DOTQ "looks like an ABORT\""
-        !word W_CR
+        ; +DOTQ "looks like an ABORT\""
+        ; !word W_CR
         !word W_DROP
 
         +BRANCH _main_clear_stack_and_enter_loop
@@ -676,13 +676,13 @@ _main_loop
         !word W_EQUAL
         +ZBRANCH +
 
-        +DOTQ "looks like a QUIT"
-        !word W_CR
+        ;  +DOTQ "looks like a QUIT"
+        ; !word W_CR
         !word W_DROP
 
 _main_do_quit
-        +DOTQ "do QUIT stuff ..."
-        !word W_CR
+        ; +DOTQ "do QUIT stuff ..."
+        ; !word W_CR
         +BRANCH _main_loop
 
 +
