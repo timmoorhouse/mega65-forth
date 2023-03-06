@@ -11,11 +11,11 @@ include bootstrap-full.f
 .( ... saving forth-complete ) cr
 savesystem forth-complete,p,w
 
-\ include runtests.f
+include runtests.f
 
 :noname
   case
-  0 of  1 foreground endof \ output
+\ 0 of  1 foreground endof \ output
   1 of  7 foreground endof \ input
   2 of 14 foreground endof \ prompt
   3 of  4 foreground endof \ error

@@ -17,7 +17,6 @@
 ; END-CODE
 ; IF (assembler)
 ; INTERRUPT
-; IS <name>
 ; L
 ; LOCATE <name>
 ; M-

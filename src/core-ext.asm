@@ -289,6 +289,17 @@ W_FALSE
 ; MARKER
 ; (???)
 
+; Generate a word that:
+; - resets HERE to the value before the marker was created
+; - resets all elements of a vector of wordlists back to the current value
+; - reset search order to the current value
+; - current ?
+;
+; Wordlist vector would need to contain:
+;   - pointer to first in list
+; wid could be an index into this vector
+; - need to track index that would be the next allocated one
+
 !if ENABLE_CORE_EXT {
 }
 
