@@ -535,7 +535,7 @@ WARM
         sty <SOURCE_ID+1
 
         cld
-        ; see ; TODO
+        see
 
         lda #<W_MAIN+2
         sta <I

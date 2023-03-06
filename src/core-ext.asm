@@ -5,7 +5,6 @@
 ; ****************************************************************************
 ; 0<>
 ; (x -- flag)
-; ANSI 6.2.0260
 
 !if ENABLE_CORE_EXT {
         +WORD "0<>", 0
@@ -25,7 +24,6 @@ W_ZNOTEQUAL
 ; ****************************************************************************
 ; 0>
 ; (n -- flag)
-; ANSI 6.2.0280
 
 !if ENABLE_CORE_EXT {
         +WORD "0>", 0
@@ -46,7 +44,6 @@ W_ZGREATER
 ; ****************************************************************************
 ; 2>R
 ; (x_1 x_2 --) (R: -- x_1 x_2)
-; ANSI 6.2.0340
 
 ; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
 
@@ -71,7 +68,6 @@ W_2TOR
 ; ****************************************************************************
 ; 2R>
 ; (???)
-; ANSI 6.2.0410
 
 ; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
 
@@ -100,7 +96,6 @@ W_2RFROM
 ; ****************************************************************************
 ; 2R@
 ; (-- x_1 x_2) (R: x_1 x_2 -- x_1 x_2)
-; ANSI 6.2.0415
 
 ; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
 
@@ -154,7 +149,6 @@ W_2RAT
 ; ****************************************************************************
 ; :NONAME
 ; (???)
-; ANSI 6.2.0455
 
 ; TODO could move this to core-ext.f if we have a way of setting latest, latextxt from forth
 
@@ -179,7 +173,6 @@ W_NONAME
 ; ****************************************************************************
 ; <>
 ; (x_1 x_2 -- flag)
-; ANSI 6.2.0500
 
 !if ENABLE_CORE_EXT {
         +WORD "<>", 0
@@ -205,7 +198,6 @@ W_NOTEQUAL
 ; ****************************************************************************
 ; ?DO
 ; (n1 n2 --)
-; ANSI 6.2.0620
 
 !if ENABLE_CORE_EXT {
         +WORD "(?do)", 0
@@ -236,11 +228,8 @@ W_PQDO
 
 ; ****************************************************************************
 ; DEFER
-; Forth 2012 6.2.1173
 
 ; TODO move to core-ext.f once we have DOES> (see reference implementation)
-
-; TODO initialize defers to something that throws?
 
 !if ENABLE_CORE_EXT {
         +WORD "defer", 0
@@ -288,7 +277,6 @@ W_DEFER_UNINITIALIZED
 ; ****************************************************************************
 ; FALSE
 ; (-- false)
-; ANSI 6.2.1485
 
 !if ENABLE_CORE_EXT {
         +WORD "false", 0
@@ -300,7 +288,6 @@ W_FALSE
 ; ****************************************************************************
 ; MARKER
 ; (???)
-; ANSI 6.2.1850
 
 !if ENABLE_CORE_EXT {
 }
@@ -308,7 +295,6 @@ W_FALSE
 ; ****************************************************************************
 ; NIP
 ; (x_1 x_2 -- x_2)
-; ANSI 6.2.1930
 
 ; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
 
@@ -328,7 +314,6 @@ W_NIP
 ; ****************************************************************************
 ; PARSE
 ; (char "ccc<char>" -- c-addr u)
-; ANSI 6.2.2008
 ;
 ; Parse ccc delimited by char
 
@@ -341,6 +326,8 @@ W_NIP
 }
 W_PARSE
         !word *+2
+
+        ; TODO E_PARSED_STRING_OVERFLOW if too long? if we don't find the terminator?
 
         ; ldy #0 ; TODO
 
@@ -431,9 +418,9 @@ _parse_done
 
 ; ****************************************************************************
 ; PARSE-NAME
-; Forth 2012 6.2.2020
 ; ("<spaces>name<space>" -- c-addr u)
 
+; TODO E_PARSED_STRING_OVERFLOW if we don't find the end?
 
 ; like PARSE but is delimited by any whitespace
 
@@ -590,7 +577,6 @@ _parse_name_all_done
 ; ****************************************************************************
 ; PICK
 ; (x_u...x_1 x_0 u -- x_u...x_1 x_0 x_u)
-; ANSI 6.2.2030
 
 !if ENABLE_CORE_EXT {
         +WORD "pick", 0
@@ -614,9 +600,6 @@ W_PICK
 ; ****************************************************************************
 ; REFILL
 ; (-- flag)
-; ANSI 6.2.2125
-; ANSI 7.6.2.2125
-; ANSI 11.6.2.2125
 
 !if ENABLE_CORE_EXT {
         +WORD "refill", 0
@@ -656,6 +639,7 @@ _refill_file
 
         +ZBRANCH _refill_ior_ok
         ; ior bad ...
+        ; TODO should we be throwing?
         !word W_DROP                    ; drop flag
 _refill_flag_bad
         !word W_2DROP                   ; drop u2 and buffer address
@@ -700,7 +684,6 @@ _refill_done
 ; ****************************************************************************
 ; RESTORE-INPUT
 ; (x_n...x_1 n -- flag)
-; ANSI 6.2.2148
 
 ; TODO always enable?
 
@@ -711,7 +694,7 @@ _refill_done
 }
 W_RESTORE_INPUT
         !word DO_COLON
-        !word W_DROP            ; TODO check value
+        !word W_DROP            ; TODO check value, throw if bad?
         +LITERAL &INPUT_LEN
         !word W_STORE
         +LITERAL &INPUT_BUFFER
@@ -728,7 +711,6 @@ W_RESTORE_INPUT
 ; ****************************************************************************
 ; ROLL
 ; (x_u x_u-1...x_0 u -- x_u-1...x_0 x_u)
-; ANSI 6.2.2150
 
 !if ENABLE_CORE_EXT {
         +WORD "roll", 0
@@ -772,7 +754,6 @@ W_ROLL
 ; ****************************************************************************
 ; SAVE-INPUT
 ; (-- x_n...x_1 n)
-; ANSI 6.2.2182
 
 ; TODO always enable?
 
@@ -795,12 +776,7 @@ W_SAVE_INPUT
 
 ; ****************************************************************************
 ; SOURCE-ID
-; (-- 0|-1)
-; ANSI 6.2.2218
-; (-- 0|-1|fileid)
-; ANSI 11.6.1.2218
-
-; TODO extension to allow fileid if FILE enabled
+; (-- 0 | -1 | fileid)
 
 !if ENABLE_CORE_EXT {
         +WORD "source-id", 0
@@ -817,7 +793,6 @@ W_SOURCE_ID
 ; ****************************************************************************
 ; TRUE
 ; (-- true)
-; ANSI 6.2.2298
 
 !if ENABLE_CORE_EXT {
         +WORD "true", 0
@@ -831,7 +806,6 @@ W_TRUE
 ; ****************************************************************************
 ; UNUSED
 ; (-- u)
-; ANSI 6.2.2395
 
 !if ENABLE_CORE_EXT {
         +WORD "unused", 0
@@ -846,7 +820,6 @@ W_UNUSED
 ; ****************************************************************************
 ; VALUE
 ; (x "<spaces>name" --)
-; ANSI 6.2.2405
 
 ; See also constant (core)
 

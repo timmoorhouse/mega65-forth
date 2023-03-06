@@ -5,7 +5,6 @@
 ; ****************************************************************************
 ; ! 
 ; (x a-addr --)
-; ANSI 6.1.0010
 
         +WORD "!", 0
 W_STORE
@@ -33,7 +32,6 @@ W_STORE
 ; ****************************************************************************
 ; * 
 ; (n_1 n_2 -- n_3)
-; ANSI 6.1.0090
 
 !if 0 {
         +WORD "*", 0
@@ -64,7 +62,6 @@ W_STAR
 ; ****************************************************************************
 ; + 
 ; (n_1 n_2 -- n_3)
-; ANSI 6.1.0120
 
         +WORD "+", 0
 W_PLUS
@@ -81,7 +78,6 @@ W_PLUS
 ; ****************************************************************************
 ; +! 
 ; (n a-addr --)
-; ANSI 6.1.0130
 
         +WORD "+!", 0
 W_PSTORE
@@ -107,7 +103,6 @@ W_PSTORE
 ; ****************************************************************************
 ; +LOOP 
 ; (n --)
-; ANSI 6.1.0140
 
 ; See core.f
 
@@ -168,7 +163,6 @@ W_PPLOOP
 ; ****************************************************************************
 ; , 
 ; (x --)
-; ANSI 6.1.0150
 
         +WORD ",", 0
 W_COMMA
@@ -182,7 +176,6 @@ W_COMMA
 ; ****************************************************************************
 ; - 
 ; (n_1 n_2 -- n_3)
-; ANSI 6.1.0160
 
         +WORD "-", 0
 W_SUB
@@ -209,21 +202,17 @@ W_DOT
 ; ****************************************************************************
 ; / 
 ; (n_1 n_2 -- n_3)
-; ANSI 6.1.0230
 
 ; TODO WRONG FOR SIGNED !!!!!!!!!
 
 ; See core.f for a temporary correct one
-
-; FIG:
-;      /             n1  n2  ---  quot                       L0
-;               Leave the signed quotient of n1/n2.
 
 !if 0 {
         +WORD "/", 0
 W_SLASH
         !word *+2
         ; TODO does this handle negative values?
+        ; TODO check for division by zero
         lda 0,x
         sta MULTINB
         lda 2,x
@@ -250,7 +239,6 @@ W_SLASH
 ; ****************************************************************************
 ; 0< 
 ; (n -- flag)
-; ANSI 6.1.0250
 
         +WORD "0<", 0
 W_ZLESS
@@ -266,7 +254,6 @@ W_ZLESS
 ; ****************************************************************************
 ; 0= 
 ; (x -- flag)
-; ANSI 6.1.0270
 
         +WORD "0=", 0
 W_ZEQUAL
@@ -284,7 +271,6 @@ W_ZEQUAL
 ; ****************************************************************************
 ; 1+ 
 ; (n_1 -- n_2)
-; ANSI 6.1.0290
 
         +WORD "1+", 0
 W_1PLUS
@@ -297,7 +283,6 @@ W_1PLUS
 ; ****************************************************************************
 ; 1- 
 ; (n_1 -- n_2)
-; ANSI 6.1.0300
 
         +WORD "1-", 0
 W_1MINUS
@@ -309,15 +294,8 @@ W_1MINUS
         jmp NEXT
 
 ; ****************************************************************************
-; 2! 
-; (x_1 x_2 a-addr --)
-; ANSI 6.1.0310
-
-; See core.f
-
-; ****************************************************************************
-; 2* (x_1 -- x_2)
-; ANSI 6.1.0320
+; 2* 
+; (x_1 -- x_2)
 
         +WORD "2*", 0
 W_2STAR
@@ -329,7 +307,6 @@ W_2STAR
 ; ****************************************************************************
 ; 2/ 
 ; (x_1 -- x_2)
-; ANSI 6.1.0330
 
         +WORD "2/", 0
 W_2SLASH
@@ -341,7 +318,6 @@ W_2SLASH
 ; ****************************************************************************
 ; 2DROP 
 ; (x_1 x_2 --)
-; ANSI 6.1.0370
 
         +WORD "2drop", 0
 W_2DROP
@@ -351,7 +327,6 @@ W_2DROP
 ; ****************************************************************************
 ; 2DUP 
 ; (x_1 x_2 -- x_1 x_2 x_1 x_2)
-; ANSI 6.1.0380
 
         +WORD "2dup", 0
 W_2DUP
@@ -370,7 +345,6 @@ W_2DUP
 ; ****************************************************************************
 ; 2OVER 
 ; (x_1 x_2 x_3 x_4 -- x_1 x_2 x_3 x_4 x_1 x_2)
-; ANSI 6.1.0400
 
         +WORD "2over", 0
 W_2OVER
@@ -389,7 +363,6 @@ W_2OVER
 ; ****************************************************************************
 ; 2SWAP 
 ; (x_1 x_2 x_3 x_4 -- x_3 x_4 x_1 x_2)
-; ANSI 6.1.0430
 
         +WORD "2swap", 0
 W_2SWAP
@@ -415,7 +388,6 @@ W_2SWAP
 ; ****************************************************************************
 ; : 
 ; (???)
-; ANSI 6.1.0450
 
         +WORD ":", 0
 W_COLON
@@ -449,14 +421,13 @@ DO_COLON
 ; ****************************************************************************
 ; ; 
 ; (???)
-; ANSI 6.1.0460
 
         +WORD ";", F_IMMEDIATE
 W_SEMI 
         !word DO_COLON
 ;          !word QCSP
         +LITERAL W_PSEMI
-        !word W_COMMA ; COMPILEC?
+        !word W_COMMA
         
         !word W_LATEST
         +ZBRANCH +
@@ -479,7 +450,6 @@ W_PSEMI
 ; ****************************************************************************
 ; < 
 ; (n_1 n_2 -- flag)
-; ANSI 6.1.0480
 
         +WORD "<", 0
 W_LESS
@@ -502,7 +472,6 @@ W_LESS
 ; ****************************************************************************
 ; = 
 ; (x_1 x_2 -- 0 | -1)
-; ANSI 6.1.0530
 
         +WORD "=", 0
 W_EQUAL
@@ -526,7 +495,6 @@ W_EQUAL
 ; ****************************************************************************
 ; >IN 
 ; (-- a-addr)
-; ANSI 6.1.0560
 
         +WORD ">in", 0
 W_IN
@@ -537,7 +505,6 @@ W_IN
 ; ****************************************************************************
 ; >NUMBER 
 ; (ud_1 c-addr_1 u_1 -- ud_2 c-addr_2 u_2)
-; ANSI 6.1.0570
 
 ; c-addr_2 u_2 is the unconverted portion of c-addr_1 u_1
 
@@ -648,7 +615,6 @@ _digit_bad
 ; ****************************************************************************
 ; >R 
 ; (x --) (R: -- x)
-; ANSI 6.1.0580
 
         +WORD ">r", 0
 W_TOR
@@ -663,7 +629,6 @@ W_TOR
 ; ****************************************************************************
 ; ?DUP 
 ; (x -- 0 | x x)
-; ANSI 6.1.0630
 
         +WORD "?dup", 0
 W_QDUP
@@ -680,7 +645,6 @@ W_QDUP
 ; ****************************************************************************
 ; @ 
 ; (a-addr -- x)
-; ANSI 6.1.0650
 
         +WORD "@", 0
 W_AT
@@ -708,9 +672,6 @@ W_AT
 ; ****************************************************************************
 ; ACCEPT 
 ; (c-addr +n_1 -- +n_2)
-; ANSI 6.1.0695
-
-; pretty much replaces the obsolescent EXPECT from core-ext
 
 ; input terminates on newline or if we reach the character limit
 ; characters are displayed as they are received (ie, we can assume keyboard input only)
@@ -835,7 +796,6 @@ _accept_after_loop ; TODO remove
 ; ****************************************************************************
 ; ALIGN 
 ; (--)
-; ANSI 6.1.0705
 
         +WORD "align", 0
 W_ALIGN
@@ -847,7 +807,6 @@ W_ALIGN
 ; ****************************************************************************
 ; ALIGNED 
 ; (addr -- a-addr)
-; ANSI 6.1.0706
 
         +WORD "aligned", 0
 W_ALIGNED
@@ -863,19 +822,18 @@ W_ALIGNED
 ; ****************************************************************************
 ; ALLOT 
 ; (n --)
-; ANSI 6.1.0710
 
         +WORD "allot", 0
 W_ALLOT
         !word DO_COLON
         +LITERAL &HERE
+        ; TODO check for overflow
         !word W_PSTORE
         !word W_PSEMI
 
 ; ****************************************************************************
 ; AND 
 ; (x_1 x_2 -- x_3)
-; ANSI 6.1.0720
 
         +WORD "and", 0
 W_AND
@@ -891,7 +849,6 @@ W_AND
 ; ****************************************************************************
 ; BASE 
 ; (-- a-addr)
-; ANSI 6.1.0750
 
         +WORD "base", 0
 W_BASE
@@ -901,7 +858,6 @@ W_BASE
 ; ****************************************************************************
 ; BL 
 ; (-- char)
-; ANSI 6.1.0770
 
 ; TODO move to core.f
 
@@ -913,7 +869,6 @@ W_BL
 ; ****************************************************************************
 ; C! 
 ; (char c-addr --)
-; ANSI 6.1.0850
 
         +WORD "c!", 0
 W_CSTORE
@@ -925,7 +880,6 @@ W_CSTORE
 ; ****************************************************************************
 ; C@ 
 ; (c-addr -- char)
-; ANSI 6.1.0870
 
         +WORD "c@", 0
 W_CAT
@@ -939,7 +893,6 @@ W_CAT
 ; ****************************************************************************
 ; CONSTANT 
 ; (x "<spaces>name" --)
-; ANSI 6.1.0950
 
 ; See also value (core-ext)
 
@@ -961,7 +914,6 @@ DO_CONSTANT
 ; ****************************************************************************
 ; COUNT 
 ; (c-addr_1 -- c-addr_2 u)
-; ANSI 6.1.0980
 
         +WORD "count", 0
 W_COUNT
@@ -975,7 +927,6 @@ W_COUNT
 ; ****************************************************************************
 ; CR 
 ; (--)
-; ANSI 6.1.0990
 
         +WORD "cr", 0
 W_CR
@@ -990,7 +941,6 @@ CR
 ; ****************************************************************************
 ; CREATE 
 ; ("<spaces>name" --)
-; ANSI 6.1.1000
 
         +WORD "create", 0
 W_CREATE
@@ -1002,6 +952,16 @@ W_CREATE
         +NONAME ; link the last definition into the dictionary
 W_LINK
         !word DO_COLON
+
+        ; TODO check for an existing definition
+
+;          +ZBRANCH L2163
+;          !word DROP
+;          !word NFA
+;          !word IDDOT
+;          +CLITERAL 4
+;          !word MESSAGE
+;          !word SPACE
 
         ; update the link in the word
         !word W_GET_CURRENT
@@ -1031,16 +991,13 @@ W_PCREATE
 
         !word W_PARSE_NAME
 
-;!if ENABLE_RUNTIME_CHECKS {
         !word W_DUP
         !word W_ZEQUAL
         +ZBRANCH +
         +LITERAL E_ZERO_LENGTH_NAME
         !word W_THROW
 +
-;}
 
-;!if ENABLE_RUNTIME_CHECKS {
         +CLITERAL NAME_LEN_MASK ; limit the length
         !word W_OVER
         !word W_LESS
@@ -1048,22 +1005,11 @@ W_PCREATE
         +LITERAL E_NAME_TOO_LONG
         !word W_THROW
 +
-;}
 
 !if CASE_INSENSITIVE {
         !word W_2DUP
         !word W_LOWER
 }
-
-        ; TODO look for an existing definition
-
-;          +ZBRANCH L2163
-;          !word DROP
-;          !word NFA
-;          !word IDDOT
-;          +CLITERAL 4
-;          !word MESSAGE
-;          !word SPACE
 
         ; TODO if no existing defintion found ...
 
@@ -1108,7 +1054,6 @@ W_PCREATE
 ; ****************************************************************************
 ; DECIMAL 
 ; (--)
-; ANSI 6.1.1170
 
         +WORD "decimal", 0
 W_DECIMAL
@@ -1121,7 +1066,6 @@ W_DECIMAL
 ; ****************************************************************************
 ; DEPTH 
 ; (-- +n)
-; ANSI 6.1.1200
 
         +WORD "depth", 0
 W_DEPTH
@@ -1139,7 +1083,6 @@ W_DEPTH
 ; ****************************************************************************
 ; DO 
 ; (???)
-; ANSI 6.1.1240
 
 ; See core.f
 
@@ -1171,7 +1114,6 @@ PDO     ; used by (?do)
 ; ****************************************************************************
 ; DOES> 
 ; (???)
-; ANSI 6.1.1250
 
         +WORD "does>", F_IMMEDIATE
 W_DOES
@@ -1198,32 +1140,6 @@ DO_DOES
         sta <TEMP1
         pla
         sta <TEMP1+1
-!if 0 {
-        lda #'i'
-        jsr EMIT
-        lda <I+1
-        jsr put_hex
-        lda <I
-        jsr put_hex
-        lda #' '
-        jsr EMIT
-        lda #'w'
-        jsr EMIT
-        lda <W+1
-        jsr put_hex
-        lda <W
-        jsr put_hex
-        lda #' '
-        jsr EMIT
-        lda #'t'
-        jsr EMIT
-        lda <TEMP1+1
-        jsr put_hex
-        lda <TEMP1
-        jsr put_hex
-        lda #' '
-        jsr EMIT
-}
         
         lda <I+1
         pha
@@ -1248,7 +1164,6 @@ DO_DOES
 ; ****************************************************************************
 ; DROP 
 ; (x --)
-; ANSI 6.1.1260
 
         +WORD "drop", 0
 W_DROP
@@ -1258,7 +1173,6 @@ W_DROP
 ; ****************************************************************************
 ; DUP 
 ; (x -- x x)
-; ANSI 6.1.1290
 
         +WORD "dup", 0
 W_DUP
@@ -1271,7 +1185,6 @@ W_DUP
 ; ****************************************************************************
 ; EMIT 
 ; (x --)
-; ANSI 6.1.1320
 
         +WORD "emit", 0
 W_EMIT
@@ -1283,7 +1196,6 @@ W_EMIT
 ; ****************************************************************************
 ; ENVIRONMENT? 
 ; (c-addr u -- false | i*x true)
-; ANSI 6.1.1345
 
         +WORD "environment?", 0
         !word DO_COLON
@@ -1443,7 +1355,6 @@ _environment_str_stack_cells
 ; ****************************************************************************
 ; EVALUTATE 
 ; (i*x c-addr u -- j*x)
-; ANSI 6.1.1360
 
         +WORD "evaluate", 0
 W_EVALUATE        
@@ -1523,7 +1434,6 @@ _pevaluate_loop
         +BRANCH _pevaluate_loop
 
 _pevaluate_interpret
-        ; TODO check compile-only and throw E_INTERPRET_COMPILE_ONLY where appropriate
         !word W_NAME_TO_INTERPRET
         !word W_EXECUTE
         +BRANCH _pevaluate_loop
@@ -1570,7 +1480,6 @@ _pevaluate_done_loop
 ; ****************************************************************************
 ; EXECUTE 
 ; (i*x xt -- j*x)
-; ANSI 6.1.1370
 
         +WORD "execute", 0
 W_EXECUTE
@@ -1596,17 +1505,11 @@ W_EXECUTE
 ; ****************************************************************************
 ; EXIT 
 ; (???)
-; ANSI 6.1.1380
 
         +WORD "exit", 0
 W_EXIT
         !word *+2
         ; See also ;
-!if 0 {        
-        jsr RDUMP
-        jsr CR
-        ldy #0
-}
         pla ; TODO backwards???
         sta <I
         pla
@@ -1616,7 +1519,6 @@ W_EXIT
 ; ****************************************************************************
 ; FILL 
 ; (c-addr u char --)
-; ANSI 6.1.1540
 
         +WORD "fill", 0
 W_FILL
@@ -1655,7 +1557,6 @@ _fill_dst
 ; ****************************************************************************
 ; HERE 
 ; (-- addr)
-; ANSI 6.1.1650
 
         +WORD "here", 0
 W_HERE
@@ -1668,7 +1569,6 @@ W_HERE
 ; ****************************************************************************
 ; I 
 ; (???)
-; ANSI 6.1.1680
 
         +WORD "i", 0
 W_I
@@ -1677,7 +1577,6 @@ W_I
 ; ****************************************************************************
 ; IMMEDIATE 
 ; (--)
-; ANSI 6.1.1710
 
 ; TODO can this be moved to core.f?
 
@@ -1685,6 +1584,7 @@ W_I
 W_IMMEDIATE
         !word DO_COLON
         ; see also compile-only (internals)
+        ; TODO throw if LATEST is 0?
         !word W_LATEST
         !word W_QDUP
         +ZBRANCH +
@@ -1701,7 +1601,6 @@ W_IMMEDIATE
 ; ****************************************************************************
 ; INVERT 
 ; (x_1 -- x_2)
-; ANSI 6.1.1720
 ; flip all bits
 
         +WORD "invert", 0
@@ -1718,7 +1617,6 @@ W_INVERT
 ; ****************************************************************************
 ; J 
 ; (???)
-; ANSI 6.1.1730
 
         +WORD "j", 0
 W_J
@@ -1734,7 +1632,6 @@ W_J
 ; ****************************************************************************
 ; KEY 
 ; (-- char)
-; ANSI 6.1.1750
 
         +WORD "key", 0
 W_KEY
@@ -1748,7 +1645,6 @@ W_KEY
 ; ****************************************************************************
 ; LEAVE 
 ; (???)
-; ANSI 6.1.1760
 
         +WORD "leave", 0
 W_LEAVE
@@ -1767,7 +1663,6 @@ LEAVE                   ; used by (loop) and (+loop)
 ; ****************************************************************************
 ; LOOP 
 ; (???)
-; ANSI 6.1.1800
 
 ; See core.f
 
@@ -1806,12 +1701,12 @@ W_PLOOP
 ; ****************************************************************************
 ; LSHIFT 
 ; (x_1 u -- x_2)
-; ANSI 6.1.1805
 
         +WORD "lshift", 0
 W_LSHIFT
         !word *+2
         lda 0,x
+        ; TODO check limits on u, throw if bad?
 beq +
 -       clc
         rol 2,x
@@ -1823,8 +1718,8 @@ beq +
 ; ****************************************************************************
 ; NEGATE
 ; (n_1 -- n_2)
-; ANSI 6.1.1910
 ; change sign (MINUS in FIG)
+
 ; from ANSI A.3.2.1:
 ;       : NEGATE INVERT 1+ ;
 
@@ -1846,7 +1741,6 @@ W_NEGATE
 ; ****************************************************************************
 ; OR
 ; (x_1 x_2 -- x_3)
-; ANSI 6.1.1980
 
         +WORD "or", 0
 W_OR
@@ -1862,7 +1756,6 @@ W_OR
 ; ****************************************************************************
 ; OVER
 ; (x_1 x_2 -- x_1 x_2 x_1)
-; ANSI 6.1.1990
 
         +WORD "over", 0
 W_OVER
@@ -1875,7 +1768,6 @@ W_OVER
 ; ****************************************************************************
 ; POSTPONE
 ; ("<spaces>name" --)
-; ANSI 6.1.2033
 ;
 ; Appends the *compilation* semantics of name to the current definition
 
@@ -1886,7 +1778,7 @@ W_POSTPONE
 
         !word W_FIND_NAME
         !word W_QDUP
-        +ZBRANCH _postpone_done ; TODO error if not found
+        +ZBRANCH _postpone_done ; TODO throw E_INVALID_POSTPONE if not found
 
         ; (nt)
 
@@ -1912,7 +1804,6 @@ _postpone_done
 ; ****************************************************************************
 ; QUIT
 ; (???)
-; ANSI 6.1.2050
 
 ; - Empties the return stack
 ; - Store 0 in SOURCE-ID
@@ -1957,6 +1848,7 @@ _pquit_read_loop
         !word W_ZEQUAL
         +ZBRANCH +
 
+        ; TODO move the prompting up to W_MAIN?
         +LITERAL THEME_PROMPT
         !word W_THEME
 
@@ -1968,7 +1860,6 @@ _pquit_read_loop
 ; ****************************************************************************
 ; R>
 ; (???)
-; ANSI 6.1.2060
 
         +WORD "r>", 0
 W_RFROM
@@ -1985,7 +1876,6 @@ W_RFROM
 ; ****************************************************************************
 ; R@
 ; (???)
-; ANSI 6.1.2070
 
         +WORD "r@", 0
 W_RAT ; TODO rename to W_RFETCH?
@@ -2001,7 +1891,6 @@ W_RAT ; TODO rename to W_RFETCH?
 ; ****************************************************************************
 ; ROT
 ; (x_1 x_2 x_3 -- x_2 x_3 x_1)
-; ANSI 6.1.2160
 
 ; TODO native implementation?
 
@@ -2017,12 +1906,12 @@ W_ROT
 ; ****************************************************************************
 ; RSHIFT
 ; (x_1 u -- x_2)
-; ANSI 6.1.2162
 
         +WORD "rshift", 0
 W_RSHIFT
         !word *+2
         lda 0,x
+        ; TODO check limits on u, throw if bad?
 beq +
 -       clc
         ror 3,x
@@ -2034,7 +1923,6 @@ beq +
 ; ****************************************************************************
 ; SOURCE
 ; (-- c-addr u)
-; ANSI 6.1.2216
 
         +WORD "source", 0
 W_SOURCE
@@ -2043,14 +1931,11 @@ W_SOURCE
         !word W_AT
         +LITERAL &INPUT_LEN
         !word W_AT
-        ; TODO should we ripping of >IN leading chars?
         !word W_PSEMI
 
 ; ****************************************************************************
 ; STATE
 ; (-- a-addr)
-; ANSI 6.1.2250
-; ANSI 15.6.2.2250
 
         +WORD "state", 0
 W_STATE
@@ -2060,7 +1945,6 @@ W_STATE
 ; ****************************************************************************
 ; SWAP
 ; (x_1 x_2 -- x_2 x_1)
-; ANSI 6.1.2260
 
         +WORD "swap", 0
 W_SWAP
@@ -2077,7 +1961,6 @@ W_SWAP
 ; ****************************************************************************
 ; TYPE
 ; (c-addr u --)
-; ANSI 6.1.2310
 
 ; TODO can we use primm? the problem is it uses a null terminated string
 
@@ -2104,7 +1987,6 @@ _type_after_loop
 ; ****************************************************************************
 ; U<
 ; (u_1 u_2 -- flag)
-; ANSI 6.1.2340
 
         +WORD "u<", 0
 W_ULESS
@@ -2123,7 +2005,6 @@ W_ULESS
 ; ****************************************************************************
 ; UM*
 ; (u_1 u_2 -- ud)
-; ANSI 6.1.2360
 
         +WORD "um*", 0
 W_UMSTAR
@@ -2155,13 +2036,11 @@ W_UMSTAR
 ; ****************************************************************************
 ; UM/MOD
 ; (ud u_1 -- u_2 u_3)
-; ANSI 6.1.2370
 
         +WORD "um/mod", 0
 W_UMMOD
-; W_USLASH                ; TODO rename - this is the old FIG name
         !word *+2
-
+        ; TODO check for division by zero
         ; TODO rewrite this using math unit
 !if 1 {
 ; FIG
@@ -2202,7 +2081,6 @@ W_UMMOD
 ; ****************************************************************************
 ; UNLOOP
 ; (???)
-; ANSI 6.1.2380
 
         +WORD "unloop", 0
 W_UNLOOP
@@ -2218,7 +2096,6 @@ W_UNLOOP
 ; ****************************************************************************
 ; VARIABLE
 ; ("<spaces>name" --)
-; ANSI 6.1.2410
 
         +WORD "variable", 0
 W_VARIABLE    
@@ -2241,7 +2118,6 @@ DO_VARIABLE
 ; ****************************************************************************
 ; XOR
 ; (x_1 x_2 -- x_3)
-; ANSI 6.1.2490
 
         +WORD "xor", 0
 W_XOR
@@ -2257,7 +2133,6 @@ W_XOR
 ; ****************************************************************************
 ; [
 ; (--)
-; ANSI 6.1.2500
 
         +WORD "[", F_IMMEDIATE
 W_LBRACKET
@@ -2270,7 +2145,6 @@ W_LBRACKET
 ; ****************************************************************************
 ; ]
 ; (--)
-; ANSI 6.1.2540
 
         +WORD "]", 0
 W_RBRACKET

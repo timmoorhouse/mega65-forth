@@ -53,9 +53,9 @@ that the build process will get more involved:
 ## Recommendations
 
 - [VICE](https://vice-emu.sourceforge.io/) for c1541 and petcat to manipulate d81 images
-- m65, mega65_ftp from [mega65-tools](https://github.com/MEGA65/mega65-tools)
+- m65, mega65_ftp from [MEGA65 Tools](https://github.com/MEGA65/mega65-tools)
 - [m65dbg](https://github.com/MEGA65/m65dbg)
-- [xemu](https://github.com/lgblgblgb/xemu)
+- [Xemu](https://github.com/lgblgblgb/xemu)
 
 # RANDOM TODOs
 
