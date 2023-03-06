@@ -2,7 +2,13 @@
 ;
 ; Things only needed during bootstrapping
 ;
+; Everything in this file must be unnecessary once boostrapping ends
+; or bad things will happen
 ;
+
+; TODO move rdump from debug here, add a nicer forth implementation
+
+; TODO can we move put_string here?
 
 ; TODO move to volatile area
 W_SIMPLE_DOT

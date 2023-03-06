@@ -85,10 +85,12 @@
   ( 3 ?pairs ) postpone (+loop) dup 2 - here 2 + swap ! back ; immediate compile-only
 
 ( *************************************************************************** )
-( * more internal helper words                                              * )
+( * more internal helper words and commonly used things                     * )
 ( *************************************************************************** )
 
 : c, ( char -- ) here c! 1 allot ;
+
+: negate ( n1 -- n2 ) invert 1+ ;
 
 : +- ( n1 n2 -- n3 ) 0< if negate then ; ( TODO REMOVE )
 
@@ -149,7 +151,8 @@ variable hld ( TODO can we remove this? )
 
 : defer! ( xt2 xt1 -- ) >body ! ; ( CORE-EXT )
 
-: find ( c-addr -- c-addr 0 | xt 1 | xt -1 ) dup count forth-wordlist search-wordlist dup if rot drop then ;
+: find ( c-addr -- c-addr 0 | xt 1 | xt -1 ) 
+  dup count forth-wordlist search-wordlist dup if rot drop then ;
 
 : is ( xt "<spaces>name" -- )
    state @ if
@@ -164,7 +167,7 @@ variable hld ( TODO can we remove this? )
 
 : max ( n1 n2 -- n3 ) 2dup < if swap then drop ;
 
-( TODO cmove is in STRING but move is in CORE - make move the native one )
+( TODO cmove is in STRING but move is in CORE - make move the native one? )
 : move ( addr1 addr2 u -- ) >r 2dup < r> swap if cmove> else cmove then ;
 
 ( TODO the 68 is enough space for WORD and HOLD transient regions )
@@ -217,13 +220,15 @@ variable hld ( TODO can we remove this? )
 : */ ( n1 n2 n3 -- n4 ) */mod nip ; ( TODO - depends on nip from CORE-EXT )
 
 ( TODO check for buffer overflow, throw -17 )
-: hold ( char -- ) -1 hld +! hld @ c! ; ( hmm ... this goes backwards.  OK with the gap, but might want to change this )
+( hmm ... this goes backwards.  OK with the gap, but might want to change this )
+: hold ( char -- ) -1 hld +! hld @ c! ; 
 
 : <# ( -- ) pad hld ! ;
 
 : #> ( xd -- c-addr u ) 2drop hld @ pad over - ;
 
-: # ( ud1 -- ud2 ) base @ m/mod rot 9 over < if 7 + then '0' + hold ; ( TODO 7 is the gap between '9' and 'A' )
+( TODO 7 is the gap between '9' and 'A' )
+: # ( ud1 -- ud2 ) base @ m/mod rot 9 over < if 7 + then '0' + hold ; 
 
 : sign ( n -- ) 0< if '-' hold then ;
 
@@ -241,6 +246,7 @@ variable hld ( TODO can we remove this? )
 
 :noname ( n -- ) s>d d. ; is .
 
-: word ( char "<chars>ccc<char>" -- c-addr ) (parse-name) dup here c! here 1+ swap cmove here ;
+: word ( char "<chars>ccc<char>" -- c-addr ) 
+  (parse-name) dup here c! here 1+ swap cmove here ;
 
 .( ... end of core.f ) cr

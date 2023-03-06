@@ -189,7 +189,6 @@ W_SUB
         sta 3,x
         jmp POP
 
-
 ; ****************************************************************************
 ; .
 ; (n --)
@@ -1055,6 +1054,8 @@ W_PCREATE
 ; DECIMAL 
 ; (--)
 
+; TODO move to core.f?
+
         +WORD "decimal", 0
 W_DECIMAL
         !word DO_COLON
@@ -1196,6 +1197,8 @@ W_EMIT
 ; ****************************************************************************
 ; ENVIRONMENT? 
 ; (c-addr u -- false | i*x true)
+
+; TODO move to core.f?
 
         +WORD "environment?", 0
         !word DO_COLON
@@ -1714,29 +1717,6 @@ beq +
         dec
         bne -
 +       jmp POP
-
-; ****************************************************************************
-; NEGATE
-; (n_1 -- n_2)
-; change sign (MINUS in FIG)
-
-; from ANSI A.3.2.1:
-;       : NEGATE INVERT 1+ ;
-
-        +WORD "negate", 0
-W_NEGATE
-        !word *+2
-        ; ldy #0 ; TODO
-        ; see also DNEGATE (double)
-        ; TODO use neg? neg doesn't set or use the carry flag
-        sec
-        tya
-        sbc 0,x
-        sta 0,x
-        tya
-        sbc 1,x
-        sta 1,x
-        jmp NEXT
 
 ; ****************************************************************************
 ; OR

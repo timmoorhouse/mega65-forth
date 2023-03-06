@@ -58,16 +58,6 @@
 ; - TODO: check if HERE is moved down below its initial value
 ; - TODO: check value passed to FORGET (FIG uses FENCE for lower limit)
 
-;
-; Colour scheme
-; These are indexes into the colour pallette (see docs for BACKGROUND for a table)
-;
-
-COLOUR_OUTPUT =   1 ; white
-COLOUR_INPUT  =   7 ; yellow
-COLOUR_PROMPT =  14 ; lt blue
-COLOUR_ERROR  =   4 ; purple
-
 THEME_OUTPUT = 0
 THEME_INPUT  = 1
 THEME_PROMPT = 2
@@ -730,13 +720,9 @@ AUTOBOOT_FILENAME
 !src "xchar.asm"
 !src "xchar-ext.asm"
 
-
 ; TODO move this above HERE
 !src "bootstrap.asm"
 
-
-INITIAL_FORTH_WORDLIST
-        !word _here ; TODO can we get away without storing this?
 INITIAL_HERE
 
 ;
@@ -746,9 +732,10 @@ INITIAL_HERE
 
 _onetime
 
-        lda INITIAL_FORTH_WORDLIST
+        ; TODO clean this up
+        lda #<_here
         sta FORTH_WORDLIST
-        lda INITIAL_FORTH_WORDLIST+1
+        lda #>_here
         sta FORTH_WORDLIST+1
 
         lda #<INITIAL_HERE

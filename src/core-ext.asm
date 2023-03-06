@@ -299,6 +299,8 @@ W_FALSE
 ;   - pointer to first in list
 ; wid could be an index into this vector
 ; - need to track index that would be the next allocated one
+;   OR we could initialize the vector to -1s then set an element
+;   to 0 when allocated with WORDLIST
 
 !if ENABLE_CORE_EXT {
 }

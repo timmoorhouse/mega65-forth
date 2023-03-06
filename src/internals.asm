@@ -10,7 +10,6 @@
 ; .'                    might want this, but could be tricky
 ; BEGIN (assembler)
 ; c+!                   skip?
-; CURRENT               skip? also in gforth - should be fine with just get-current/set-current though?
 ; CVARIABLE             skip?
 ; DASM
 ; ELSE (assembler)
@@ -34,7 +33,7 @@
 ; 
 
 ; Is this a whitespace character?
-; Used by PARSE-NAME
+; TODO - use in PARSE-NAME
 isspace
         ; A - character to test
         ; TODO check newline, etc
@@ -66,6 +65,8 @@ fail_runtime_check
         jsr RDUMP
         brk
 }
+
+; ****************************************************************************
 
 ; TODO timer
 ; check Clear_TI, start_timer  CIA2_CRA (dd0e), CIA2_CRB (dd0f), CIA_TALO (dd04), Get_TI_CIA
@@ -211,6 +212,17 @@ BRANCH  ; used by (loop), 0branch  TODO MESSY !!!!!!!!
         stz <I
         jmp NEXT
 
+; ****************************************************************************
+;
+;
+;
+
+        +WORD "current", 0
+W_CURRENT
+        !word DO_VARIABLE
+        !word 0
+
+; ****************************************************************************
 ;
 ;    CLITERAL pushes the next inline byte to data stack
 ;
@@ -226,6 +238,7 @@ W_PCLITERAL
         inw <I
         jmp PUSH
 
+; ****************************************************************************
 ;
 ;    LITERAL pushes the next inline word to data stack
 ;
@@ -242,6 +255,7 @@ _inc_I_PUSH
         inw <I
         jmp PUSH
 
+; ****************************************************************************
 ;
 ;       SLITERAL pushes an inline counted string to the data stack
 ;
