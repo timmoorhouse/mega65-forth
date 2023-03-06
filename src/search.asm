@@ -41,29 +41,8 @@ W_DEFINITIONS
 
         +WORD "forth-wordlist", 0
 W_FORTH_WORDLIST
-        !word DO_VARIABLE ; TODO make this a constant
-FORTH_WORDLIST
-        !word 0        
-
-; ****************************************************************************
-; GET-CURRENT
-; (-- wid)
-; ANSI 16.6.1.1643
-
-;!if ENABLE_SEARCH {
-!if 1 {
-         +WORD "get-current", 0
-W_GET_CURRENT
-!if 0 {
-        !word DO_USER
-;          !byte $22
-} else {
-        !word DO_COLON    ; TODO change this to a variable
-        !word W_FORTH_WORDLIST
-        !word W_PSEMI
-}
-}
-;}
+        !word DO_CONSTANT
+        !word FORTH_WORDLIST
 
 ; ****************************************************************************
 ; GET-ORDER
@@ -114,14 +93,6 @@ W_SEARCH_WORDLIST
         !word W_TRUE ; -1
 ++
         !word W_PSEMI
-
-; ****************************************************************************
-; SET-CURRENT
-; (wid --)
-; ANSI 16.6.1.2195
-
-!if ENABLE_SEARCH {
-}
 
 ; ****************************************************************************
 ; SET-ORDER

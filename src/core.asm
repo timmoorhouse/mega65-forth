@@ -963,14 +963,16 @@ W_LINK
 ;          !word SPACE
 
         ; update the link in the word
-        !word W_GET_CURRENT
+        !word W_CURRENT
+        !word W_AT
         !word W_AT
         !word W_LATEST
         !word W_STORE
 
         ; add it to the front of the list
         !word W_LATEST
-        !word W_GET_CURRENT
+        !word W_CURRENT
+        !word W_AT
         !word W_STORE
 
         !word W_PSEMI

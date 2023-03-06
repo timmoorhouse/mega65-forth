@@ -20,7 +20,8 @@ This is still in the early stages of developement:
 - The [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) test case runs mostly clean.  There's one minor problem caused by a PETSCII vs ASCII difference.
 
 The next priorities are:
-- We can now run the complete [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth), [core](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr), [core plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) and [core extension](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) tests unmodified, but there are a number of failures from them.
+- Implementing `MARKER` and possibly `FORGET`.
+- We can now run the complete [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth), [core](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr), [core plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) and [core extension](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) tests unmodified, but there are a number of failures that need to be addressed.
 - Move more of the implementation from assembler to Forth.  As this happens, getting a functional `SEE` is becoming more and more important (even if it's just a hex dump at first).
 
 My apologies if this isn't the greatest Forth implementation.  I don't really have much experience with Forth.  I'm doing this because I've always been intrigued by Forth, and with a new MEGA65 sitting on the dining room table, it seemed the perfect project to learn about Forth, shake decades of dust off my 6502 programming skills, and learn about some of the MEGA65-specific features.
@@ -62,9 +63,9 @@ that the build process will get more involved:
 These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
 - CORE
   - [ ] Need to reimplement the multiplication/division operations using the math unit.
-  - [ ] The message from ABORT" should not be displayed if the exception is caught
 - EXCEPTION
   - [ ] Need to be able to throw exceptions from assembler.  This likely means changing the `THROW` implementation to be native code instead of Forth bytecode.
+  - [ ] The message from ABORT" should not be displayed if the exception is caught
   - [ ] Many bits of code need to be updated to throw an exception for error conditions.
 - FILE
   - [ ] Handle file access modes.
@@ -119,7 +120,7 @@ LOCALS | | [`(LOCAL)`](https://forth-standard.org/standard/locals/LOCAL) [`TO`](
 LOCALS-EXT | | [`{:`](https://forth-standard.org/standard/locals/bColon)
 LOCALS-EXT obsolescent | | [`LOCALS\|`](https://forth-standard.org/standard/locals/LOCALS)
 MEMORY | | [`ALLOCATE`](https://forth-standard.org/standard/memory/ALLOCATE) [`FREE`](https://forth-standard.org/standard/memory/FREE) [`RESIZE`](https://forth-standard.org/standard/memory/RESIZE)
-SEARCH | [`FORTH-WORDLIST`](https://forth-standard.org/standard/search/FORTH-WORDLIST) [`GET-CURRENT`](https://forth-standard.org/standard/search/GET-CURRENT)[^partial] [`SEARCH-WORDLIST`](https://forth-standard.org/standard/search/SEARCH-WORDLIST) | [`DEFINITIONS`](https://forth-standard.org/standard/search/DEFINITIONS) [`GET-ORDER`](https://forth-standard.org/standard/search/GET-ORDER) [`SET-CURRENT`](https://forth-standard.org/standard/search/SET-CURRENT) [`SET-ORDER`](https://forth-standard.org/standard/search/SET-ORDER) [`WORDLIST`](https://forth-standard.org/standard/search/WORDLIST)
+SEARCH | [`FORTH-WORDLIST`](https://forth-standard.org/standard/search/FORTH-WORDLIST) [`GET-CURRENT`](https://forth-standard.org/standard/search/GET-CURRENT) [`SEARCH-WORDLIST`](https://forth-standard.org/standard/search/SEARCH-WORDLIST) [`SET-CURRENT`](https://forth-standard.org/standard/search/SET-CURRENT) | [`DEFINITIONS`](https://forth-standard.org/standard/search/DEFINITIONS) [`GET-ORDER`](https://forth-standard.org/standard/search/GET-ORDER) [`SET-ORDER`](https://forth-standard.org/standard/search/SET-ORDER) [`WORDLIST`](https://forth-standard.org/standard/search/WORDLIST)
 SEARCH-EXT | | [`ALSO`](https://forth-standard.org/standard/search/ALSO) [`FORTH`](https://forth-standard.org/standard/search/FORTH) [`ONLY`](https://forth-standard.org/standard/search/ONLY) [`ORDER`](https://forth-standard.org/standard/search/ORDER) [`PREVIOUS`](https://forth-standard.org/standard/search/PREVIOUS)
 STRING | [`/STRING`](https://forth-standard.org/standard/string/DivSTRING) [`BLANK`](https://forth-standard.org/standard/string/BLANK) [`CMOVE`](https://forth-standard.org/standard/string/CMOVE) [`CMOVE>`](https://forth-standard.org/standard/string/CMOVEtop) [`COMPARE`](https://forth-standard.org/standard/string/COMPARE) [`SLITERAL`](https://forth-standard.org/standard/string/SLITERAL) | [`-TRAILING`](https://forth-standard.org/standard/string/MinusTRAILING) [`SEARCH`](https://forth-standard.org/standard/string/SEARCH)
 STRING-EXT | [`UNESCAPE`](https://forth-standard.org/standard/string/UNESCAPE) | [`REPLACES`](https://forth-standard.org/standard/string/REPLACES) [`SUBSTITUTE`](https://forth-standard.org/standard/string/SUBSTITUTE)

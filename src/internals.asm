@@ -219,6 +219,7 @@ BRANCH  ; used by (loop), 0branch  TODO MESSY !!!!!!!!
 
         +ALIGN
 WORDLIST_TABLE
+FORTH_WORDLIST
         !word 0         ; 0 - reserved for FORTH_WORDLIST
         !word -1        ; 1
         !word -1        ; 2
@@ -234,15 +235,7 @@ WORDLIST_TABLE
 W_CURRENT
         !word DO_VARIABLE
 CURRENT
-        !word 0
-
-        +WORD "wid>link", 0
-W_WID_TO_LINK           ; ( u -- a-addr )
-        !word DO_COLON
-        !word W_2STAR
-        +LITERAL WORDLIST_TABLE
-        !word W_PLUS
-        !word W_PSEMI
+        !word FORTH_WORDLIST
 
 ; ****************************************************************************
 ;
