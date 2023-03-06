@@ -243,7 +243,7 @@ pre_basepage = *
 !pseudopc BASEPAGE {
 !source "basepage.asm"
 }
-* = pre_basepage
+* = pre_basepage, overlay
 
 ; TODO transient buffer for s", s\" (need 2 buffers so that two consecutive
 ; strings can be stored)
