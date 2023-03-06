@@ -1,5 +1,5 @@
 
-: \ ( "ccc<eol>" -- ) 13 parse 2drop ; immediate ( k-return is not available yet )
+: \ ( "ccc<eol>" -- ) #13 parse 2drop ; immediate ( k-return is not available yet )
 
 \ The following words are implemented internally:                             
 \
@@ -189,8 +189,7 @@ create EscapeTable ( -- addr )
   repeat then
   dup                                   \ step over terminating "
   if 1 /string  then
-  r> drop
-  ;
+  r> drop ;
 
 \ Parses an escaped string from the input stream according to
 \ the rules of *\fo{parse\"} above, returning the address

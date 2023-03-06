@@ -8,6 +8,7 @@
 : ( [char] ) parse 2drop ; immediate
 ( "ccc<paren>" -- )
 ( TODO allow multiline comments when parsing from a file )
+( TODO should char throw if parse-name gives 0 length ? )
 
 : .( ( "ccc<paren>" -- ) [char] ) parse type ; immediate ( CORE-EXT )
 
@@ -108,6 +109,7 @@ variable hld ( TODO can we remove this? )
 
 ( *************************************************************************** )
 
+( TODO throw E_INVALID_NAME on error cases? )
 : ' ( "<spaces>name" -- xt ) parse-name find-name name>interpret ;
 
 : ['] ( "<spaces>name" -- ) ( -- xt ) ' postpone literal ; immediate compile-only
@@ -124,7 +126,7 @@ variable hld ( TODO can we remove this? )
 
 ( TODO the message should not get displayed if caught ??? )
 ( TODO this is just a no-op so far )
-: abort" ( "ccc<quote>" -- ) 
+: abort" ( "ccc<quote>" -- )
   postpone if 
     [char] " parse postpone sliteral postpone type ( TODO postpone ." )
     -2 postpone literal postpone throw
@@ -180,9 +182,9 @@ variable hld ( TODO can we remove this? )
 
 : ." ( "ccc<quote>" -- ) postpone s" postpone type ; immediate compile-only
 
-: s>d dup 0< ;
+: s>d ( x -- d ) dup 0< ;
 
-: space bl emit ;
+: space ( -- ) bl emit ;
 
 : spaces ( n -- ) 0 max ?dup if 0 do space loop then ; ( TODO use ?do )
 
@@ -214,6 +216,7 @@ variable hld ( TODO can we remove this? )
 
 : */ ( n1 n2 n3 -- n4 ) */mod nip ; ( TODO - depends on nip from CORE-EXT )
 
+( TODO check for buffer overflow, throw -17 )
 : hold ( char -- ) -1 hld +! hld @ c! ; ( hmm ... this goes backwards.  OK with the gap, but might want to change this )
 
 : <# ( -- ) pad hld ! ;
@@ -228,7 +231,7 @@ variable hld ( TODO can we remove this? )
 
 : d.r ( d n -- ) >r swap over dabs <# #s rot sign #> r> over - spaces type ; ( DOUBLE )
 
-: d. 0 d.r space ; ( DOUBLE )
+: d. ( d -- ) 0 d.r space ; ( DOUBLE )
 
 : .r ( n1 n2 -- ) >r s>d r> d.r ; ( CORE-EXT )
 
