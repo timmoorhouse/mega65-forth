@@ -497,9 +497,9 @@ W_EQUAL
 
         +WORD ">in", 0
 W_IN
-        !word DO_COLON
-        +LITERAL &IN
-        !word W_PSEMI
+        !word DO_VARIABLE
+IN        
+        !word 0
 
 ; ****************************************************************************
 ; >NUMBER 
@@ -674,6 +674,8 @@ W_AT
 
 ; input terminates on newline or if we reach the character limit
 ; characters are displayed as they are received (ie, we can assume keyboard input only)
+
+; TODO move to bootstrap1.f
 
         +WORD "accept", 0
 W_ACCEPT
@@ -1021,7 +1023,7 @@ W_PCREATE
         !word W_ALIGN           
 
         !word W_HERE
-        +LITERAL &LATEST
+        +LITERAL LATEST
         !word W_STORE
 
         !word W_ZERO
@@ -1046,7 +1048,7 @@ W_PCREATE
         !word W_ALIGN           ; need to realign after name
 
         !word W_HERE
-        +LITERAL &LATEST_XT
+        +LITERAL LATESTXT
         !word W_STORE
 
         +LITERAL DO_VARIABLE    ; default code fields needs to push address of data field
@@ -1054,20 +1056,6 @@ W_PCREATE
 
         ; ()
 
-        !word W_PSEMI
-
-; ****************************************************************************
-; DECIMAL 
-; (--)
-
-; TODO move to core.f?
-
-        +WORD "decimal", 0
-W_DECIMAL
-        !word DO_COLON
-        +CLITERAL 10
-        !word W_BASE
-        !word W_STORE
         !word W_PSEMI
 
 ; ****************************************************************************
@@ -1581,30 +1569,6 @@ _fill_dst
         +WORD "i", 0
 W_I
         !word W_RAT+2      ; share the code for R
-
-; ****************************************************************************
-; IMMEDIATE 
-; (--)
-
-; TODO can this be moved to core.f?
-
-        +WORD "immediate", 0
-W_IMMEDIATE
-        !word DO_COLON
-        ; see also compile-only (internals)
-        ; TODO throw if LATEST is 0?
-        !word W_LATEST
-        !word W_QDUP
-        +ZBRANCH +
-        !word W_2PLUS
-        !word W_DUP
-        !word W_CAT
-        +CLITERAL F_IMMEDIATE
-        !word W_OR
-        !word W_SWAP
-        !word W_CSTORE
-+
-        !word W_PSEMI
 
 ; ****************************************************************************
 ; INVERT 

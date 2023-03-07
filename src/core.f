@@ -5,13 +5,13 @@
 ( The following words are implemented internally:                             )
 ( ! * + +! +LOOP , - . / 0< 0= 1+ 1- 2* 2/ 2DROP 2DUP 2OVER 2SWAP : ; < = >IN )
 ( >NUMBER >R ?DUP @ ACCEPT ALIGN ALIGNED ALLOT AND BASE BL C! C@ CONSTANT     )
-( COUNT CR CREATE DECIMAL DEPTH <DO> DOES> DROP DUP EMIT ENVIRONMENT?         )
-( EVALUATE EXECUTE EXIT FILL HERE I IMMEDIATE INVERT J KEY LEAVE <LOOP>       )
+( COUNT CR CREATE DEPTH <DO> DOES> DROP DUP EMIT ENVIRONMENT?                 )
+( EVALUATE EXECUTE EXIT FILL HERE I INVERT J KEY LEAVE <LOOP>       )
 ( LSHIFT NEGATE OR OVER POSTPONE R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP      )
 ( TYPE U< UM* UM/MOD UNLOOP VARIABLE XOR [ ]                                  )
 
 ( The following words are implemented in bootstrap1.f:                        )
-( ( +LOOP BEGIN C, CHAR DO ELSE IF LITERAL LOOP REPEAT S" THEN UNTIL WHILE [CHAR] )
+( ' ( +LOOP >BODY BEGIN C, CHAR DO ELSE IF IMMEDIATE LITERAL LOOP REPEAT S" THEN UNTIL WHILE ['] [CHAR] )
 
 ( *************************************************************************** )
 ( * more internal helper words and commonly used things                     * )
@@ -27,18 +27,11 @@ variable hld ( TODO can we remove this? )
 
 ( *************************************************************************** )
 
-( TODO throw E_INVALID_NAME on error cases? )
-: ' ( "<spaces>name" -- xt ) parse-name find-name name>interpret ;
-
-: ['] ( "<spaces>name" -- ) ( -- xt ) ' postpone literal ; immediate compile-only
-
 : 2! ( x1 x2 a-addr -- ) swap over ! 2+ ! ;
 
 : 2@ ( a-addr -- x1 x2 ) dup 2+ @ swap @ ;
 
 : > ( n1 n2 -- flag ) swap < ;
-
-: >body ( xt -- a-addr ) 2+ ;
 
 : abort ( i*x -- ) ( R: j*x -- ) -1 throw ;
 
@@ -64,6 +57,8 @@ variable e-msg#
 : chars ( n1 -- n2 ) ;
 
 : dabs dup 0< if dnegate then ; ( DOUBLE )
+
+: decimal #10 base ! ;
 
 : defer@ ( xt1 -- xt2 ) >body @ ; ( CORE-EXT )
 

@@ -5,7 +5,6 @@
 ; ****************************************************************************
 ; ;CODE
 ; (???)
-; ANSI 15.6.2.0470
 
 ; FIG:
 ;      ;CODE                                                 P,C,L0
@@ -55,7 +54,6 @@ W_PSCODE
 ; ****************************************************************************
 ; ASSEMBLER
 ; (--)
-; ANSI 15.6.2.0740
 
 !if ENABLE_TOOLS_EXT {
 }
@@ -63,7 +61,6 @@ W_PSCODE
 ; ****************************************************************************
 ; BYE
 ; (--)
-; ANSI 15.6.2.0830
 ; Return control to the host operating system
 
         +WORD "bye", 0
@@ -87,7 +84,6 @@ W_BYE
 ; ****************************************************************************
 ; CODE
 ; (???)
-; ANSI 15.6.2.0930
 
 !if ENABLE_TOOLS_EXT {
 }
@@ -95,8 +91,6 @@ W_BYE
 ; ****************************************************************************
 ; CS-PICK
 ; (???)
-; ANSI 15.6.2.1015
-
 
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
 
@@ -111,7 +105,6 @@ W_CS_PICK
 ; ****************************************************************************
 ; CS-ROLL
 ; (???)
-; ANSI 15.6.2.1020
 
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
 
@@ -126,7 +119,6 @@ W_CS_ROLL
 ; ****************************************************************************
 ; EDITOR
 ; (--)
-; ANSI 15.6.2.1300
 
 !if ENABLE_TOOLS_EXT {
 }
@@ -168,7 +160,6 @@ W_NTOR
 ; ****************************************************************************
 ; NAME>COMPILE
 ; (nt -- w xt)
-; Forth 2012 15.6.2.1909.10
 
 ; executing xt consumes w, performing the compilation semantics of nt
 ; w is the execution token of nt (from NAME>INTERPRET)
@@ -182,7 +173,7 @@ W_NTOR
 W_NAME_TO_COMPILE
         !word DO_COLON
         !word W_DUP
-        !word W_NAME_TO_XT
+        !word W_NAME_TO_XT ; this will check for zero and throw
         !word W_SWAP
         !word W_QIMMEDIATE
         +ZBRANCH +
@@ -195,7 +186,6 @@ W_NAME_TO_COMPILE
 ; ****************************************************************************
 ; NAME>INTERPRET
 ; (nt -- xt)
-; Forth 2012 15.6.2.1909.20
 
 !if ENABLE_TOOLS_EXT {
         +WORD "name>interpret", 0
@@ -205,19 +195,16 @@ W_NAME_TO_COMPILE
 W_NAME_TO_INTERPRET
         !word DO_COLON
         !word W_DUP
+        !word W_NAME_TO_XT ; this will check for zero and throw
+        !word W_SWAP
         !word W_QCOMPILE_ONLY
-        +ZBRANCH +
-!if 1 {
         +LITERAL E_INTERPRET_COMPILE_ONLY
+        !word W_AND
         !word W_THROW
-}
-+
-        !word W_NAME_TO_XT
         !word W_PSEMI
 
 ; ****************************************************************************
 ; NAME>STRING
-; Forth 2012 15.6.2.1909.40
 ; (nt -- c-addr u)
 
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
@@ -238,8 +225,6 @@ W_NAME_TO_STRING
 
 ; ****************************************************************************
 ; NR>
-; Forth 2012 15.6.2.1940
-
 ; (-- i*x +n) (R: j*x +n --)
 
 !if ENABLE_TOOLS_EXT {
@@ -275,7 +260,6 @@ W_NRFROM
 
 ; ****************************************************************************
 ; SYNONYM
-; Forth 2012 15.6.2.2264
 
 ; See reference implementation
 
@@ -285,7 +269,6 @@ W_NRFROM
 ; ****************************************************************************
 ; TRAVERSE-WORDLIST
 ; (i*x xt wid -- j*x)
-; Forth 2012 15.6.2.2297
 
 ; The word itself is required by the implementation (of FIND) but will only visible if TOOLS-EXT is enabled
 
@@ -327,18 +310,8 @@ _traverse_done
         !word W_PSEMI
 
 ; ****************************************************************************
-; [DEFINED]
-; Forth 2012 15.6.2.2530.30
-
-; See reference implementation
-
-!if ENABLE_TOOLS_EXT {
-}
-
-; ****************************************************************************
 ; [ELSE]
 ; (???)
-; ANSI 15.6.2.2531
 
 ; See reference implementation
 
@@ -348,7 +321,6 @@ _traverse_done
 ; ****************************************************************************
 ; [IF]
 ; (???)
-; ANSI 15.6.2.2532
 
 ; See reference implementation
 
@@ -358,16 +330,6 @@ _traverse_done
 ; ****************************************************************************
 ; [THEN]
 ; (--)
-; ANSI 15.6.2.2533
-
-; See reference implementation
-
-!if ENABLE_TOOLS_EXT {
-}
-
-; ****************************************************************************
-; [UNDEFINED]
-; Forth 2012 15.6.2.2534
 
 ; See reference implementation
 

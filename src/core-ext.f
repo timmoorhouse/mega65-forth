@@ -6,7 +6,7 @@
 \ PICK REFILL RESTORE-INPUT ROLL S\" SAVE-INPUT SOURCE-ID TRUE UNUSED VALUE   
 
 \ The following words are implemented in bootstrap1.f:
-\ .( AGAIN
+\ .( :NONAME AGAIN TO
 
 : /string ( c-addr1 u1 n -- c-addr2 u2 ) 
   dup >r - swap r> + swap ; ( STRING )
@@ -63,13 +63,6 @@
   1+ >r postpone over postpone = postpone if postpone drop r> ; immediate compile-only
 
 \ PAD see core.f
-
-: to ( x "<spaces>name" -- ) 
-  state @ if
-    postpone ['] postpone >body postpone !
-  else
-    ' >body ! 
-  then ; immediate
 
 : tuck ( x1 x2 -- x2 x1 x2 ) swap over ;
 

@@ -1,4 +1,8 @@
 
+: immediate latest 2+ dup c@ $80 or swap c! ;
+
+: compile-only latest 2+ dup c@ $40 or swap c! ;
+
 : literal postpone (literal) , ; immediate compile-only
 
 : char parse-name drop c@ ;
@@ -70,6 +74,20 @@
   else
     sbuf swap 2dup 2>r cmove 2r> ( TODO klunky )
   then ; immediate
+
+: ' parse-name find-name name>interpret ;
+
+: ['] ' postpone literal ; immediate compile-only
+
+: >body 2+ ;
+
+: to state @ if
+    postpone ['] postpone >body postpone !
+  else
+    ' >body !
+  then ; immediate
+
+( : :noname align here to latestxt ] 0 to latest here ' : @ , ; )
 
 1 constant r/o
 

@@ -510,6 +510,9 @@ COLD
 
         lda #$6c                        ; jmp (W)
         sta &DO_JUMP_W
+
+        lda #10
+        sta &BASE
     
 JSR_ONETIME
         jsr _onetime            ; will be replaced with NOPs in _onetime
@@ -625,8 +628,6 @@ W_PQUIT
         +NONAME
 W_MAIN
         !word DO_COLON
-
-        !word W_DECIMAL ; TODO where to do this?
 
         +LITERAL W_AUTOBOOT
         !word W_CATCH

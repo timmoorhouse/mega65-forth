@@ -152,22 +152,24 @@ W_2RAT
 
 ; TODO could move this to core-ext.f if we have a way of setting latest, latextxt from forth
 
+!if 1 {
 !if ENABLE_CORE_EXT {
         +WORD ":noname", 0
 W_NONAME
         !word DO_COLON
         !word W_ALIGN
         !word W_HERE
-        +LITERAL &LATEST_XT
+        +LITERAL LATESTXT
         !word W_STORE
         !word W_RBRACKET
         !word W_ZERO
-        +LITERAL &LATEST
+        +LITERAL LATEST
         !word W_STORE
         !word W_HERE
         +LITERAL DO_COLON
         !word W_COMMA
         !word W_PSEMI
+}
 }
 
 ; ****************************************************************************
@@ -270,6 +272,7 @@ DO_DEFER
         +NONAME
 W_DEFER_UNINITIALIZED
         !word DO_COLON
+        ; !word W_MON
         +LITERAL E_INVALID_ADDRESS ; E_UNDEFINED_WORD?
         !word W_THROW
         !word W_PSEMI
@@ -353,10 +356,10 @@ W_PARSE
         ; dex
         clc
         lda <INPUT_BUFFER
-        adc <IN
+        adc IN
         sta 0,x
         lda <INPUT_BUFFER+1
-        adc <IN+1
+        adc IN+1
         sta 1,x                 ; (addr)
 
         ; initialize len
@@ -415,14 +418,20 @@ _parse_loop
 +
 
         ; ... and increment IN
-        inw <IN
+        inc IN
+        bne +
+        inc IN+1
++
 
         bra _parse_loop
 
 _parse_found_terminator
 
         ; and increment IN
-        inw <IN
+        inc IN
+        bne +
+        inc IN+1
++
         ;bra _parse_done
 
 _parse_done
@@ -471,10 +480,10 @@ W_PPARSE_NAME ; (char "<chars>name<char>" -- c-addr u)
         ;dex
         clc
         lda <INPUT_BUFFER
-        adc <IN
+        adc IN
         sta 0,x
         lda <INPUT_BUFFER+1
-        adc <IN+1
+        adc IN+1
         sta 1,x                 ; (addr)
 
         ; initialize len
@@ -534,7 +543,10 @@ _parse_name_skip_whitespace_loop
 +
 
         ; ... and increment IN
-        inw <IN
+        inc IN
+        bne +
+        inc IN+1
++
 
         bra _parse_name_skip_whitespace_loop
 
@@ -574,14 +586,20 @@ _parse_name_skip_nonwhitespace_loop
 +
 
         ; ... and increment IN
-        inw <IN
+        inc IN
+        bne +
+        inc IN+1
++
 
         bra _parse_name_skip_nonwhitespace_loop
 
 _parse_name_found_ending_whitespace
 
         ; increment IN
-        inw <IN
+        inc IN
+        bne +
+        inc IN+1
++
 
 _parse_name_all_done
 

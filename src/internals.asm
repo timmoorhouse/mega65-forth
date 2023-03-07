@@ -412,27 +412,6 @@ W_PSEARCH_WORDLIST
         !word W_PSEMI
 
 ; ****************************************************************************
-; COMPILE-ONLY 
-; (--)
-
-        +WORD "compile-only", 0
-W_COMPILE_ONLY
-        !word DO_COLON
-        ; see also immediate (core)
-        !word W_LATEST
-        !word W_QDUP
-        +ZBRANCH +
-        !word W_2PLUS
-        !word W_DUP
-        !word W_CAT
-        +CLITERAL F_COMPILE_ONLY
-        !word W_OR
-        !word W_SWAP
-        !word W_CSTORE
-+
-        !word W_PSEMI
-
-; ****************************************************************************
 ; ?COMPILE-ONLY
 ; (nt -- flag)
 
@@ -474,10 +453,9 @@ W_QIMMEDIATE
 
         +WORD "latest", 0
 W_LATEST
-        !word DO_COLON
-        +LITERAL &LATEST
-        !word W_AT
-        !word W_PSEMI
+        !word DO_VALUE
+LATEST        
+        !word 0
 
 ; ****************************************************************************
 ; LATESTXT
@@ -486,10 +464,9 @@ W_LATEST
 
         +WORD "latestxt", 0
 W_LATESTXT
-        !word DO_COLON
-        +LITERAL &LATEST_XT
-        !word W_AT
-        !word W_PSEMI
+        !word DO_VALUE
+LATESTXT
+        !word 0        
 
 ; ****************************************************************************
 ; LOWER
@@ -587,6 +564,11 @@ _lower_zero_length
         +NONAME
 W_NAME_TO_XT
         !word DO_COLON
+        !word W_DUP
+        !word W_ZEQUAL
+        +LITERAL E_INVALID_NAME
+        !word W_AND
+        !word W_THROW
         !word W_NAME_TO_STRING  ; immediately after the name
         !word W_ONE
         !word W_OR              ; for alignment

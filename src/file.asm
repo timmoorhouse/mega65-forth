@@ -223,6 +223,8 @@ W_FILE_SIZE
 ; INCLUDE-FILE
 ; (i*x fileid -- j*x)
 
+; TODO move to bootstrap1.f
+
 !if ENABLE_FILE {
         +WORD "include-file", 0
 W_INCLUDE_FILE
