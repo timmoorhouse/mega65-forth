@@ -1762,8 +1762,12 @@ W_POSTPONE
         !word W_PARSE_NAME
 
         !word W_FIND_NAME
-        !word W_QDUP
-        +ZBRANCH _postpone_done ; TODO throw E_INVALID_POSTPONE if not found
+        !word W_DUP
+        !word W_ZEQUAL
+        +ZBRANCH +
+        +LITERAL E_INVALID_POSTPONE
+        !word W_THROW
++
 
         ; (nt)
 

@@ -66,12 +66,15 @@ SIMPLE_DOTS
 W_AUTOBOOT_BOOTSTRAP
         !word DO_COLON
 
-        +DOTQ "Starting bootstrap..."
+        +DOTQ "Starting bootstrap stage 1..."
         !word W_CR
 
         !word W_BOOTSTRAP_MIN
 
-        +CSLITERAL "autoboot.f"
+        !word W_CR
+        +DOTQ "Starting bootstrap stage 2..."
+        !word W_CR
+        +CSLITERAL "bootstrap2.f"
         !word W_COUNT
         +CSLITERAL "included"
         !word W_COUNT
@@ -158,9 +161,11 @@ _bootstrap_min_done
         !word W_PSEMI
 
 BOOTSTRAP_MIN_START
-!binary "core.f"
-!binary "core-ext.f"
-!binary "file.f"
+; TODO make a bootstrap.f of just what we need to get off the ground
+!binary "bootstrap1.f"
+; !binary "core.f"
+; !binary "core-ext.f"
+; !binary "file.f"
 !byte $0a
 BOOTSTRAP_MIN_LEN = *-BOOTSTRAP_MIN_START
 BOOTSTRAP_MIN_END

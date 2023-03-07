@@ -1,19 +1,8 @@
 
-: literal postpone (literal) , ; immediate compile-only
-
-: char parse-name drop c@ ;
-
-: [char] char postpone literal ; immediate compile-only
-
-: ( [char] ) parse 2drop ; immediate
-( "ccc<paren>" -- )
 ( TODO allow multiline comments when parsing from a file )
 ( TODO should char throw if parse-name gives 0 length ? )
 
-: .( ( "ccc<paren>" -- ) [char] ) parse type ; immediate ( CORE-EXT )
-
 ( The following words are implemented internally:                             )
-(                                                                             )
 ( ! * + +! +LOOP , - . / 0< 0= 1+ 1- 2* 2/ 2DROP 2DUP 2OVER 2SWAP : ; < = >IN )
 ( >NUMBER >R ?DUP @ ACCEPT ALIGN ALIGNED ALLOT AND BASE BL C! C@ CONSTANT     )
 ( COUNT CR CREATE DECIMAL DEPTH <DO> DOES> DROP DUP EMIT ENVIRONMENT?         )
@@ -21,72 +10,12 @@
 ( LSHIFT NEGATE OR OVER POSTPONE QUIT R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP )
 ( TYPE U< UM* UM/MOD UNLOOP VARIABLE XOR [ ]                                  )
 
-( *************************************************************************** )
-( * internal helper words                                                   * )
-( *************************************************************************** )
-
-( Resolve backward branch ) 
-: back ( -- )  
-  here - , ; compile-only ( TODO REMOVE? )
-
-( *************************************************************************** )
-( * control flow                                                            * )
-( *************************************************************************** )
-
-( FIG control flow tags   )
-( 1 begin...[again|until] )
-( 2 if...                 )
-( 3 do... [loop|+loop]    )
-
-( TODO use CS-PICK/CS-ROLL )
-
-( Marks the origin of an unconditional forward branch )
-: ahead ( C: -- orig ) ( -- ) 
-  postpone branch here 0 , ( 2 ) ; immediate compile-only ( TOOLS-EXT )
-
-( Marks the origin of a conditional forward branch )
-: if ( C: -- orig ) ( x -- )
-  postpone 0branch here 0 , ( 2 ) ; immediate compile-only
-
-( Resolves a forward branch, from IF or AHEAD )
-: then ( C: orig -- ) ( -- )
-  ( ?pairs ) here over - swap ! ; immediate compile-only 
-
-: else ( C: orig1 -- orig2 ) ( -- )
-  ( ?pairs ) postpone ahead swap ( 2 ) postpone then ( 2 ) ; immediate compile-only
-
-( Marks the destination of a backwards branch )
-: begin ( C: -- dest ) ( -- ) 
-  here ( 1 ) ; immediate compile-only
-
-( Resolves an unconditional backwards branch to BEGIN )
-: again ( C: dest -- ) ( -- )
-  ( 1 ?pairs ) postpone branch back ; immediate compile-only ( TODO CORE-EXT )
-
-( Resolves a conditional backwards branch to BEGIN )
-: until ( C: dest -- ) ( x -- ) 
-  ( 1 ?pairs ) postpone 0branch back ; immediate compile-only
-
-: while ( C: dest -- orig dest ) ( x -- )
-  postpone if swap ; immediate compile-only
-
-: repeat ( C: orig dest -- ) ( -- )
-  postpone again postpone then ; immediate compile-only
-
-: do ( C: -- do-sys ) ( n1|u2 n2|u2 -- ) ( R: -- loop-sys )
-  postpone (do) 0 , here ( 3 ) ; immediate compile-only
-
-: loop ( C: do-sys -- ) ( -- ) ( R: loop-sys1 -- | loop-sys2 )
-  ( 3 ?pairs ) postpone (loop) dup 2 - here 2 + swap ! back ; immediate compile-only
-
-: +loop ( C: do-sys -- )
-  ( 3 ?pairs ) postpone (+loop) dup 2 - here 2 + swap ! back ; immediate compile-only
+( The following words are implemented in bootstrap1.f:                        )
+( ( +LOOP BEGIN C, CHAR DO ELSE IF LITERAL LOOP REPEAT S" THEN UNTIL WHILE [CHAR] )
 
 ( *************************************************************************** )
 ( * more internal helper words and commonly used things                     * )
 ( *************************************************************************** )
-
-: c, ( char -- ) here c! 1 allot ;
 
 : negate ( n1 -- n2 ) invert 1+ ;
 
@@ -95,17 +24,6 @@
 variable hld ( TODO can we remove this? )
 
 : m/mod ( ud1 u2 -- u3 ud4 ) >r 0 r@ um/mod r> swap >r um/mod r> ; ( TODO just for # so far )
-
-( counted string literal )
-: csliteral ( c-addr u -- ) ( -- c-addr )
-  postpone (csliteral) dup c, swap over here swap cmove allot
-  ; immediate compile-only
-
-( string literal )
-( TODO this only works for len <= 255 )
-: sliteral ( c-addr u -- ) ( -- c-addr u ) 
-  postpone csliteral postpone count
-  ; immediate compile-only ( STRING )
 
 ( *************************************************************************** )
 
@@ -123,8 +41,6 @@ variable hld ( TODO can we remove this? )
 : >body ( xt -- a-addr ) 2+ ;
 
 : abort ( i*x -- ) ( R: j*x -- ) -1 throw ;
-
-( TODO the message should not get displayed if caught ??? )
 
 variable e-msg
 variable e-msg#
@@ -175,14 +91,6 @@ variable e-msg#
 : pad ( -- c-addr ) here 68 + ; ( CORE-EXT ) 
 
 : recurse ( -- ) latestxt , ; immediate
-
-: s" ( "ccc<quote>" -- ) ( -- c-addr u ) 
-  [char] " parse 
-  state @ if
-    postpone sliteral
-  else
-    sbuf swap 2dup 2>r cmove 2r> ( TODO klunky )
-  then ; immediate
 
 : ." ( "ccc<quote>" -- ) postpone s" postpone type ; immediate compile-only
 
@@ -245,4 +153,4 @@ variable e-msg#
 : word ( char "<chars>ccc<char>" -- c-addr ) 
   (parse-name) dup here c! here 1+ swap cmove here ;
 
-.( ... END OF CORE.F ) cr
+.( ... end of core.f ) cr

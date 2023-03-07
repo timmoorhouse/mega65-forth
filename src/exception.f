@@ -75,7 +75,7 @@ variable e-input-len
 \   -45 of s" floating point stack underflow"                endof
 \   -46 of s" floating point invalid argument"               endof
 \   -47 of s" compilation word list deleted"                 endof
-\   -48 of s" invalid POSTPONE"                              endof
+    -48 of s" invalid POSTPONE"                              endof
     -49 of s" search order overflow"                         endof
     -50 of s" search order underflow"                        endof
 \   -51 of s" compilation word list changed"                 endof

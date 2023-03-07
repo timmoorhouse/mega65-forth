@@ -1,6 +1,6 @@
 
-
-\ HEAD see core.f
+\ The following words are implemented in bootstrap1.f:
+\ AHEAD
 
 : [defined] parse-name find-name 0<> ; immediate
 

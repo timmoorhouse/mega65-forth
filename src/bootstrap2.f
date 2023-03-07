@@ -1,4 +1,8 @@
 
+  s" core.f"          included
+  s" core-ext.f"      included
+  s" file.f"          included
+
 :noname ; is autoboot \ TODO could use decimal to save a few bytes
 
 : savesystem ( "<spaces>name" -- ) parse-name w/o open-file drop \ TODO check status from open-file
@@ -13,15 +17,12 @@ savesystem forth-minimal,p,w
 
   s" block.f"         included
   s" block-ext.f"     included
-\ s" core.f"          included    \ Embedded
-\ s" core-ext.f"      included    \ Embedded
   s" double.f"        included
   s" double-ext.f"    included
   s" exception.f"     included
 \ s" exception-ext.f" included    \ TODO no need for one yet
   s" facility.f"      included
   s" facility-ext.f"  included
-\ s" file.f"          included    \ Embedded
   s" file-ext.f"      included
   s" floating.f"      included
   s" floating-ext.f"  included
@@ -49,7 +50,9 @@ savesystem forth-minimal,p,w
 .( ... saving forth-complete ) cr
 savesystem forth-complete,p,w
 
-unused . s" bytes free" type cr \ 26966
+.( ... Bootstrap stage 2 complete ) cr
+
+unused . s" bytes free" type cr \ 26920
 
 : test s" runtests.f" included ;
 
@@ -86,4 +89,4 @@ unused . s" bytes free" type cr \ 26966
 \ : rp1 >r >r >r >r rp@ 1+ @ rp@ cell+ 1+ @ 2r> 2r> 2drop 2drop ;
 \ 1234 5678 $abc $def rp1 .s
 
-.( Completed bootstrap ) cr
+.( end of bootstrap2.f ) cr

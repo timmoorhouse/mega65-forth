@@ -2,16 +2,16 @@
 : \ ( "ccc<eol>" -- ) #13 parse 2drop ; immediate ( k-return is not available yet )
 
 \ The following words are implemented internally:                             
-\
 \ 0<> 0> 2>R 2R> 2R@ :NONAME <> ?DO DEFER DEFER FALSE NIP PARSE PARSE-NAME    
 \ PICK REFILL RESTORE-INPUT ROLL S\" SAVE-INPUT SOURCE-ID TRUE UNUSED VALUE   
+
+\ The following words are implemented in bootstrap1.f:
+\ .( AGAIN
 
 : /string ( c-addr1 u1 n -- c-addr2 u2 ) 
   dup >r - swap r> + swap ; ( STRING )
 
 \ *************************************************************************** 
-
-\ .( see core.f
 
 \ .R see core.f
 
@@ -26,8 +26,6 @@
      ' defer@
    then ; immediate
    
-\ AGAIN see core.f
-
 : buffer: ( u "<name>" -- ; -- addr ) create allot ;
 
 \ TODO c"
@@ -208,4 +206,4 @@ create EscapeTable ( -- addr )
   state @ if postpone sliteral then
   ; immediate
 
-.( ... END OF CORE-EXT.F ) cr
+.( ... end of core-ext.f ) cr

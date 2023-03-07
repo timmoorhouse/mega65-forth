@@ -167,9 +167,10 @@ EOF
     # cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" autoboot.c65
     cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth-build.d81" -write "${opt[builddir]}/forth-skeletal.prg" forth-skeletal
     add_text_files "${opt[builddir]}/mega65-forth-build.d81" \
-        src/autoboot.f \
         src/benchmark.f \
         src/block.f         src/block-ext.f \
+        src/bootstrap1.f \
+        src/bootstrap2.f \
         src/core.f          src/core-ext.f \
         src/double.f        src/double-ext.f \
         src/exception.f \

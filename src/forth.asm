@@ -638,6 +638,7 @@ _main_clear_stack_and_enter_loop
 
 _main_loop
 
+        ; TODO resolve this using find-name or defer it?
         +LITERAL W_PQUIT
         !word W_CATCH
 
@@ -778,5 +779,10 @@ _onetime
 ; }
 ; BOOTSTRAP_LEN = *-BOOTSTRAP_SRC
 
-; TODO embed the bootstrap forth code so we don't need to read it from disk?
-; That would all us to write the FILE code in forth.
+; TODO report collision
+
+;!if * > DAREA {
+;        !error "embedded bootstrap code colliding with high memory"
+;} else {
+        !warn DAREA - *, " byte gap between bootstrap code and high memory"
+;}

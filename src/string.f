@@ -1,15 +1,15 @@
 
 \ The following words are implemented internally:
-
 \ CMOVE CMOVE> COMPARE
+
+\ The following words are implemented in bootstrap1.f:
+\ SLITERAL
 
 \ ***************************************************************************
 
 \ /STRING see core-ext.f
 
 : blank ( c-addr u ) bl fill ;
-
-\ SLITERAL see core.f
 
 \ Replace each '%' character in the input string c-addr1 len1 with two '%' characters.
 \ The output is represented by c-addr2 len2.
