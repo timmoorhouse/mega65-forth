@@ -15,7 +15,7 @@ Note that we have actually switched to font A (the ASCII font).  The `\` word sh
 This is still in the early stages of developement - check the status table below for details on what is and is not supported so far.  The most important missing pieces right now are likely support for `MARKER` and/or `FORGET`, an editor and an assembler word set.  Programs can be entered manually or read from pre-existing sequential files, however, and much of the core dictionary is implemented and fairly stable.
 
 The next priorities are:
-- Implementing `MARKER` and possibly `FORGET`.
+- Implementing `MARKER` and possibly `FORGET`.  I'd like to implement `WORDLIST`, `GET-ORDER` and `SET-ORDER` first though, since those are the main complication when implementing `MARKER` or `FORGET`.
 - We can now run the complete [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth), [core](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr), [core plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) and [core extension](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) tests unmodified, but there are a number of failures that need to be addressed.
 - Move more of the implementation from assembler to Forth.  As this happens, getting a functional `SEE` is becoming more and more important (even if it's just a hex dump at first).
 
