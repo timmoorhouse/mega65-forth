@@ -106,7 +106,6 @@ acmeopts+=(--color)
 acmeopts+=(-f cbm)
 acmeopts+=(--msvc)
 acmeopts+=(-I src)
-acmeopts+=(-I "${opt[builddir]}")
 
 declare -a m65dbgopts
 [ -z "${opt[emulate]}" ] || m65dbgopts+=(-l tcp)
@@ -122,6 +121,14 @@ xmega65opts+=(-autoload 1)
 
 set -e
 
+builddir="${opt[builddir]}/build"
+buildimg="${builddir}/mega65-forth-build.d81"
+[ -e "$builddir" ] || cmd mkdir -p "$builddir"
+
+releasedir="${opt[builddir]}/release"
+releaseimg="$releasedir/mega65-forth.d81"
+[ -d "$releasedir" ] || cmd mkdir -p "$releasedir"
+
 add_raw_files() {
     local image="$1"
     shift
@@ -131,24 +138,53 @@ add_raw_files() {
     done
 }
 
-add_text_files() {
+add_files() {
     local image="$1"
+
+    tmpdir="${opt[builddir]}/tmp"
+    [ -d "$tmpdir" ] || cmd mkdir -p "$tmpdir"
+
     shift
-    for src; do
-        local name=$(basename "$src")
-        # TODO this uses $0a for line ending, want $0d
-        # cmd dd if="$src" of="${opt[builddir]}/$name.lc" conv=lcase
-        # cmd "${opt[petcat]}" -text -w10 -o "${opt[builddir]}/$name" -- "${opt[builddir]}/$name.lc"
-        cmd "${opt[petcat]}" -text -w10 -o "${opt[builddir]}/$name" -- "$src"
-        cmd "${opt[c1541]}" "$image" -write "${opt[builddir]}/$name" "$name,s"
+    for f; do
+        local suffix
+
+        local name=$(basename "$f")
+
+        case "$f" in
+        *=*)
+            echo "$f"
+            newf=${f%=*}
+            name=${f#*=}
+            f=${newf}
+            echo "$f --- $name"
+        esac
+
+        case "$name" in
+        *.prg)
+            name=$(basename "$name" .prg)
+        esac
+
+        case "$f" in
+    
+        *.prg)
+            suffix=""
+            ;;
+
+        *)
+            newf="$tmpdir/$name"
+            suffix=",s"
+            cmd "${opt[petcat]}" -text -w10 -o "$newf" -- "$f"
+            f="$newf"
+        esac
+
+        cmd "${opt[c1541]}" "$image" -write "$f" "${name}${suffix}"
     done
 }
 
 do_build() {
-
     local rev=$(git describe --tags)
     if [ -n "$rev" -a -z "${opt[dryrun]}" ]; then
-        cat <<EOF > "${opt[builddir]}/revision.asm"
+        cat <<EOF > "$builddir/revision.asm"
 _revision +STRING "$rev"
 EOF
     fi
@@ -156,115 +192,90 @@ EOF
 
     # TODO we put the .sym and .rep files into the source dir
     # (at least temporarily) to make it easier to use m65dbg
-    cmd "${opt[acme]}" "${acmeopts[@]}" \
+    cmd "${opt[acme]}" "${acmeopts[@]}" -I "$builddir" \
         -l "$topdir/src/forth.sym" \
-        -o "${opt[builddir]}/forth-skeletal.prg" \
+        -o "$builddir/forth-skeletal.prg" \
         -r "$topdir/src/forth.rep" \
         src/forth.asm
 
     # TODO generate d81 image with everything
-    cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "${opt[builddir]}/mega65-forth-build.d81"
-    # cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth.prg" autoboot.c65
-    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth-build.d81" -write "${opt[builddir]}/forth-skeletal.prg" forth-skeletal
-    add_text_files "${opt[builddir]}/mega65-forth-build.d81" \
-        src/benchmark.f \
-        src/block.f         src/block-ext.f \
-        src/bootstrap1.f \
-        src/bootstrap2.f \
-        src/core.f          src/core-ext.f \
-        src/double.f        src/double-ext.f \
-        src/exception.f \
-        src/facility.f      src/facility-ext.f \
-        src/file.f          src/file-ext.f \
-        src/floating.f      src/floating-ext.f \
-        src/internalstest.f \
-        src/locals.f        src/locals-ext.f \
-        src/memory.f \
-        src/search.f        src/search-ext.f \
-        src/string.f        src/string-ext.f \
-        src/tools.f         src/tools-ext.f \
-        src/xchar.f         src/xchar-ext.f \
-        src/runtests.f \
-        "$topdir/test/forth2012-test-suite/src/prelimtest.fth" \
-        "$topdir/test/forth2012-test-suite/src/tester.fr" \
-        "$topdir/test/forth2012-test-suite/src/ttester.fs" \
-        "$topdir/test/forth2012-test-suite/src/core.fr" \
-        "$topdir/test/forth2012-test-suite/src/coreplustest.fth" \
-        "$topdir/test/forth2012-test-suite/src/utilities.fth" \
-        "$topdir/test/forth2012-test-suite/src/errorreport.fth" \
-        "$topdir/test/forth2012-test-suite/src/coreexttest.fth" \
-        "$topdir/test/forth2012-test-suite/src/blocktest.fth" \
-        "$topdir/test/forth2012-test-suite/src/doubletest.fth" \
-        "$topdir/test/forth2012-test-suite/src/exceptiontest.fth" \
-        "$topdir/test/forth2012-test-suite/src/facilitytest.fth" \
-        "$topdir/test/forth2012-test-suite/src/filetest.fth" \
-        "$topdir/test/forth2012-test-suite/src/localstest.fth" \
-        "$topdir/test/forth2012-test-suite/src/memorytest.fth" \
-        "$topdir/test/forth2012-test-suite/src/toolstest.fth" \
-        "$topdir/test/forth2012-test-suite/src/searchordertest.fth" \
-        "$topdir/test/forth2012-test-suite/src/stringtest.fth"
-    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth-build.d81" -dir > "${opt[builddir]}/mega65-forth-build.txt"
+    cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "$buildimg"
 
-    cmd ls -l "${opt[builddir]}/forth-skeletal.prg"
+    add_files "$buildimg" \
+        "$builddir/forth-skeletal.prg" \
+        src/bootstrap1.f=bootstrap1 \
+        src/bootstrap2.f=bootstrap2 \
+        src/benchmark.f=benchmark \
+        src/test.f=test \
+        src/block.f=d-block \
+        src/block-ext.f=d-block-ext \
+        src/core.f=d-core \
+        src/core-ext.f=d-core-ext \
+        src/double.f=d-double \
+        src/double-ext.f=d-double-ext \
+        src/exception.f=d-exception \
+        src/facility.f=d-facility \
+        src/facility-ext.f=d-facility-ext \
+        src/file.f=d-file \
+        src/file-ext.f=d-file-ext \
+        src/floating.f=d-floating \
+        src/locals.f=d-locals \
+        src/locals-ext.f=d-locals-ext \
+        src/memory.f=d-memory \
+        src/search.f=d-search \
+        src/search-ext.f=d-search-ext \
+        src/string.f=d-string \
+        src/string-ext.f=d-string-ext \
+        src/tools.f=d-tools \
+        src/tools-ext.f=d-tools-ext \
+        src/xchar.f=d-xchar \
+        src/xchar-ext.f=d-xchar-ext \
+        "$topdir/test/forth2012-test-suite/src/blocktest.fth=t-block" \
+        "$topdir/test/forth2012-test-suite/src/core.fr=t-core" \
+        "$topdir/test/forth2012-test-suite/src/coreplustest.fth=t-core-plus" \
+        "$topdir/test/forth2012-test-suite/src/coreexttest.fth=t-core-ext" \
+        "$topdir/test/forth2012-test-suite/src/doubletest.fth=t-double" \
+        "$topdir/test/forth2012-test-suite/src/errorreport.fth=t-error-report" \
+        "$topdir/test/forth2012-test-suite/src/exceptiontest.fth=t-exception" \
+        "$topdir/test/forth2012-test-suite/src/facilitytest.fth=t-facility" \
+        "$topdir/test/forth2012-test-suite/src/filetest.fth=t-file" \
+        src/internalstest.f=t-internals \
+        "$topdir/test/forth2012-test-suite/src/localstest.fth=t-locals" \
+        "$topdir/test/forth2012-test-suite/src/memorytest.fth=t-memory" \
+        "$topdir/test/forth2012-test-suite/src/prelimtest.fth=t-preliminary" \
+        "$topdir/test/forth2012-test-suite/src/searchordertest.fth=t-search" \
+        "$topdir/test/forth2012-test-suite/src/stringtest.fth=t-string" \
+        "$topdir/test/forth2012-test-suite/src/tester.fr=t-tester" \
+        "$topdir/test/forth2012-test-suite/src/toolstest.fth=t-tools" \
+        "$topdir/test/forth2012-test-suite/src/utilities.fth=t-utilities"
+    cmd "${opt[c1541]}" "$buildimg" -dir > "$builddir/$(basename $buildimg .d81).txt"
 }
 
 do_release() {
     # Generate a release disk image from the build one ...
     # TODO copy disk image back from the MEGA65
-    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth-build.d81" -read forth-minimal,p "${opt[builddir]}/forth-minimal"
-    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth-build.d81" -read forth-complete,p "${opt[builddir]}/forth-complete"
+    cmd "${opt[c1541]}" "$buildimg" -read forth-minimal,p "$releasedir/forth-minimal.prg"
+    cmd "${opt[c1541]}" "$buildimg" -read forth-complete,p "$releasedir/forth-complete.prg"
 
-    cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "${opt[builddir]}/mega65-forth.d81"
-    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth-complete" forth-complete,p
-    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth-minimal" forth-minimal,p
-    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -write "${opt[builddir]}/forth-skeletal.prg" forth-skeletal
+    cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "$releaseimg"
+    add_files "$releaseimg" \
+        "$releasedir/forth-complete.prg" \
+        "$releasedir/forth-minimal.prg" \
+        "$builddir/forth-skeletal.prg"
 
-    add_raw_files "${opt[builddir]}/mega65-forth.d81" \
-        src/core.f \      
-        src/core-ext.f \
-        src/file.f
+    "${opt[c1541]}" "$buildimg" -list | while read size f type; do
+        f=${f%\"}
+        f=${f#\"}
+        case "$f:$type" in
+        # *:prg)
+        *:seq)
+            cmd "${opt[c1541]}" "$buildimg" -read "${f},s" "$tmpdir/$f"
+            cmd "${opt[c1541]}" "$releaseimg" -write "$tmpdir/$f" "${f},s"
+            echo "$size,$f,$type"
+        esac
+    done
 
-    # add_text_files "${opt[builddir]}/mega65-forth.d81" \
-    #     src/core.f \      
-    #     src/core-ext.f \
-    #     src/file.f
-
-    add_text_files "${opt[builddir]}/mega65-forth.d81" \
-        src/benchmark.f \
-        src/block.f         src/block-ext.f \
-        src/double.f        src/double-ext.f \
-        src/exception.f \
-        src/facility.f      src/facility-ext.f \
-        src/file-ext.f \
-        src/floating.f      src/floating-ext.f \
-        src/internalstest.f \
-        src/locals.f        src/locals-ext.f \
-        src/memory.f \
-        src/search.f        src/search-ext.f \
-        src/string.f        src/string-ext.f \
-        src/tools.f         src/tools-ext.f \
-        src/xchar.f         src/xchar-ext.f \
-        src/runtests.f \
-        "$topdir/test/forth2012-test-suite/src/prelimtest.fth" \
-        "$topdir/test/forth2012-test-suite/src/tester.fr" \
-        "$topdir/test/forth2012-test-suite/src/ttester.fs" \
-        "$topdir/test/forth2012-test-suite/src/core.fr" \
-        "$topdir/test/forth2012-test-suite/src/coreplustest.fth" \
-        "$topdir/test/forth2012-test-suite/src/utilities.fth" \
-        "$topdir/test/forth2012-test-suite/src/errorreport.fth" \
-        "$topdir/test/forth2012-test-suite/src/coreexttest.fth" \
-        "$topdir/test/forth2012-test-suite/src/blocktest.fth" \
-        "$topdir/test/forth2012-test-suite/src/doubletest.fth" \
-        "$topdir/test/forth2012-test-suite/src/exceptiontest.fth" \
-        "$topdir/test/forth2012-test-suite/src/facilitytest.fth" \
-        "$topdir/test/forth2012-test-suite/src/filetest.fth" \
-        "$topdir/test/forth2012-test-suite/src/localstest.fth" \
-        "$topdir/test/forth2012-test-suite/src/memorytest.fth" \
-        "$topdir/test/forth2012-test-suite/src/toolstest.fth" \
-        "$topdir/test/forth2012-test-suite/src/searchordertest.fth" \
-        "$topdir/test/forth2012-test-suite/src/stringtest.fth"
-    cmd "${opt[c1541]}" "${opt[builddir]}/mega65-forth.d81" -dir > "${opt[builddir]}/mega65-forth.txt"
-
+    cmd "${opt[c1541]}" "$releaseimg" -dir > "$releasedir/$(basename $releaseimg .d81).txt"
 }
 
 # could run xemu headless, full speed to do these ...
@@ -292,7 +303,7 @@ do_bootstrap() {
 do_test() {
     if [ -n "${opt[emulate]}" ]; then
 
-        cmd "${opt[xmega65]}" "${xmega65opts[@]}" -8 "${opt[builddir]}/mega65-forth-build.d81"
+        cmd "${opt[xmega65]}" "${xmega65opts[@]}" -8 "$buildimg"
         # -prg "${opt[builddir]}/forth.prg"
 
         # cmd bg "${opt[xmega65]}" "${xmega65opts[@]}" -8 "${opt[builddir]}/mega65-forth.d81"
@@ -302,13 +313,13 @@ do_test() {
         "${opt[m65]}" --quiet --reset
 
         cmd "${opt[mega65_ftp]}" \
-            -c "put ${opt[builddir]}/mega65-forth-build.d81" \
-            -c "mount mega65-forth-build.d81" \
+            -c "put $buildimg" \
+            -c "mount $(basename $buildimg)" \
             -c quit
 
         local -a m65opts_
         [ -n "${opt[debug]}" ] || m65opts_+=(--run)
-        cmd "${opt[m65]}" "${m65opts[@]}" "${m65opts_[@]}" --quiet "${opt[builddir]}/forth-skeletal.prg"
+        cmd "${opt[m65]}" "${m65opts[@]}" "${m65opts_[@]}" --quiet "$builddir/forth-skeletal.prg"
 
         # TODO
         # "${opt[m65dbg]}" load "${opt[builddir]}/forth-skeletal.prg"
@@ -319,7 +330,7 @@ do_test() {
 do_release_test() {
     if [ -n "${opt[emulate]}" ]; then
 
-        cmd "${opt[xmega65]}" "${xmega65opts[@]}" -8 "${opt[builddir]}/mega65-forth.d81"
+        cmd "${opt[xmega65]}" "${xmega65opts[@]}" -8 "$releaseimg"
         # -prg "${opt[builddir]}/forth.prg"
 
         # cmd bg "${opt[xmega65]}" "${xmega65opts[@]}" -8 "${opt[builddir]}/mega65-forth.d81"
@@ -329,13 +340,13 @@ do_release_test() {
         "${opt[m65]}" --quiet --reset
 
         cmd "${opt[mega65_ftp]}" \
-            -c "put ${opt[builddir]}/mega65-forth.d81" \
-            -c "mount mega65-forth.d81" \
+            -c "put $releaseimg" \
+            -c "mount $(basename $releaseimg)" \
             -c quit
 
         local -a m65opts_
         [ -n "${opt[debug]}" ] || m65opts_+=(--run)
-        cmd "${opt[m65]}" "${m65opts[@]}" "${m65opts_[@]}" --quiet "${opt[builddir]}/forth-skeletal.prg"
+        cmd "${opt[m65]}" "${m65opts[@]}" "${m65opts_[@]}" --quiet "$builddir/forth-skeletal.prg"
 
         # TODO
         # "${opt[m65dbg]}" load "${opt[builddir]}/forth-skeletal.prg"

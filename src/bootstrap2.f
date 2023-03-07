@@ -1,7 +1,7 @@
 
-  s" core.f"          included
-  s" core-ext.f"      included
-  s" file.f"          included
+  s" d-core"          included
+  s" d-core-ext"      included
+  s" d-file"          included
 
 :noname ; is autoboot \ TODO could use decimal to save a few bytes
 
@@ -27,29 +27,29 @@
 .( ... saving forth-minimal ) cr
 savesystem forth-minimal,p,w
 
-  s" block.f"         included
-  s" block-ext.f"     included
-  s" double.f"        included
-  s" double-ext.f"    included
-  s" exception.f"     included
-\ s" exception-ext.f" included    \ TODO no need for one yet
-  s" facility.f"      included
-  s" facility-ext.f"  included
-  s" file-ext.f"      included
-  s" floating.f"      included
-  s" floating-ext.f"  included
-  s" locals.f"        included
-  s" locals-ext.f"    included
-  s" memory.f"        included
-\ s" memory-ext.f"    included    \ TODO no need for one yet
-  s" search.f"        included
-  s" search-ext.f"    included
-  s" string.f"        included
-  s" string-ext.f"    included
-  s" tools.f"         included
-  s" tools-ext.f"     included
-  s" xchar.f"         included
-  s" xchar-ext.f"     included
+  s" d-block"         included
+  s" d-block-ext"     included
+  s" d-double"        included
+  s" d-double-ext"    included
+  s" d-exception"     included
+\ s" d-exception-ext" included    \ TODO no need for one yet
+  s" d-facility"      included
+  s" d-facility-ext"  included
+  s" d-file-ext"      included
+  s" d-floating"      included
+  s" d-floating-ext"  included
+  s" d-locals"        included
+  s" d-locals-ext"    included
+  s" d-memory"        included
+\ s" d-memory-ext"    included    \ TODO no need for one yet
+  s" d-search"        included
+  s" d-search-ext"    included
+  s" d-string"        included
+  s" d-string-ext"    included
+  s" d-tools"         included
+  s" d-tools-ext"     included
+  s" d-xchar"         included
+  s" d-xchar-ext"     included
 
 :noname
   case
@@ -66,9 +66,9 @@ savesystem forth-complete,p,w
 
 unused . s" bytes free" type cr \ 26920
 
-: test s" runtests.f" included ;
+: test s" test" included ;
 
-: bm s" benchmark.f" included ;
+: bm s" benchmark" included ;
 
 : foo 5 abort" abc" ;
 

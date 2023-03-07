@@ -2,18 +2,19 @@
 : \ ( "ccc<eol>" -- ) #13 parse 2drop ; immediate ( k-return is not available yet )
 
 \ The following words are implemented internally:                             
-\ 0<> 0> 2>R 2R> 2R@ :NONAME <> ?DO DEFER DEFER FALSE NIP PARSE PARSE-NAME    
+\ 0<> 0> 2>R 2R> 2R@ <> ?DO DEFER DEFER FALSE NIP PARSE PARSE-NAME    
 \ PICK REFILL RESTORE-INPUT ROLL S\" SAVE-INPUT SOURCE-ID TRUE UNUSED VALUE   
 
 \ The following words are implemented in bootstrap1.f:
 \ .( :NONAME AGAIN TO
 
+\ The following words are implemented in core.f:
+\ .R DEFER@ DEFER! IS PAD U.R
+
 : /string ( c-addr1 u1 n -- c-addr2 u2 ) 
   dup >r - swap r> + swap ; ( STRING )
 
 \ *************************************************************************** 
-
-\ .R see core.f
 
 \ see also do in core.f
 : ?do ( C: -- do-sys ) ( n1|u1 n2|u2 -- ) ( R: loop-sys ) 
@@ -38,10 +39,6 @@
 
 : compile, ( xt -- ) , ; ( compile-only )
 
-\ DEFER@ see core.f
-
-\ DEFER! see core.f
-
 : endcase ( C: case-sys -- ) ( x -- )
   postpone drop 0 ?do postpone then loop ; immediate compile-only
 
@@ -54,19 +51,13 @@
 
 : holds ( c-addr u -- ) begin dup while 1- 2dup + c@ hold repeat 2drop ;
 
-\ IS see core.f
-
 \ TODO marker
 : marker ( "<spaces>name" -- ) ( -- ) create does> ;
 
 : of ( C: -- of-sys ) ( x1 x1 -- | x1 ) 
   1+ >r postpone over postpone = postpone if postpone drop r> ; immediate compile-only
 
-\ PAD see core.f
-
 : tuck ( x1 x2 -- x2 x1 x2 ) swap over ;
-
-\ U.R see core.f
 
 : u> ( u1 u2 -- flag ) swap u< ;
 

@@ -147,32 +147,6 @@ W_2RAT
         jmp PUSH
 
 ; ****************************************************************************
-; :NONAME
-; (???)
-
-; TODO could move this to core-ext.f if we have a way of setting latest, latextxt from forth
-
-!if 1 {
-!if ENABLE_CORE_EXT {
-        +WORD ":noname", 0
-W_NONAME
-        !word DO_COLON
-        !word W_ALIGN
-        !word W_HERE
-        +LITERAL LATESTXT
-        !word W_STORE
-        !word W_RBRACKET
-        !word W_ZERO
-        +LITERAL LATEST
-        !word W_STORE
-        !word W_HERE
-        +LITERAL DO_COLON
-        !word W_COMMA
-        !word W_PSEMI
-}
-}
-
-; ****************************************************************************
 ; <>
 ; (x_1 x_2 -- flag)
 
@@ -272,7 +246,7 @@ DO_DEFER
         +NONAME
 W_DEFER_UNINITIALIZED
         !word DO_COLON
-        ; !word W_MON
+        !word W_MON ; TODO REMOVE THIS
         +LITERAL E_INVALID_ADDRESS ; E_UNDEFINED_WORD?
         !word W_THROW
         !word W_PSEMI

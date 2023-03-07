@@ -86,8 +86,9 @@
   else
     ' >body !
   then ; immediate
-
-( : :noname align here to latestxt ] 0 to latest here ' : @ , ; )
+ 
+( ' : @  is to obtain DO_COLON )
+: :noname align here to latestxt ] 0 to latest here ['] : @ , ;
 
 1 constant r/o
 
