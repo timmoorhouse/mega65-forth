@@ -160,6 +160,9 @@ add_files() {
         esac
 
         case "$name" in
+        *.f)
+            name=$(basename "$name" .f)
+            ;;
         *.prg)
             name=$(basename "$name" .prg)
         esac
@@ -171,8 +174,8 @@ add_files() {
             ;;
 
         *)
-            newf="$tmpdir/$name"
             suffix=",s"
+            newf="$tmpdir/$name"
             cmd "${opt[petcat]}" -text -w10 -o "$newf" -- "$f"
             f="$newf"
         esac
@@ -203,10 +206,10 @@ EOF
 
     add_files "$buildimg" \
         "$builddir/forth-skeletal.prg" \
-        src/bootstrap1.f=bootstrap1 \
-        src/bootstrap2.f=bootstrap2 \
-        src/benchmark.f=benchmark \
-        src/test.f=test \
+        src/bootstrap1.f \
+        src/bootstrap2.f \
+        src/benchmark.f \
+        src/test.f \
         src/block.f=d-block \
         src/block-ext.f=d-block-ext \
         src/core.f=d-core \
