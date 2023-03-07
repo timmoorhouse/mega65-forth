@@ -1378,7 +1378,7 @@ W_EVALUATE
         +LITERAL &INPUT_BUFFER
         !word W_STORE
         +LITERAL -1
-        +LITERAL &SOURCE_ID
+        +LITERAL SOURCE_ID
         !word W_STORE
         !word W_ZERO
         !word W_SOURCE_LINE
@@ -1404,7 +1404,7 @@ W_EVALUATE
 ; REFILL to grab more input data (necessary for
 ; multiline '(' comments, [IF]/[ELSE]/[THEN], etc)
 
-        +NONAME
+        +WORD "(evaluate)", 0
 W_PEVALUATE             ; ( -- )
         !word DO_COLON
 
@@ -1789,62 +1789,6 @@ W_POSTPONE
 
 _postpone_done
         !word W_PSEMI
-
-; ****************************************************************************
-; QUIT
-; (???)
-
-; - Empties the return stack
-; - Store 0 in SOURCE-ID
-; - Make the user input device the input source
-; - Enter interpretation state
-; - Repeat the following:
-;   - Accept a line from input source into input buffer, set >IN to 0 and interpret
-;   - Display prompt if in an interpretation state, all processing completed and no ambiguous condition exists
-
-        +WORD "quit", 0
-W_QUIT
-        !word DO_COLON
-        +LITERAL E_QUIT
-        !word W_THROW
-
-        +NONAME
-W_PQUIT
-        !word DO_COLON
-
-        ; The return stack will already have been cleared by the exception
-
-!if ENABLE_BLOCK {
-        !word W_ZERO
-        !word W_BLK
-        !word W_STORE
-}
-
-        !word W_LBRACKET
-
-        !word W_ZERO
-        +LITERAL &SOURCE_ID
-        !word W_STORE
-
-_pquit_read_loop
-
-        !word W_REFILL
-        !word W_DROP
-        !word W_PEVALUATE               ; any exception will be caught in W_MAIN
-
-        !word W_STATE
-        !word W_AT
-        !word W_ZEQUAL
-        +ZBRANCH +
-
-        ; TODO move the prompting up to W_MAIN?
-        +LITERAL THEME_PROMPT
-        !word W_THEME
-
-        +DOTQ " ok"
-        !word W_CR
-+
-        +BRANCH _pquit_read_loop
 
 ; ****************************************************************************
 ; R>

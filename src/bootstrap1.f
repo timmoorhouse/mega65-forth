@@ -7,6 +7,10 @@
 
 : ( [char] ) parse 2drop ; immediate
 
+( This file needs to contain everything necessary for S" and INCLUDED to work )
+( Everything else can be postponed to stage 2 )
+( Not all of the control flow stuff is necessary but for sanity's sake we keep it together )
+
 ( FIG control flow tags   )
 ( 1 begin...[again|until] )
 ( 2 if...                 )
@@ -57,7 +61,7 @@
 ( TODO this only works for len <= 255 )
 : sliteral ( c-addr u -- ) ( -- c-addr u ) 
   postpone csliteral postpone count
-  ; immediate compile-only ( STRING )
+  ; immediate compile-only
 
 : s" ( "ccc<quote>" -- ) ( -- c-addr u ) 
   [char] " parse 
@@ -72,4 +76,4 @@
 : included r/o open-file if -38 throw then 
   >r r@ include-file r> close-file drop ;
 
-.( ... bOOTSTRAP STAGE 1 COMPLETE ) cr
+.( ... BOOTSTRAP STAGE 1 COMPLETE ) cr

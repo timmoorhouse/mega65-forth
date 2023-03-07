@@ -617,6 +617,11 @@ W_AUTOBOOT
         !word DO_DEFER
         !word W_AUTOBOOT_BOOTSTRAP
 
+        +WORD "(quit)", 0
+W_PQUIT
+        !word DO_DEFER
+        !word W_DEFER_UNINITIALIZED
+
         +NONAME
 W_MAIN
         !word DO_COLON
@@ -736,27 +741,11 @@ INITIAL_HERE
 
 _onetime
 
-        ; TODO used something other than NOP (CLD maybe?)
-        ; Replace the 'jsr _onetime' with NOPs so this won't be done again
-        lda #$ea                        ; NOP
+        ; Replace the 'jsr _onetime' with CLDs so this won't be done again
+        lda #$d8                        ; CLD
         sta JSR_ONETIME
         sta JSR_ONETIME+1
         sta JSR_ONETIME+2
-
-!if 0 {
-        ; Move the contents of bootstrap.asm up to higher memory so it will be undisturbed during
-        ; the bootstrap process (once bootstrapping is complete it is no longer needed)
-        +dma_inline
-        !byte $0a                       ; F018A 11-byte format
-        +dma_options_end
-        !byte dma_cmd_copy
-        !word BOOTSTRAP_LEN
-        !word BOOTSTRAP_SRC
-        !byte 0                         ; src bank/flags
-        !word BOOTSTRAP_DEST
-        !byte 0                         ; dst bank/flags
-        !word 0                         ; modulo
-}
 
         ; TODO clean this up
         lda #<_here
@@ -772,12 +761,7 @@ _onetime
         rts
 
 * = $8000
-; BOOTSTRAP_DEST = $8000
-; BOOTSTRAP_SRC
-; !pseudopc BOOTSTRAP_DEST {
 !src "bootstrap.asm"
-; }
-; BOOTSTRAP_LEN = *-BOOTSTRAP_SRC
 
 ; TODO report collision
 

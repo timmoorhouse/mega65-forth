@@ -231,7 +231,7 @@ W_INCLUDE_FILE
         !word W_SAVE_INPUT
         !word W_NTOR
 
-        +LITERAL &SOURCE_ID
+        +LITERAL SOURCE_ID
         !word W_STORE
 
         !word W_ZERO

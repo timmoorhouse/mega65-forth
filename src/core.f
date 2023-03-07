@@ -7,7 +7,7 @@
 ( >NUMBER >R ?DUP @ ACCEPT ALIGN ALIGNED ALLOT AND BASE BL C! C@ CONSTANT     )
 ( COUNT CR CREATE DECIMAL DEPTH <DO> DOES> DROP DUP EMIT ENVIRONMENT?         )
 ( EVALUATE EXECUTE EXIT FILL HERE I IMMEDIATE INVERT J KEY LEAVE <LOOP>       )
-( LSHIFT NEGATE OR OVER POSTPONE QUIT R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP )
+( LSHIFT NEGATE OR OVER POSTPONE R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP      )
 ( TYPE U< UM* UM/MOD UNLOOP VARIABLE XOR [ ]                                  )
 
 ( The following words are implemented in bootstrap1.f:                        )
@@ -89,6 +89,8 @@ variable e-msg#
 
 ( TODO the 68 is enough space for WORD and HOLD transient regions )
 : pad ( -- c-addr ) here 68 + ; ( CORE-EXT ) 
+
+: quit ( -- ) ( R: 8*x -- ) #-56 throw ;
 
 : recurse ( -- ) latestxt , ; immediate
 

@@ -11,6 +11,18 @@
   $2001 dup here swap - r@ write-file drop \ TODO check status
   r> close-file drop \ TODO check status
   ;
+  
+:noname ( -- ) postpone [ 0 to source-id
+  begin
+    refill drop \ TODO check result from REFILL
+    (evaluate)
+    state @ 0= if 
+      2 theme \ prompt
+    then 
+  again ; is (quit)
+
+\ Before saving a system, the following deferred words MUST be defined:
+\ . .S AUTOBOOT (QUIT)
 
 .( ... saving forth-minimal ) cr
 savesystem forth-minimal,p,w
@@ -41,16 +53,16 @@ savesystem forth-minimal,p,w
 
 :noname
   case
-  3 of  4 foreground endof \ error  - purple
-  2 of 14 foreground endof \ prompt - lt blue
-  1 of  7 foreground endof \ input  - yellow
-  ( 0 ) 1 foreground       \ output - white
+  3 of  4 foreground           endof \ error  - purple
+  2 of 14 foreground ." ok" cr endof \ prompt - lt blue
+  1 of  7 foreground           endof \ input  - yellow
+  ( 0 ) 1 foreground                 \ output - white
   endcase ; is theme
 
 .( ... saving forth-complete ) cr
 savesystem forth-complete,p,w
 
-.( ... Bootstrap stage 2 complete ) cr
+.( ... bootstrap stage 2 complete ) cr cr
 
 unused . s" bytes free" type cr \ 26920
 

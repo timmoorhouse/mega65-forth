@@ -717,7 +717,7 @@ W_RESTORE_INPUT
         !word W_STORE
         !word W_SOURCE_LINE
         !word W_STORE
-        +LITERAL &SOURCE_ID
+        +LITERAL SOURCE_ID
         !word W_STORE
         !word W_ZERO            ; input successfully restored
         !word W_PSEMI
@@ -798,11 +798,9 @@ W_SAVE_INPUT
         +NONAME
 }
 W_SOURCE_ID
-        !word *+2
-        lda <SOURCE_ID
-        pha
-        lda <SOURCE_ID+1
-        jmp PUSH
+        !word DO_VALUE
+SOURCE_ID        
+        !word 0
 
 ; ****************************************************************************
 ; TRUE

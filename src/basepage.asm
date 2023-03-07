@@ -27,8 +27,7 @@ KERNEL_XSAVE    !byte 0 ; just for use in kernel calls
 
 NEXT_SBUF       !byte 0 ; TODO move out of base page?
 
-; TODO move these out of basepage?
-SOURCE_ID       !word 0
+; TODO move these out of basepage? make them values ...
 INPUT_BUFFER    !word 0 ; Address and length of input buffer
 INPUT_LEN       !word 0
 IN              !word 0 ; Offset of start of parse area within input buffer
