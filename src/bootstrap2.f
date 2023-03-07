@@ -64,7 +64,7 @@ savesystem forth-complete,p,w
 
 .( ... bootstrap stage 2 complete ) cr cr
 
-unused . s" bytes free" type cr \ 26920
+unused . s" bytes free" type cr \ 26865
 
 : test s" test" included ;
 

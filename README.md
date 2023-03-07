@@ -12,12 +12,7 @@ Forth Interest Group, P. O. box 1105, San Carlos, CA 94070
 
 Note that we have actually switched to font A (the ASCII font).  The `\` word shows up correctly on screen but the screenshot from m65 assumes the default font.
 
-This is still in the early stages of developement:
-
-- The interpreter is working well enough to support development.  It needs better error handling, etc.  I'm hoping to get exceptions going before putting in much error handling.
-- File input is mostly functional but slow.  Improving I/O speed likely won't be a priority until I can get more of the test suite passing and automated.
-- Words can be defined (`:`, `;`, `CREATE`, `VARIABLE`, `CONSTANT`, etc are functional).  Many of the basic control structures are working (`IF`/`ELSE`/`THEN`, `BEGIN`/`AGAIN`, etc). Check the status table below.
-- The [preliminary](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/prelimtest.fth) test case runs mostly clean.  There's one minor problem caused by a PETSCII vs ASCII difference.
+This is still in the early stages of developement - check the status table below for details on what is and is not supported so far.  The most important missing pieces right now are likely support for `MARKER` and/or `FORGET`, an editor and an assembler word set.  Programs can be entered manually or read from pre-existing sequential files, however, and much of the core dictionary is implemented and fairly stable.
 
 The next priorities are:
 - Implementing `MARKER` and possibly `FORGET`.
@@ -33,7 +28,7 @@ An attempt will be made to:
 
 I haven't looked at geoForth yet, but intend to at some point.  Making some sort of equivalent for the MEGA65 GEOS might be interesting, and give me an excuse to dig into GEOS a bit.  No promises here though.
 
-Eventually, I want to sort out how to take advantage of more than 64K without breaking compliance with the Forth 2012 specification.
+Eventually, I want to sort out how to take advantage of more than 64K without breaking compliance with the Forth 2012 specification.  It would be nice if we could move much of the standard dictionary to bank 1, for example.
 
 # BUILDING
 
