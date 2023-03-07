@@ -49,11 +49,13 @@ savesystem forth-minimal,p,w
 .( ... saving forth-complete ) cr
 savesystem forth-complete,p,w
 
-unused . s" bytes free" type cr \ 27028
+unused . s" bytes free" type cr \ 26966
 
 : test s" runtests.f" included ;
 
 : bm s" benchmark.f" included ;
+
+: foo 5 abort" abc" ;
 
 \ -1  CONSTANT EXC_ABORT
 \ -2  CONSTANT EXC_ABORT"

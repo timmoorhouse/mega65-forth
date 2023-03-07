@@ -19,13 +19,13 @@ W_SIMPLE_EDOT        ; (n --)
         !word W_CR
         !word W_PSEMI
 
-        +WORD "save-location", 0
-W_SAVE_LOCATION
+        +WORD "e-loc!", 0
+W_ELOC_STORE
         !word DO_DEFER
         !word W_NOOP
 
-        +WORD "clear-location", 0
-W_CLEAR_LOCATION
+        +WORD "e-loc0", 0
+W_ELOC_CLEAR
         !word DO_DEFER
         !word W_NOOP
 
@@ -40,7 +40,7 @@ W_CLEAR_LOCATION
 }
 W_CATCH
         !word DO_COLON
-        !word W_CLEAR_LOCATION
+        !word W_ELOC_CLEAR
         !word W_SPAT
         !word W_TOR
         +LITERAL HANDLER
@@ -82,7 +82,7 @@ W_THROW
         !word DO_COLON
         !word W_QDUP
         +ZBRANCH +
-        !word W_SAVE_LOCATION
+        !word W_ELOC_STORE
         +LITERAL HANDLER
         !word W_AT
         !word W_RPSTORE

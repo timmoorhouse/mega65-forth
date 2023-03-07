@@ -14,14 +14,15 @@ variable e-input-len
     >in @ e-in !
     source e-input-len ! e-input-buffer !
   then
-  ; is save-location
+  ; is e-loc!
 
 :noname ( -- )
+  0 e-msg# !
   0 e-line !
   0 e-in !
   0 e-input-buffer !
   0 e-input-len !
-  ; is clear-location
+  ; is e-loc0
 
 \ Exceptions we don't (currently) generate are commented out to save space
 : e>string ( n -- c-addr u )
@@ -115,11 +116,12 @@ variable e-input-len
     endcase ;
 
 :noname ( n -- )
+  e-msg# @ 0= if dup e>string e-msg# ! e-msg ! then
   cr
   2 theme \ prompt
   e-line @ ?dup if ." line " . ." : " then
   3 theme \ error
-  dup e>string ?dup if type drop else drop ." exception " . then cr
+  e-msg# @ if e-msg @ e-msg# @ type drop else ." exception " . then cr
   0 theme \ output
   e-input-buffer @ e-input-len @ type cr
   3 theme \ error

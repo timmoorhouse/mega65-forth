@@ -125,9 +125,14 @@ variable hld ( TODO can we remove this? )
 : abort ( i*x -- ) ( R: j*x -- ) -1 throw ;
 
 ( TODO the message should not get displayed if caught ??? )
+
+variable e-msg
+variable e-msg#
+: e-msg! ( c-addr u ) e-msg# ! e-msg ! ;
+
 : abort" ( "ccc<quote>" -- )
   postpone if 
-    [char] " parse postpone sliteral postpone type ( TODO postpone ." )
+    [char] " parse postpone sliteral postpone e-msg!
     -2 postpone literal postpone throw
   postpone then ; immediate compile-only
 

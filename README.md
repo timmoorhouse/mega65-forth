@@ -65,7 +65,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Need to reimplement the multiplication/division operations using the math unit.
 - EXCEPTION
   - [ ] Need to be able to throw exceptions from assembler.  This likely means changing the `THROW` implementation to be native code instead of Forth bytecode.
-  - [ ] The message from ABORT" should not be displayed if the exception is caught
   - [ ] Many bits of code need to be updated to throw an exception for error conditions.
 - FILE
   - [ ] Handle file access modes.
