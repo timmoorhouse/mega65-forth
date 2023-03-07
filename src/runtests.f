@@ -9,7 +9,7 @@ CR .( Running ANS Forth and Forth 2012 test programs, version 0.13.4) CR
 include prelimtest.fth
 include tester.fr
 \ S" ttester.fs" INCLUDED
-true verbose !
+\ true verbose !
 
   s" core.fr"          included
   s" coreplustest.fth" included

@@ -627,7 +627,7 @@ W_MAIN
         !word W_CATCH
         !word W_QDUP
         +ZBRANCH +
-        !word W_REPORT_EXCEPTION
+        !word W_DOTE
 +
 
 _main_clear_stack_and_enter_loop
@@ -680,7 +680,7 @@ _main_loop
 
 +
 
-        !word W_REPORT_EXCEPTION
+        !word W_DOTE
 
         +BRANCH _main_loop
         ; +BRANCH _main_clear_stack_and_enter_loop

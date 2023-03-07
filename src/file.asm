@@ -129,7 +129,6 @@ W_BUFFER_OF_FILEID ; (fileid -- c-addr u)
 ; ****************************************************************************
 ; CLOSE-FILE
 ; (fileid -- ior)
-; ANSI 11.6.1.0900
 
 !if ENABLE_FILE {
         +WORD "close-file", 0
@@ -145,8 +144,8 @@ W_CLOSE_FILE
 ; ****************************************************************************
 ; CREATE-FILE
 ; (c-addr u fam -- fileid ior)
-; ANSI 11.6.1.1010
 
+!if 0 {
 !if ENABLE_FILE {
         +WORD "create-file", 0
 W_CREATE_FILE
@@ -160,12 +159,13 @@ W_CREATE_FILE
 
         !word W_PSEMI
 }
+}
 
 ; ****************************************************************************
 ; DELETE-FILE
 ; (c-addr u -- ior)
-; ANSI 11.6.1.1190
 
+!if 0 {
 !if ENABLE_FILE {
         +WORD "delete-file", 0
 W_DELETE_FILE
@@ -177,12 +177,13 @@ W_DELETE_FILE
 
         !word W_PSEMI
 }
+}
 
 ; ****************************************************************************
 ; FILE-POSITION
 ; (fileid -- ud ior)
-; ANSI 11.6.1.1520
 
+!if 0 {
 !if ENABLE_FILE {
         +WORD "file-position", 0
 W_FILE_POSITION
@@ -196,12 +197,13 @@ W_FILE_POSITION
 
         !word W_PSEMI
 }
+}
 
 ; ****************************************************************************
 ; FILE-SIZE
 ; (fileid -- ud ior)
-; ANSI 11.6.1.1522
 
+!if 0 {
 !if ENABLE_FILE {
         +WORD "file-size", 0
 W_FILE_SIZE
@@ -215,13 +217,11 @@ W_FILE_SIZE
 
         !word W_PSEMI
 }
+}
 
 ; ****************************************************************************
 ; INCLUDE-FILE
 ; (i*x fileid -- j*x)
-; ANSI 11.6.1.1717
-
-; TODO track line number for error reporting?
 
 !if ENABLE_FILE {
         +WORD "include-file", 0
@@ -265,7 +265,6 @@ W_INCLUDE_FILE
 ; ****************************************************************************
 ; OPEN-FILE
 ; (c-addr u fam -- fileid ior)
-; ANSI 11.6.1.1970
 
 !if ENABLE_FILE {
         +WORD "open-file", 0
@@ -311,7 +310,6 @@ W_OPEN_FILE
 ; ****************************************************************************
 ; READ-FILE
 ; (c-addr u_1 fileid -- u_2 ior)
-; ANSI 11.6.1.2080
 
 !if ENABLE_FILE {
         +WORD "read-file", 0
@@ -331,7 +329,6 @@ W_READ_FILE
 ; ****************************************************************************
 ; READ-LINE
 ; (c-addr u_1 fileid -- u_2 flag ior)
-; ANSI 11.6.1.2090
 
 ; Stops at line ending
 ; Buffer should be at least u_1+2 characters long.
@@ -401,8 +398,8 @@ _read_line_after_loop
 ; ****************************************************************************
 ; REPOSITION-FILE
 ; (ud fileid -- ior)
-; ANSI 11.6.1.2142
 
+!if 0 {
 !if ENABLE_FILE {
         +WORD "reposition-file", 0
 W_REPOSITION_FILE
@@ -415,12 +412,13 @@ W_REPOSITION_FILE
 
         !word W_PSEMI
 }
+}
 
 ; ****************************************************************************
 ; RESIZE-FILE
 ; (ud fileid -- ior)
-; ANSI 11.6.1.2147
 
+!if 0 {
 !if ENABLE_FILE {
         +WORD "resize-file", 0
 W_RESIZE_FILE
@@ -433,11 +431,11 @@ W_RESIZE_FILE
 
         !word W_PSEMI
 }
+}
 
 ; ****************************************************************************
 ; WRITE-FILE
 ; (c-addr u fileid -- ior)
-; ANSI 11.6.1.2480
 
 !if ENABLE_FILE {
         +WORD "write-file", 0
@@ -476,7 +474,6 @@ _write_file_after_loop
 ; ****************************************************************************
 ; WRITE-LINE
 ; (c-addr u fileid -- ior)
-; ANSI 11.6.1.2485
 
 !if ENABLE_FILE {
         +WORD "write-line", 0

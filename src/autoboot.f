@@ -49,11 +49,34 @@ savesystem forth-minimal,p,w
 .( ... saving forth-complete ) cr
 savesystem forth-complete,p,w
 
-unused . s" bytes free" type cr \ 26568
+unused . s" bytes free" type cr \ 27028
 
-include runtests.f
+: test s" runtests.f" included ;
 
-include benchmark.f
+: bm s" benchmark.f" included ;
+
+\ -1  CONSTANT EXC_ABORT
+\ -2  CONSTANT EXC_ABORT"
+\ -13 CONSTANT EXC_UNDEF
+\ : T6 ABORT ;
+\ 
+\ : T10 77 SWAP ABORT" This should not be displayed" ;
+\ 
+\ : C6 CATCH
+\    >R   R@ EXC_ABORT  = IF 11
+\    ELSE R@ EXC_ABORT" = IF 12
+\    ELSE R@ EXC_UNDEF  = IF 13
+\    THEN THEN THEN R> DROP
+\ ;
+\ 
+\ 4 5 ' T10 C6 .s cr
+
+\ : T7 S" 333 $$QWEQWEQWERT$$ 334" EVALUATE 335 ;
+\ : T8 S" 222 T7 223" EVALUATE 224 ;
+\ : T9 S" 111 112 T8 113" EVALUATE 114 ;
+\ 
+\ 6 7 ' T9 C6 3 .s cr
+\ \ T{ 6 7 ' T9 C6 3 -> 6 7 13 3 }T         \ Test unlinking of sources
 
 1 2 3   asdjfklj   4 5 6
 

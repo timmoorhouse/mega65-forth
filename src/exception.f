@@ -3,28 +3,28 @@
 \ variable handler
 \ 0 handler !
 
-variable exception-line
-variable exception-in
-variable exception-input-buffer
-variable exception-input-len
+variable e-line
+variable e-in
+variable e-input-buffer
+variable e-input-len
 
 :noname ( -- )
-  exception-input-buffer @ 0= if
-    source-line @ exception-line !
-    >in @ exception-in !
-    source exception-input-len ! exception-input-buffer !
+  e-input-buffer @ 0= if
+    source-line @ e-line !
+    >in @ e-in !
+    source e-input-len ! e-input-buffer !
   then
   ; is save-location
 
 :noname ( -- )
-  0 exception-line !
-  0 exception-in !
-  0 exception-input-buffer !
-  0 exception-input-len !
+  0 e-line !
+  0 e-in !
+  0 e-input-buffer !
+  0 e-input-len !
   ; is clear-location
 
-\ TODO we could comment out exceptions we never generate to save some space
-: exception-message ( n -- c-addr u )
+\ Exceptions we don't (currently) generate are commented out to save space
+: e>string ( n -- c-addr u )
     case
     \ [-255,-1] Standard exceptions
 \   -1  of s" ABORT"                                         endof
@@ -110,22 +110,22 @@ variable exception-input-len
     \ [-4095,-256] Implementation-specific exceptions
     -256 of s" WORDLIST unavailable"                         endof
 
-    \ Default causes report-exception to show the exception number
+    \ Default causes .e to show the exception number
         >r 0 0 r>
     endcase ;
 
 :noname ( n -- )
   cr
   2 theme \ prompt
-  exception-line @ ?dup if ." line " . ." : " then
+  e-line @ ?dup if ." line " . ." : " then
   3 theme \ error
-  dup exception-message ?dup if type drop else drop ." exception " . then cr
+  dup e>string ?dup if type drop else drop ." exception " . then cr
   0 theme \ output
-  exception-input-buffer @ exception-input-len @ type cr
+  e-input-buffer @ e-input-len @ type cr
   3 theme \ error
-  exception-in @ 2- spaces '^' emit cr
+  e-in @ 2- spaces '^' emit cr
   0 theme \ output
-  ; is report-exception
+  ; is .e
 
 \ TODO CATCH
 \ : catch     ( xt -- exception# | 0 )

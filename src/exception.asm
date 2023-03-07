@@ -5,14 +5,14 @@
 HANDLER
         !word 0
 
-        +WORD "report-exception", 0
-W_REPORT_EXCEPTION
+        +WORD ".e", 0
+W_DOTE
         !word DO_DEFER
-        !word W_SIMPLE_REPORT_EXCEPTION
+        !word W_SIMPLE_DOTE
 
 ; TODO move this to bootstrap? would require adding exception to the minimal config
         +NONAME
-W_SIMPLE_REPORT_EXCEPTION        ; (n --)
+W_SIMPLE_DOTE        ; (n --)
         !word DO_COLON
         +DOTQ "exception "
         !word W_DOT

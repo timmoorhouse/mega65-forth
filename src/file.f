@@ -9,7 +9,7 @@
 2 constant w/o
 3 constant r/w
 
-: bin ( fam_1 -- fam_2 ) 4 or ;
+: bin ( fam1 -- fam2 ) 4 or ;
 
 : included ( c-addr u ) r/o open-file if -38 throw then 
   >r r@ include-file r> close-file drop ;

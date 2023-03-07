@@ -11,7 +11,7 @@
 
 \ TODO rename-file
 
-: require ( "<spaces>name" -- ) parse-name required ;
+\ : require ( "<spaces>name" -- ) parse-name required ;
 
 \ TODO required
 
