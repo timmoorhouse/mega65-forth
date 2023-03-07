@@ -125,7 +125,6 @@ variable hld ( TODO can we remove this? )
 : abort ( i*x -- ) ( R: j*x -- ) -1 throw ;
 
 ( TODO the message should not get displayed if caught ??? )
-( TODO this is just a no-op so far )
 : abort" ( "ccc<quote>" -- )
   postpone if 
     [char] " parse postpone sliteral postpone type ( TODO postpone ." )
@@ -165,7 +164,6 @@ variable hld ( TODO can we remove this? )
 
 : max ( n1 n2 -- n3 ) 2dup < if swap then drop ;
 
-( TODO cmove is in STRING but move is in CORE - make move the native one? )
 : move ( addr1 addr2 u -- ) >r 2dup < r> swap if cmove> else cmove then ;
 
 ( TODO the 68 is enough space for WORD and HOLD transient regions )
@@ -202,11 +200,6 @@ variable hld ( TODO can we remove this? )
     r> drop
   then ;
 
-( For floored               )
-( : /mod >r s>d r> fm/mod ; )
-( : */mod >r m* r> fm/mod ; )
-
-( For symmetric )
 : /mod ( n1 n2 -- n3 n4 ) >r s>d r> sm/rem ; ( TODO )
 
 : */mod ( n1 n2 n3 -- n4 n5 ) >r m* r> sm/rem ; ( TODO )

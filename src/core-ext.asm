@@ -648,6 +648,7 @@ _refill_file
         !word W_SUB                     ; leave space for cr lf (spec requires this)
         !word W_SOURCE_ID
         !word W_READ_LINE
+
         ; (c-addr u flag ior)
 
         +ZBRANCH _refill_ior_ok

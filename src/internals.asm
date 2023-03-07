@@ -66,6 +66,39 @@ fail_runtime_check
         brk
 }
 
+!if 0 {
+BRK_ENABLED
+        !byte 0
+
+        +WORD "enable-brk", 0
+W_ENABLE_BRK
+        !word *+2
+        jsr ENABLE_BRK
+        jmp NEXT
+
+ENABLE_BRK
+        lda #$ff
+        sta BRK_ENABLED
+        rts
+
+        +WORD "brk", 0
+W_BRK
+        !word *+2
+        jsr MAYBE_BRK
+        jmp NEXT
+
+REALLY_BRK
+        ; lda #'#'
+        ;jsr EMIT
+        rts
+
+MAYBE_BRK
+        lda BRK_ENABLED
+        beq +
+        jsr REALLY_BRK
++       rts
+}
+
 ; ****************************************************************************
 
 ; TODO timer

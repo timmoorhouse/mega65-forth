@@ -733,12 +733,14 @@ INITIAL_HERE
 
 _onetime
 
+        ; TODO used something other than NOP (CLD maybe?)
         ; Replace the 'jsr _onetime' with NOPs so this won't be done again
         lda #$ea                        ; NOP
         sta JSR_ONETIME
         sta JSR_ONETIME+1
         sta JSR_ONETIME+2
 
+!if 0 {
         ; Move the contents of bootstrap.asm up to higher memory so it will be undisturbed during
         ; the bootstrap process (once bootstrapping is complete it is no longer needed)
         +dma_inline
@@ -751,6 +753,7 @@ _onetime
         !word BOOTSTRAP_DEST
         !byte 0                         ; dst bank/flags
         !word 0                         ; modulo
+}
 
         ; TODO clean this up
         lda #<_here
@@ -765,12 +768,13 @@ _onetime
 
         rts
 
-BOOTSTRAP_DEST = $8000
-BOOTSTRAP_SRC
-!pseudopc BOOTSTRAP_DEST {
+* = $8000
+; BOOTSTRAP_DEST = $8000
+; BOOTSTRAP_SRC
+; !pseudopc BOOTSTRAP_DEST {
 !src "bootstrap.asm"
-}
-BOOTSTRAP_LEN = *-BOOTSTRAP_SRC
+; }
+; BOOTSTRAP_LEN = *-BOOTSTRAP_SRC
 
 ; TODO embed the bootstrap forth code so we don't need to read it from disk?
 ; That would all us to write the FILE code in forth.

@@ -1380,6 +1380,9 @@ W_EVALUATE
         +LITERAL -1
         +LITERAL &SOURCE_ID
         !word W_STORE
+        !word W_ZERO
+        !word W_SOURCE_LINE
+        !word W_STORE
 
         +LITERAL W_PEVALUATE
 

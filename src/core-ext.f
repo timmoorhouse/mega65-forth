@@ -108,46 +108,47 @@
 
 \ Table of translations for \a..\z
 create EscapeTable ( -- addr )
-       7 c, \ \a BEL (Alert)
-     #20 c, \ \b BS  (Backspace)
-  char C c, \ \c
-  char D c, \ \d
-     #27 c, \ \e ESC (Escape)
-    #147 c, \ \f FF  (Form feed)
-  char G c, \ \g
-  char H c, \ \h
-  char I c, \ \i
-  char J c, \ \j
-  char K c, \ \k
-     #10 c, \ \l LF  (Line feed)
-     #13 c, \ \m
-     #13 c, \ \n
-  char O c, \ \o
-  char P c, \ \p
-  char " c, \ \q "   (Double quote)
-     #13 c, \ \r CR  (Carriage Return)
-  char S c, \ \s
-       9 c, \ \t HT  (horizontal tab}
-  char U c, \ \u
-     #11 c, \ \v VT  (vertical tab) \ TODO !!!!!!!!!
-  char W c, \ \w
-  char X c, \ \x
-  char Y c, \ \y
-       0 c, \ \z NUL (no character)
+        7 c, \ \a BEL (Alert)
+      #20 c, \ \b BS  (Backspace)
+( c ) #67 c, \ \c
+( d ) #68 c, \ \d
+      #27 c, \ \e ESC (Escape)
+     #147 c, \ \f FF  (Form feed)
+( g ) #71 c, \ \g
+( h ) #72 c, \ \h
+( i ) #73 c, \ \i
+( j ) #74 c, \ \j
+( k ) #75 c, \ \k
+      #10 c, \ \l LF  (Line feed)
+      #13 c, \ \m
+      #13 c, \ \n
+( o ) #79 c, \ \o
+( p ) #80 c, \ \p
+   char " c, \ \q "   (Double quote)
+      #13 c, \ \r CR  (Carriage Return)
+( s ) #83 c, \ \s
+        9 c, \ \t HT  (horizontal tab}
+( u ) #85 c, \ \u
+      #11 c, \ \v VT  (vertical tab) \ TODO !!!!!!!!!
+( w ) #87 c, \ \w
+( x ) #88 c, \ \x
+( y ) #89 c, \ \y
+        0 c, \ \z NUL (no character)
 
 \ Add an escape sequence to the counted string at dest,
 \ returning the remaining string.
 : addEscape ( c-addr len dest -- c-addr' len' )
   over 0= if drop exit then             \ zero length check
   >r                                    \ -- caddr len ; R: -- dest
-  over c@ [char] X = if                 \ hex number?
+  over c@ #88 ( x ) = if                 \ hex number?
     1 /string extract2H r> addchar exit
   then
-  \ over c@ [char] M = if                 \ CR/LF pair
-  \   1 /string  #13 r@ addchar #10 r> addchar exit
-  \ then
-  over c@ [char] A [char] Z 1+ within if
-    over c@ [char] A - EscapeTable + c@ r> addchar
+  over c@ #77 ( m ) = if                 \ CR/LF pair
+    1 /string  #13 r@ addchar #10 r> addchar exit
+  then
+  \ TODO handle escape sequences using upper case?
+  over c@ #65 #90 1+ within if
+    over c@ #65 - EscapeTable + c@ r> addchar
   else
     over c@ r> addchar
   then
