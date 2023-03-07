@@ -5,14 +5,14 @@
 HANDLER
         !word 0
 
-        +WORD ".e", 0
-W_DOTE
+        +WORD "e.", 0
+W_EDOT
         !word DO_DEFER
-        !word W_SIMPLE_DOTE
+        !word W_SIMPLE_EDOT
 
 ; TODO move this to bootstrap? would require adding exception to the minimal config
         +NONAME
-W_SIMPLE_DOTE        ; (n --)
+W_SIMPLE_EDOT        ; (n --)
         !word DO_COLON
         +DOTQ "exception "
         !word W_DOT

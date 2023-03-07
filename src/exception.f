@@ -110,7 +110,7 @@ variable e-input-len
     \ [-4095,-256] Implementation-specific exceptions
     -256 of s" WORDLIST unavailable"                         endof
 
-    \ Default causes .e to show the exception number
+    \ Default causes e. to show the exception number
         >r 0 0 r>
     endcase ;
 
@@ -125,7 +125,7 @@ variable e-input-len
   3 theme \ error
   e-in @ 2- spaces '^' emit cr
   0 theme \ output
-  ; is .e
+  ; is e.
 
 \ TODO CATCH
 \ : catch     ( xt -- exception# | 0 )
