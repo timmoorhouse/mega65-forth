@@ -1000,18 +1000,16 @@ W_PCREATE
 
         !word W_DUP
         !word W_ZEQUAL
-        +ZBRANCH +
         +LITERAL E_ZERO_LENGTH_NAME
+        !word W_AND
         !word W_THROW
-+
 
         +CLITERAL NAME_LEN_MASK ; limit the length
         !word W_OVER
         !word W_LESS
-        +ZBRANCH +
         +LITERAL E_NAME_TOO_LONG
+        !word W_AND
         !word W_THROW
-+
 
 !if CASE_INSENSITIVE {
         !word W_2DUP
@@ -1728,10 +1726,9 @@ W_POSTPONE
         !word W_FIND_NAME
         !word W_DUP
         !word W_ZEQUAL
-        +ZBRANCH +
         +LITERAL E_INVALID_POSTPONE
+        !word W_AND
         !word W_THROW
-+
 
         ; (nt)
 

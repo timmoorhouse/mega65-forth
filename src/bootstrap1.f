@@ -75,7 +75,11 @@
     sbuf swap 2dup 2>r cmove 2r> ( TODO klunky )
   then ; immediate
 
-: ' parse-name find-name name>interpret ;
+: ' parse-name find-name dup 0= -13 and throw name>interpret ;
+
+( : postpone )
+(   parse-name find-name dup 0= -13 and throw )
+(   name>compile swap postpone literal compile, ; immediate )
 
 : ['] ' postpone literal ; immediate compile-only
 

@@ -1,17 +1,17 @@
 
-\ : ALSO ( -- ) GET-ORDER OVER SWAP 1+ SET-ORDER ;
+: also ( -- ) get-order over swap 1+ set-order ;
 
 \ : (wordlist) ( wid "<name>" -- ; )
-\    CREATE ,
-\    DOES>
-\      @ >R
-\      GET-ORDER NIP
-\      R> SWAP SET-ORDER
+\    create ,
+\    does>
+\      @ >r
+\      get-order nip
+\      r> swap set-order
 \ ;
-\ FORTH-WORDLIST (wordlist) FORTH
+\ forth-wordlist (wordlist) forth
 
-\ : ONLY ( -- ) -1 SET-ORDER ;
+\ : only ( -- ) -1 set-order ;
 
-\ : PREVIOUS ( -- ) GET-ORDER NIP 1- SET-ORDER ;
+\ : previous ( -- ) get-order nip 1- set-order ;
 
 .( ... end of search-ext.f ) cr

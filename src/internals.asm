@@ -331,6 +331,15 @@ W_PCSLITERAL:
 
 ; Like SEARCH-WORDLIST but returns 0|nt
 
+; : find-name {: c-addr u -- nt | 0 :}
+;   get-order 0 swap 0 ?do ( widn...widi nt|0 )
+;     dup 0= if
+;       drop c-addr u rot find-name-in
+;     else
+;       nip
+;     then
+;   loop ;
+
         +WORD "find-name", 0
 W_FIND_NAME     ; ( c-addr u -- 0 | nt )
         !word DO_COLON
