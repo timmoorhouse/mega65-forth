@@ -3,10 +3,10 @@ v0.2 alpha TBD
 - Add `COMPILE-ONLY`.
 - Catch exceptions in `AUTOBOOT`.
 - Embed the bootstrap Forth code in forth-skeletal and parse out of memory instead of reading from a file.  This will allow `INCLUDE` and others to be implemented in Forth.
-- Turn `AUTOBOOT` into a deferred, so what happens automatically at startup can be customized (by default this is a no-op - should this be left as `include autoboot.f`?)
+- Turn `AUTOBOOT` into a deferred, so what happens automatically at startup can be customized (by default this is a no-op - should it be something like `:NONAME INCLUDE AUTOBOOT.F ;` ?)
 - Improve error reporting.  The source line number, line contents and parse position are displayed along with (if available) a message for the exception number.
 - CORE: add `ENVIRONMENT?`.
-- SEARCH: add `GET-CURRENT`, `SET-CURRENT`.
+- SEARCH: add `ALSO`, `DEFINITIONS`, `FORTH`, `GET-CURRENT`, `GET-ORDER`, `ONLY`, `ORDER`, `PREVIOUS`, `SET-CURRENT` and `SET-ORDER`.  SEARCH is now feature complete.
 - STRING: add `UNESCAPE`.
 
 v0.1 pre-alpha 2023-03-04

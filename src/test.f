@@ -10,22 +10,22 @@ include t-preliminary.f
 include t-tester.f
 \ true verbose !
 
-  s" t-core.f"         included
-  s" t-core-plus.f"    included
-  s" t-utilities.f"    included
-  s" t-error-report.f" included
-  s" t-core-ext.f"     included
-  s" t-block.f"        included
-  s" t-double.f"       included
-  s" t-exception.f"    included
-  s" t-facility.f"     included
+s" t-core.f"         included
+s" t-core-plus.f"    included
+s" t-utilities.f"    included
+s" t-error-report.f" included
+s" t-core-ext.f"     included
+s" t-block.f"        included
+s" t-double.f"       included
+s" t-exception.f"    included
+s" t-facility.f"     included
 \ TODO floating
-  s" t-file.f"         included
-  s" t-locals.f"       included
-  s" t-memory.f"       included
-  s" t-tools.f"        included
-  s" t-search.f"       included
-  s" t-string.f"       included
+s" t-file.f"         included
+s" t-locals.f"       included
+s" t-memory.f"       included
+s" t-tools.f"        included
+s" t-search.f"       included
+s" t-string.f"       included
 \ TODO xchar
 
 include t-internals.f

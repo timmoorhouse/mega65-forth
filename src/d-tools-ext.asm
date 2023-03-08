@@ -198,9 +198,8 @@ W_NAME_TO_INTERPRET
         !word W_NAME_TO_XT ; this will check for zero and throw
         !word W_SWAP
         !word W_QCOMPILE_ONLY
-        +LITERAL E_INTERPRET_COMPILE_ONLY
+        !word W_ZEQUAL
         !word W_AND
-        !word W_THROW
         !word W_PSEMI
 
 ; ****************************************************************************

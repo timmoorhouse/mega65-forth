@@ -62,6 +62,7 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Need to be able to throw exceptions from assembler.  This likely means changing the `THROW` implementation to be native code instead of Forth bytecode.
   - [ ] Many bits of code need to be updated to throw an exception for error conditions.
 - FILE
+  - [ ] Make a `DISK` variable, use it when opening files
   - [ ] Handle file access modes.
   - [ ] Fix I/O status handling (when is status from READSS reset?).
   - [ ] Fix handling of I/O error cases.
@@ -125,8 +126,8 @@ LOCALS | | [`(LOCAL)`](https://forth-standard.org/standard/locals/LOCAL) [`TO`](
 LOCALS-EXT | | [`{:`](https://forth-standard.org/standard/locals/bColon)
 LOCALS-EXT obsolescent | | [`LOCALS\|`](https://forth-standard.org/standard/locals/LOCALS)
 MEMORY | | [`ALLOCATE`](https://forth-standard.org/standard/memory/ALLOCATE) [`FREE`](https://forth-standard.org/standard/memory/FREE) [`RESIZE`](https://forth-standard.org/standard/memory/RESIZE)
-SEARCH | [`FORTH-WORDLIST`](https://forth-standard.org/standard/search/FORTH-WORDLIST) [`GET-CURRENT`](https://forth-standard.org/standard/search/GET-CURRENT) [`SEARCH-WORDLIST`](https://forth-standard.org/standard/search/SEARCH-WORDLIST) [`SET-CURRENT`](https://forth-standard.org/standard/search/SET-CURRENT) [`WORDLIST`](https://forth-standard.org/standard/search/WORDLIST) | [`DEFINITIONS`](https://forth-standard.org/standard/search/DEFINITIONS) [`GET-ORDER`](https://forth-standard.org/standard/search/GET-ORDER) [`SET-ORDER`](https://forth-standard.org/standard/search/SET-ORDER)
-SEARCH-EXT | | [`ALSO`](https://forth-standard.org/standard/search/ALSO) [`FORTH`](https://forth-standard.org/standard/search/FORTH) [`ONLY`](https://forth-standard.org/standard/search/ONLY) [`ORDER`](https://forth-standard.org/standard/search/ORDER) [`PREVIOUS`](https://forth-standard.org/standard/search/PREVIOUS)
+SEARCH | [`DEFINITIONS`](https://forth-standard.org/standard/search/DEFINITIONS)  [`FORTH-WORDLIST`](https://forth-standard.org/standard/search/FORTH-WORDLIST) [`GET-CURRENT`](https://forth-standard.org/standard/search/GET-CURRENT) [`GET-ORDER`](https://forth-standard.org/standard/search/GET-ORDER) [`SEARCH-WORDLIST`](https://forth-standard.org/standard/search/SEARCH-WORDLIST) [`SET-CURRENT`](https://forth-standard.org/standard/search/SET-CURRENT) [`SET-ORDER`](https://forth-standard.org/standard/search/SET-ORDER) [`WORDLIST`](https://forth-standard.org/standard/search/WORDLIST) |
+SEARCH-EXT | [`ALSO`](https://forth-standard.org/standard/search/ALSO) [`FORTH`](https://forth-standard.org/standard/search/FORTH) [`ONLY`](https://forth-standard.org/standard/search/ONLY) [`ORDER`](https://forth-standard.org/standard/search/ORDER) [`PREVIOUS`](https://forth-standard.org/standard/search/PREVIOUS) |
 STRING | [`/STRING`](https://forth-standard.org/standard/string/DivSTRING) [`BLANK`](https://forth-standard.org/standard/string/BLANK) [`CMOVE`](https://forth-standard.org/standard/string/CMOVE) [`CMOVE>`](https://forth-standard.org/standard/string/CMOVEtop) [`COMPARE`](https://forth-standard.org/standard/string/COMPARE) [`SLITERAL`](https://forth-standard.org/standard/string/SLITERAL) | [`-TRAILING`](https://forth-standard.org/standard/string/MinusTRAILING) [`SEARCH`](https://forth-standard.org/standard/string/SEARCH)
 STRING-EXT | [`UNESCAPE`](https://forth-standard.org/standard/string/UNESCAPE) | [`REPLACES`](https://forth-standard.org/standard/string/REPLACES) [`SUBSTITUTE`](https://forth-standard.org/standard/string/SUBSTITUTE)
 TOOLS | [`.S`](https://forth-standard.org/standard/tools/DotS) [`?`](https://forth-standard.org/standard/tools/q) [`DUMP`](https://forth-standard.org/standard/tools/DUMP) [`WORDS`](https://forth-standard.org/standard/tools/WORDS) | [`SEE`](https://forth-standard.org/standard/tools/SEE)
@@ -154,7 +155,7 @@ Test | Status | Comments
 [FILE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/filetest.fth) | TBD | Too early to attempt
 [LOCALS](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/localstest.fth) | TBD | Too early to attempt
 [MEMORY](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/memorytest.fth) | TBD | Too early to attempt
-[SEARCH](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/searchordertest.fth) | TBD | Too early to attempt
+[SEARCH](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/searchordertest.fth) | PASS |
 [STRING](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/stringtest.fth) | TBD | Too early to attempt
 [TOOLS](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/toolstest.fth) | TBD | Too early to attempt
 

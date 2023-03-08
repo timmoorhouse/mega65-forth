@@ -336,15 +336,6 @@ W_FIND_NAME
         !word DO_DEFER
         !word W_SIMPLE_FIND_NAME
 
-; : find-name {: c-addr u -- nt | 0 :}
-;   get-order 0 swap 0 ?do ( widn...widi nt|0 )
-;     dup 0= if
-;       drop c-addr u rot find-name-in
-;     else
-;       nip
-;     then
-;   loop ;
-
         +NONAME
 W_SIMPLE_FIND_NAME     ; ( c-addr u -- 0 | nt )
         !word DO_COLON
@@ -570,10 +561,9 @@ _lower_zero_length
 ; ****************************************************************************
 ; NAME>XT
 ; (nt -- xt)
-; This is like name>interpret but will not throw
+; This is like name>interpret but gives the xt even for compile-only words
 
-        ; +NAME "name>xt"
-        +NONAME
+        +WORD "name>xt", 0
 W_NAME_TO_XT
         !word DO_COLON
         !word W_DUP

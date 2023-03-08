@@ -19,15 +19,27 @@ create context 8 ( wordlists ) cells allot
 
 : set-order ( widn ... wid1 n -- )
   dup -1 = if
-    \ drop <push system default word lists and n>
+    drop forth-wordlist 1 \ <push system default word lists and n>
   then
   \ TODO limit length, throw E_SEARCH_ORDER_OVERFLOW
-  \ dup #order !
-  \ 0 ?do i cells context + ! loop
+  dup #order !
+  0 ?do i cells context + ! loop
   ;
+
+-1 set-order
+
+:noname ( c-addr u -- nt | 0 )
+  2>r get-order 2r> rot 0 swap 0 ?do ( widn ... widi c-addr u nt|0 )
+    ?dup 0= if
+      ( widn ... widi c-addr u )
+      2>r 2r@ rot 2r> rot find-name-in ( TODO KLUNKY !!!!)
+    else
+      3 roll drop
+    then
+  loop nip nip ; is find-name
 
 : definitions ( -- )
   \ TODO what if order is empty?
-  get-order swap set-current 0 ?do drop loop ;
+  get-order swap set-current 1- 0 ?do drop loop ;
 
 .( ... end of d-search.f ) cr

@@ -66,8 +66,9 @@ variable e-msg#
 : defer! ( xt2 xt1 -- ) >body ! ; ( CORE-EXT )
 
 : find ( c-addr -- c-addr 0 | xt 1 | xt -1 ) 
-  ( TODO use find-name )
-  dup count forth-wordlist search-wordlist dup if rot drop then ;
+  dup count find-name dup if 
+    nip dup name>xt swap ?immediate if 1 else -1 then 
+  then ;
 
 : is ( xt "<spaces>name" -- )
    state @ if
