@@ -736,8 +736,8 @@ HERE
 INITIAL_HERE
 
 ;
-; One-time initialization code that is safe to overwrite
-; once bootstrapping begins
+; One-time initialization code that is safe to discard
+; before bootstrapping begins.
 ;
 
 _onetime
@@ -761,6 +761,14 @@ _onetime
 
         rts
 
+;
+; The bootstrapping code proper is placed higher in memory.
+; It must be preserved for the duration of the bootstrapping
+; process (it is placed higher in memory to keep it from being
+; overwritten by the expanding dictionary), but can be discarded
+; once bootstrapping is complete.
+;
+
 * = $8000
 !src "bootstrap.asm"
 
@@ -769,5 +777,8 @@ _onetime
 ;!if * > DAREA {
 ;        !error "embedded bootstrap code colliding with high memory"
 ;} else {
-        !warn DAREA - *, " byte gap between bootstrap code and high memory"
+
+; This gap must be >= 0
+!warn DAREA - *, " byte gap between bootstrap code and high memory"
+
 ;}

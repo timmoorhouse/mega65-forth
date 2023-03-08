@@ -250,19 +250,17 @@ BRANCH  ; used by (loop), 0branch  TODO MESSY !!!!!!!!
 ;
 ;
 
+WORDLIST_TABLE_LEN = 10
         +ALIGN
 WORDLIST_TABLE
 FORTH_WORDLIST
         !word 0         ; 0 - reserved for FORTH_WORDLIST
+!for i, 2, WORDLIST_TABLE_LEN {
         !word -1        ; 1
-        !word -1        ; 2
-        !word -1        ; 3
-        !word -1        ; 4
-        !word -1        ; 5
-        !word -1        ; 6
-        !word -1        ; 7
-        !word -1        ; 8 
-        !word -1        ; 9
+}
+
+; ****************************************************************************
+; CURRENT
 
         +WORD "current", 0
 W_CURRENT

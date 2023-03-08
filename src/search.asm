@@ -108,54 +108,35 @@ W_SEARCH_WORDLIST
 ; WORDLIST
 ; (-- wid)
 
-;
-; TODO 
-; - scan WORDLIST_TABLE
-;   - if we find a -1, return the address of that entry
-; - if we reach the end without finding a -1, throw something?
-;
-
-
-
-
-
-;      VOCABULARY                                            E,L
-;               A defining word used in the form:
-;                         VOCABULARY  cccc
-;               to create a vocabulary definition cccc.  Subsequent use of 
-;               cccc will make it the CONTEXT vocabulary which is searched 
-;               first by INTERPRET.  The sequence "cccc DEFINITIONS" will 
-;               also make cccc the CURRENT vocabulary into which new 
-;               definitions are placed.
-;
-;               In fig-FORTH, cccc will be so chained as to include all 
-;               definitions of the vocabulary in which cccc is itself 
-;               defined.  All vocabularies ultimately chain to Forth.  By 
-;               convention, vocabulary names are to be declared IMMEDIATE.  
-;               See VOC-LINK.
-
-!if ENABLE_SEARCH {
-!if 0 {
-        +WORD "vocabulary", 0
-W_VOCABULARY
+        +WORD "wordlist", 0
+W_WORDLIST
         !word DO_COLON
-;          !word BUILD
-;          !word LIT,$A081
-;          !word COMMA
-;          !word CURR
-;          !word AT
-;          !word CFA
-;          !word COMMA
-;          !word HERE
-;          !word VOCL
-;          !word AT
-;          !word COMMA
-;          !word VOCL
-;          !word STORE
-;          !word DOES
-;DOVOC:    !word TWOP
-;          !word CON
-;          !word STORE
+
+        +LITERAL WORDLIST_TABLE + 2*WORDLIST_TABLE_LEN
+        +LITERAL WORDLIST_TABLE
+        +DO _wordlist_after_loop
+
+_wordlist_loop
+
+        !word W_I
+        !word W_AT
+        !word W_TRUE            ; -1
+        !word W_EQUAL
+        +ZBRANCH +
+        ; found an unused one
+        !word W_I
+        !word W_ZERO
+        !word W_OVER
+        !word W_STORE           ; set entry to 0 to mark as allocated
+        !word W_UNLOOP
+        !word W_EXIT
++
+        !word W_TWO
+        !word W_PPLOOP
+        !word _wordlist_loop-*
+_wordlist_after_loop
+
+        +LITERAL E_WORDLIST_NOT_AVAILABLE
+        !word W_THROW
+
         !word W_PSEMI
-}
-}

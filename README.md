@@ -74,6 +74,21 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Invalid name.
   - [ ] File I/O error.
   - [ ] Unexpected EOF.
+- Moving more of the implementation from assembler to Forth.
+  - [ ] `INCLUDE-FILE`
+  - [ ] `CLOSE-FILE`
+  - [ ] `READ-LINE`
+  - [ ] `READ-FILE`
+  - [ ] `WRITE-LINE`
+  - [ ] `WRITE-FILE`
+  - [ ] `ACCEPT`
+  - [ ] `REFILL`
+  - [ ] `EVALUATE` possibly? (would need to tweak the bootstrap code)
+    - [ ] `SAVE-INPUT`
+    - [ ] `RESTORE-INPUT`
+    - [ ] `SOURCE`
+  - [ ] `ENVIRONMENT?` possibly?
+  - [ ] `UNUSED` possibly? would need access to DAREA
 - Making `SAVESYSTEM` output deterministic? (it might not make sense to do this)
   - [ ] What to do about inline DMA lists?
 - Tests
@@ -110,7 +125,7 @@ LOCALS | | [`(LOCAL)`](https://forth-standard.org/standard/locals/LOCAL) [`TO`](
 LOCALS-EXT | | [`{:`](https://forth-standard.org/standard/locals/bColon)
 LOCALS-EXT obsolescent | | [`LOCALS\|`](https://forth-standard.org/standard/locals/LOCALS)
 MEMORY | | [`ALLOCATE`](https://forth-standard.org/standard/memory/ALLOCATE) [`FREE`](https://forth-standard.org/standard/memory/FREE) [`RESIZE`](https://forth-standard.org/standard/memory/RESIZE)
-SEARCH | [`FORTH-WORDLIST`](https://forth-standard.org/standard/search/FORTH-WORDLIST) [`GET-CURRENT`](https://forth-standard.org/standard/search/GET-CURRENT) [`SEARCH-WORDLIST`](https://forth-standard.org/standard/search/SEARCH-WORDLIST) [`SET-CURRENT`](https://forth-standard.org/standard/search/SET-CURRENT) | [`DEFINITIONS`](https://forth-standard.org/standard/search/DEFINITIONS) [`GET-ORDER`](https://forth-standard.org/standard/search/GET-ORDER) [`SET-ORDER`](https://forth-standard.org/standard/search/SET-ORDER) [`WORDLIST`](https://forth-standard.org/standard/search/WORDLIST)
+SEARCH | [`FORTH-WORDLIST`](https://forth-standard.org/standard/search/FORTH-WORDLIST) [`GET-CURRENT`](https://forth-standard.org/standard/search/GET-CURRENT) [`SEARCH-WORDLIST`](https://forth-standard.org/standard/search/SEARCH-WORDLIST) [`SET-CURRENT`](https://forth-standard.org/standard/search/SET-CURRENT) [`WORDLIST`](https://forth-standard.org/standard/search/WORDLIST) | [`DEFINITIONS`](https://forth-standard.org/standard/search/DEFINITIONS) [`GET-ORDER`](https://forth-standard.org/standard/search/GET-ORDER) [`SET-ORDER`](https://forth-standard.org/standard/search/SET-ORDER)
 SEARCH-EXT | | [`ALSO`](https://forth-standard.org/standard/search/ALSO) [`FORTH`](https://forth-standard.org/standard/search/FORTH) [`ONLY`](https://forth-standard.org/standard/search/ONLY) [`ORDER`](https://forth-standard.org/standard/search/ORDER) [`PREVIOUS`](https://forth-standard.org/standard/search/PREVIOUS)
 STRING | [`/STRING`](https://forth-standard.org/standard/string/DivSTRING) [`BLANK`](https://forth-standard.org/standard/string/BLANK) [`CMOVE`](https://forth-standard.org/standard/string/CMOVE) [`CMOVE>`](https://forth-standard.org/standard/string/CMOVEtop) [`COMPARE`](https://forth-standard.org/standard/string/COMPARE) [`SLITERAL`](https://forth-standard.org/standard/string/SLITERAL) | [`-TRAILING`](https://forth-standard.org/standard/string/MinusTRAILING) [`SEARCH`](https://forth-standard.org/standard/string/SEARCH)
 STRING-EXT | [`UNESCAPE`](https://forth-standard.org/standard/string/UNESCAPE) | [`REPLACES`](https://forth-standard.org/standard/string/REPLACES) [`SUBSTITUTE`](https://forth-standard.org/standard/string/SUBSTITUTE)
