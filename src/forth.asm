@@ -726,13 +726,6 @@ _main_loop
 !src "d-xchar.asm"
 !src "d-xchar-ext.asm"
 
-
-        +WORD "here", 0
-W_HERE
-        !word DO_CONSTANT
-HERE
-        !word 0
-
 INITIAL_HERE
 
 ;

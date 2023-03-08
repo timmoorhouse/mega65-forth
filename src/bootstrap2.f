@@ -59,6 +59,25 @@ savesystem forth-minimal,p,w
   ( 0 ) 1 foreground                 \ output - white
   endcase ; is theme
 
+\ TODO marker
+\ Reset state back to *before* the marker was created
+\ - HERE              DONE
+\ - current?          DONE
+\ - all wordlists
+\ - search order      DONE
+: marker ( "<spaces>name" -- ) ( -- ) 
+  here
+  create 
+    ,                               \ save here
+    current @ ,                     \ save current
+    get-order dup , 0 ?do , loop    \ save order
+  does> 
+    dup @ to here cell+             \ restore here
+    dup @ current ! cell+           \ restore current
+    dup dup @ 0 ?do dup dup @ i - cells + @ swap loop @ set-order cell+ \ restore order
+    drop
+  ;
+
 .( ... saving forth-complete ) cr
 savesystem forth-complete,p,w
 
@@ -70,6 +89,28 @@ unused . s" bytes free" type cr \ 26693
 
 : bm s" benchmark.f" included ;
 
-1 2 3   asdjfklj   4 5 6
+\ 1 2 3   asdjfklj   4 5 6
+
+cr
+
+.( pre marker ) cr
+.s cr
+.( here= ) here . cr
+
+marker foo
+
+100 allot
+
+cr
+.( after creating marker ) cr
+.s cr
+.( here= ) here . cr
+
+foo
+
+cr
+.( after running marker ) cr
+.s cr
+.( here= ) here . cr
 
 .( end of bootstrap2.f ) cr

@@ -53,9 +53,6 @@
 
 : holds ( c-addr u -- ) begin dup while 1- 2dup + c@ hold repeat 2drop ;
 
-\ TODO marker
-: marker ( "<spaces>name" -- ) ( -- ) create does> ;
-
 : of ( C: -- of-sys ) ( x1 x1 -- | x1 ) 
   1+ >r postpone over postpone = postpone if postpone drop r> ; immediate compile-only
 

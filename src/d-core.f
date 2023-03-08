@@ -28,6 +28,8 @@ variable hld ( TODO can we remove this? )
 
 ( *************************************************************************** )
 
+: ." ( "ccc<quote>" -- ) postpone s" postpone type ; immediate compile-only
+
 : 2! ( x1 x2 a-addr -- ) swap over ! 2+ ! ;
 
 : 2@ ( a-addr -- x1 x2 ) dup 2+ @ swap @ ;
@@ -91,8 +93,6 @@ variable e-msg#
 : quit ( -- ) ( R: 8*x -- ) #-56 throw ;
 
 : recurse ( -- ) latestxt , ; immediate
-
-: ." ( "ccc<quote>" -- ) postpone s" postpone type ; immediate compile-only
 
 : s>d ( x -- d ) dup 0< ;
 
