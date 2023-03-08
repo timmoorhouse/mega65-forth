@@ -41,9 +41,9 @@
 
 !ifndef DEBUG                           { DEBUG                         = 0 }
 !ifndef ENABLE_RUNTIME_CHECKS           { ENABLE_RUNTIME_CHECKS         = 0 } ; TODO lots of things are triggering this - need to clean them up before enabling
-!ifndef USE_BASIC                       { USE_BASIC                     = 0 } ; not used - REMOVE?
 !ifndef CASE_INSENSITIVE                { CASE_INSENSITIVE              = 1 } ; map names to lower case when defining/resolving
-!ifndef AUTOBOOT                        { AUTOBOOT                      = 1 } ; Attempt to include autoboot.f on startup
+!ifndef NICE_ERROR_MESSAGES             { NICE_ERROR_MESSAGES           = 1 }
+!ifndef EMBED_BOOTSTRAP_MIN             { EMBED_BOOTSTRAP_MIN           = 1 }
 
 ; Runtime checks
 ; - For anything taking an aligned address, check that it's aligned
@@ -57,15 +57,10 @@
 ; - TODO: check if HERE is moved down below its initial value
 ; - TODO: check value passed to FORGET (FIG uses FENCE for lower limit)
 
-;
-; Colour scheme
-; These are indexes into the colour pallette (see docs for BACKGROUND for a table)
-;
-
-COLOUR_OUTPUT =   1 ; white
-COLOUR_INPUT  =   7 ; yellow
-COLOUR_PROMPT =  14 ; lt blue
-COLOUR_ERROR  =   4 ; purple
+THEME_OUTPUT = 0
+THEME_INPUT  = 1
+THEME_PROMPT = 2
+THEME_ERROR  = 3
 
 ;
 ; TODO does it make sense to use the basic rom at all? I'm wondering about math routines in particular, but there
@@ -86,6 +81,7 @@ COLOUR_ERROR  =   4 ; purple
 !source "vic4.asm"
 !source "gpio.asm"
 
+; [-255,-1] are reserved for use by the standard
 E_ABORT                          =  -1 ; ABORT
 E_ABORTQ                         =  -2 ; ABORT"
 E_DATA_STACK_OVERFLOW            =  -3 ; stack overflow
@@ -166,13 +162,17 @@ E_MALFORMED_XCHAR                = -77 ; malformed xchar
 E_SUBSTITUTE                     = -78 ; SUBSTITUTE
 E_REPLACES                       = -79 ; REPLACES
 
+; [-4095,-256] are reserved for the implementation
+E_WORDLIST_NOT_AVAILABLE         = -256
+;
+; Errors to create:
+;
+;
+
 * = $2001
         +upstart entry
 entry
         jmp COLD
-
-; TODO a bunch of wasted space here
-!source "basepage.asm"
 
 ; MEMORY MAP
 ; THIS IS STILL EVOLVING
@@ -185,8 +185,12 @@ entry
 ; D000 +-----------------------------
 ;      | Interface 
 ; C000 +-----------------------------    <--- LIMIT
-;      | TODO move basepage here?
-;      +-----------------------------
+;      |               Data stack 
+;      |                    |
+;      |                    V
+;      |
+;      | Basepage data - W, I, etc
+;      +-----------------------------    <--- BASEPAGE
 ;      | Terminal input buffer
 ;      +-----------------------------    <--- TIB
 ;      | String buffers for S", S\"
@@ -199,20 +203,13 @@ entry
 ;      |
 ;      | Transient workspace
 ;      +-----------------------------    <--- PAD 
-;          gap?  right now we need this since HOLD works backwards from PAD
+;          gap for HOLD and WORD transient areas
 ;      +-----------------------------    <--- HERE
 ;      |
 ;      | Dictionary
 ;      |
 ;      | predefined words
-; 2200 +-----------------------------
-;      |               Data stack       TODO move this region
-;      |                    |
-;      |                    V
 ;      |
-;      | Basepage data - W, I, etc
-; 2100 +-----------------------------
-;      | some unused space here
 ;      | basic stub
 ; 2001 +-----------------------------
 ;      | likely some space we could use for small things
@@ -229,20 +226,29 @@ entry
 ; 0000 +-----------------------------
 
 LIMIT              = $C000 ; TODO
+BASEPAGE           = LIMIT - $100
 TIB_LEN            = 80
-TIB                = LIMIT - TIB_LEN
+TIB                = BASEPAGE - TIB_LEN
 NUM_STRING_BUFFERS = 2
 STRING_BUFFER_LEN  = 80
 SBUF_LEN           = NUM_STRING_BUFFERS * STRING_BUFFER_LEN
 SBUF               = TIB - SBUF_LEN
 DAREA_LEN          = MAX_OPEN_FILES * FILE_BUFFER_SIZE 
 DAREA              = SBUF - DAREA_LEN
+HOLD_LEN           = 34 ; min (2*16)+2 = 34
+WORD_LEN           = 33 ; min 33
+PAD_LEN            = 84
+
+pre_basepage = *
+!pseudopc BASEPAGE {
+!source "basepage.asm"
+}
+* = pre_basepage, overlay
 
 ; TODO transient buffer for s", s\" (need 2 buffers so that two consecutive
 ; strings can be stored)
 ; so the following should work:
 ;     s" abc" s" def" rename-file
-; TODO can we use PAD and one additional buffer?
 
 ; VM Registers
 ; S - data stack pointer
@@ -275,7 +281,7 @@ DAREA              = SBUF - DAREA_LEN
 ;      |
 ;      |
 ;      +-------+-------
-;      | Flags | name length (5 bits)      this is still present for unnamed words?
+;      | Flags | name length (5 bits)
 ;      +-------+-------
 ;      | Name (0-31 bytes)
 ;      | 
@@ -314,9 +320,6 @@ DAREA              = SBUF - DAREA_LEN
 ;     corresponding word (in our case xt will be either EXECUTE or COMPILE, and w
 ;     will be the execution token of the word)
 ;   - NAME>COMPILE will convert from a name token to a compilation token
-;
-; SEACH-WORDLIST gives you a flag for immediate/non-immediate instead.  We implment a SEARCH-WORDLIST-NT
-; that provides 0 | nt.
 
 !macro NONAME {
         +ALIGN
@@ -324,34 +327,19 @@ DAREA              = SBUF - DAREA_LEN
 
 !set _here = $0
 
-; Control bits:
-; - fig always sets bit 8 (so we can find the start of the name crawling back from the code field)
-; - precedence (fig uses bit 7 for immediate)
-; - smudge (fig uses bit 6 for hidden)
-; - length uses bits 1-5
+; Control bits
+F_IMMEDIATE    = $80
+F_COMPILE_ONLY = $40
+; <unused>       $20 ; TODO
+NAME_LEN_MASK  = $1f ; use lower bits for name length
 
-; TODO can we get rid of the hidden flag by just not linking the word until ; ?
-
-F_IMMEDIATE   = $80
-F_HIDDEN      = $40 ; TODO remove this
-; <unused>      $20 ; TODO add a compile-only flag?
-NAME_LEN_MASK = $1f
-
-!macro WORD2 .name, .flags {
+!macro WORD .name, .flags {
         +ALIGN
         !word _here
         !set _here = *-2
         !byte len(.name) | .flags
         !text .name
         +ALIGN
-}
-
-!macro WORD .name {
-        +WORD2 .name, 0
-}
-
-!macro WORD_IMM .name {
-        +WORD2 .name, F_IMMEDIATE
 }
 
 !macro BRANCH .target {
@@ -379,9 +367,15 @@ NAME_LEN_MASK = $1f
         !byte .char
 }
 
-!macro DOTQ .text {    ; TODO CLEAN THIS UP
-        !word W_PDOTQ
+!macro CSLITERAL .text {
+        !word W_PCSLITERAL
         +STRING .text
+}
+
+!macro DOTQ .text {
+        +CSLITERAL .text
+        !word W_COUNT
+        !word W_TYPE
 }
 
 !ifdef DEBUG                { !src "debug.asm"         }
@@ -487,9 +481,6 @@ COLD
         ldx #$00
         map
 
-!if USE_BASIC {
-        ; TODO
-}
         +vic4_enable
         +enable40MHz
         ; TODO bank I/O in
@@ -504,7 +495,28 @@ COLD
         ; set our base page
         lda #>base_page
         tab
-        
+
+        ; Zero fill basepage
+        +dma_inline
+        !byte $0a                       ; F018A 11-byte format
+        +dma_options_end
+        !byte dma_cmd_fill
+        !word $100
+        !word 0                         ; src (fill value in LSB)
+        !byte 0                         ; src bank/flags
+        !word BASEPAGE
+        !byte 0                         ; dst bank/flags
+        !word 0                         ; modulo
+
+        lda #$6c                        ; jmp (W)
+        sta &DO_JUMP_W
+
+        lda #10
+        sta &BASE
+    
+JSR_ONETIME
+        jsr _onetime            ; will be replaced with NOPs in _onetime
+    
 WARM
 
         ; Save return stack pointer in R0
@@ -513,42 +525,19 @@ WARM
         sty <R0+1
 
         ; Reposition data stack
-        ldx #TOS-2
+        ldx #TOS-2 ; TODO remove the -2?
 
         ; Save data stack pointer in S0
         stx <S0
         ldy #0
         sty <S0+1
 
-        ; If we're loading a saved system, don't reset FORTH_WORDLIST and HERE.
-        ; We can assume if HERE has already been changed from 0, it's the
-        ; one from a SAVESYSTEM.
-
-        lda <HERE
-        ora <HERE+1
-        bne +
-
-        ; TODO we could move the one time initialization code past HERE
-        ; (it would get overwritten but wouldn't be needed once we bootstrap)
-
-        lda INITIAL_FORTH_WORDLIST
-        sta FORTH_WORDLIST
-        lda INITIAL_FORTH_WORDLIST+1
-        sta FORTH_WORDLIST+1
-
-        lda #<INITIAL_HERE
-        sta <HERE
-        lda #>INITIAL_HERE
-        sta <HERE+1
-
-+
-
         ; ldy #0 ; still 0 from above
-        sty <SOURCE_ID
+        sty <SOURCE_ID          ; TODO do we need this?
         sty <SOURCE_ID+1
 
         cld
-        ; see ; TODO
+        see
 
         lda #<W_MAIN+2
         sta <I
@@ -559,7 +548,7 @@ WARM
         jsr EMIT
         lda #11                 ; Disable shift-mega case changes TODO skip this?
         jsr EMIT
-!if 0 {                         ; TODO this seems to cause problems on a real MEGA65
+!if 1 {                         ; TODO this seems to cause problems on a real MEGA65
         lda #27                 ; ESC 5 - switch to 80x50
         jsr EMIT
         lda #53
@@ -592,8 +581,6 @@ WARM
         sta <STRING+1
         jsr put_string
 !ifdef HAVE_REVISION {
-        lda #'-'
-        jsr EMIT
         lda #<_revision
         sta <STRING
         lda #>_revision
@@ -612,6 +599,8 @@ WARM
         jsr put_string
         jsr CR
 
+        ; TODO report bytes free
+
         ; just in case the colour scheme is disabled ...
         lda #1 ; white
         jsr FOREGROUND
@@ -619,24 +608,33 @@ WARM
         jmp NEXT
 
 _startup_text1
-        +STRING "MEGA65-Forth 0.1"
+        +STRING "MEGA65-Forth "
 _startup_text2
         +STRING "bye will exit to BASIC\r"
 !ifdef HAVE_REVISION {
 !src "revision.asm"
 }
 
+        +WORD "autoboot", 0
+W_AUTOBOOT
+        !word DO_DEFER
+        !word W_AUTOBOOT_BOOTSTRAP
+
+        +WORD "(quit)", 0
+W_PQUIT
+        !word DO_DEFER
+        !word W_DEFER_UNINITIALIZED
+
         +NONAME
 W_MAIN
         !word DO_COLON
 
-        !word W_DECIMAL
-
-!if AUTOBOOT {
-        +LITERAL AUTOBOOT_FILENAME
-        !word W_COUNT
-        !word W_INCLUDED        ; TODO this should be wrapped in a catch
-}        
+        +LITERAL W_AUTOBOOT
+        !word W_CATCH
+        !word W_QDUP
+        +ZBRANCH +
+        !word W_EDOT
++
 
 _main_clear_stack_and_enter_loop
 
@@ -646,11 +644,14 @@ _main_clear_stack_and_enter_loop
 
 _main_loop
 
+        ; TODO resolve this using find-name or defer it?
         +LITERAL W_PQUIT
         !word W_CATCH
 
-        !word W_SIMPLE_DOTS
+!if 0 {
+        !word W_DOTS
         !word W_CR
+}
 
         !word W_QDUP
         +ZBRANCH _main_loop
@@ -660,8 +661,6 @@ _main_loop
         !word W_EQUAL
         +ZBRANCH +
 
-        +DOTQ "looks like an ABORT"
-        !word W_CR
         !word W_DROP
 
         +BRANCH _main_clear_stack_and_enter_loop
@@ -673,9 +672,7 @@ _main_loop
         !word W_EQUAL
         +ZBRANCH +
 
-        +DOTQ "looks like an ABORT\""
-        !word W_CR
-        !word W_DROP
+        !word W_EDOT
 
         +BRANCH _main_clear_stack_and_enter_loop
 
@@ -686,73 +683,102 @@ _main_loop
         !word W_EQUAL
         +ZBRANCH +
 
-        +DOTQ "looks like a QUIT"
-        !word W_CR
         !word W_DROP
 
-_main_do_quit
-        +DOTQ "do QUIT stuff ..."
-        !word W_CR
         +BRANCH _main_loop
 
 +
 
-        +DOTQ "exception "
-        !word W_SIMPLE_DOT
-        !word W_CR
+        !word W_EDOT
 
+        +BRANCH _main_loop
+        ; +BRANCH _main_clear_stack_and_enter_loop
 
-        ; +BRANCH _main_loop
-        +BRANCH _main_clear_stack_and_enter_loop
-
-!if AUTOBOOT {
-AUTOBOOT_FILENAME
-        +STRING "autoboot.f"
-}
-
-!src "block.asm"
-!src "block-ext.asm"
-!src "core.asm"
-!src "core-ext.asm"
-!src "core-ext-obsolescent.asm"
-!src "double.asm"
-!src "double-ext.asm"
-!src "exception.asm"
-; !src "exception-ext.asm"              ; TODO no need for one yet
-!src "facility.asm"
-!src "facility-ext.asm"
+!src "d-block.asm"
+!src "d-block-ext.asm"
+!src "d-core.asm"
+!src "d-core-ext.asm"
+!src "d-core-ext-obsolescent.asm"
+!src "d-double.asm"
+!src "d-double-ext.asm"
+!src "d-exception.asm"
+; !src "d-exception-ext.asm"
+!src "d-facility.asm"
+!src "d-facility-ext.asm"
 !src "fig.asm"
-!src "file.asm"
-!src "file-ext.asm"
-!src "floating.asm"
-!src "floating-ext.asm"
-!src "gforth.asm"
-!src "locals.asm"
-!src "locals-ext.asm"
-!src "locals-ext-obsolescent.asm"
+!src "d-file.asm"
+!src "d-file-ext.asm"
+!src "d-floating.asm"
+!src "d-floating-ext.asm"
+!src "d-locals.asm"
+!src "d-locals-ext.asm"
+!src "d-locals-ext-obsolescent.asm"
 !src "mega65.asm"
-!src "memory.asm"
-; !src "memory-ext.asm"                 ; TODO no need for one yet
-!src "search.asm"
-!src "search-ext.asm"
-!src "string.asm"
-!src "string-ext.asm"
-; !src "tools.asm"                      ; TODO no need for one yet
-!src "tools-ext.asm"
-!src "tools-ext-obsolescent.asm"
-!src "xchar.asm"
-!src "xchar-ext.asm"
+!src "d-memory.asm"
+; !src "d-memory-ext.asm"
+!src "d-search.asm"
+; !src "d-search-ext.asm"
+!src "d-string.asm"
+!src "d-string-ext.asm"
+!src "d-tools.asm"
+!src "d-tools-ext.asm"
+!src "d-tools-ext-obsolescent.asm"
+!src "d-xchar.asm"
+!src "d-xchar-ext.asm"
 
-INITIAL_FORTH_WORDLIST
-        !word _here ; TODO can we get away without storing this?
+
+        +WORD "here", 0
+W_HERE
+        !word DO_CONSTANT
+HERE
+        !word 0
+
 INITIAL_HERE
 
-        ; TODO move one-time initialization code here (things that won't be done after a bootstrap)
+;
+; One-time initialization code that is safe to discard
+; before bootstrapping begins.
+;
 
-        ; TODO move SIMPLE_DOT, SIMPLE_DOTS here?
+_onetime
 
-        ; TODO move builtin CATCH, THROW here?
+        ; Replace the 'jsr _onetime' with CLDs so this won't be done again
+        lda #$d8                        ; CLD
+        sta JSR_ONETIME
+        sta JSR_ONETIME+1
+        sta JSR_ONETIME+2
 
-        ; TODO embed the minimal bootstrap code at a sufficiently high memory address 
-        ; so we don't need to have file I/O as builtins
+        ; TODO clean this up
+        lda #<_here
+        sta FORTH_WORDLIST
+        lda #>_here
+        sta FORTH_WORDLIST+1
 
+        lda #<INITIAL_HERE
+        sta HERE
+        lda #>INITIAL_HERE
+        sta HERE+1
+
+        rts
+
+;
+; The bootstrapping code proper is placed higher in memory.
+; It must be preserved for the duration of the bootstrapping
+; process (it is placed higher in memory to keep it from being
+; overwritten by the expanding dictionary), but can be discarded
+; once bootstrapping is complete.
+;
+
+* = $8000
+!src "bootstrap.asm"
+
+; TODO report collision
+
+;!if * > DAREA {
+;        !error "embedded bootstrap code colliding with high memory"
+;} else {
+
+; This gap must be >= 0
+!warn DAREA - *, " byte gap between bootstrap code and high memory"
+
+;}

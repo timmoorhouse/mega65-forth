@@ -4,9 +4,11 @@
 ; - take a pass over the BASIC keywords and make equivalents? (will want DIR, etc)
 ; - look at C64 forth implementations (eg superFORTH)
 
+; TODO dir
+; TODO type
 
 !ifdef ENABLE_MEGA65 {
-        +WORD "background"
+        +WORD "background", 0
 } else {
         +NONAME
 }
@@ -17,7 +19,7 @@ W_BACKGROUND
         jmp POP
 
 !ifdef ENABLE_MEGA65 {
-        +WORD "border"
+        +WORD "border", 0
 } else {
         +NONAME
 }
@@ -28,7 +30,7 @@ W_BORDER                ; (c --)
         jmp POP
 
 !ifdef ENABLE_MEGA65 {
-        +WORD "foreground"
+        +WORD "foreground", 0
 } else {
         +NONAME
 }
@@ -42,6 +44,15 @@ FOREGROUND
         sta $00f1
         rts
 
+!ifdef ENABLE_MEGA65 {
+        +WORD "theme", 0
+} else {
+        +NONAME
+}
+W_THEME                 ; (u --)
+        !word DO_DEFER
+        !word W_DROP
+
 ; ****************************************************************************
 ; MON
 
@@ -50,7 +61,7 @@ FOREGROUND
 ;               if possible.
 
 !if ENABLE_MEGA65 {
-        +WORD "mon"
+        +WORD "mon", 0
 W_MON
         !word *+2
         jsr MON

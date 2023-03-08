@@ -1,6 +1,6 @@
 
                 ; our base page stuff
-                !align $ff, 0
+;                !align $ff, 0
 base_page
 !pseudopc $0000 {
 
@@ -12,7 +12,7 @@ I               !word 0
 
 ; TODO alignment
 DO_JUMP_W
-                !byte $6c       ; jmp (W)
+                !byte 0       ; set to $6c jmp (W) during _onetime
 ;      W        address of the code field pointer in zero-page.
 W               !word 0
 
@@ -25,38 +25,28 @@ XSAVE           !byte 0 ; temporary to save S when we need to reuse X
 ; TODO separate XSAVE for kernel calls
 KERNEL_XSAVE    !byte 0 ; just for use in kernel calls
 
-NEXT_SBUF       !byte 0
+NEXT_SBUF       !byte 0 ; TODO move out of base page?
 
-; TODO input buffer stack (need to support depth of 8)
-; TODO open file info
-SOURCE_ID       !word 0
+; TODO move these out of basepage? make them values ...
 INPUT_BUFFER    !word 0 ; Address and length of input buffer
 INPUT_LEN       !word 0
-IN              !word 0 ; Offset of start of parse area within input buffer
 
-HERE            !word 0
-
-BASE            !word 0
+BASE            !word 0 ; TODO MOVE BELOW HERE?
 STATE           !word 0
 R0              !word 0
 S0              !word 0
-LATEST          !word 0
-LATEST_XT       !word 0
-
-; BOS       = $20                         ; bottom of data stack, in zero-page.
-; TOS       = $9E                         ; top of data stack, in zero-page.
 
 TEMP1           !word 0 ; temporaries
 TEMP2           !word 0
 TEMP3           !word 0
 
-WORDP           !word 0 ; temporary pointer to iterate over words TODO REMOVE
 STRING          !word 0 ; pointer to string to print, etc TODO REMOVE
 
 BOS = * ; Bottom of data stack
 
                 ; stack
-                !align $ff, $9E
+                ; !align $ff, $9E
+                !align $ff, $fe
 
 TOS = * ; Top of data stack
         ;!word 0
