@@ -204,6 +204,7 @@ EOF
     # TODO generate d81 image with everything
     cmd "${opt[c1541]}" -format 'mega65 forth,1' d81 "$buildimg"
 
+    # TODO add the floating point tests (from fp subdir in the test suite)
     add_files "$buildimg" \
         "$builddir/forth-skeletal.prg" \
         src/bootstrap1.f \

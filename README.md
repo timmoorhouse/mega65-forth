@@ -238,5 +238,6 @@ INCORRECT RESULT: t[ max-uint max-uint um* max-uint um/mod -> 0 max-uint ]t
 
 # CREDITS
 
-- Lots of the implementation comes from [FIG FORTH release 1.1](https://github.com/ptorric/figforth)
-- [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
+- Lots of the implementation comes from [FIG FORTH release 1.1](https://github.com/ptorric/figforth) (public domain).
+- The implementations of some of the words comes from the [reference implementations](https://forth-standard.org/standard/implement).  These are [being released](https://forth-standard.org/proposals/licence-to-use-reference-implementations#contribution-158) under a [CC0 license](https://creativecommons.org/publicdomain/zero/1.0/).
+- [Test suite](https://github.com/gerryjackson/forth2012-test-suite).
