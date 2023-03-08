@@ -568,7 +568,7 @@ W_NAME_TO_XT
         !word DO_COLON
         !word W_DUP
         !word W_ZEQUAL
-        +LITERAL E_INVALID_NAME
+        +LITERAL E_UNDEFINED_WORD
         !word W_AND
         !word W_THROW
         !word W_NAME_TO_STRING  ; immediately after the name
