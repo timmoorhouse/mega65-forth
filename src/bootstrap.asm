@@ -74,7 +74,7 @@ W_AUTOBOOT_BOOTSTRAP
         !word W_CR
         +DOTQ "Starting bootstrap stage 2..."
         !word W_CR
-        +CSLITERAL "bootstrap2"
+        +CSLITERAL "bootstrap2.f"
         !word W_COUNT
         +CSLITERAL "included"
         !word W_COUNT

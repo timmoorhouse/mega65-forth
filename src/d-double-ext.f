@@ -5,4 +5,4 @@
 
 \ TODO DU<
 
-.( ... end of double-ext.f ) cr
+.( ... end of d-double-ext.f ) cr

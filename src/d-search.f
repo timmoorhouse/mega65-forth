@@ -25,4 +25,4 @@
 : definitions ( -- )
   get-order swap set-current 0 ?do drop loop ;
 
-.( ... end of search.f ) cr
+.( ... end of d-search.f ) cr

@@ -70,4 +70,4 @@
 
 \ TODO TIME&DATE
 
-.( ... end of facility-ext.f ) cr
+.( ... end of d-facility-ext.f ) cr

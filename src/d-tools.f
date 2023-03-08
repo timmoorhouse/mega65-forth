@@ -66,4 +66,4 @@
 
 : words ( -- ) ['] print-name forth-wordlist traverse-wordlist ;
 
-.( ... end of tools.f ) cr
+.( ... end of d-tools.f ) cr

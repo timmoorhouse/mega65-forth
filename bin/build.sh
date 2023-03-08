@@ -161,7 +161,7 @@ add_files() {
 
         case "$name" in
         *.f)
-            name=$(basename "$name" .f)
+            # name=$(basename "$name" .f)
             ;;
         *.prg)
             name=$(basename "$name" .prg)
@@ -210,47 +210,48 @@ EOF
         src/bootstrap2.f \
         src/benchmark.f \
         src/test.f \
-        src/block.f=d-block \
-        src/block-ext.f=d-block-ext \
-        src/core.f=d-core \
-        src/core-ext.f=d-core-ext \
-        src/double.f=d-double \
-        src/double-ext.f=d-double-ext \
-        src/exception.f=d-exception \
-        src/facility.f=d-facility \
-        src/facility-ext.f=d-facility-ext \
-        src/file.f=d-file \
-        src/file-ext.f=d-file-ext \
-        src/floating.f=d-floating \
-        src/locals.f=d-locals \
-        src/locals-ext.f=d-locals-ext \
-        src/memory.f=d-memory \
-        src/search.f=d-search \
-        src/search-ext.f=d-search-ext \
-        src/string.f=d-string \
-        src/string-ext.f=d-string-ext \
-        src/tools.f=d-tools \
-        src/tools-ext.f=d-tools-ext \
-        src/xchar.f=d-xchar \
-        src/xchar-ext.f=d-xchar-ext \
-        "$topdir/test/forth2012-test-suite/src/blocktest.fth=t-block" \
-        "$topdir/test/forth2012-test-suite/src/core.fr=t-core" \
-        "$topdir/test/forth2012-test-suite/src/coreplustest.fth=t-core-plus" \
-        "$topdir/test/forth2012-test-suite/src/coreexttest.fth=t-core-ext" \
-        "$topdir/test/forth2012-test-suite/src/doubletest.fth=t-double" \
-        "$topdir/test/forth2012-test-suite/src/errorreport.fth=t-error-report" \
-        "$topdir/test/forth2012-test-suite/src/exceptiontest.fth=t-exception" \
-        "$topdir/test/forth2012-test-suite/src/facilitytest.fth=t-facility" \
-        "$topdir/test/forth2012-test-suite/src/filetest.fth=t-file" \
-        src/internalstest.f=t-internals \
-        "$topdir/test/forth2012-test-suite/src/localstest.fth=t-locals" \
-        "$topdir/test/forth2012-test-suite/src/memorytest.fth=t-memory" \
-        "$topdir/test/forth2012-test-suite/src/prelimtest.fth=t-preliminary" \
-        "$topdir/test/forth2012-test-suite/src/searchordertest.fth=t-search" \
-        "$topdir/test/forth2012-test-suite/src/stringtest.fth=t-string" \
-        "$topdir/test/forth2012-test-suite/src/tester.fr=t-tester" \
-        "$topdir/test/forth2012-test-suite/src/toolstest.fth=t-tools" \
-        "$topdir/test/forth2012-test-suite/src/utilities.fth=t-utilities"
+        src/d-block.f \
+        src/d-block-ext.f \
+        src/d-core.f \
+        src/d-core-ext.f \
+        src/d-double.f \
+        src/d-double-ext.f \
+        src/d-exception.f \
+        src/d-facility.f \
+        src/d-facility-ext.f \
+        src/d-file.f \
+        src/d-file-ext.f \
+        src/d-floating.f \
+        src/d-floating-ext.f \
+        src/d-locals.f \
+        src/d-locals-ext.f \
+        src/d-memory.f \
+        src/d-search.f \
+        src/d-search-ext.f \
+        src/d-string.f \
+        src/d-string-ext.f \
+        src/d-tools.f \
+        src/d-tools-ext.f \
+        src/d-xchar.f \
+        src/d-xchar-ext.f \
+        "$topdir/test/forth2012-test-suite/src/blocktest.fth=t-block.f" \
+        "$topdir/test/forth2012-test-suite/src/core.fr=t-core.f" \
+        "$topdir/test/forth2012-test-suite/src/coreplustest.fth=t-core-plus.f" \
+        "$topdir/test/forth2012-test-suite/src/coreexttest.fth=t-core-ext.f" \
+        "$topdir/test/forth2012-test-suite/src/doubletest.fth=t-double.f" \
+        "$topdir/test/forth2012-test-suite/src/errorreport.fth=t-error-report.f" \
+        "$topdir/test/forth2012-test-suite/src/exceptiontest.fth=t-exception.f" \
+        "$topdir/test/forth2012-test-suite/src/facilitytest.fth=t-facility.f" \
+        "$topdir/test/forth2012-test-suite/src/filetest.fth=t-file.f" \
+        src/t-internals.f \
+        "$topdir/test/forth2012-test-suite/src/localstest.fth=t-locals.f" \
+        "$topdir/test/forth2012-test-suite/src/memorytest.fth=t-memory.f" \
+        "$topdir/test/forth2012-test-suite/src/prelimtest.fth=t-preliminary.f" \
+        "$topdir/test/forth2012-test-suite/src/searchordertest.fth=t-search.f" \
+        "$topdir/test/forth2012-test-suite/src/stringtest.fth=t-string.f" \
+        "$topdir/test/forth2012-test-suite/src/tester.fr=t-tester.f" \
+        "$topdir/test/forth2012-test-suite/src/toolstest.fth=t-tools.f" \
+        "$topdir/test/forth2012-test-suite/src/utilities.fth=t-utilities.f"
     cmd "${opt[c1541]}" "$buildimg" -dir > "$builddir/$(basename $buildimg .d81).txt"
 }
 

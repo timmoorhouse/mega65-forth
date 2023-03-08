@@ -151,4 +151,4 @@ variable e-input-len
 \         \ when CATCH began execution
 \     then ;
 
-.( ... end of exception.f ) cr
+.( ... end of d-exception.f ) cr

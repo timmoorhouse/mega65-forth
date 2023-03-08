@@ -150,4 +150,4 @@ variable e-msg#
 : word ( char "<chars>ccc<char>" -- c-addr ) 
   (parse-name) dup here c! here 1+ swap cmove here ;
 
-.( ... end of core.f ) cr
+.( ... end of d-core.f ) cr

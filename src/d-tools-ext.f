@@ -29,4 +29,4 @@
 
 : [undefined] parse-name find-name 0= ; immediate
 
-.( ... end of tools-ext.f ) cr
+.( ... end of d-tools-ext.f ) cr

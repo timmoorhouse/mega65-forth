@@ -1,7 +1,7 @@
 
-  s" d-core"          included
-  s" d-core-ext"      included
-  s" d-file"          included
+  s" d-core.f"          included
+  s" d-core-ext.f"      included
+  s" d-file.f"          included
 
 :noname ; is autoboot \ TODO could use decimal to save a few bytes
 
@@ -27,29 +27,29 @@
 .( ... saving forth-minimal ) cr
 savesystem forth-minimal,p,w
 
-  s" d-block"         included
-  s" d-block-ext"     included
-  s" d-double"        included
-  s" d-double-ext"    included
-  s" d-exception"     included
-\ s" d-exception-ext" included    \ TODO no need for one yet
-  s" d-facility"      included
-  s" d-facility-ext"  included
-  s" d-file-ext"      included
-  s" d-floating"      included
-  s" d-floating-ext"  included
-  s" d-locals"        included
-  s" d-locals-ext"    included
-  s" d-memory"        included
-\ s" d-memory-ext"    included    \ TODO no need for one yet
-  s" d-search"        included
-  s" d-search-ext"    included
-  s" d-string"        included
-  s" d-string-ext"    included
-  s" d-tools"         included
-  s" d-tools-ext"     included
-  s" d-xchar"         included
-  s" d-xchar-ext"     included
+  s" d-block.f"         included
+  s" d-block-ext.f"     included
+  s" d-double.f"        included
+  s" d-double-ext.f"    included
+  s" d-exception.f"     included
+\ s" d-exception-ext.f" included    \ TODO no need for one yet
+  s" d-facility.f"      included
+  s" d-facility-ext.f"  included
+  s" d-file-ext.f"      included
+  s" d-floating.f"      included
+  s" d-floating-ext.f"  included
+  s" d-locals.f"        included
+  s" d-locals-ext.f"    included
+  s" d-memory.f"        included
+\ s" d-memory-ext.f"    included    \ TODO no need for one yet
+  s" d-search.f"        included
+  s" d-search-ext.f"    included
+  s" d-string.f"        included
+  s" d-string-ext.f"    included
+  s" d-tools.f"         included
+  s" d-tools-ext.f"     included
+  s" d-xchar.f"         included
+  s" d-xchar-ext.f"     included
 
 :noname
   case
@@ -64,41 +64,12 @@ savesystem forth-complete,p,w
 
 .( ... bootstrap stage 2 complete ) cr cr
 
-unused . s" bytes free" type cr \ 26865
+unused . s" bytes free" type cr \ 26693
 
-: test s" test" included ;
+: test s" test.f" included ;
 
-: bm s" benchmark" included ;
-
-: foo 5 abort" abc" ;
-
-\ -1  CONSTANT EXC_ABORT
-\ -2  CONSTANT EXC_ABORT"
-\ -13 CONSTANT EXC_UNDEF
-\ : T6 ABORT ;
-\ 
-\ : T10 77 SWAP ABORT" This should not be displayed" ;
-\ 
-\ : C6 CATCH
-\    >R   R@ EXC_ABORT  = IF 11
-\    ELSE R@ EXC_ABORT" = IF 12
-\    ELSE R@ EXC_UNDEF  = IF 13
-\    THEN THEN THEN R> DROP
-\ ;
-\ 
-\ 4 5 ' T10 C6 .s cr
-
-\ : T7 S" 333 $$QWEQWEQWERT$$ 334" EVALUATE 335 ;
-\ : T8 S" 222 T7 223" EVALUATE 224 ;
-\ : T9 S" 111 112 T8 113" EVALUATE 114 ;
-\ 
-\ 6 7 ' T9 C6 3 .s cr
-\ \ T{ 6 7 ' T9 C6 3 -> 6 7 13 3 }T         \ Test unlinking of sources
+: bm s" benchmark.f" included ;
 
 1 2 3   asdjfklj   4 5 6
-
-\ HEX
-\ : rp1 >r >r >r >r rp@ 1+ @ rp@ cell+ 1+ @ 2r> 2r> 2drop 2drop ;
-\ 1234 5678 $abc $def rp1 .s
 
 .( end of bootstrap2.f ) cr

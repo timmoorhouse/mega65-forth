@@ -41,4 +41,4 @@
 
 \ TODO M+
 
-.( ... end of double.f ) cr
+.( ... end of d-double.f ) cr

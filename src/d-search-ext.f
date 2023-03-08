@@ -14,4 +14,4 @@
 
 \ : previous ( -- ) get-order nip 1- set-order ;
 
-.( ... end of search-ext.f ) cr
+.( ... end of d-search-ext.f ) cr

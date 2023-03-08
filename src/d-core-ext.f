@@ -190,4 +190,4 @@ create EscapeTable ( -- addr )
   state @ if postpone sliteral then
   ; immediate
 
-.( ... end of core-ext.f ) cr
+.( ... end of d-core-ext.f ) cr

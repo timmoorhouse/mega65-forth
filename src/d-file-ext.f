@@ -15,4 +15,4 @@
 
 \ TODO required
 
-.( ... end of file-ext.f ) cr
+.( ... end of d-file-ext.f ) cr

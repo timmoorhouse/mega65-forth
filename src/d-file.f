@@ -14,4 +14,4 @@
 
 \ : write-file ;
 
-.( ... end of file.f ) cr
+.( ... end of d-file.f ) cr

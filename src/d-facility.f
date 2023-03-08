@@ -3,4 +3,4 @@
 \
 \ AT-XY KEY? PAGE
 
-.( ... end of facility.f ) cr
+.( ... end of d-facility.f ) cr

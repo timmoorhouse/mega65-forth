@@ -24,4 +24,4 @@
    over -
 ;
 
-.( ... end of string.f ) cr
+.( ... end of d-string.f ) cr
