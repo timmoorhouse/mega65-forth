@@ -702,7 +702,7 @@ _main_loop
 !src "d-double.asm"
 !src "d-double-ext.asm"
 !src "d-exception.asm"
-; !src "d-exception-ext.asm"              ; TODO no need for one yet
+; !src "d-exception-ext.asm"
 !src "d-facility.asm"
 !src "d-facility-ext.asm"
 !src "fig.asm"
@@ -715,9 +715,9 @@ _main_loop
 !src "d-locals-ext-obsolescent.asm"
 !src "mega65.asm"
 !src "d-memory.asm"
-; !src "d-memory-ext.asm"                 ; TODO no need for one yet
+; !src "d-memory-ext.asm"
 !src "d-search.asm"
-!src "d-search-ext.asm"
+; !src "d-search-ext.asm"
 !src "d-string.asm"
 !src "d-string-ext.asm"
 !src "d-tools.asm"

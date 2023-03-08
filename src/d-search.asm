@@ -3,39 +3,8 @@
 ; SEARCH
 
 ; ****************************************************************************
-; DEFINITIONS
-; (--)
-; ANSI 16.6.1.1180
-
-; See reference implementation
-
-; FIG:
-;
-;      DEFINITIONS                                           L1
-;               Used in the form:
-;                         cccc  DEFINITIONS
-;               Set the CURRENT vocabulary to the CONTEXT vocabulary.  In 
-;               the example, executing vocabulary name cccc made it the 
-;               CONTEXT vocabulary and executing DEFINITIONS made both 
-;               specify vocabulary cccc.
-
-!if ENABLE_SEARCH {
-!if 0 {
-        +WORD "definitions", 0
-W_DEFINITIONS
-        !word DO_COLON
-;          !word CON
-;          !word AT
-;          !word CURR
-;          !word STORE
-        !word W_PSEMIS
-}
-}
-
-; ****************************************************************************
 ; FORTH-WORDLIST
 ; (-- wid)
-; 16.6.1.1595
 
 ; Required by lots of things currently
 
@@ -45,25 +14,16 @@ W_FORTH_WORDLIST
         !word FORTH_WORDLIST
 
 ; ****************************************************************************
-; GET-ORDER
-; (-- wid_n ... wid_1 n)
-; ANSI 16.6.1.1647
-
-; See reference implementation
-
-!if ENABLE_SEARCH {
-}
-
-; ****************************************************************************
 ; SEARCH-WORDLIST
 ; (c-addr u wid -- 0 | xt 1 | xt -1)
-; ANSI 16.6.1.2192
 
 ; 0 if not found
 ; 1 if immediate
 ; -1 otherwise
 
 ; The word itself is required by the implementation (of FIND) but is only visible if SEARCH is enabled
+
+; TODO this can be moved to forth (once find uses find-name)
 
 !if ENABLE_SEARCH {
         +WORD "search-wordlist", 0
@@ -95,18 +55,10 @@ W_SEARCH_WORDLIST
         !word W_PSEMI
 
 ; ****************************************************************************
-; SET-ORDER
-; (wid_n ... wid_1 n --)
-; ANSI 16.6.1.2197
-
-; See reference implementation
-
-!if ENABLE_SEARCH {
-}
-
-; ****************************************************************************
 ; WORDLIST
 ; (-- wid)
+
+; TODO could move this to forth if the table is exposed?
 
         +WORD "wordlist", 0
 W_WORDLIST

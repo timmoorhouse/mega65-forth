@@ -15,8 +15,7 @@
 
 : benchmark timer 2>r execute timer 2r> d- ;
 
-\ desktop   4 468 645
-\ laptop    4 468 742
+\ xemu      4 468 645
 \ MEGA65    5 644 686
 
 : bm1 25 ['] fib benchmark du. . cr ;

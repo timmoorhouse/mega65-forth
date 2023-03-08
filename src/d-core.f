@@ -65,6 +65,7 @@ variable e-msg#
 : defer! ( xt2 xt1 -- ) >body ! ; ( CORE-EXT )
 
 : find ( c-addr -- c-addr 0 | xt 1 | xt -1 ) 
+  ( TODO use find-name )
   dup count forth-wordlist search-wordlist dup if rot drop then ;
 
 : is ( xt "<spaces>name" -- )

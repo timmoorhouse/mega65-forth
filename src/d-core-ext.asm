@@ -255,6 +255,8 @@ W_DEFER_UNINITIALIZED
 ; FALSE
 ; (-- false)
 
+; TODO move to forth (use 0 internally)?
+
 !if ENABLE_CORE_EXT {
         +WORD "false", 0
 }

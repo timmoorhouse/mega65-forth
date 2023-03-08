@@ -1347,6 +1347,10 @@ _environment_str_return_stack_cells
 _environment_str_stack_cells
         +STRING "stack-cells"
 
+; TODO wordlists (from STRING)
+; TODO check other sections for queries
+
+
 ; ****************************************************************************
 ; EVALUTATE 
 ; (i*x c-addr u -- j*x)

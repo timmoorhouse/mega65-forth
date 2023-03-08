@@ -4,6 +4,8 @@
 ; - take a pass over the BASIC keywords and make equivalents? (will want DIR, etc)
 ; - look at C64 forth implementations (eg superFORTH)
 
+; TODO dir
+; TODO type
 
 !ifdef ENABLE_MEGA65 {
         +WORD "background", 0
@@ -49,12 +51,7 @@ FOREGROUND
 }
 W_THEME                 ; (u --)
         !word DO_DEFER
-        !word W_NOOP_THEME
-
-W_NOOP_THEME
-        !word DO_COLON
         !word W_DROP
-        !word W_PSEMI
 
 ; ****************************************************************************
 ; MON
