@@ -420,7 +420,7 @@ W_PSEARCH_WORDLIST
 +
         ; found
         !word W_RFROM
-        !word W_FALSE
+        !word W_ZERO
         !word W_PSEMI
 
 ; ****************************************************************************

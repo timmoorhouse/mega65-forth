@@ -252,19 +252,6 @@ W_DEFER_UNINITIALIZED
         !word W_PSEMI
 
 ; ****************************************************************************
-; FALSE
-; (-- false)
-
-; TODO move to forth (use 0 internally)?
-
-!if ENABLE_CORE_EXT {
-        +WORD "false", 0
-}
-W_FALSE
-        !word DO_CONSTANT
-        !word 0
-
-; ****************************************************************************
 ; MARKER
 ; (???)
 
@@ -629,7 +616,7 @@ W_REFILL
 
         ; SOURCE-ID < 0 ... its a string
 
-        !word W_FALSE
+        !word W_ZERO
         +BRANCH _refill_done
 
 _refill_file
@@ -651,7 +638,7 @@ _refill_file
         !word W_DROP                    ; drop flag
 _refill_flag_bad
         !word W_2DROP                   ; drop u2 and buffer address
-        !word W_FALSE
+        !word W_ZERO
         +BRANCH _refill_done
 
 _refill_ior_ok

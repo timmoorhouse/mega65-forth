@@ -2,7 +2,7 @@
 : \ ( "ccc<eol>" -- ) #13 parse 2drop ; immediate ( k-return is not available yet )
 
 \ The following words are implemented internally:                             
-\ 0<> 0> 2>R 2R> 2R@ <> ?DO DEFER DEFER FALSE NIP PARSE PARSE-NAME    
+\ 0<> 0> 2>R 2R> 2R@ <> ?DO DEFER NIP PARSE PARSE-NAME    
 \ PICK REFILL RESTORE-INPUT ROLL S\" SAVE-INPUT SOURCE-ID TRUE UNUSED VALUE   
 
 \ The following words are implemented in bootstrap1.f:
@@ -47,6 +47,8 @@
 
 : erase ( addr u ) 0 fill ;
 
+0 constant false
+
 : hex ( -- ) #16 base ! ;
 
 : holds ( c-addr u -- ) begin dup while 1- 2dup + c@ hold repeat 2drop ;
@@ -71,9 +73,9 @@
 \  Add the character to the end of the counted string.
 : addchar ( char c-addr -- ) tuck count + c! 1 swap c+! ;
 
-\ Add the string described by C-ADDR U to the counted string at
-\ $DEST. The strings must not overlap.
-: append ( c-addr u $dest -- )
+\ Add the string described by c-addr1 u to the counted string at c-addr2.
+\ The strings must not overlap.
+: append ( c-addr1 u c-addr2 -- )
   >r
   tuck  r@ count +  swap cmove          \ add source to end
   r> c+!                                \ add length to count
@@ -90,42 +92,42 @@
 
 \ Table of translations for \a..\z
 create EscapeTable ( -- addr )
-        7 c, \ \a BEL (Alert)
-      #20 c, \ \b BS  (Backspace)
+        7 c, \ \a BEL
+      #20 c, \ \b BS      Differs from ASCII
 ( c ) #67 c, \ \c
 ( d ) #68 c, \ \d
-      #27 c, \ \e ESC (Escape)
-     #147 c, \ \f FF  (Form feed)
+      #27 c, \ \e ESC
+     #147 c, \ \f FF      Differs from ASCII
 ( g ) #71 c, \ \g
 ( h ) #72 c, \ \h
 ( i ) #73 c, \ \i
 ( j ) #74 c, \ \j
 ( k ) #75 c, \ \k
-      #10 c, \ \l LF  (Line feed)
-      #13 c, \ \m
-      #13 c, \ \n
+      #10 c, \ \l LF
+      #13 c, \ \m CR-LF   Handled separately
+      #13 c, \ \n         CR on the MEGA65
 ( o ) #79 c, \ \o
 ( p ) #80 c, \ \p
-   char " c, \ \q "   (Double quote)
-      #13 c, \ \r CR  (Carriage Return)
+   char " c, \ \q "
+      #13 c, \ \r CR 
 ( s ) #83 c, \ \s
-        9 c, \ \t HT  (horizontal tab}
+        9 c, \ \t HT
 ( u ) #85 c, \ \u
-      #11 c, \ \v VT  (vertical tab) \ TODO !!!!!!!!!
+      #11 c, \ \v VT      TODO !!!!!!!!!
 ( w ) #87 c, \ \w
-( x ) #88 c, \ \x
+( x ) #88 c, \ \x         Handled separately
 ( y ) #89 c, \ \y
-        0 c, \ \z NUL (no character)
+        0 c, \ \z NUL
 
 \ Add an escape sequence to the counted string at dest,
 \ returning the remaining string.
 : addEscape ( c-addr len dest -- c-addr' len' )
-  over 0= if drop exit then             \ zero length check
-  >r                                    \ -- caddr len ; R: -- dest
-  over c@ #88 ( x ) = if                 \ hex number?
+  over 0= if drop exit then               \ zero length check
+  >r                                      \ ( -- caddr len ) ( R: -- dest )
+  over c@ #88 ( x ) = if                  \ hex number?
     1 /string extract2H r> addchar exit
   then
-  over c@ #77 ( m ) = if                 \ CR/LF pair
+  over c@ #77 ( m ) = if                  \ CR/LF pair
     1 /string  #13 r@ addchar #10 r> addchar exit
   then
   \ TODO handle escape sequences using upper case?
@@ -134,7 +136,7 @@ create EscapeTable ( -- addr )
   else
     over c@ r> addchar
   then
-  1 /string
+  1 /string                               \ default case
   ;
 
 \ Parses a string up to an unescaped '"', translating '\'
@@ -142,17 +144,17 @@ create EscapeTable ( -- addr )
 \ counted string at *\i{dest}.
 \ The supported escapes (case sensitive) are:
 \ \a      BEL          (alert)
-\ \b      BS           (backspace)
-\ \e      ESC (not in C99)
-\ \f      FF           (form feed)
-\ \l      LF (ASCII 10)
-\ \m      CR/LF pair - for HTML etc.
-\ \n      newline - CRLF for Windows/DOS, LF for Unices
+\ \b      BS
+\ \e      ESC
+\ \f      FF
+\ \l      LF
+\ \m      CR/LF pair
+\ \n      newline - CR on the MEGA65
 \ \q      double-quote
-\ \r      CR (ASCII 13)
-\ \t      HT (tab)
+\ \r      CR
+\ \t      HT
 \ \v      VT
-\ \z      NUL (ASCII 0)
+\ \z      NUL
 \ \"      double-quote
 \ \xAB    Two char Hex numerical character value
 \ \\      backslash itself
@@ -175,8 +177,8 @@ create EscapeTable ( -- addr )
   r> drop ;
 
 \ Parses an escaped string from the input stream according to
-\ the rules of *\fo{parse\"} above, returning the address
-\ of the translated counted string in *\fo{POCKET}.
+\ the rules of parse\" above, returning the address
+\ of the translated counted string.
 : readEscaped ( "ccc" -- c-addr )
   source >in @ /string tuck             \ -- len caddr len
   sbuf parse\" nip

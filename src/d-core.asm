@@ -1241,7 +1241,7 @@ W_EMIT
         !word W_COMPARE
         !word W_ZEQUAL
         +ZBRANCH +
-        !word W_FALSE ; we're symmetric, not floored
+        !word W_ZERO ; we're symmetric, not floored
         !word W_TRUE
         +BRANCH _environment_done
 +
@@ -1317,7 +1317,7 @@ W_EMIT
         !word W_TRUE
         +BRANCH _environment_done
 +
-        !word W_FALSE
+        !word W_ZERO
 
 _environment_done
         !word W_PSEMI

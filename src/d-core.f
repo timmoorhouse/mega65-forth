@@ -6,12 +6,13 @@
 ( ! * + +! +LOOP , - . / 0< 0= 1+ 1- 2* 2/ 2DROP 2DUP 2OVER 2SWAP : ; < = >IN )
 ( >NUMBER >R ?DUP @ ACCEPT ALIGN ALIGNED ALLOT AND BASE BL C! C@ CONSTANT     )
 ( COUNT CR CREATE DEPTH <DO> DOES> DROP DUP EMIT ENVIRONMENT?                 )
-( EVALUATE EXECUTE EXIT FILL HERE I INVERT J KEY LEAVE <LOOP>       )
+( EVALUATE EXECUTE EXIT FILL HERE I INVERT J KEY LEAVE <LOOP>                 )
 ( LSHIFT NEGATE OR OVER POSTPONE R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP      )
 ( TYPE U< UM* UM/MOD UNLOOP VARIABLE XOR [ ]                                  )
 
 ( The following words are implemented in bootstrap1.f:                        )
-( ' ( +LOOP >BODY BEGIN C, CHAR DO ELSE IF IMMEDIATE LITERAL LOOP REPEAT S" THEN UNTIL WHILE ['] [CHAR] )
+( ' ( +LOOP >BODY BEGIN C, CHAR DO ELSE IF IMMEDIATE LITERAL LOOP REPEAT S"   )
+( THEN UNTIL WHILE ['] [CHAR] )
 
 ( *************************************************************************** )
 ( * more internal helper words and commonly used things                     * )
