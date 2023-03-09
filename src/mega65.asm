@@ -8,7 +8,7 @@
 ; TODO type
 
 !ifdef ENABLE_MEGA65 {
-        +WORD "background", 0
+        +CREATE "background", 0
 } else {
         +NONAME
 }
@@ -19,7 +19,7 @@ W_BACKGROUND
         jmp POP
 
 !ifdef ENABLE_MEGA65 {
-        +WORD "border", 0
+        +CREATE "border", 0
 } else {
         +NONAME
 }
@@ -30,7 +30,7 @@ W_BORDER                ; (c --)
         jmp POP
 
 !ifdef ENABLE_MEGA65 {
-        +WORD "foreground", 0
+        +CREATE "foreground", 0
 } else {
         +NONAME
 }
@@ -45,7 +45,7 @@ FOREGROUND
         rts
 
 !ifdef ENABLE_MEGA65 {
-        +WORD "theme", 0
+        +CREATE "theme", 0
 } else {
         +NONAME
 }
@@ -61,7 +61,7 @@ W_THEME                 ; (u --)
 ;               if possible.
 
 !if ENABLE_MEGA65 {
-        +WORD "mon", 0
+        +CREATE "mon", 0
 W_MON
         !word *+2
         jsr MON

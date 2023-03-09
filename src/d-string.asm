@@ -20,7 +20,7 @@
 ;;                                       SCREEN 44 LINE 5
 
 !if ENABLE_STRING {
-        +WORD "-trailing", 0
+        +CREATE "-trailing", 0
 W_DTRAILING
         !word DO_COLON
 ;          !word DUP
@@ -61,7 +61,7 @@ W_DTRAILING
 
 ; we need this for CREATE
 !if ENABLE_STRING {
-        +WORD "cmove", 0
+        +CREATE "cmove", 0
 } else {
         +NONAME
 }
@@ -109,7 +109,7 @@ _cmove_dst
 ; ANSI 17.6.1.0920
 
 !if ENABLE_STRING {
-        +WORD "cmove>", 0
+        +CREATE "cmove>", 0
 W_CMOVEG
         !word *+2
 
@@ -185,7 +185,7 @@ _cmoveg_dst
 ; The word itself is required by the implementation (of FIND) but is only visible if SEARCH is enabled
 
 !if ENABLE_STRING {
-        +WORD "compare", 0
+        +CREATE "compare", 0
 } else {
         +NONAME
 }

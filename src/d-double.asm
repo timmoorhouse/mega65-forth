@@ -28,7 +28,7 @@
 ;               number will remain on the stack.
 
 !if 0 {
-        +WORD "dliteral", 0
+        +CREATE "dliteral", 0
 W_DLITERAL
         !word DO_COLON
 ;          !word STATE
@@ -57,7 +57,7 @@ W_DLITERAL
 ; This is required by >number (core) but will only be visible if DOUBLE is enabled
 
 !if ENABLE_DOUBLE {
-        +WORD "d+", 0
+        +CREATE "d+", 0
 } else {
         +NONAME
 }
@@ -84,7 +84,7 @@ W_DPLUS
 ; ANSI 8.6.1.1050
 
 !if ENABLE_DOUBLE {
-        +WORD "d-", 0
+        +CREATE "d-", 0
 W_DSUB
         !word *+2
         sec
@@ -182,7 +182,7 @@ W_DSUB
 
 ; Required by the implementation of . (core)
 
-        +WORD "dnegate", 0
+        +CREATE "dnegate", 0
 W_DNEGATE
         !word *+2
         ; ldy #0 ; TODO

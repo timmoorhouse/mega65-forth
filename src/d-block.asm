@@ -14,7 +14,7 @@
 ;               performs any error checking.
 
 !if 0 {
-        +WORD "r/w"
+        +CREATE "r/w"
 W_RSLW
         !word DO_COLON
 ;          !word ZEQU,LIT,$C4DA,CSTOR
@@ -45,7 +45,7 @@ W_RSLW
 ;               interpreted.  If zero, input is being taken from the 
 ;               terminal input buffer.
 
-        +WORD "blk"
+        +CREATE "blk"
 W_BLK
         !word DO_USER
         !byte U_BLK
@@ -66,7 +66,7 @@ W_BLK
 ;               before block n is read into the buffer.  See also BUFFER, 
 ;               R/W  UPDATE  FLUSH
 
-        +WORD "block"
+        +CREATE "block"
 W_BLOCK
         !word DO_COLON
 ;          !word OFSET
@@ -127,7 +127,7 @@ W_BLOCK
 ;               The address left is the first cell within the buffer for 
 ;               data storage.
 
-        +WORD "buffer"
+        +CREATE "buffer"
 W_BUFFER
         !word DO_COLON
 ;          !word USE
@@ -166,7 +166,7 @@ W_BUFFER
 ; (--)
 ; ANSI 7.6.1.1559
 
-        +WORD "flush"
+        +CREATE "flush"
 W_FLUSH
         !word DO_COLON
 ;          !word LIMIT,FIRST,SUB
@@ -189,7 +189,7 @@ W_FLUSH
 ;               Begin interpretation of screen n.  Loading will terminate 
 ;               at the end of the screen or at ;S.  See ;S and -->.
 
-        +WORD "load"
+        +CREATE "load"
 W_LOAD
         !word DO_COLON
 ;          !word BLK
@@ -231,7 +231,7 @@ W_LOAD
 ;               transferred automatically to disc should its buffer be 
 ;               required for storage of a different block.
 
-        +WORD "update"
+        +CREATE "update"
 W_UPDATE
         !word DO_COLON
 ;          !word PREV

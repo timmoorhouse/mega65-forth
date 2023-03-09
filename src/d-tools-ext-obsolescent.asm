@@ -19,7 +19,7 @@
 ;;                                       SCREEN 72 LINE 6
 
 !if ENABLE_TOOLS_EXT {
-        +WORD "forget", 0
+        +CREATE "forget", 0
 W_FORGET
         !word DO_COLON
 ;          !word TICK,NFA,DUP

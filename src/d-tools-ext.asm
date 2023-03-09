@@ -26,7 +26,7 @@
 
 !if ENABLE_TOOLS_EXT {
 !if 0 {
-        +WORD_IMM ";code"
+        +CREATE_IMM ";code"
 W_SCODE
         !word DO_COLON
 ;          !word QCSP
@@ -63,7 +63,7 @@ W_PSCODE
 ; (--)
 ; Return control to the host operating system
 
-        +WORD "bye", 0
+        +CREATE "bye", 0
 W_BYE
         !word *+2
 
@@ -95,7 +95,7 @@ W_BYE
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
 
 !if ENABLE_TOOLS_EXT {
-        +WORD "cs-pick", 0
+        +CREATE "cs-pick", 0
 } else {
         +NONAME
 }
@@ -109,7 +109,7 @@ W_CS_PICK
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
 
 !if ENABLE_TOOLS_EXT {
-        +WORD "cs-roll", 0
+        +CREATE "cs-roll", 0
 } else {
         +NONAME
 }
@@ -131,7 +131,7 @@ W_CS_ROLL
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
 
 !if ENABLE_TOOLS_EXT {
-        +WORD "n>r", 0
+        +CREATE "n>r", 0
 } else {
         +NONAME
 }
@@ -166,7 +166,7 @@ W_NTOR
 ; xt is EXECUTE (if nt is immediate) or COMPILE, (if nt is not immediate)
 
 !if ENABLE_TOOLS_EXT {
-        +WORD "name>compile", 0
+        +CREATE "name>compile", 0
 } else {
         +NONAME
 }
@@ -188,7 +188,7 @@ W_NAME_TO_COMPILE
 ; (nt -- xt)
 
 !if ENABLE_TOOLS_EXT {
-        +WORD "name>interpret", 0
+        +CREATE "name>interpret", 0
 } else {
         +NONAME
 }
@@ -209,7 +209,7 @@ W_NAME_TO_INTERPRET
 ; The word itself is required by the implementation but will only visible if TOOLS-EXT is enabled
 
 !if ENABLE_TOOLS_EXT {
-        +WORD "name>string", 0
+        +CREATE "name>string", 0
 } else {
         +NONAME
 }
@@ -227,7 +227,7 @@ W_NAME_TO_STRING
 ; (-- i*x +n) (R: j*x +n --)
 
 !if ENABLE_TOOLS_EXT {
-        +WORD "nr>", 0
+        +CREATE "nr>", 0
 } else {
         +NONAME
 }
@@ -272,7 +272,7 @@ W_NRFROM
 ; The word itself is required by the implementation (of FIND) but will only visible if TOOLS-EXT is enabled
 
 !if ENABLE_TOOLS_EXT {
-        +WORD "traverse-wordlist", 0
+        +CREATE "traverse-wordlist", 0
 } else {
         +NONAME
 }

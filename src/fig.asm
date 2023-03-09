@@ -10,7 +10,7 @@
 ;               (pronounced next-screen).
 
 !if 0 {
-        +WORD "-->"
+        +CREATE "-->"
 W_DASHDASH
         !word DO_COLON
 ;          !word QLOAD
@@ -36,7 +36,7 @@ W_DASHDASH
 ;               the byte count read from disc by BLOCK.
 
 !if 0 {
-        +WORD "b/buf"
+        +CREATE "b/buf"
 W_BBUF
         !word DO_CONSTANT
 ;          !word SSIZE    ; sector size
@@ -51,7 +51,7 @@ W_BBUF
 ;               organised as 16 lines of 64 characters each.
 
 !if 0 {
-        +WORD "b/scr"
+        +CREATE "b/scr"
 W_BSCR
         !word DO_CONSTANT
 ;          !word 8        ; blocks to make one screen
@@ -67,7 +67,7 @@ W_BSCR
 ;               the buffer presently pointed to by variable PREV.
 
 !if 0 {
-        +WORD "+buf"
+        +CREATE "+buf"
 W_PBUF
         !word DO_COLON
 ;          !word LIT
@@ -95,7 +95,7 @@ W_PBUF
 ;               within which dictionary searches will first begin.
 
 !if 0 {
-        +WORD "context"
+        +CREATE "context"
 W_CONTEXT
         !word DO_USER
 ;          !byte $20
@@ -112,7 +112,7 @@ W_CONTEXT
 ;               number input is -1.
 
 !if 0 {
-        +WORD "dpl"
+        +CREATE "dpl"
 W_DPL
         !word DO_USER
         !byte U_DPL
@@ -127,7 +127,7 @@ W_DPL
 ;               user must alter the contents of FENCE.
 
 !if 0 {
-        +WORD "fence"
+        +CREATE "fence"
 W_FENCE
         !word DO_USER
         !byte U_FENCE
@@ -141,7 +141,7 @@ W_FENCE
 ;               block buffer.
 
 !if 0 {
-        +WORD "first"
+        +CREATE "first"
 W_FIRST
         !word DO_CONSTANT
 ;          !word DAREA    ; bottom of disk buffer area
@@ -155,7 +155,7 @@ W_FIRST
 ;               Presently unused in fig-FORTH.
 
 !if 0 {
-        +WORD "fld"
+        +CREATE "fld"
 W_FLD
         !word DO_USER
 ;          !byte $2A
@@ -170,7 +170,7 @@ W_FLD
 ;               highest system memory.
 
 !if 0 {
-        +WORD "limit"
+        +CREATE "limit"
 W_LIMIT
         !word DO_CONSTANT
 ;          !word UAREA    ; buffers end at user area
@@ -186,7 +186,7 @@ W_LIMIT
 ;               indicates the full line text length.
 
 !if 0 {
-        +WORD "(line)"
+        +CREATE "(line)"
 W_PLINE
         !word DO_COLON
 ;          !word TOR
@@ -212,7 +212,7 @@ W_PLINE
 ;               suppressed.
 
 !if 0 {
-        +WORD ".line"
+        +CREATE ".line"
 W_DLINE
         !word DO_COLON
 ;          !word PLINE
@@ -228,7 +228,7 @@ W_DLINE
 ;               Issue an error message if not loading.
 
 !if 0 {
-        +WORD "?loading"
+        +CREATE "?loading"
 W_QLOAD
         !word DO_COLON
 ;          !word BLK
@@ -251,7 +251,7 @@ W_QLOAD
 ;               will simply be printed as a number (disc-unavailable).
 
 !if 0 {
-        +WORD "message"
+        +CREATE "message"
 W_MESSAGE
         !word DO_COLON
 ;          !word WARN
@@ -286,7 +286,7 @@ W_MESSAGE
 ;               to be later written to disc.
 
 !if 0 {
-        +WORD "prev"
+        +CREATE "prev"
 W_PREV
         !word DO_VARIABLE
 ;          !word DAREA
@@ -300,7 +300,7 @@ W_PREV
 ;               editing cursor, or other file related function.
 
 !if 0 {
-        +WORD "r#"
+        +CREATE "r#"
 W_RNUM
         !word DO_USER
 ;          !byte $2E
@@ -318,7 +318,7 @@ W_RNUM
 ;               name.
 
 !if 0 {
-        +WORD "traverse"
+        +CREATE "traverse"
 W_TRAVERSE
         !word DO_COLON
 ;          !word SWAP
@@ -344,7 +344,7 @@ W_TRAVERSE
 ;               use next, as the least recently written.
 
 !if 0 {
-        +WORD "use"
+        +CREATE "use"
 W_USE
         !word DO_VARIABLE
 ;          !word DAREA
@@ -360,7 +360,7 @@ W_USE
 ;               control for FORGETting through multiple vocabularies.
 
 !if 0 {
-        +WORD "voc-link"
+        +CREATE "voc-link"
 W_VOCL
         !word DO_USER
 ;          !byte $14
@@ -378,7 +378,7 @@ W_VOCL
 ;               MESSAGE, ERROR.
 
 !if 0 {
-        +WORD "warning"
+        +CREATE "warning"
 W_WARNING
         !word DO_USER
 ;          !byte $E
@@ -395,7 +395,7 @@ W_WARNING
 ;               buffers always have a null at the end.
 
 !if 0 {
-        +WORD "x"
+        +CREATE "x"
 W_X
         !word DO_COLON
 ;          !word BLK

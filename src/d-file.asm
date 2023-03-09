@@ -128,7 +128,7 @@ W_BUFFER_OF_FILEID ; (fileid -- c-addr u)
 ; (fileid -- ior)
 
 !if ENABLE_FILE {
-        +WORD "close-file", 0
+        +CREATE "close-file", 0
 W_CLOSE_FILE
         !word DO_COLON
 
@@ -144,7 +144,7 @@ W_CLOSE_FILE
 
 !if 0 {
 !if ENABLE_FILE {
-        +WORD "create-file", 0
+        +CREATE "create-file", 0
 W_CREATE_FILE
         !word DO_COLON
 
@@ -164,7 +164,7 @@ W_CREATE_FILE
 
 !if 0 {
 !if ENABLE_FILE {
-        +WORD "delete-file", 0
+        +CREATE "delete-file", 0
 W_DELETE_FILE
         !word DO_COLON
 
@@ -182,7 +182,7 @@ W_DELETE_FILE
 
 !if 0 {
 !if ENABLE_FILE {
-        +WORD "file-position", 0
+        +CREATE "file-position", 0
 W_FILE_POSITION
         !word DO_COLON
 
@@ -202,7 +202,7 @@ W_FILE_POSITION
 
 !if 0 {
 !if ENABLE_FILE {
-        +WORD "file-size", 0
+        +CREATE "file-size", 0
 W_FILE_SIZE
         !word DO_COLON
 
@@ -223,7 +223,7 @@ W_FILE_SIZE
 ; TODO move to bootstrap1.f
 
 !if ENABLE_FILE {
-        +WORD "include-file", 0
+        +CREATE "include-file", 0
 W_INCLUDE_FILE
         !word DO_COLON
 
@@ -266,7 +266,7 @@ W_INCLUDE_FILE
 ; (c-addr u fam -- fileid ior)
 
 !if ENABLE_FILE {
-        +WORD "open-file", 0
+        +CREATE "open-file", 0
 W_OPEN_FILE
         !word DO_COLON
 
@@ -311,7 +311,7 @@ W_OPEN_FILE
 ; (c-addr u_1 fileid -- u_2 ior)
 
 !if ENABLE_FILE {
-        +WORD "read-file", 0
+        +CREATE "read-file", 0
 W_READ_FILE
         !word DO_COLON
 
@@ -335,7 +335,7 @@ W_READ_FILE
 ; If u_2 < u_1 the line ending has been reached.  If u_2 = u_1, the line ending has not been reached.
 
 !if ENABLE_FILE {
-        +WORD "read-line", 0
+        +CREATE "read-line", 0
 W_READ_LINE
         !word DO_COLON
 
@@ -400,7 +400,7 @@ _read_line_after_loop
 
 !if 0 {
 !if ENABLE_FILE {
-        +WORD "reposition-file", 0
+        +CREATE "reposition-file", 0
 W_REPOSITION_FILE
         !word DO_COLON
 
@@ -419,7 +419,7 @@ W_REPOSITION_FILE
 
 !if 0 {
 !if ENABLE_FILE {
-        +WORD "resize-file", 0
+        +CREATE "resize-file", 0
 W_RESIZE_FILE
         !word DO_COLON
 
@@ -437,7 +437,7 @@ W_RESIZE_FILE
 ; (c-addr u fileid -- ior)
 
 !if ENABLE_FILE {
-        +WORD "write-file", 0
+        +CREATE "write-file", 0
 W_WRITE_FILE
         !word DO_COLON
 
@@ -475,7 +475,7 @@ _write_file_after_loop
 ; (c-addr u fileid -- ior)
 
 !if ENABLE_FILE {
-        +WORD "write-line", 0
+        +CREATE "write-line", 0
 W_WRITE_LINE
         !word DO_COLON
 

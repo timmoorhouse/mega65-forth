@@ -16,7 +16,7 @@
 ;               This is also an initialisation procedure before first use 
 ;               of the disc.
 
-        +WORD "empty-buffers"
+        +CREATE "empty-buffers"
 W_EMPTY_BUFFERS
         !word DO_COLON
 ;          !word FIRST
@@ -37,7 +37,7 @@ W_EMPTY_BUFFERS
 ;               device.  SCR contains the screen number during and after 
 ;               this process.
 
-        +WORD "list"
+        +CREATE "list"
 W_LIST
         !word DO_COLON
 ;          !word DECIM
@@ -81,7 +81,7 @@ W_LIST
 ;;                                       SCR
 ;;                                       SCREEN 36 LINE 13
 ;;
-        +WORD "scr"
+        +CREATE "scr"
 W_SCR
 ;        !word DOUSE
 ;          !byte $1C

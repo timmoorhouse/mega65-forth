@@ -8,7 +8,7 @@
 
 ; Required by lots of things currently
 
-        +WORD "forth-wordlist", 0
+        +CREATE "forth-wordlist", 0
 W_FORTH_WORDLIST
         !word DO_CONSTANT
         !word FORTH_WORDLIST
@@ -26,7 +26,7 @@ W_FORTH_WORDLIST
 ; TODO this can be moved to forth (once find uses find-name)
 
 !if ENABLE_SEARCH {
-        +WORD "search-wordlist", 0
+        +CREATE "search-wordlist", 0
 } else {
         +NONAME
 }
@@ -60,7 +60,7 @@ W_SEARCH_WORDLIST
 
 ; TODO could move this to forth if the table is exposed?
 
-        +WORD "wordlist", 0
+        +CREATE "wordlist", 0
 W_WORDLIST
         !word DO_COLON
 

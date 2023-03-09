@@ -335,7 +335,7 @@ F_COMPILE_ONLY = $40
 ; <unused>       $20 ; TODO
 NAME_LEN_MASK  = $1f ; use lower bits for name length
 
-!macro WORD .name, .flags {
+!macro CREATE .name, .flags {
         +ALIGN
         !word _here
         !set _here = *-2
@@ -457,7 +457,7 @@ NEXT
 ; ****************************************************************************
 ; COLD
 
-;        +WORD "cold"
+;        +CREATE "cold"
 ;W_COLD
 ;        !word *+2
 COLD
@@ -617,12 +617,12 @@ _startup_text2
 !src "revision.asm"
 }
 
-        +WORD "autoboot", 0
+        +CREATE "autoboot", 0
 W_AUTOBOOT
         !word DO_DEFER
         !word W_AUTOBOOT_BOOTSTRAP
 
-        +WORD "(quit)", 0
+        +CREATE "(quit)", 0
 W_PQUIT
         !word DO_DEFER
         !word W_DEFER_UNINITIALIZED

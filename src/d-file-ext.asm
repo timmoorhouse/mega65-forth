@@ -8,7 +8,7 @@
 
 !if 0 {
 !if ENABLE_FILE_EXT {
-        +WORD "file-status", 0
+        +CREATE "file-status", 0
 W_FILE_STATUS
         !word DO_COLON
 
@@ -28,7 +28,7 @@ W_FILE_STATUS
 
 !if 0 {
 !if ENABLE_FILE_EXT {
-        +WORD "rename-file", 0
+        +CREATE "rename-file", 0
 W_RENAME_FILE
         !word DO_COLON
 
@@ -49,7 +49,7 @@ W_RENAME_FILE
 
 !if 0 {
 !if ENABLE_FILE_EXT {
-        +WORD "required", 0
+        +CREATE "required", 0
 W_REQUIRED
         !word DO_COLON
 

@@ -1,5 +1,5 @@
 
-        +WORD ".s", 0
+        +CREATE ".s", 0
 W_DOTS
         !word DO_DEFER
         !word W_SIMPLE_DOTS

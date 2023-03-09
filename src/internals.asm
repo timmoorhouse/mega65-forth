@@ -70,7 +70,7 @@ fail_runtime_check
 BRK_ENABLED
         !byte 0
 
-        +WORD "enable-brk", 0
+        +CREATE "enable-brk", 0
 W_ENABLE_BRK
         !word *+2
         jsr ENABLE_BRK
@@ -81,7 +81,7 @@ ENABLE_BRK
         sta BRK_ENABLED
         rts
 
-        +WORD "brk", 0
+        +CREATE "brk", 0
 W_BRK
         !word *+2
         jsr MAYBE_BRK
@@ -106,7 +106,7 @@ MAYBE_BRK
 ; see https://www.c64-wiki.com/wiki/CIA
 ; Something like execute that counts clock ticks?
 
-        +WORD "timer", 0
+        +CREATE "timer", 0
 W_TIMER
         !word *+2
         jsr read_timer
@@ -155,7 +155,7 @@ read_timer
 ; ****************************************************************************
 ; 0
 
-        +WORD "0", 0
+        +CREATE "0", 0
 W_ZERO
         !word DO_CONSTANT
         !word 0
@@ -163,7 +163,7 @@ W_ZERO
 ; ****************************************************************************
 ; 1
 
-        +WORD "1", 0
+        +CREATE "1", 0
 W_ONE
         !word DO_CONSTANT
         !word 1
@@ -171,7 +171,7 @@ W_ONE
 ; ****************************************************************************
 ; 2
 
-        +WORD "2", 0
+        +CREATE "2", 0
 W_TWO
         !word DO_CONSTANT
         !word 2
@@ -181,7 +181,7 @@ W_TWO
 
 ; TODO native implementation?
 
-        +WORD "2+", 0
+        +CREATE "2+", 0
 W_2PLUS
         !word DO_COLON
         !word W_TWO
@@ -193,7 +193,7 @@ W_2PLUS
 
 ; TODO native implementation?
 
-        +WORD "2-", 0
+        +CREATE "2-", 0
 W_2MINUS
         !word DO_COLON
         !word W_TWO
@@ -209,7 +209,7 @@ W_2MINUS
 ;               the interpretive pointer to branch ahead or back.  
 ;               Compiled by IF, UNTIL, and WHILE.
 
-        +WORD "0branch", 0
+        +CREATE "0branch", 0
 W_ZBRANCH
         !word *+2
         inx
@@ -229,7 +229,7 @@ BUMP             ; used by (loop) and LEAVE  TODO MESSY !!!!!!!!!!!!!!
 ;               branch ahead or back.  BRANCH is compiled by ELSE, AGAIN, 
 ;               REPEAT.
 
-        +WORD "branch", 0
+        +CREATE "branch", 0
 W_BRANCH
         !word *+2
 BRANCH  ; used by (loop), 0branch  TODO MESSY !!!!!!!!
@@ -262,7 +262,7 @@ FORTH_WORDLIST
 ; ****************************************************************************
 ; CURRENT
 
-        +WORD "current", 0
+        +CREATE "current", 0
 W_CURRENT
         !word DO_VARIABLE
 CURRENT
@@ -272,7 +272,7 @@ CURRENT
 ;
 ;    CLITERAL pushes the next inline byte to data stack
 ;
-;        +WORD "cliteral"
+;        +CREATE "cliteral"
 
         +NONAME
 W_PCLITERAL
@@ -289,7 +289,7 @@ W_PCLITERAL
 ;    LITERAL pushes the next inline word to data stack
 ;
 
-        +WORD "(literal)", 0
+        +CREATE "(literal)", 0
 W_PLITERAL:
         !word *+2
         ; ldy #0 ; TODO
@@ -306,7 +306,7 @@ _inc_I_PUSH
 ;       SLITERAL pushes an inline counted string to the data stack
 ;
 
-        +WORD "(csliteral)", 0
+        +CREATE "(csliteral)", 0
 W_PCSLITERAL:
         !word *+2
         ; ldy #0 ; TODO
@@ -331,7 +331,7 @@ W_PCSLITERAL:
 
 ; Like SEARCH-WORDLIST but returns 0|nt
 
-        +WORD "find-name", 0
+        +CREATE "find-name", 0
 W_FIND_NAME
         !word DO_DEFER
         !word W_SIMPLE_FIND_NAME
@@ -343,7 +343,7 @@ W_SIMPLE_FIND_NAME     ; ( c-addr u -- 0 | nt )
         !word W_FIND_NAME_IN
         !word W_PSEMI
 
-        +WORD "find-name-in", 0
+        +CREATE "find-name-in", 0
 W_FIND_NAME_IN  ; (c-addr u wid -- 0 | nt)
         !word DO_COLON
 
@@ -420,7 +420,7 @@ W_PSEARCH_WORDLIST
 
 ; Check if a name token is compile-only
 
-        +WORD "?compile-only", 0
+        +CREATE "?compile-only", 0
 W_QCOMPILE_ONLY
         !word DO_COLON
         !word W_2PLUS
@@ -437,7 +437,7 @@ W_QCOMPILE_ONLY
 ; Check if a name token is immediate
 ; Used by NAME>COMPILE and (soon) POSTPONE
 
-        +WORD "?immediate", 0
+        +CREATE "?immediate", 0
 W_QIMMEDIATE
         !word DO_COLON
         !word W_2PLUS
@@ -454,7 +454,7 @@ W_QIMMEDIATE
 
 ; Will be 0 if the last definition had no name (:NONAME)
 
-        +WORD "latest", 0
+        +CREATE "latest", 0
 W_LATEST
         !word DO_VALUE
 LATEST        
@@ -465,7 +465,7 @@ LATEST
 ; (-- xt)
 ; Also in gforth
 
-        +WORD "latestxt", 0
+        +CREATE "latestxt", 0
 W_LATESTXT
         !word DO_VALUE
 LATESTXT
@@ -478,7 +478,7 @@ LATESTXT
 
         ; TODO CLEAN THIS UP!
 
-        +WORD "lower", 0
+        +CREATE "lower", 0
 W_LOWER
         !word DO_COLON
 
@@ -563,7 +563,7 @@ _lower_zero_length
 ; (nt -- xt)
 ; This is like name>interpret but gives the xt even for compile-only words
 
-        +WORD "name>xt", 0
+        +CREATE "name>xt", 0
 W_NAME_TO_XT
         !word DO_COLON
         !word W_DUP
@@ -595,7 +595,7 @@ W_NOOP
 ;               The user may alter and examine OUT to control display 
 ;               formatting.
 
-        +WORD "out", 0
+        +CREATE "out", 0
 W_OUT
         !word DO_CONSTANT
         !word $00ec ; pntr TODO symbol?
@@ -604,7 +604,7 @@ W_OUT
 ; RP!
 ; (addr --)
 
-        +WORD "rp!", 0
+        +CREATE "rp!", 0
 W_RPSTORE
         !word *+2
         lda 0,x
@@ -646,7 +646,7 @@ RPSTORE
 ; (-- addr)
 ; From gforth
 
-        +WORD "rp@", 0
+        +CREATE "rp@", 0
 W_RPAT
         !word *+2
         jsr RPAT
@@ -707,7 +707,7 @@ RPAT
 
 ; TODO it might be more convenient if d was not left on the stack on failures
 
-        +WORD "s>number?", 0
+        +CREATE "s>number?", 0
 W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
         !word DO_COLON
 
@@ -862,7 +862,7 @@ _stonumber_check_base_set
 ; Return the location of the next string buffer
 ; TODO return the length also?
 
-        +WORD "sbuf", 0
+        +CREATE "sbuf", 0
 W_SBUF
         !word *+2
         ; TODO swap between two buffers
@@ -874,7 +874,7 @@ W_SBUF
 ; ****************************************************************************
 ; SOURCE-LINE
 
-        +WORD "source-line", 0
+        +CREATE "source-line", 0
 W_SOURCE_LINE
         !word DO_VARIABLE
         !word 0
@@ -883,7 +883,7 @@ W_SOURCE_LINE
 ; SP!
 ; (addr --)
 
-        +WORD "sp!", 0
+        +CREATE "sp!", 0
 W_SPSTORE
         !word *+2
 SPSTORE
@@ -903,7 +903,7 @@ SPSTORE
 ;               before SP@ was executed.  (e.g. 1 2 SP@ @ . . . would type 
 ;               2 2 1 )
 
-        +WORD "sp@", 0
+        +CREATE "sp@", 0
 W_SPAT
         !word *+2
         phx
@@ -918,7 +918,7 @@ W_SPAT
 ;
 
 !if 0 {
-        +WORD "!csp", 0
+        +CREATE "!csp", 0
 W_SCSP
         !word DO_COLON
 ;          !word SPAT
@@ -935,7 +935,7 @@ W_SCSP
 ;               saved in CSP.
 
 !if 0 {
-        +WORD "?csp", 0
+        +CREATE "?csp", 0
 W_QCSP
         !word DO_COLON
 ;          !word SPAT
@@ -956,7 +956,7 @@ W_QCSP
 ;               position, for compilation error checking.
 
 !if 0 {
-        +WORD "csp", 0
+        +CREATE "csp", 0
 W_CSP
         !word DO_USER
 ;          !byte $2C
@@ -969,7 +969,7 @@ W_CSP
 ;               Issue an error message if not executing.
 
 !if 0 {
-        +WORD "?exec", 0
+        +CREATE "?exec", 0
 W_QEXEC
         !word DO_COLON
 ;          !word STATE
@@ -988,7 +988,7 @@ W_QEXEC
 ;               message indicates that compiled conditionals do not match.
 
 !if 0 {
-        +WORD "?pairs", 0
+        +CREATE "?pairs", 0
 W_QPAIR
         !word DO_COLON
 ;          !word SUB
@@ -1003,7 +1003,7 @@ W_QPAIR
 ; ( -- )
 ;               Check if the stack is out of bounds.  
 
-        +WORD "?stack", 0
+        +CREATE "?stack", 0
 W_QSTACK
         !word DO_COLON
 !if 1 {
@@ -1034,7 +1034,7 @@ W_QSTACK
 ; TODO kernel call to query stop key
 
 !if 0 {
-        +WORD "?terminal", 0
+        +CREATE "?terminal", 0
 W_QTERMINAL
 ;    !word XQTER    ; Vector to code for ?TERMINAL
 }
