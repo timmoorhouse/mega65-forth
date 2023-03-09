@@ -29,7 +29,6 @@
    
 : buffer: ( u "<name>" -- ; -- addr ) create allot ;
 
-\ TODO c"
 : c" ( "ccc<quote>" -- ) ( -- c-addr ) 
   [char] " parse postpone csliteral ; immediate compile-only
 
@@ -63,6 +62,8 @@
 : within ( n1|u1 n2|u2 n3|u3 -- flag ) over - >r - r> u< ;
 
 \ *************************************************************************** 
+
+internals-wordlist current !
 
 \ Add character C to the contents of address C-ADDR.
 : c+! ( char c-addr -- ) tuck c@ + swap c! ;
@@ -181,6 +182,8 @@ create EscapeTable ( -- addr )
   sbuf parse\" nip
   - >in +!
   sbuf ; \ TODO can't call sbuf twice
+
+forth-wordlist current !
 
 \ TODO s\"
 \ see http://www.forth200x.org/escaped-strings.html

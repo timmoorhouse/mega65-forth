@@ -1,4 +1,6 @@
 
+internals-wordlist current !
+
 64 constant c/l     \ characters per line, used by words
 
 : id. ( nt -- ) name>string type ;
@@ -10,6 +12,8 @@
     c/l > if cr then
     id.
     true ;
+
+forth-wordlist current !
 
 \ *************************************************************************** 
 

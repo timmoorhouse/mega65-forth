@@ -20,11 +20,25 @@
 
 : negate ( n1 -- n2 ) invert 1+ ;
 
+environment-wordlist current !
+
+$ff   constant /counted-string
+#16   constant address-unit-bits
+0     constant floored
+$ff   constant max-char
+$7fff constant max-n
+$ffff constant max-u
+#128  constant return-stack-cells
+
+internals-wordlist current !
+
 : +- ( n1 n2 -- n3 ) 0< if negate then ; ( TODO REMOVE )
 
 variable hld ( TODO can we remove this? )
 
 : m/mod ( ud1 u2 -- u3 ud4 ) >r 0 r@ um/mod r> swap >r um/mod r> ; ( TODO just for # so far )
+
+forth-wordlist current !
 
 ( *************************************************************************** )
 

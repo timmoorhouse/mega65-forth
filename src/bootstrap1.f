@@ -20,8 +20,12 @@
 ( 2 if...                 )
 ( 3 do... [loop|+loop]    )
 
+internals-wordlist current !
+
 ( Resolve backward branch ) 
 : back here - , ; compile-only ( TODO REMOVE? )
+
+forth-wordlist current !
 
 ( Marks the origin of an unconditional forward branch )
 : ahead postpone branch here 0 , ( 2 ) ; immediate compile-only
@@ -57,6 +61,8 @@
 
 : c, ( char -- ) here c! 1 allot ;
 
+internals-wordlist current !
+
 ( counted string literal )
 : csliteral ( c-addr u -- ) ( -- c-addr )
   postpone (csliteral) dup c, swap over here swap cmove allot
@@ -66,6 +72,8 @@
 : sliteral ( c-addr u -- ) ( -- c-addr u ) 
   postpone csliteral postpone count
   ; immediate compile-only
+
+  forth-wordlist current !
 
 : s" ( "ccc<quote>" -- ) ( -- c-addr u ) 
   [char] " parse 

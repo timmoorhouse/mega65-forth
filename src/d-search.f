@@ -6,9 +6,13 @@
 
 : set-current ( wid -- ) current ! ;
 
+internals-wordlist set-current
+
 variable #order
 
 create context 8 ( wordlists ) cells allot
+
+forth-wordlist set-current
  
  \ TODO what's supposed to happen when the search order is empty (n=0)?
 : get-order ( -- widn ... wid1 n )

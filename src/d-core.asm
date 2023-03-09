@@ -4,10 +4,6 @@
 
 ; TODO move these to forth
 
-        +CREATE_ENV "/counted-string"
-        !word DO_CONSTANT
-        !word 255  
-
         +CREATE_ENV "/hold"
         !word DO_CONSTANT
         !word HOLD_LEN
@@ -16,39 +12,15 @@
         !word DO_CONSTANT
         !word PAD_LEN
 
-        +CREATE_ENV "address-unit-bits"
-        !word DO_CONSTANT
-        !word 16
-
-        +CREATE_ENV "floored"
-        !word DO_CONSTANT
-        !word 0                         ; we're symmetric, not floored
-
-        +CREATE_ENV "max-char"
-        !word DO_CONSTANT
-        !word 255  
-
         +CREATE_ENV "max-d"
         !word DO_CONSTANT ; TODO 2CONSTANT
         !word $ffff
         !word $7fff
 
-        +CREATE_ENV "max-n"
-        !word DO_CONSTANT
-        !word $7fff
-
-        +CREATE_ENV "max-u"
-        !word DO_CONSTANT
-        !word $ffff
-
         +CREATE_ENV "max-ud"
         !word DO_CONSTANT ; TODO 2CONSTANT
         !word $ffff
         !word $ffff
-
-        +CREATE_ENV "return-stack-cells"
-        !word DO_CONSTANT
-        !word 128
 
         +CREATE_ENV "stack-cells"
         !word DO_CONSTANT
