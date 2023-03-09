@@ -1,9 +1,15 @@
 
 : also ( -- ) get-order over swap 1+ set-order ;
 
+internals-wordlist current !
+
+\ TODO isn't this basically VOCABULARY?
 : (wordlist) ( wid "<spaces>name" -- )
    create ,
    does> @ >r get-order nip r> swap set-order ;
+
+forth-wordlist current !
+
 forth-wordlist (wordlist) forth
 
 : only ( -- ) -1 set-order ;

@@ -27,9 +27,13 @@ cr .( Starting bootstrap stage 2... ) cr
 \ Before saving a system, the following deferred words MUST be defined:
 \ . .S AUTOBOOT (QUIT) FIND-NAME
 
+forth-wordlist 1 set-order
+
 .( ... saving forth-minimal )
 savesystem forth-minimal,p,w
 unused . s" bytes free" type cr \ 28532
+
+environment-wordlist forth-wordlist internals-wordlist 3 set-order
 
   s" d-block.f"         included
   s" d-block-ext.f"     included
@@ -79,6 +83,8 @@ unused . s" bytes free" type cr \ 28532
     dup dup @ 0 ?do dup dup @ i - cells + @ swap loop @ set-order dup @ 1+ cells + \ restore order
     forth-wordlist 20 cmove \ restore wordlist table
   ;
+
+only forth definitions
 
 .( ... saving forth-complete )
 savesystem forth-complete,p,w

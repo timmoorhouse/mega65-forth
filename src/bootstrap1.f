@@ -68,12 +68,12 @@ internals-wordlist current !
   postpone (csliteral) dup c, swap over here swap cmove allot
   ; immediate compile-only
 
+forth-wordlist current !
+
 ( TODO this only works for len <= 255 )
 : sliteral ( c-addr u -- ) ( -- c-addr u ) 
   postpone csliteral postpone count
   ; immediate compile-only
-
-  forth-wordlist current !
 
 : s" ( "ccc<quote>" -- ) ( -- c-addr u ) 
   [char] " parse 
