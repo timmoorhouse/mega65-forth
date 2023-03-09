@@ -73,14 +73,28 @@ W_SIMPLE_FIND_NAME     ; ( c-addr u -- 0 | nt )
         !word W_ZEQUAL
         +ZBRANCH +
         !word W_DROP
+
+        ; ( c-addr u )
+
         !word W_2DUP
-        !word W_FORTH_WORDLIST ; TODO
+        !word W_FORTH_WORDLIST
         !word W_FIND_NAME_IN
+        !word W_DUP
+        !word W_ZEQUAL
+        +ZBRANCH +
+        !word W_DROP
+
+        ; ( c-addr u )
+
+        !word W_2DUP
+        !word W_ENVIRONMENT_WORDLIST
+        !word W_FIND_NAME_IN
+
 +
+        ; ( c-addr u 0|nt )
         !word W_NIP
         !word W_NIP
         !word W_PSEMI
-
 
         +NONAME
 W_AUTOBOOT_BOOTSTRAP

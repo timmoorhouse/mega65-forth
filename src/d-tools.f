@@ -68,7 +68,6 @@ forth-wordlist current !
         cr
     then r> base ! ;
 
-\ TODO use get-order
-: words ( -- ) ['] print-name forth-wordlist traverse-wordlist ;
+: words ( -- ) get-order 0 ?do ['] print-name swap traverse-wordlist loop ;
 
 .( ... end of d-tools.f ) cr

@@ -18,7 +18,7 @@
 W_WORDLIST
         !word DO_COLON
 
-        +LITERAL WORDLIST_TABLE + 2*WORDLIST_TABLE_LEN
+        +LITERAL WORDLIST_TABLE + 2*WORDLISTS
         +LITERAL WORDLIST_TABLE
         +DO _wordlist_after_loop
 

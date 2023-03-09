@@ -395,7 +395,7 @@ NAME_LEN_MASK  = $1f ; use lower bits for name length
         !word W_TYPE
 }
 
-WORDLIST_TABLE_LEN = 10         ; TODO WORDLISTS
+WORDLISTS = 12
         +ALIGN
 WORDLIST_TABLE
 FORTH_WORDLIST
@@ -404,11 +404,9 @@ INTERNALS_WORDLIST
         !word 0
 ENVIRONMENT_WORDLIST
         !word 0
-!for i, 4, WORDLIST_TABLE_LEN {
+!for i, 4, WORDLISTS {
         !word -1        ; others are unallocated initially
 }
-
-WORDLISTS = WORDLIST_TABLE_LEN ; TODO see search
 
 ; TODO reserved entry for EDITOR?
 ; TODO reserved entry for ASSEMBLER?
