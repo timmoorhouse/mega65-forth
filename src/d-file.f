@@ -1,8 +1,6 @@
 
 \ The following words are implemented internally:
-\ BIN CREATE-FILE DELETE-FILE FILE-POSITION FILE-SIZE
-\ OPEN-FILE READ-FILE READ-LINE REPOSITION-FILE RESIZE-FILE
-\ WRITE-FILE WRITE-LINE
+\ OPEN-FILE READ-LINE RESIZE-FILE
 
 \ The following words are implemented in bootstrap1.f:
 \ CLOSE-FILE INCLUDE-FILE INCLUDED R/O
@@ -12,6 +10,25 @@
 
 : bin ( fam1 -- fam2 ) 4 or ;
 
-\ : write-file ;
+\ TODO create-file ( c-addr u fam -- fileid ior )
+
+\ TODO delete-file ( c-addr u -- ior )
+
+\ TODO file-position ( fileid -- ud ior )
+
+\ TODO file-size ( fileid -- ud ior )
+
+\ TODO read-file ( c-addr u1 fileid -- u2 ior )
+
+\ TODO reposition-file ( ud fileid -- ior )
+
+\ TODO resize-file ( ud fileid -- ior )
+
+: write-file ( c-addr u fileid -- ior ) 
+  k-chkout over + swap ?do i c@ emit loop 0 k-chkout k-readss ;
+
+\ TODO duplication with write-file
+: write-line ( c-addr u fileid -- ior )
+  k-chkout over + swap ?do i c@ emit loop cr 0 k-chkout k-readss ;
 
 .( ... end of d-file.f ) cr

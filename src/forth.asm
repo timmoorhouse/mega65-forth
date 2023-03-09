@@ -755,7 +755,7 @@ _main_loop
 !src "d-facility-ext.asm"
 !src "fig.asm"
 !src "d-file.asm"
-!src "d-file-ext.asm"
+; !src "d-file-ext.asm"
 !src "d-floating.asm"
 !src "d-floating-ext.asm"
 !src "d-locals.asm"

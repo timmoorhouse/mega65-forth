@@ -248,7 +248,7 @@ CHKIN
 ; Used registers: A, X.
 ; Real address: ($0320), $F250.
 
-        +NONAME
+        +CREATE_INTERNAL "k-chkout", 0
 W_CHKOUT        ; (u --)
         !word *+2
         stx <TEMP1
