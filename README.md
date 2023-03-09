@@ -207,10 +207,6 @@ INCORRECT RESULT: t[ ssq3 drop 14 chars + c@ ->  97 ]t \ a  a  Hex follow on
 INCORRECT RESULT: t[ ssq3 drop 16 chars + c@ -> 120 ]t \ x  x  Non hex follow on
 ```
 
-## `S\"`
-
-`S\"` has not yet been implemented.
-
 ## `UM/MOD`
 
 ```
