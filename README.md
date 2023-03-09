@@ -62,7 +62,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] Need to be able to throw exceptions from assembler.  This likely means changing the `THROW` implementation to be native code instead of Forth bytecode.
   - [ ] Many bits of code need to be updated to throw an exception for error conditions.
 - FILE
-  - [ ] Make a `DISK` variable, use it when opening files
   - [ ] Handle file access modes.
   - [ ] Fix I/O status handling (when is status from READSS reset?).
   - [ ] Fix handling of I/O error cases.
@@ -84,8 +83,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
     - [ ] `RESTORE-INPUT`
     - [ ] `SOURCE`
   - [ ] `UNUSED` possibly? would need access to DAREA
-- Making `SAVESYSTEM` output deterministic? (it might not make sense to do this)
-  - [ ] What to do about inline DMA lists?
 - Tests
   - [ ] [Test suite](https://github.com/gerryjackson/forth2012-test-suite)
   - [ ] Some reasonable way of capturing test results. 

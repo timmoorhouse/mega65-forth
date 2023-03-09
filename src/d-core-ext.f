@@ -185,7 +185,6 @@ create EscapeTable ( -- addr )
 
 forth-wordlist current !
 
-\ TODO s\"
 \ see http://www.forth200x.org/escaped-strings.html
 : s\" ( "ccc<quote>" -- ) ( -- c-addr u ) 
   readEscaped count

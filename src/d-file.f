@@ -21,9 +21,9 @@
 \ TODO read-file ( c-addr u1 fileid -- u2 ior )
 
 \ : read-line ( c-addr u1 fileid -- u2 flag ior )
-\   k-chkin over + over ?do 
-\     k-basin dup #13 = if 1 source-line +! drop leave else i c@ 1+ then
-\   +loop true 0 k-chkin k-readss ;
+\   k-chkin over + swap 0 rot rot ( TODO klunky ) ?do ( u2 )
+\     k-basin dup #13 = if 1 source-line +! drop leave else i c! 1+ then
+\   loop true 0 k-chkin k-readss ;
 
 \ TODO reposition-file ( ud fileid -- ior )
 
@@ -35,5 +35,25 @@
 \ TODO duplication with write-file
 : write-line ( c-addr u fileid -- ior )
   k-chkout over + swap ?do i c@ emit loop cr 0 k-chkout k-readss ;
+
+\ TODO refill
+
+\ : refill-file ( -- flag ) 
+\ source-id fileid>buffer
+\ ;
+
+\ : refill-tib ( -- c-addr u flag )
+\ tib tib_len accept ( n )
+\ ;
+
+\ 
+
+\ : refill ( -- flag ) 
+\ source-id ?dup
+\ ;
+
+
+
+
 
 .( ... end of d-file.f ) cr

@@ -10,7 +10,7 @@ internals-wordlist set-current
 
 variable #order
 
-create context 8 ( wordlists ) cells allot
+create context wordlists cells allot
 
 forth-wordlist set-current
  
