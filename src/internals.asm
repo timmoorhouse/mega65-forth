@@ -106,28 +106,12 @@ MAYBE_BRK
 ; see https://www.c64-wiki.com/wiki/CIA
 ; Something like execute that counts clock ticks?
 
-        +CREATE_INTERNAL "timer", 0
+        ; +CREATE_INTERNAL "timer", 0
+        +CREATE "timer", 0
 W_TIMER
         !word *+2
         jsr read_timer
-!if 0 {
-        lda <TEMP1
-        jsr put_hex
-        lda #' '
-        jsr EMIT
-        lda <TEMP1+1
-        jsr put_hex
-        lda #' '
-        jsr EMIT
-        lda <TEMP1+2
-        jsr put_hex
-        lda #' '
-        jsr EMIT
-        lda <TEMP1+3
-        jsr put_hex
-        jsr CR
-}
-        dex
+        dex     ; TODO check for stack space
         dex
         dex
         dex

@@ -115,7 +115,7 @@ forth-wordlist current !
     refill if ['] (evaluate) catch dup else 0 true then ( exception exit-flag )
   until nr> restore-input drop throw ; ( TODO check status from restore-input )
 
-: included r/o open-file if -38 throw then 
+: included r/o open-file 0<> -38 and throw
   >r r@ include-file r> close-file drop ;
 
 .( ... BOOTSTRAP STAGE 1 COMPLETE ) cr
