@@ -233,6 +233,8 @@ NUM_STRING_BUFFERS = 2
 STRING_BUFFER_LEN  = 80
 SBUF_LEN           = NUM_STRING_BUFFERS * STRING_BUFFER_LEN
 SBUF               = TIB - SBUF_LEN
+FILE_BUFFER_SIZE   = 128 ; should be long enough for a line
+MAX_OPEN_FILES     = 10  ; kernel limit
 DAREA_LEN          = MAX_OPEN_FILES * FILE_BUFFER_SIZE 
 DAREA              = SBUF - DAREA_LEN
 HOLD_LEN           = 34 ; min (2*16)+2 = 34

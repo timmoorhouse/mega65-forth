@@ -66,16 +66,21 @@ savesystem forth-minimal,p,w
 \ - all wordlists
 \ - search order      DONE
 : marker ( "<spaces>name" -- ) ( -- ) 
-  here
+  here 
   create 
     ,                               \ save here
-    current @ ,                     \ save current
+    get-current ,                   \ save current
     get-order dup , 0 ?do , loop    \ save order
+    \ save fixup to account for head of current wordlist changing when
+    \ we did the create
+    get-current @ @ get-current forth-wordlist - here +
+    forth-wordlist here 20 dup allot cmove \ save wordlist table
+    ! \ do the fixup
   does> 
     dup @ to here cell+             \ restore here
-    dup @ current ! cell+           \ restore current
-    dup dup @ 0 ?do dup dup @ i - cells + @ swap loop @ set-order cell+ \ restore order
-    drop
+    dup @ set-current cell+           \ restore current
+    dup dup @ 0 ?do dup dup @ i - cells + @ swap loop @ set-order dup @ 1+ cells + \ restore order
+    forth-wordlist 20 cmove \ restore wordlist table
   ;
 
 .( ... saving forth-complete ) cr
@@ -94,8 +99,9 @@ unused . s" bytes free" type cr \ 26693
 cr
 
 .( pre marker ) cr
-.s cr
 .( here= ) here . cr
+
+forth-wordlist 2 dump
 
 marker foo
 
@@ -105,6 +111,7 @@ cr
 .( after creating marker ) cr
 .s cr
 .( here= ) here . cr
+.( foo= ) s" foo" find-name . cr
 
 foo
 
@@ -112,5 +119,6 @@ cr
 .( after running marker ) cr
 .s cr
 .( here= ) here . cr
+.( foo= ) s" foo" find-name . cr
 
 .( end of bootstrap2.f ) cr

@@ -19,7 +19,7 @@
 : ? @ . ;
 
 : dump ( addr u -- ) \ u is number of lines to display
-    base @ >r hex cr
+    base @ >r hex cr ( addr u ) ( R: base )
     0 do   ( addr )
         16 ( addr u2 )
         over 4 u.r 
@@ -29,7 +29,7 @@
         cr
         +
     loop
-    r> base ! ;
+    drop r> base ! ;
 
 \ following gforth ...
 : xt-see ( xt -- ) 
