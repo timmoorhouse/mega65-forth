@@ -1,4 +1,6 @@
 
+cr .( Starting bootstrap stage 2... ) cr
+
   s" d-core.f"          included
   s" d-core-ext.f"      included
   s" d-file.f"          included
@@ -24,10 +26,9 @@
 \ Before saving a system, the following deferred words MUST be defined:
 \ . .S AUTOBOOT (QUIT)
 
-.( ... saving forth-minimal ) cr
+.( ... saving forth-minimal )
 savesystem forth-minimal,p,w
-
-unused . s" bytes free" type cr \ 29024
+unused . s" bytes free" type cr \ 28894
 
   s" d-block.f"         included
   s" d-block-ext.f"     included
@@ -79,12 +80,11 @@ unused . s" bytes free" type cr \ 29024
     forth-wordlist 20 cmove \ restore wordlist table
   ;
 
-.( ... saving forth-complete ) cr
+.( ... saving forth-complete )
 savesystem forth-complete,p,w
+unused . s" bytes free" type cr \ 26155
 
 .( ... bootstrap stage 2 complete ) cr cr
-
-unused . s" bytes free" type cr \ 26285
 
 : test s" test.f" included ;
 

@@ -64,6 +64,7 @@
         cr
     then r> base ! ;
 
+\ TODO use get-order
 : words ( -- ) ['] print-name forth-wordlist traverse-wordlist ;
 
 .( ... end of d-tools.f ) cr

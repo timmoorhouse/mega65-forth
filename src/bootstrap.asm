@@ -71,9 +71,6 @@ W_AUTOBOOT_BOOTSTRAP
 
         !word W_BOOTSTRAP_MIN
 
-        !word W_CR
-        +DOTQ "Starting bootstrap stage 2..."
-        !word W_CR
         +CSLITERAL "bootstrap2.f"
         !word W_COUNT
         +CSLITERAL "included"
@@ -123,32 +120,19 @@ _bootstrap_min_extend_line
 
 _bootstrap_min_found_linefeed
 
-!if 0 {
-        !word W_DOTS
-        !word W_2DUP
-        !word W_TYPE
-        !word W_CR
-}
-
         !word W_DUP
         !word W_TOR
 
         ; (c-addr u) (R: c-addr u)
         !word W_EVALUATE
 
-!if 0 {
-        +DOTQ "evaluate done"
-        !word W_CR
-}
+        ; TODO check for dictionary colliding with bootstrap
 
         !word W_2RFROM
         !word W_PLUS
         !word W_1PLUS ; eat the linefeed
 
         !word W_TOR
-!if 0 {
-        !word W_DOTS,W_CR
-}
 
         +BRANCH _bootstrap_min_loop
 

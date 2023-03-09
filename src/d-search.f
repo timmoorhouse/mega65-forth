@@ -26,7 +26,8 @@ create context 8 ( wordlists ) cells allot
   0 ?do i cells context + ! loop
   ;
 
--1 set-order
+\ -1 set-order
+forth-wordlist internals-wordlist 2 set-order
 
 : search-wordlist ( c-addr u wid -- 0 | xt 1 | xt -1 )
   find-name-in dup if

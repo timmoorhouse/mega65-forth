@@ -329,6 +329,7 @@ pre_basepage = *
 
 !set forth_link       = $0
 !set environment_link = $0
+!set internals_link   = $0
 
 ; Control bits
 F_IMMEDIATE    = $80
@@ -354,7 +355,8 @@ NAME_LEN_MASK  = $1f ; use lower bits for name length
 }
 
 !macro CREATE_INTERNAL .name, .flags {
-        +CREATE .name, .flags           ; TODO separate wordlist?
+        ; +CREATE2 .name, ~forth_link, .flags           ; TODO separate wordlist?
+        +CREATE2 .name, ~internals_link, .flags
 }
 
 !macro BRANCH .target {
@@ -397,10 +399,12 @@ WORDLIST_TABLE_LEN = 10         ; TODO WORDLISTS
         +ALIGN
 WORDLIST_TABLE
 FORTH_WORDLIST
-        !word 0         ; reserved for FORTH_WORDLIST
+        !word 0
+INTERNALS_WORDLIST
+        !word 0
 ENVIRONMENT_WORDLIST
-        !word 0         ; reserved for ENVIRONMENT_WORDLIST
-!for i, 3, WORDLIST_TABLE_LEN {
+        !word 0
+!for i, 4, WORDLIST_TABLE_LEN {
         !word -1        ; others are unallocated initially
 }
 
@@ -414,6 +418,11 @@ WORDLISTS = WORDLIST_TABLE_LEN ; TODO see search
 W_FORTH_WORDLIST
         !word DO_CONSTANT
         !word FORTH_WORDLIST
+
+        +CREATE "internals-wordlist", 0
+W_INTERNALS_WORDLIST
+        !word DO_CONSTANT
+        !word INTERNALS_WORDLIST
 
         +CREATE "environment-wordlist", 0
 W_ENVIRONMENT_WORDLIST
@@ -800,6 +809,11 @@ _onetime
         lda #>environment_link
         sta ENVIRONMENT_WORDLIST+1
 
+        lda #<internals_link
+        sta INTERNALS_WORDLIST
+        lda #>internals_link
+        sta INTERNALS_WORDLIST+1
+
         lda #<INITIAL_HERE
         sta HERE
         lda #>INITIAL_HERE
@@ -820,11 +834,9 @@ _onetime
 
 ; TODO report collision
 
-;!if * > DAREA {
-;        !error "embedded bootstrap code colliding with high memory"
-;} else {
-
-; This gap must be >= 0
-!warn DAREA - *, " byte gap between bootstrap code and high memory"
-
-;}
+!if * > DAREA {
+        !error "embedded bootstrap code colliding with high memory"
+} else {
+        ; This gap must be >= 0
+        !warn DAREA - *, " byte gap between bootstrap code and high memory"
+}
