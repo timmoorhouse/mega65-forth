@@ -2,6 +2,16 @@
 ; ****************************************************************************
 ; FLOATING
 
+; TODO move these to forth
+
+        +CREATE_ENV "floating-stack"
+        !word DO_CONSTANT
+        !word 0 ; TODO
+
+        +CREATE_ENV "max-float"
+        !word DO_CONSTANT
+        !word 0 ; TODO
+
 !if ENABLE_FLOATING {
 
 ; ****************************************************************************

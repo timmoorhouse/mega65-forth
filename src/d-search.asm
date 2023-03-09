@@ -2,14 +2,11 @@
 ; ****************************************************************************
 ; SEARCH
 
-; ****************************************************************************
-; FORTH-WORDLIST
-; (-- wid)
+; TODO move these to forth
 
-        +CREATE "forth-wordlist", 0
-W_FORTH_WORDLIST
+        +CREATE_ENV "wordlists"
         !word DO_CONSTANT
-        !word FORTH_WORDLIST
+        !word WORDLISTS
 
 ; ****************************************************************************
 ; WORDLIST

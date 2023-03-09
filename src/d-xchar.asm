@@ -2,6 +2,20 @@
 ; ****************************************************************************
 ; extended character?
 
+; TODO move these to forth
+
+        +CREATE_ENV "xchar-encoding"
+        !word DO_CONSTANT
+        !word 0 ; TODO
+
+        +CREATE_ENV "max-xchar"
+        !word DO_CONSTANT
+        !word 0 ; TODO
+
+        +CREATE_ENV "xchar-maxmem"
+        !word DO_CONSTANT
+        !word 0 ; TODO
+
 !if ENABLE_XCHAR {
 
 ; ****************************************************************************

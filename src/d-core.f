@@ -5,7 +5,7 @@
 ( The following words are implemented internally:                             )
 ( ! * + +! +LOOP , - . / 0< 0= 1+ 1- 2* 2/ 2DROP 2DUP 2OVER 2SWAP : ; < = >IN )
 ( >NUMBER >R ?DUP @ ACCEPT ALIGN ALIGNED ALLOT AND BASE BL C! C@ CONSTANT     )
-( COUNT CR CREATE DEPTH <DO> DOES> DROP DUP EMIT ENVIRONMENT?                 )
+( COUNT CR CREATE DEPTH <DO> DOES> DROP DUP EMIT                              )
 ( EVALUATE EXECUTE EXIT FILL HERE I INVERT J KEY LEAVE <LOOP>                 )
 ( LSHIFT NEGATE OR OVER POSTPONE R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP      )
 ( TYPE U< UM* UM/MOD UNLOOP VARIABLE XOR [ ]                                  )
@@ -66,6 +66,9 @@ variable e-msg#
 : defer@ ( xt1 -- xt2 ) >body @ ; ( CORE-EXT )
 
 : defer! ( xt2 xt1 -- ) >body ! ; ( CORE-EXT )
+
+: environment? ( c-addr u -- false | i*x true )
+  environment-wordlist find-name-in dup if name>interpret execute true then ;
 
 : find ( c-addr -- c-addr 0 | xt 1 | xt -1 ) 
   dup count find-name dup if 

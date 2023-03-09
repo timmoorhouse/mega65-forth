@@ -247,8 +247,6 @@ pre_basepage = *
 }
 * = pre_basepage, overlay
 
-
-
 ; TODO transient buffer for s", s\" (need 2 buffers so that two consecutive
 ; strings can be stored)
 ; so the following should work:
@@ -329,8 +327,8 @@ pre_basepage = *
         +ALIGN
 }
 
-!set forth_link = $0
-!set env_link   = $0
+!set forth_link       = $0
+!set environment_link = $0
 
 ; Control bits
 F_IMMEDIATE    = $80
@@ -352,11 +350,7 @@ NAME_LEN_MASK  = $1f ; use lower bits for name length
 }
 
 !macro CREATE_ENV .name {
-        +CREATE2 .name, ~env_link, 0
-}
-
-!macro IMMEDIATE {
-
+        +CREATE2 .name, ~environment_link, 0
 }
 
 !macro BRANCH .target {
@@ -399,10 +393,27 @@ WORDLIST_TABLE_LEN = 10         ; TODO WORDLISTS
         +ALIGN
 WORDLIST_TABLE
 FORTH_WORDLIST
-        !word 0         ; 0 - reserved for FORTH_WORDLIST
-!for i, 2, WORDLIST_TABLE_LEN {
-        !word -1        ; 1
+        !word 0         ; reserved for FORTH_WORDLIST
+ENVIRONMENT_WORDLIST
+        !word 0         ; reserved for ENVIRONMENT_WORDLIST
+!for i, 3, WORDLIST_TABLE_LEN {
+        !word -1        ; others are unallocated initially
 }
+
+WORDLISTS = WORDLIST_TABLE_LEN ; TODO see search
+
+; TODO reserved entry for EDITOR?
+; TODO reserved entry for ASSEMBLER?
+
+        +CREATE "forth-wordlist", 0
+W_FORTH_WORDLIST
+        !word DO_CONSTANT
+        !word FORTH_WORDLIST
+
+        +CREATE "environment-wordlist", 0
+W_ENVIRONMENT_WORDLIST
+        !word DO_CONSTANT
+        !word ENVIRONMENT_WORDLIST
 
         +CREATE "current", 0
 W_CURRENT
@@ -778,6 +789,11 @@ _onetime
         sta FORTH_WORDLIST
         lda #>forth_link
         sta FORTH_WORDLIST+1
+
+        lda #<environment_link
+        sta ENVIRONMENT_WORDLIST
+        lda #>environment_link
+        sta ENVIRONMENT_WORDLIST+1
 
         lda #<INITIAL_HERE
         sta HERE

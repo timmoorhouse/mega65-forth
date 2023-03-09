@@ -27,6 +27,8 @@
 .( ... saving forth-minimal ) cr
 savesystem forth-minimal,p,w
 
+unused . s" bytes free" type cr \ 29024
+
   s" d-block.f"         included
   s" d-block-ext.f"     included
   s" d-double.f"        included
@@ -59,12 +61,6 @@ savesystem forth-minimal,p,w
   ( 0 ) 1 foreground                 \ output - white
   endcase ; is theme
 
-\ TODO marker
-\ Reset state back to *before* the marker was created
-\ - HERE              DONE
-\ - current?          DONE
-\ - all wordlists
-\ - search order      DONE
 : marker ( "<spaces>name" -- ) ( -- ) 
   here 
   create 
@@ -88,37 +84,33 @@ savesystem forth-complete,p,w
 
 .( ... bootstrap stage 2 complete ) cr cr
 
-unused . s" bytes free" type cr \ 26693
+unused . s" bytes free" type cr \ 26285
 
 : test s" test.f" included ;
 
 : bm s" benchmark.f" included ;
 
-\ 1 2 3   asdjfklj   4 5 6
+1 2 3   asdjfklj   4 5 6
 
-cr
-
-.( pre marker ) cr
-.( here= ) here . cr
-
-forth-wordlist 2 dump
-
-marker foo
-
-100 allot
-
-cr
-.( after creating marker ) cr
-.s cr
-.( here= ) here . cr
-.( foo= ) s" foo" find-name . cr
-
-foo
-
-cr
-.( after running marker ) cr
-.s cr
-.( here= ) here . cr
-.( foo= ) s" foo" find-name . cr
+\ .( pre marker ) cr
+\ .( here= ) here . cr
+\ 
+\ marker foo
+\ 
+\ 100 allot
+\ 
+\ cr
+\ .( after creating marker ) cr
+\ .s cr
+\ .( here= ) here . cr
+\ .( foo= ) s" foo" find-name . cr
+\ 
+\ foo
+\ 
+\ cr
+\ .( after running marker ) cr
+\ .s cr
+\ .( here= ) here . cr
+\ .( foo= ) s" foo" find-name . cr
 
 .( end of bootstrap2.f ) cr

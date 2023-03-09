@@ -88,7 +88,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
     - [ ] `SAVE-INPUT`
     - [ ] `RESTORE-INPUT`
     - [ ] `SOURCE`
-  - [ ] `ENVIRONMENT?` -  I think it might make sense to make a wordlist for environment entries.  We could dynamically add to it and easily query it.
   - [ ] `UNUSED` possibly? would need access to DAREA
 - Making `SAVESYSTEM` output deterministic? (it might not make sense to do this)
   - [ ] What to do about inline DMA lists?
