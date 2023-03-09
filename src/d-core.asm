@@ -158,7 +158,7 @@ W_PSTORE
 
 ; See core.f
 
-        +CREATE "(+loop)", 0
+        +CREATE_INTERNAL "(+loop)", 0
 W_PPLOOP
         !word *+2
         ; see also (loop)
@@ -1281,7 +1281,7 @@ W_EVALUATE
 ; REFILL to grab more input data (necessary for
 ; multiline '(' comments, [IF]/[ELSE]/[THEN], etc)
 
-        +CREATE "(evaluate)", 0
+        +CREATE_INTERNAL "(evaluate)", 0
 W_PEVALUATE             ; ( -- )
         !word DO_COLON
 

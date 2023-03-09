@@ -114,7 +114,7 @@ SETBANK
 ; $40 end of file
 ; $80 device not present
 
-        +NONAME
+        +CREATE_INTERNAL "k-readss", 0
 W_READSS        ; (-- ior)
         !word *+2
         jsr READSS
@@ -207,7 +207,7 @@ OPEN
 ; Used registers: A, X, Y.
 ; Real address: ($031C), $F291.
 
-        +NONAME
+        +CREATE_INTERNAL "k-close", 0
 W_CLOSE         ; (fileid --)
         !word *+2
         lda 0,x

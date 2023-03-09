@@ -96,6 +96,8 @@
 
 1 constant r/o
 
+: close-file ( fileid -- ior ) k-close k-readss ;
+
 : include-file ( i*x fileid -- j*x ) save-input n>r to source-id 0 source-line !
   0 begin drop
     refill if ['] (evaluate) catch dup else 0 true then ( exception exit-flag )

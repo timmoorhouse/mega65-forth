@@ -353,6 +353,10 @@ NAME_LEN_MASK  = $1f ; use lower bits for name length
         +CREATE2 .name, ~environment_link, 0
 }
 
+!macro CREATE_INTERNAL .name, .flags {
+        +CREATE .name, .flags           ; TODO separate wordlist?
+}
+
 !macro BRANCH .target {
         !word W_BRANCH
         !word .target-*
@@ -404,6 +408,7 @@ WORDLISTS = WORDLIST_TABLE_LEN ; TODO see search
 
 ; TODO reserved entry for EDITOR?
 ; TODO reserved entry for ASSEMBLER?
+; TODO reserved entry for internals?
 
         +CREATE "forth-wordlist", 0
 W_FORTH_WORDLIST

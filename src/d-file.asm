@@ -124,21 +124,6 @@ W_BUFFER_OF_FILEID ; (fileid -- c-addr u)
         !word W_PSEMI
 
 ; ****************************************************************************
-; CLOSE-FILE
-; (fileid -- ior)
-
-!if ENABLE_FILE {
-        +CREATE "close-file", 0
-W_CLOSE_FILE
-        !word DO_COLON
-
-        !word W_CLOSE
-        !word W_READSS
-
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; CREATE-FILE
 ; (c-addr u fam -- fileid ior)
 
