@@ -1,9 +1,9 @@
 
 \ The following words are implemented internally:
-\ OPEN-FILE READ-LINE RESIZE-FILE
+\ READ-LINE
 
 \ The following words are implemented in bootstrap1.f:
-\ CLOSE-FILE INCLUDE-FILE INCLUDED R/O
+\ CLOSE-FILE INCLUDE-FILE INCLUDED OPEN-FILE R/O
 
 2 constant w/o
 3 constant r/w
@@ -19,6 +19,11 @@
 \ TODO file-size ( fileid -- ud ior )
 
 \ TODO read-file ( c-addr u1 fileid -- u2 ior )
+
+\ : read-line ( c-addr u1 fileid -- u2 flag ior )
+\   k-chkin over + over ?do 
+\     k-basin dup #13 = if 1 source-line +! drop leave else i c@ 1+ then
+\   +loop true 0 k-chkin k-readss ;
 
 \ TODO reposition-file ( ud fileid -- ior )
 

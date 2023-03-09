@@ -98,6 +98,10 @@
 
 : close-file ( fileid -- ior ) k-close k-readss ;
 
+: open-file ( c-addr u fam -- fileid ior )
+  drop ( TODO use fam ) 
+  0 0 k-setbank k-setnam unused-logical dup unit unused-secondary k-setlfs k-open k-readss ;
+
 : include-file ( i*x fileid -- j*x ) save-input n>r to source-id 0 source-line !
   0 begin drop
     refill if ['] (evaluate) catch dup else 0 true then ( exception exit-flag )

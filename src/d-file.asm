@@ -14,7 +14,7 @@ lat   = $035a
 fat   = $0364
 sat   = $036e
 
-        +NONAME
+        +CREATE_INTERNAL "unused-logical", 0
 W_UNUSED_LOGICAL
         !word *+2
         jsr _unused_logical
@@ -63,7 +63,7 @@ _unused_logical
 
 ; TODO use lkupsa to check if sa is in use
 
-        +NONAME
+        +CREATE_INTERNAL "unused-secondary", 0
 W_UNUSED_SECONDARY
         !word *+2
         jsr _unused_secondary
@@ -123,50 +123,10 @@ W_BUFFER_OF_FILEID ; (fileid -- c-addr u)
         +LITERAL FILE_BUFFER_SIZE
         !word W_PSEMI
 
-; ****************************************************************************
-; OPEN-FILE
-; (c-addr u fam -- fileid ior)
-
-!if ENABLE_FILE {
-        +CREATE "open-file", 0
-W_OPEN_FILE
-        !word DO_COLON
-
-        !word W_DROP    ; TODO use fam?
-
-        !word W_ZERO
-        !word W_DUP
-        !word W_SETBANK
-
-        !word W_SETNAM
-
-        ; TODO in BASIC for DOPEN#, channel numbers in [1,127] use CR, [128,255] use CR LF
-        ; TODO DOPEN# has a ,W flag for write access
-
-        !word W_UNUSED_LOGICAL
-
-        !word W_DUP
-        +LITERAL 8 ; TODO how to select this?
-        !word W_UNUSED_SECONDARY
-
-        !word W_SETLFS
-
-        !word W_OPEN 
-
-        ; TODO if fam includes read, check that file exists
-
-        ; max 10 channels open
-        ; $98  ldtnd = # open channels
-        ; $35a lat   = logical channel table
-        ; $364 fat   = device number table
-        ; $36e sat   = secondary table
-        ; use lower nibble of logical channel as buffer index
-        ; so save-input needs logical channel (0=keyboard) + position into buffer (>IN) - all fits in one word?
-
-        !word W_READSS
-
-        !word W_PSEMI
-}
+        +CREATE "unit", 0
+W_UNIT
+        !word DO_VALUE
+        !word 8
 
 ; ****************************************************************************
 ; READ-LINE
