@@ -622,7 +622,7 @@ W_REFILL
 _refill_file
 
         !word W_SOURCE_ID
-        !word W_BUFFER_OF_FILEID        ; (c-addr u)
+        !word W_FILEID_TO_BUFFER        ; (c-addr u)
         !word W_OVER
         !word W_SWAP                    ; (c-addr c-addr u)
         !word W_TWO

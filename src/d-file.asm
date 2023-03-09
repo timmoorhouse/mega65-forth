@@ -109,8 +109,8 @@ _unused_secondary
         ; unused ... guaranteed to find one in the range [2,12]
         rts
 
-        +NONAME
-W_BUFFER_OF_FILEID ; (fileid -- c-addr u)
+        +CREATE_INTERNAL "fileid>buffer", 0
+W_FILEID_TO_BUFFER ; (fileid -- c-addr u)
         !word DO_COLON
         ; fileid will be in range [32,42)
         +LITERAL $0f

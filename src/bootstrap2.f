@@ -84,6 +84,19 @@ environment-wordlist forth-wordlist internals-wordlist 3 set-order
     forth-wordlist 20 cmove \ restore wordlist table
   ;
 
+: type-file ( fileid -- )
+  cr >r r@ fileid>buffer 
+  begin 
+    ( c-addr u ) ( R: fileid )
+    2dup r@ read-line throw ( c-addr u u2 flag ior ) ( R: fileid )
+  while
+    ( c-addr u u2 )
+    2 pick swap type cr
+  repeat 2drop r> drop ;
+
+: type ( "<spaces>name" ) parse-name r/o open-file 0<> -38 and throw
+  dup type-file close-file drop ;
+
 only forth definitions
 
 .( ... saving forth-complete )
