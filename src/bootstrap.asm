@@ -161,11 +161,7 @@ _bootstrap_min_done
         !word W_PSEMI
 
 BOOTSTRAP_MIN_START
-; TODO make a bootstrap.f of just what we need to get off the ground
 !binary "bootstrap1.f"
-; !binary "core.f"
-; !binary "core-ext.f"
-; !binary "file.f"
-!byte $0a
+!byte $0a ; an extra linefeed since we don't handle the last line yet TODO remove
 BOOTSTRAP_MIN_LEN = *-BOOTSTRAP_MIN_START
 BOOTSTRAP_MIN_END

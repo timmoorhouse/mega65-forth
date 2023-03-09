@@ -668,7 +668,7 @@ W_AUTOBOOT
         !word DO_DEFER
         !word W_AUTOBOOT_BOOTSTRAP
 
-        +CREATE "(quit)", 0
+        +CREATE_INTERNAL "(quit)", 0
 W_PQUIT
         !word DO_DEFER
         !word W_DEFER_UNINITIALIZED

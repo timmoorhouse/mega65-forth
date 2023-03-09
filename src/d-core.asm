@@ -1133,7 +1133,7 @@ W_DEPTH
 
 ; TODO share code with 2>r
 
-        +CREATE "(do)", 0
+        +CREATE_INTERNAL "(do)", 0
 W_PDO
         !word *+2
 PDO     ; used by (?do)
@@ -1537,7 +1537,7 @@ LEAVE                   ; used by (loop) and (+loop)
 
 ; See core.f
 
-        +CREATE "(loop)", 0
+        +CREATE_INTERNAL "(loop)", 0
 W_PLOOP
         !word *+2
         ; see also (+loop)

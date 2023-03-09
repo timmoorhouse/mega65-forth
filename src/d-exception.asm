@@ -5,7 +5,7 @@
 HANDLER
         !word 0
 
-        +CREATE "e.", 0
+        +CREATE_INTERNAL "e.", 0
 W_EDOT
         !word DO_DEFER
         !word W_SIMPLE_EDOT
@@ -19,12 +19,12 @@ W_SIMPLE_EDOT        ; (n --)
         !word W_CR
         !word W_PSEMI
 
-        +CREATE "e-loc!", 0
+        +CREATE_INTERNAL "e-loc!", 0
 W_ELOC_STORE
         !word DO_DEFER
         !word W_NOOP
 
-        +CREATE "e-loc0", 0
+        +CREATE_INTERNAL "e-loc0", 0
 W_ELOC_CLEAR
         !word DO_DEFER
         !word W_NOOP

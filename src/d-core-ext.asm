@@ -176,7 +176,7 @@ W_NOTEQUAL
 ; (n1 n2 --)
 
 !if ENABLE_CORE_EXT {
-        +CREATE "(?do)", 0
+        +CREATE_INTERNAL "(?do)", 0
 W_PQDO
         !word *+2
 
@@ -428,7 +428,7 @@ W_PARSE_NAME
         !word W_PPARSE_NAME
         !word W_PSEMI
 
-        +CREATE "(parse-name)", 0
+        +CREATE_INTERNAL "(parse-name)", 0
 W_PPARSE_NAME ; (char "<chars>name<char>" -- c-addr u)
         !word *+2
 

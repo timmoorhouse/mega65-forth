@@ -70,7 +70,7 @@ fail_runtime_check
 BRK_ENABLED
         !byte 0
 
-        +CREATE "enable-brk", 0
+        +CREATE_INTERNAL "enable-brk", 0
 W_ENABLE_BRK
         !word *+2
         jsr ENABLE_BRK
@@ -81,7 +81,7 @@ ENABLE_BRK
         sta BRK_ENABLED
         rts
 
-        +CREATE "brk", 0
+        +CREATE_INTERNAL "brk", 0
 W_BRK
         !word *+2
         jsr MAYBE_BRK
@@ -106,7 +106,7 @@ MAYBE_BRK
 ; see https://www.c64-wiki.com/wiki/CIA
 ; Something like execute that counts clock ticks?
 
-        +CREATE "timer", 0
+        +CREATE_INTERNAL "timer", 0
 W_TIMER
         !word *+2
         jsr read_timer
@@ -209,7 +209,7 @@ W_2MINUS
 ;               the interpretive pointer to branch ahead or back.  
 ;               Compiled by IF, UNTIL, and WHILE.
 
-        +CREATE "0branch", 0
+        +CREATE_INTERNAL "0branch", 0
 W_ZBRANCH
         !word *+2
         inx
@@ -229,7 +229,7 @@ BUMP             ; used by (loop) and LEAVE  TODO MESSY !!!!!!!!!!!!!!
 ;               branch ahead or back.  BRANCH is compiled by ELSE, AGAIN, 
 ;               REPEAT.
 
-        +CREATE "branch", 0
+        +CREATE_INTERNAL "branch", 0
 W_BRANCH
         !word *+2
 BRANCH  ; used by (loop), 0branch  TODO MESSY !!!!!!!!
@@ -266,7 +266,7 @@ W_PCLITERAL
 ;    LITERAL pushes the next inline word to data stack
 ;
 
-        +CREATE "(literal)", 0
+        +CREATE_INTERNAL "(literal)", 0
 W_PLITERAL:
         !word *+2
         ; ldy #0 ; TODO
@@ -283,7 +283,7 @@ _inc_I_PUSH
 ;       SLITERAL pushes an inline counted string to the data stack
 ;
 
-        +CREATE "(csliteral)", 0
+        +CREATE_INTERNAL "(csliteral)", 0
 W_PCSLITERAL:
         !word *+2
         ; ldy #0 ; TODO
@@ -397,7 +397,7 @@ W_PSEARCH_WORDLIST
 
 ; Check if a name token is compile-only
 
-        +CREATE "?compile-only", 0
+        +CREATE_INTERNAL "?compile-only", 0
 W_QCOMPILE_ONLY
         !word DO_COLON
         !word W_2PLUS
@@ -414,7 +414,7 @@ W_QCOMPILE_ONLY
 ; Check if a name token is immediate
 ; Used by NAME>COMPILE and (soon) POSTPONE
 
-        +CREATE "?immediate", 0
+        +CREATE_INTERNAL "?immediate", 0
 W_QIMMEDIATE
         !word DO_COLON
         !word W_2PLUS
@@ -431,7 +431,7 @@ W_QIMMEDIATE
 
 ; Will be 0 if the last definition had no name (:NONAME)
 
-        +CREATE "latest", 0
+        +CREATE_INTERNAL "latest", 0
 W_LATEST
         !word DO_VALUE
 LATEST        
@@ -442,7 +442,7 @@ LATEST
 ; (-- xt)
 ; Also in gforth
 
-        +CREATE "latestxt", 0
+        +CREATE_INTERNAL "latestxt", 0
 W_LATESTXT
         !word DO_VALUE
 LATESTXT
@@ -455,7 +455,7 @@ LATESTXT
 
         ; TODO CLEAN THIS UP!
 
-        +CREATE "lower", 0
+        +CREATE_INTERNAL "lower", 0
 W_LOWER
         !word DO_COLON
 
@@ -540,7 +540,7 @@ _lower_zero_length
 ; (nt -- xt)
 ; This is like name>interpret but gives the xt even for compile-only words
 
-        +CREATE "name>xt", 0
+        +CREATE_INTERNAL "name>xt", 0
 W_NAME_TO_XT
         !word DO_COLON
         !word W_DUP
@@ -572,7 +572,7 @@ W_NOOP
 ;               The user may alter and examine OUT to control display 
 ;               formatting.
 
-        +CREATE "out", 0
+        +CREATE_INTERNAL "out", 0
 W_OUT
         !word DO_CONSTANT
         !word $00ec ; pntr TODO symbol?
@@ -581,7 +581,7 @@ W_OUT
 ; RP!
 ; (addr --)
 
-        +CREATE "rp!", 0
+        +CREATE_INTERNAL "rp!", 0
 W_RPSTORE
         !word *+2
         lda 0,x
@@ -623,7 +623,7 @@ RPSTORE
 ; (-- addr)
 ; From gforth
 
-        +CREATE "rp@", 0
+        +CREATE_INTERNAL "rp@", 0
 W_RPAT
         !word *+2
         jsr RPAT
@@ -684,7 +684,7 @@ RPAT
 
 ; TODO it might be more convenient if d was not left on the stack on failures
 
-        +CREATE "s>number?", 0
+        +CREATE_INTERNAL "s>number?", 0
 W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
         !word DO_COLON
 
@@ -839,7 +839,7 @@ _stonumber_check_base_set
 ; Return the location of the next string buffer
 ; TODO return the length also?
 
-        +CREATE "sbuf", 0
+        +CREATE_INTERNAL "sbuf", 0
 W_SBUF
         !word *+2
         ; TODO swap between two buffers
@@ -851,7 +851,7 @@ W_SBUF
 ; ****************************************************************************
 ; SOURCE-LINE
 
-        +CREATE "source-line", 0
+        +CREATE_INTERNAL "source-line", 0
 W_SOURCE_LINE
         !word DO_VARIABLE
         !word 0
@@ -860,7 +860,7 @@ W_SOURCE_LINE
 ; SP!
 ; (addr --)
 
-        +CREATE "sp!", 0
+        +CREATE_INTERNAL "sp!", 0
 W_SPSTORE
         !word *+2
 SPSTORE
@@ -880,7 +880,7 @@ SPSTORE
 ;               before SP@ was executed.  (e.g. 1 2 SP@ @ . . . would type 
 ;               2 2 1 )
 
-        +CREATE "sp@", 0
+        +CREATE_INTERNAL "sp@", 0
 W_SPAT
         !word *+2
         phx
@@ -895,7 +895,7 @@ W_SPAT
 ;
 
 !if 0 {
-        +CREATE "!csp", 0
+        +CREATE_INTERNAL "!csp", 0
 W_SCSP
         !word DO_COLON
 ;          !word SPAT
@@ -912,7 +912,7 @@ W_SCSP
 ;               saved in CSP.
 
 !if 0 {
-        +CREATE "?csp", 0
+        +CREATE_INTERNAL "?csp", 0
 W_QCSP
         !word DO_COLON
 ;          !word SPAT
@@ -933,7 +933,7 @@ W_QCSP
 ;               position, for compilation error checking.
 
 !if 0 {
-        +CREATE "csp", 0
+        +CREATE_INTERNAL "csp", 0
 W_CSP
         !word DO_USER
 ;          !byte $2C
@@ -946,7 +946,7 @@ W_CSP
 ;               Issue an error message if not executing.
 
 !if 0 {
-        +CREATE "?exec", 0
+        +CREATE_INTERNAL "?exec", 0
 W_QEXEC
         !word DO_COLON
 ;          !word STATE
@@ -965,7 +965,7 @@ W_QEXEC
 ;               message indicates that compiled conditionals do not match.
 
 !if 0 {
-        +CREATE "?pairs", 0
+        +CREATE_INTERNAL "?pairs", 0
 W_QPAIR
         !word DO_COLON
 ;          !word SUB
@@ -980,7 +980,7 @@ W_QPAIR
 ; ( -- )
 ;               Check if the stack is out of bounds.  
 
-        +CREATE "?stack", 0
+        +CREATE_INTERNAL "?stack", 0
 W_QSTACK
         !word DO_COLON
 !if 1 {
@@ -1011,7 +1011,7 @@ W_QSTACK
 ; TODO kernel call to query stop key
 
 !if 0 {
-        +CREATE "?terminal", 0
+        +CREATE_INTERNAL "?terminal", 0
 W_QTERMINAL
 ;    !word XQTER    ; Vector to code for ?TERMINAL
 }
