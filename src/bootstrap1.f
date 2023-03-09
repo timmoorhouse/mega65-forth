@@ -96,6 +96,11 @@
 
 1 constant r/o
 
+: include-file ( i*x fileid -- j*x ) save-input n>r to source-id 0 source-line !
+  0 begin drop
+    refill if ['] (evaluate) catch dup else 0 true then ( exception exit-flag )
+  until nr> restore-input drop throw ; ( TODO check status from restore-input )
+
 : included r/o open-file if -38 throw then 
   >r r@ include-file r> close-file drop ;
 

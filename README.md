@@ -76,7 +76,6 @@ These should get us to the point of bootstrapping with a dictionary written in f
   - [ ] File I/O error.
   - [ ] Unexpected EOF.
 - Moving more of the implementation from assembler to Forth.
-  - [ ] `INCLUDE-FILE`
   - [ ] `CLOSE-FILE`
   - [ ] `READ-LINE`
   - [ ] `READ-FILE`

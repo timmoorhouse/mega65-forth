@@ -217,51 +217,6 @@ W_FILE_SIZE
 }
 
 ; ****************************************************************************
-; INCLUDE-FILE
-; (i*x fileid -- j*x)
-
-; TODO move to bootstrap1.f
-
-!if ENABLE_FILE {
-        +CREATE "include-file", 0
-W_INCLUDE_FILE
-        !word DO_COLON
-
-        !word W_SAVE_INPUT
-        !word W_NTOR
-
-        +LITERAL SOURCE_ID
-        !word W_STORE
-
-        !word W_ZERO
-        !word W_SOURCE_LINE
-        !word W_STORE
-
--       !word W_REFILL
-        +ZBRANCH +
-
-        +LITERAL W_PEVALUATE
-        !word W_CATCH
-
-        !word W_QDUP
-        +ZBRANCH -
-        
-        +BRANCH ++
-
-+       !word W_ZERO
-
-++
-
-        !word W_NRFROM
-        !word W_RESTORE_INPUT
-        !word W_DROP            ; TODO check status from restore
-
-        !word W_THROW           ; Propagate an exception if there was one
-
-        !word W_PSEMI
-}
-
-; ****************************************************************************
 ; OPEN-FILE
 ; (c-addr u fam -- fileid ior)
 
