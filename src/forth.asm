@@ -247,6 +247,8 @@ pre_basepage = *
 }
 * = pre_basepage, overlay
 
+
+
 ; TODO transient buffer for s", s\" (need 2 buffers so that two consecutive
 ; strings can be stored)
 ; so the following should work:
@@ -327,7 +329,8 @@ pre_basepage = *
         +ALIGN
 }
 
-!set _here = $0
+!set forth_link = $0
+!set env_link   = $0
 
 ; Control bits
 F_IMMEDIATE    = $80
@@ -335,13 +338,25 @@ F_COMPILE_ONLY = $40
 ; <unused>       $20 ; TODO
 NAME_LEN_MASK  = $1f ; use lower bits for name length
 
-!macro CREATE .name, .flags {
+!macro CREATE2 .name, ~.link, .flags {
         +ALIGN
-        !word _here
-        !set _here = *-2
+        !word .link
+        !set .link = *-2
         !byte len(.name) | .flags
         !text .name
         +ALIGN
+}
+
+!macro CREATE .name, .flags {
+        +CREATE2 .name, ~forth_link, .flags
+}
+
+!macro CREATE_ENV .name {
+        +CREATE2 .name, ~env_link, 0
+}
+
+!macro IMMEDIATE {
+
 }
 
 !macro BRANCH .target {
@@ -379,6 +394,21 @@ NAME_LEN_MASK  = $1f ; use lower bits for name length
         !word W_COUNT
         !word W_TYPE
 }
+
+WORDLIST_TABLE_LEN = 10         ; TODO WORDLISTS
+        +ALIGN
+WORDLIST_TABLE
+FORTH_WORDLIST
+        !word 0         ; 0 - reserved for FORTH_WORDLIST
+!for i, 2, WORDLIST_TABLE_LEN {
+        !word -1        ; 1
+}
+
+        +CREATE "current", 0
+W_CURRENT
+        !word DO_VARIABLE
+CURRENT
+        !word FORTH_WORDLIST
 
 !ifdef DEBUG                { !src "debug.asm"         }
 
@@ -744,9 +774,9 @@ _onetime
         sta JSR_ONETIME+2
 
         ; TODO clean this up
-        lda #<_here
+        lda #<forth_link
         sta FORTH_WORDLIST
-        lda #>_here
+        lda #>forth_link
         sta FORTH_WORDLIST+1
 
         lda #<INITIAL_HERE

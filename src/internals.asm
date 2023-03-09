@@ -247,29 +247,6 @@ BRANCH  ; used by (loop), 0branch  TODO MESSY !!!!!!!!
 
 ; ****************************************************************************
 ;
-;
-;
-
-WORDLIST_TABLE_LEN = 10
-        +ALIGN
-WORDLIST_TABLE
-FORTH_WORDLIST
-        !word 0         ; 0 - reserved for FORTH_WORDLIST
-!for i, 2, WORDLIST_TABLE_LEN {
-        !word -1        ; 1
-}
-
-; ****************************************************************************
-; CURRENT
-
-        +CREATE "current", 0
-W_CURRENT
-        !word DO_VARIABLE
-CURRENT
-        !word FORTH_WORDLIST
-
-; ****************************************************************************
-;
 ;    CLITERAL pushes the next inline byte to data stack
 ;
 ;        +CREATE "cliteral"
