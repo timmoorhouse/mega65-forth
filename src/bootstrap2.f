@@ -4,8 +4,9 @@ cr .( Starting bootstrap stage 2... ) cr
   s" d-core.f"          included
   s" d-core-ext.f"      included
   s" d-file.f"          included
+  s" d-search.f"        included
 
-:noname ; is autoboot \ TODO could use decimal to save a few bytes
+' decimal is autoboot
 
 : savesystem ( "<spaces>name" -- ) parse-name w/o open-file drop \ TODO check status from open-file
   >r ( R: fid )
@@ -24,11 +25,11 @@ cr .( Starting bootstrap stage 2... ) cr
   again ; is (quit)
 
 \ Before saving a system, the following deferred words MUST be defined:
-\ . .S AUTOBOOT (QUIT)
+\ . .S AUTOBOOT (QUIT) FIND-NAME
 
 .( ... saving forth-minimal )
 savesystem forth-minimal,p,w
-unused . s" bytes free" type cr \ 28894
+unused . s" bytes free" type cr \ 28532
 
   s" d-block.f"         included
   s" d-block-ext.f"     included
@@ -45,7 +46,6 @@ unused . s" bytes free" type cr \ 28894
   s" d-locals-ext.f"    included
   s" d-memory.f"        included
 \ s" d-memory-ext.f"    included    \ TODO no need for one yet
-  s" d-search.f"        included
   s" d-search-ext.f"    included
   s" d-string.f"        included
   s" d-string-ext.f"    included
@@ -82,7 +82,7 @@ unused . s" bytes free" type cr \ 28894
 
 .( ... saving forth-complete )
 savesystem forth-complete,p,w
-unused . s" bytes free" type cr \ 26155
+unused . s" bytes free" type cr \ 26141
 
 .( ... bootstrap stage 2 complete ) cr cr
 

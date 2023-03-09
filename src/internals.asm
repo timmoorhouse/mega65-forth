@@ -313,26 +313,6 @@ W_FIND_NAME
         !word DO_DEFER
         !word W_SIMPLE_FIND_NAME
 
-; TODO move this to bootstrap
-        +NONAME
-W_SIMPLE_FIND_NAME     ; ( c-addr u -- 0 | nt )
-        !word DO_COLON
-
-        !word W_2DUP
-        !word W_INTERNALS_WORDLIST
-        !word W_FIND_NAME_IN
-        !word W_DUP
-        !word W_ZEQUAL
-        +ZBRANCH +
-        !word W_DROP
-        !word W_2DUP
-        !word W_FORTH_WORDLIST ; TODO
-        !word W_FIND_NAME_IN
-+
-        !word W_NIP
-        !word W_NIP
-        !word W_PSEMI
-
         +CREATE "find-name-in", 0
 W_FIND_NAME_IN  ; (c-addr u wid -- 0 | nt)
         !word DO_COLON

@@ -10,6 +10,7 @@
 
 ; TODO can we move put_string here?
 
+        +NONAME
 W_SIMPLE_DOT
         !word *+2
         lda #'$'
@@ -60,6 +61,25 @@ SIMPLE_DOTS
         jmp -
 +        
         rts
+
+        +NONAME
+W_SIMPLE_FIND_NAME     ; ( c-addr u -- 0 | nt )
+        !word DO_COLON
+
+        !word W_2DUP
+        !word W_INTERNALS_WORDLIST
+        !word W_FIND_NAME_IN
+        !word W_DUP
+        !word W_ZEQUAL
+        +ZBRANCH +
+        !word W_DROP
+        !word W_2DUP
+        !word W_FORTH_WORDLIST ; TODO
+        !word W_FIND_NAME_IN
++
+        !word W_NIP
+        !word W_NIP
+        !word W_PSEMI
 
 
         +NONAME
