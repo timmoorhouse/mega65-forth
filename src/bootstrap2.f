@@ -94,7 +94,7 @@ environment-wordlist forth-wordlist internals-wordlist 3 set-order
     2 pick swap type cr
   repeat 2drop r> drop ;
 
-: type ( "<spaces>name" ) parse-name r/o open-file 0<> -38 and throw
+: cat ( "<spaces>name" ) parse-name r/o open-file 0<> -38 and throw
   dup type-file close-file drop ;
 
 only forth definitions
