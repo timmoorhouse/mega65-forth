@@ -1361,11 +1361,12 @@ _pevaluate_word_not_found
 
         ; (c-addr u d)
 
-;        !word W_DPL
-;        !word W_AT
-;        !word W_ZLESS
-;        +ZBRANCH +
-
+!if 1 {
+        !word W_DPL
+        !word W_AT
+        !word W_ZLESS
+        +ZBRANCH +
+}
         !word W_DROP ; drop MSW
 
 +

@@ -696,10 +696,6 @@ W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
 
         !word W_OVER
         !word W_CAT
-!if 0 {
-        +DOTQ "s>number-5"
-        !word W_DOTS,W_CR
-}
         !word W_DUP
         +CLITERAL '-'
         !word W_EQUAL
@@ -740,7 +736,7 @@ W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
         !word W_ZERO
         !word W_ZERO
         !word W_2RFROM          ; (0 0 c-addr u) (R: old-base is-negative)
-        !word W_TONUMBER        ; (ud c-addr2 u2) (R: old-base is-negative)
+        !word W_PTONUMBER       ; (ud c-addr2 u2) (R: old-base is-negative)
         !word W_NIP
         !word W_ZEQUAL         ; (ud flag) (R: old-base is-negative)
 
@@ -757,10 +753,6 @@ _stonumber_finish_up
         !word W_RFROM           ; (d flag old-base)
         !word W_BASE
         !word W_STORE
-!if 0 {
-        +DOTQ " s>number-9"
-        !word W_DOTS,W_CR
-}
         !word W_PSEMI
 
 ; Checks for a leading #, $ or %
