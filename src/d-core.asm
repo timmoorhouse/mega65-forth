@@ -533,6 +533,18 @@ IN
         +CREATE ">number", 0
 W_TONUMBER
         !word DO_COLON
+        !word W_ZERO ; if dpl is >= 0, (>number) won't accept another '.'
+        !word W_DPL
+        !word W_STORE
+        !word W_PTONUMBER
+        !word W_PSEMI
+
+        ; +CREATE "(>number)", 0
+        +NONAME
+W_PTONUMBER
+        !word DO_COLON
+
+        ; TODO cleanup!
  
 _tonumber_loop
         ; (ud c-addr u) = (ud-low ud-high c-addr u)
@@ -544,26 +556,42 @@ _tonumber_loop
         +ZBRANCH _tonumber_done_1drop ; reached end of string
 
         !word W_DROP
-        !word W_CAT    ; (ud c) (R: c-addr u)
+        !word W_CAT
+        !word W_DUP     ; (ud c c) (R: c-addr u)
+        !word W_DIGIT
+        +ZBRANCH _tonumber_digit_bad
+        ; (ud c n) (R: c-addr u)
+        !word W_NIP 
+        ; (ud n) (R: c-addr u)
+        !word W_DPL
+        !word W_AT
+        !word W_ZLESS
+        +ZBRANCH _tonumber_inc_dpl
+        +BRANCH _tonumber_handle_digit
 
-!if 0 {
-        ; TODO check for '.'
-        !word W_DUP
-        +LITERAL '.'
+_tonumber_digit_bad
+        ; (ud c) (R: c-addr u)
+        +CLITERAL '.'
         !word W_EQUAL
-        +ZBRANCH +
-
+        +ZBRANCH _tonumber_done_0drop ; reached invalid char
+        !word W_DPL
+        !word W_AT
+        !word W_ZLESS
+        +ZBRANCH _tonumber_done_0drop ; invalid char (already seen a '.')
+        ; (ud) (R: c-addr u)
         !word W_ONE
         !word W_DPL
         !word W_PSTORE
-        !word W_DROP
         +BRANCH _tonumber_next
-+
-}
 
-        !word W_DIGIT
-        +ZBRANCH _tonumber_done_0drop ; reached invalid char
+_tonumber_inc_dpl
+        ; (ud n) (R: c-addr u)
+        !word W_ONE
+        !word W_DPL
+        !word W_PSTORE
+        ; fall through ...
 
+_tonumber_handle_digit
         !word W_SWAP ; (ud-low n ud-high) (R: c-addr)
 
         ; TODO some function for this?
