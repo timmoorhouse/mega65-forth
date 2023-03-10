@@ -185,6 +185,16 @@ W_2MINUS
         !word W_PSEMI
 
 ; ****************************************************************************
+; DPL
+; number of digits to right of decimal place in most recent numeric
+; conversion (-1 if none)
+
+        +CREATE_INTERNAL "dpl", 0
+W_DPL
+        !word DO_VARIABLE
+        !word 0
+
+; ****************************************************************************
 ; 0BRANCH
 
 ;      0BRANCH       f  ---                                  C2
@@ -721,6 +731,10 @@ W_STONUMBER   ; (c-addr u -- d flag) ; flag indicates success
 
 ++
         ; Now convert the unsigned portion
+
+        !word W_TRUE
+        !word W_DPL
+        !word W_STORE
 
         !word W_2TOR
         !word W_ZERO

@@ -415,7 +415,6 @@ W_2SWAP
         +CREATE ":", 0
 W_COLON
         !word DO_COLON
-;          !word QEXEC
 ;          !word SCSP  ; !csp
         !word W_PCREATE
         !word W_RBRACKET
@@ -546,6 +545,22 @@ _tonumber_loop
 
         !word W_DROP
         !word W_CAT    ; (ud c) (R: c-addr u)
+
+!if 0 {
+        ; TODO check for '.'
+        !word W_DUP
+        +LITERAL '.'
+        !word W_EQUAL
+        +ZBRANCH +
+
+        !word W_ONE
+        !word W_DPL
+        !word W_PSTORE
+        !word W_DROP
+        +BRANCH _tonumber_next
++
+}
+
         !word W_DIGIT
         +ZBRANCH _tonumber_done_0drop ; reached invalid char
 
@@ -565,6 +580,7 @@ _tonumber_loop
 
         ; (ud) (R: c-addr u)
 
+_tonumber_next
         !word W_2RFROM
         ; (ud c-addr u)
         !word W_SWAP
@@ -1317,8 +1333,14 @@ _pevaluate_word_not_found
 
         ; (c-addr u d)
 
+;        !word W_DPL
+;        !word W_AT
+;        !word W_ZLESS
+;        +ZBRANCH +
+
         !word W_DROP ; drop MSW
 
++
         !word W_NIP  ; drop c-addr u
         !word W_NIP
 
@@ -1329,6 +1351,7 @@ _pevaluate_word_not_found
         +ZBRANCH _pevaluate_loop ; if interpreting, we're done
 
         ; compiling ...
+        ; TODO handle double literal case ...
         +LITERAL W_PLITERAL
         !word W_COMMA ; COMPILEC?
         !word W_COMMA
@@ -1734,6 +1757,10 @@ W_SWAP
         +CREATE "type", 0
 W_TYPE
         !word DO_COLON
+!if 0 {
+        +CLITERAL '>'
+        !word W_EMIT
+}
         !word W_QDUP
         +ZBRANCH +
         !word W_OVER
@@ -1749,7 +1776,12 @@ _type_loop
 _type_after_loop
         +BRANCH ++
 +       !word W_DROP
-++      !word W_PSEMI
+++      
+!if 0 {
+        +CLITERAL '<'
+        !word W_EMIT
+}
+        !word W_PSEMI
 
 ; ****************************************************************************
 ; U<
