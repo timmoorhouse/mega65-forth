@@ -1361,17 +1361,17 @@ _pevaluate_word_not_found
 
         ; (c-addr u d)
 
-!if 1 {
+        !word W_ROT
+        !word W_DROP  ; drop c-addr u
+        !word W_ROT
+        !word W_DROP
+
         !word W_DPL
         !word W_AT
         !word W_ZLESS
         +ZBRANCH +
-}
         !word W_DROP ; drop MSW
-
 +
-        !word W_NIP  ; drop c-addr u
-        !word W_NIP
 
         ; (n)
 
@@ -1380,9 +1380,24 @@ _pevaluate_word_not_found
         +ZBRANCH _pevaluate_loop ; if interpreting, we're done
 
         ; compiling ...
-        ; TODO handle double literal case ...
+        !word W_DPL
+        !word W_AT
+        !word W_ZLESS
+        +ZBRANCH +
+        ; single literal case
         +LITERAL W_PLITERAL
-        !word W_COMMA ; COMPILEC?
+        !word W_COMMA
+        !word W_COMMA
+        +BRANCH _pevaluate_loop
+
++
+        ; double literal case
+        !word W_SWAP
+        +LITERAL W_PLITERAL ; TODO W_P2LITERAL
+        !word W_COMMA
+        !word W_COMMA
+        +LITERAL W_PLITERAL
+        !word W_COMMA
         !word W_COMMA
         +BRANCH _pevaluate_loop
 
