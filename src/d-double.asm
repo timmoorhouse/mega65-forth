@@ -7,8 +7,33 @@
 ; (???)
 ; ANSI 8.6.1.0360
 
+; TODO could move this to forth
+
 !if ENABLE_DOUBLE {
+        +CREATE "2constant", 0
+W_2CONSTANT
+        !word DO_COLON
+        !word W_CREATE
+        !word W_SWAP
+        !word W_COMMA
+        !word W_COMMA
+        !word W_PSCODE
 }
+DO_2CONSTANT
+        dex
+        dex
+        ldy #2
+        lda (<W),y
+        sta 0,x
+        iny
+        lda (<W),y
+        sta 1,x
+        iny
+        lda (<W),y
+        pha
+        iny
+        lda (<W),y
+        jmp PUSH
 
 ; ****************************************************************************
 ; 2LITERAL

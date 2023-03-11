@@ -22,13 +22,15 @@
 
 environment-wordlist current !
 
-$ff   constant /counted-string
-#16   constant address-unit-bits
-0     constant floored
-$ff   constant max-char
-$7fff constant max-n
-$ffff constant max-u
-#128  constant return-stack-cells
+$ff         constant  /counted-string
+#16         constant  address-unit-bits
+0           constant  floored
+$ff         constant  max-char
+$ffff $7fff 2constant max-d
+$7fff       constant  max-n
+$ffff       constant  max-u
+$ffff $ffff 2constant max-ud
+#128        constant  return-stack-cells
 
 internals-wordlist current !
 

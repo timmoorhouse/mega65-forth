@@ -1,13 +1,20 @@
 
 \ The following words are implemented internally:                             
 
-\ D+ DNEGATE 
+\ 2CONSTANT D+ DNEGATE 
+
+environment-wordlist current !
+
+internals-wordlist current !
+
+forth-wordlist current !
 
 \ *************************************************************************** 
 
-\ TODO 2CONSTANT
+\ TODO 2constant - move to forth from internal
 
-\ TODO 2LITERAL
+: 2literal ( x1 x2 -- ) ( -- x1 x2 ) 
+  postpone (2literal) swap , , ; immediate compile-only
 
 \ TODO 2VARIABLE
 

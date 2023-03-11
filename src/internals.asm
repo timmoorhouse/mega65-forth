@@ -268,7 +268,31 @@ W_PLITERAL:
         pha
         inw <I
         lda (<I),y
-_inc_I_PUSH
+_inc_I_PUSH ; TODO
+        inw <I
+        jmp PUSH
+
+; ****************************************************************************
+;
+;    2LITERAL pushes the next two inline word to data stack
+;
+
+        +CREATE_INTERNAL "(2literal)", 0
+W_P2LITERAL:
+        !word *+2
+        ; ldy #0 ; TODO
+        dex
+        dex
+        lda (<I),y
+        sta 0,x
+        inw <I
+        lda (<I),y
+        sta 1,x
+        inw <I
+        lda (<I),y
+        pha
+        inw <I
+        lda (<I),y
         inw <I
         jmp PUSH
 

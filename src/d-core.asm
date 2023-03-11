@@ -12,16 +12,6 @@
         !word DO_CONSTANT
         !word PAD_LEN
 
-        +CREATE_ENV "max-d"
-        !word DO_CONSTANT ; TODO 2CONSTANT
-        !word $ffff
-        !word $7fff
-
-        +CREATE_ENV "max-ud"
-        !word DO_CONSTANT ; TODO 2CONSTANT
-        !word $ffff
-        !word $ffff
-
         +CREATE_ENV "stack-cells"
         !word DO_CONSTANT
         !word (TOS - BOS) >> 1
@@ -1393,10 +1383,8 @@ _pevaluate_word_not_found
 +
         ; double literal case
         !word W_SWAP
-        +LITERAL W_PLITERAL ; TODO W_P2LITERAL
+        +LITERAL W_P2LITERAL
         !word W_COMMA
-        !word W_COMMA
-        +LITERAL W_PLITERAL
         !word W_COMMA
         !word W_COMMA
         +BRANCH _pevaluate_loop
