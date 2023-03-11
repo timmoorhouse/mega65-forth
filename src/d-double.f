@@ -36,7 +36,7 @@ forth-wordlist current !
 
 \ TODO D=
 
-\ TODO D>S
+: d>s ( d -- n ) drop ;
 
 \ DABS see core.f
 

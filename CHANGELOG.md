@@ -8,7 +8,7 @@ v0.2 alpha TBD
 - Improve error reporting.  The source line number, line contents and parse position are displayed along with (if available) a message for the exception number.
 - Added value `UNIT` used by `OPEN-FILE` as the unit number.  Defaults to 8.
 - CORE: add `ENVIRONMENT?` and `MARKER`.  CORE is now feature complete (with the exception of the obsolescent `[COMPILE]`).
-- DOUBLE: add `2CONSTANT`, `2LITERAL`.
+- DOUBLE: add `2CONSTANT`, `2LITERAL`, `D>S`.
 - SEARCH: add `ALSO`, `DEFINITIONS`, `FORTH`, `GET-CURRENT`, `GET-ORDER`, `ONLY`, `ORDER`, `PREVIOUS`, `SET-CURRENT` and `SET-ORDER`.  SEARCH is now feature complete.
 - STRING: add `UNESCAPE`.
 
