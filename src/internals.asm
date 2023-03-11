@@ -846,9 +846,20 @@ _stonumber_check_base_set
 ; Return the location of the next string buffer
 ; TODO return the length also?
 
+NEXT_SBUF       !byte 0
+
         +CREATE_INTERNAL "sbuf", 0
 W_SBUF
         !word *+2
+        lda NEXT_SBUF
+        beq +
+        sty NEXT_SBUF
+        lda #<(SBUF + SBUF_LEN)
+        pha
+        lda #>(SBUF + SBUF_LEN)
+        jmp PUSH
++
+        inc NEXT_SBUF
         ; TODO swap between two buffers
         lda #<SBUF
         pha

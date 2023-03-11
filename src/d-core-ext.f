@@ -139,7 +139,7 @@ create EscapeTable ( -- addr )
 
 \ Parses a string up to an unescaped '"', translating '\'
 \ escapes to characters. The translated string is a
-\ counted string at *\i{dest}.
+\ counted string at dest.
 \ The supported escapes (case sensitive) are:
 \ \a      BEL          (alert)
 \ \b      BS
@@ -178,10 +178,10 @@ create EscapeTable ( -- addr )
 \ the rules of parse\" above, returning the address
 \ of the translated counted string.
 : readEscaped ( "ccc" -- c-addr )
-  source >in @ /string tuck             \ -- len caddr len
-  sbuf parse\" nip
+  source >in @ /string ( c-addr u ) tuck             \ -- len caddr len
+  sbuf dup >r parse\" nip
   - >in +!
-  sbuf ; \ TODO can't call sbuf twice
+  r> ;
 
 forth-wordlist current !
 
