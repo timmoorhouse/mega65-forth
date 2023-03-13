@@ -13,6 +13,27 @@ internals-wordlist current !
     id.
     true ;
 
+: >name ( xt -- nt | 0 )
+  \ TODO
+  \ - skip over possible alignment byte
+  \ - crawl backwards over at most 31 printable chars
+  \ - stop if we hit something where lower 5 bits match length
+  \ OR
+  \ - traverse each wordlist looking for a match
+  ;
+
+: colon-see ( xt -- )
+  cr ." TODO do_colon" cr
+  20 0 do
+    dup . space
+    dup @ case
+        ( >r ) dup . cr ( r> )
+    endcase
+    2+
+  loop
+  drop
+  ;
+
 forth-wordlist current !
 
 \ *************************************************************************** 
@@ -38,8 +59,18 @@ forth-wordlist current !
 \ following gforth ...
 : xt-see ( xt -- ) 
     base @ >r hex
+    dup @ case
+    ['] :     @ of colon-see endof
+    ['] false @ of ." TODO do_constant" cr 1 dump endof
+    ['] >in   @ of ." TODO do_variable" cr 1 dump endof
+    \ TODO value
+    \ TODO 2constant
+    \ TODO 2variable
+    \ TODO does
+    \ TODO defer
+        >r 3 dump r>
+    endcase
     \ dup 4 u.r space ." TODO - xt-see "
-    3 dump
     r> base ! ;
 
 \ TODO

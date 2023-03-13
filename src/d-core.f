@@ -36,6 +36,10 @@ internals-wordlist current !
 
 : +- ( n1 n2 -- n3 ) 0< if negate then ; ( TODO REMOVE )
 
+variable e-msg
+variable e-msg#
+: e-msg! ( c-addr u ) e-msg# ! e-msg ! ;
+
 variable hld ( TODO can we remove this? )
 
 : m/mod ( ud1 u2 -- u3 ud4 ) >r 0 r@ um/mod r> swap >r um/mod r> ; ( TODO just for # so far )
@@ -53,10 +57,6 @@ forth-wordlist current !
 : > ( n1 n2 -- flag ) swap < ;
 
 : abort ( i*x -- ) ( R: j*x -- ) -1 throw ;
-
-variable e-msg
-variable e-msg#
-: e-msg! ( c-addr u ) e-msg# ! e-msg ! ;
 
 : abort" ( "ccc<quote>" -- )
   postpone if 

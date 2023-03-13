@@ -187,6 +187,8 @@ W_NAME_TO_COMPILE
 ; NAME>INTERPRET
 ; (nt -- xt)
 
+; TODO check gforth - their name>interpret returns something that throws -2048 on compile-only
+
 !if ENABLE_TOOLS_EXT {
         +CREATE "name>interpret", 0
 } else {
