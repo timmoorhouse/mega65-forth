@@ -245,7 +245,7 @@ BRANCH  ; used by (loop), 0branch  TODO MESSY !!!!!!!!
 ;
 ;        +CREATE "cliteral"
 
-        +NONAME
+        +CREATE_INTERNAL "(cliteral)", 0
 W_PCLITERAL
         !word *+2
         ; ldy #0 ; TODO

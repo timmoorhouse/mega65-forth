@@ -80,7 +80,7 @@ environment-wordlist forth-wordlist internals-wordlist 3 set-order
     ! \ do the fixup
   does> 
     dup @ to here cell+             \ restore here
-    dup @ set-current cell+           \ restore current
+    dup @ set-current cell+         \ restore current
     dup dup @ 0 ?do dup dup @ i - cells + @ swap loop @ set-order dup @ 1+ cells + \ restore order
     forth-wordlist 20 cmove \ restore wordlist table
   ;
@@ -110,7 +110,7 @@ unused . s" bytes free" type cr \ 26141
 
 : bm s" benchmark.f" included ;
 
-see dump
+see marker
 
 \ 1 2 3   asdjfklj   4 5 6
 

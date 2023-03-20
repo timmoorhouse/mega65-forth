@@ -39,7 +39,7 @@ internals-wordlist current !
 \ TODO handle does>
 : colon-see ( xt -- )
   dup . ." :" cr 2+
-  50 0 do
+  40 0 do
     dup .
     dup @ case
       \ Relative branches
@@ -50,11 +50,18 @@ internals-wordlist current !
       \ Others ...
       ['] (do)        of ." do "         2+ dup @ .       cr endof
       ['] (?do)       of ." ?do "        2+ dup @ .       cr endof
-      ['] (literal)   of 2+ dup @ . cr endof
+      ['] (cliteral)  of dup 2+ c@ . 1+ cr endof
+      ['] (literal)   of 2+ dup @ '$' emit . cr endof
       ['] (csliteral) of 2+ dup dup c@ + 1+ swap s\" c\" " type count type '"' emit cr endof
       ['] (2literal)  of ." (2literal)"  cr endof \ TODO the literal
       ['] (;)         of ." ;" cr leave endof
-      dup >name ?dup if name>string type else dup . then cr
+      ['] (;code)     of 
+        \ TODO check for jsr/$20 (does>) if so, continue otherwise leave
+        ." TODO ;code " cr 
+      endof 
+      \ ['] forth of ." TODO DOES>" cr endof \ TODO
+      \ TODO ;code
+      dup >name ?dup if name>string type else dup u. then cr
     endcase
     2+
   loop

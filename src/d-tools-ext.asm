@@ -43,7 +43,7 @@ W_SCODE
 ;               The run-time procedure, compiled by ;CODE, that rewrites 
 ;               the code field of the most recently defined word to point 
 ;               to the following machine code sequence.  See ;CODE.
-        +NONAME
+        +CREATE "(;code)", F_IMMEDIATE ; +NONAME
 W_PSCODE
         !word DO_COLON
         !word W_RFROM
