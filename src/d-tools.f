@@ -42,12 +42,14 @@ internals-wordlist current !
   50 0 do
     dup .
     dup @ case
-      ['] branch      of ." branch "     2+ dup dup @ + . cr endof \ TODO destination
-      ['] 0branch     of ." 0branch "    2+ dup dup @ + . cr endof \ TODO destination
-      \ TODO (do)
-      \ TODO (?do)
-      \ TODO (loop)
-      \ TODO (+loop)
+      \ Relative branches
+      ['] branch      of ." branch "     2+ dup dup @ + . cr endof
+      ['] 0branch     of ." 0branch "    2+ dup dup @ + . cr endof
+      ['] (loop)      of ." loop "       2+ dup dup @ + . cr endof 
+      ['] (+loop)     of ." +loop "      2+ dup dup @ + . cr endof
+      \ Others ...
+      ['] (do)        of ." do "         2+ dup @ .       cr endof
+      ['] (?do)       of ." ?do "        2+ dup @ .       cr endof
       ['] (literal)   of 2+ dup @ . cr endof
       ['] (csliteral) of 2+ dup dup c@ + 1+ swap s\" c\" " type count type '"' emit cr endof
       ['] (2literal)  of ." (2literal)"  cr endof \ TODO the literal
