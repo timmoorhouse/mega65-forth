@@ -58,11 +58,12 @@ environment-wordlist forth-wordlist internals-wordlist 3 set-order
   s" d-xchar.f"         included
   s" d-xchar-ext.f"     included
 
+\ TODO should prompt text be separate from prompt colour?
 :noname
   case
-  3 of  4 foreground           endof \ error  - purple
-  2 of 14 foreground ." ok" cr endof \ prompt - lt blue
-  1 of  7 foreground           endof \ input  - yellow
+  3 of  4 foreground                 endof \ error  - purple
+  2 of 14 foreground space ." ok" cr endof \ prompt - lt blue
+  1 of  7 foreground                 endof \ input  - yellow
   ( 0 ) 1 foreground                 \ output - white
   endcase ; is theme
 

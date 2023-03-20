@@ -91,9 +91,9 @@ forth-wordlist current !
 
 : ['] ' postpone literal ; immediate compile-only
 
-: >body 2+ ;
+: >body ( xt -- a-addr ) 2+ ;
 
-: to state @ if
+: to ( i*x "<spaces>name" -- ) state @ if
     postpone ['] postpone >body postpone !
   else
     ' >body !

@@ -38,10 +38,9 @@ internals-wordlist current !
 
 \ TODO handle does>
 : colon-see ( xt -- )
-  2+ \ skip do_colon
-  cr \ ." TODO do_colon" cr
+  dup . ." :" cr 2+
   50 0 do
-    dup . space
+    dup .
     dup @ case
       ['] branch      of ." branch "     2+ dup dup @ + . cr endof \ TODO destination
       ['] 0branch     of ." 0branch "    2+ dup dup @ + . cr endof \ TODO destination
@@ -65,9 +64,9 @@ forth-wordlist current !
 \ *************************************************************************** 
 
 \ TODO if base is 10 used signed output, otherwise unsigned?
-: .s '<' emit depth 0 u.r '>' emit space depth if 0 depth 2- do i pick . -1 +loop then ;
+: .s ( -- ) '<' emit depth 0 u.r '>' emit space depth if 0 depth 2- do i pick . -1 +loop then ;
 
-: ? @ . ;
+: ? ( a-addr -- ) @ . ;
 
 : dump ( addr u -- ) \ u is number of lines to display
     base @ >r hex cr ( addr u ) ( R: base )
@@ -87,8 +86,8 @@ forth-wordlist current !
     base @ >r hex
     dup @ case
     ['] :     @ of colon-see endof
-    ['] false @ of ." TODO do_constant" cr 1 dump endof
-    ['] >in   @ of ." TODO do_variable" cr 1 dump endof
+    ['] false @ of 2+ @ . ." constant" cr endof
+    ['] >in   @ of 2+ @ . ." variable" cr endof
     \ TODO value
     \ TODO 2constant
     \ TODO 2variable
@@ -116,13 +115,11 @@ forth-wordlist current !
 : see ( "<spaces>name" -- )
     base @ >r hex cr
     parse-name find-name ?dup if
-        .s cr
-        dup 4 u.r space ':' emit space dup name>string type
-        \ TODO show name, flags
-        dup name>interpret xt-see
-        ?immediate if ." immediate" then
-        \ TODO compile-only
+        dup 4 u.r dup name>string space type 
+        dup ?immediate    if space ." immediate"    then
+        dup ?compile-only if space ." compile-only" then
         cr
+        name>xt xt-see
     then r> base ! ;
 
 : words ( -- ) get-order 0 ?do ['] print-name swap traverse-wordlist loop ;
