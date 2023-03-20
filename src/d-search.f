@@ -1,14 +1,18 @@
 
 \ The following words are implemented internally:
-\ FORTH-WORDLIST SEARCH-WORDLIST WORDLIST
+\ FORTH-WORDLIST WORDLIST
 
 : get-current ( -- wid ) current @ ;
 
 : set-current ( wid -- ) current ! ;
 
+internals-wordlist set-current
+
 variable #order
 
-create context 8 ( wordlists ) cells allot
+create context wordlists cells allot
+
+forth-wordlist set-current
  
  \ TODO what's supposed to happen when the search order is empty (n=0)?
 : get-order ( -- widn ... wid1 n )
@@ -26,7 +30,13 @@ create context 8 ( wordlists ) cells allot
   0 ?do i cells context + ! loop
   ;
 
--1 set-order
+\ -1 set-order
+forth-wordlist internals-wordlist 2 set-order
+
+: search-wordlist ( c-addr u wid -- 0 | xt 1 | xt -1 )
+  find-name-in dup if
+    dup name>interpret swap ?immediate if 1 else true then ( TODO name>xt? )
+  then ;
 
 :noname ( c-addr u -- nt | 0 )
   2>r get-order 2r> rot 0 swap 0 ?do ( widn ... widi c-addr u nt|0 )

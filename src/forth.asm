@@ -233,6 +233,8 @@ NUM_STRING_BUFFERS = 2
 STRING_BUFFER_LEN  = 80
 SBUF_LEN           = NUM_STRING_BUFFERS * STRING_BUFFER_LEN
 SBUF               = TIB - SBUF_LEN
+FILE_BUFFER_SIZE   = 128 ; should be long enough for a line
+MAX_OPEN_FILES     = 10  ; kernel limit
 DAREA_LEN          = MAX_OPEN_FILES * FILE_BUFFER_SIZE 
 DAREA              = SBUF - DAREA_LEN
 HOLD_LEN           = 34 ; min (2*16)+2 = 34
@@ -325,7 +327,9 @@ pre_basepage = *
         +ALIGN
 }
 
-!set _here = $0
+!set forth_link       = $0
+!set environment_link = $0
+!set internals_link   = $0
 
 ; Control bits
 F_IMMEDIATE    = $80
@@ -333,13 +337,26 @@ F_COMPILE_ONLY = $40
 ; <unused>       $20 ; TODO
 NAME_LEN_MASK  = $1f ; use lower bits for name length
 
-!macro WORD .name, .flags {
+!macro CREATE2 .name, ~.link, .flags {
         +ALIGN
-        !word _here
-        !set _here = *-2
+        !word .link
+        !set .link = *-2
         !byte len(.name) | .flags
         !text .name
         +ALIGN
+}
+
+!macro CREATE .name, .flags {
+        +CREATE2 .name, ~forth_link, .flags
+}
+
+!macro CREATE_ENV .name {
+        +CREATE2 .name, ~environment_link, 0
+}
+
+!macro CREATE_INTERNAL .name, .flags {
+        ; +CREATE2 .name, ~forth_link, .flags           ; TODO separate wordlist?
+        +CREATE2 .name, ~internals_link, .flags
 }
 
 !macro BRANCH .target {
@@ -377,6 +394,44 @@ NAME_LEN_MASK  = $1f ; use lower bits for name length
         !word W_COUNT
         !word W_TYPE
 }
+
+WORDLISTS = 12
+        +ALIGN
+WORDLIST_TABLE
+FORTH_WORDLIST
+        !word 0
+INTERNALS_WORDLIST
+        !word 0
+ENVIRONMENT_WORDLIST
+        !word 0
+!for i, 4, WORDLISTS {
+        !word -1        ; others are unallocated initially
+}
+
+; TODO reserved entry for EDITOR?
+; TODO reserved entry for ASSEMBLER?
+; TODO reserved entry for internals?
+
+        +CREATE "forth-wordlist", 0
+W_FORTH_WORDLIST
+        !word DO_CONSTANT
+        !word FORTH_WORDLIST
+
+        +CREATE "internals-wordlist", 0
+W_INTERNALS_WORDLIST
+        !word DO_CONSTANT
+        !word INTERNALS_WORDLIST
+
+        +CREATE "environment-wordlist", 0
+W_ENVIRONMENT_WORDLIST
+        !word DO_CONSTANT
+        !word ENVIRONMENT_WORDLIST
+
+        +CREATE "current", 0
+W_CURRENT
+        !word DO_VARIABLE
+CURRENT
+        !word FORTH_WORDLIST
 
 !ifdef DEBUG                { !src "debug.asm"         }
 
@@ -455,7 +510,7 @@ NEXT
 ; ****************************************************************************
 ; COLD
 
-;        +WORD "cold"
+;        +CREATE "cold"
 ;W_COLD
 ;        !word *+2
 COLD
@@ -464,7 +519,7 @@ COLD
 ;               to the minimum standard and restart via ABORT.  May be
 ;               called from the terminal to remove application programs
 ;               and restart.
-
+        
         +map_reset
 
         ; E000-FFFF     3E000   KERNAL
@@ -513,9 +568,15 @@ COLD
 
         lda #10
         sta &BASE
+
+        ; lda #'a'
+        ; jsr EMIT
     
 JSR_ONETIME
         jsr _onetime            ; will be replaced with NOPs in _onetime
+
+        ; lda #'b'
+        ; jsr EMIT
     
 WARM
 
@@ -548,7 +609,7 @@ WARM
         jsr EMIT
         lda #11                 ; Disable shift-mega case changes TODO skip this?
         jsr EMIT
-!if 1 {                         ; TODO this seems to cause problems on a real MEGA65
+!if 0 {                         ; TODO this seems to cause problems on a real MEGA65
         lda #27                 ; ESC 5 - switch to 80x50
         jsr EMIT
         lda #53
@@ -615,12 +676,12 @@ _startup_text2
 !src "revision.asm"
 }
 
-        +WORD "autoboot", 0
+        +CREATE "autoboot", 0
 W_AUTOBOOT
         !word DO_DEFER
         !word W_AUTOBOOT_BOOTSTRAP
 
-        +WORD "(quit)", 0
+        +CREATE_INTERNAL "(quit)", 0
 W_PQUIT
         !word DO_DEFER
         !word W_DEFER_UNINITIALIZED
@@ -707,7 +768,7 @@ _main_loop
 !src "d-facility-ext.asm"
 !src "fig.asm"
 !src "d-file.asm"
-!src "d-file-ext.asm"
+; !src "d-file-ext.asm"
 !src "d-floating.asm"
 !src "d-floating-ext.asm"
 !src "d-locals.asm"
@@ -726,13 +787,6 @@ _main_loop
 !src "d-xchar.asm"
 !src "d-xchar-ext.asm"
 
-
-        +WORD "here", 0
-W_HERE
-        !word DO_CONSTANT
-HERE
-        !word 0
-
 INITIAL_HERE
 
 ;
@@ -743,16 +797,27 @@ INITIAL_HERE
 _onetime
 
         ; Replace the 'jsr _onetime' with CLDs so this won't be done again
-        lda #$d8                        ; CLD
+        ; lda #$d8                        ; CLD
+        lda #$b8 ; clv
         sta JSR_ONETIME
         sta JSR_ONETIME+1
         sta JSR_ONETIME+2
 
         ; TODO clean this up
-        lda #<_here
+        lda #<forth_link
         sta FORTH_WORDLIST
-        lda #>_here
+        lda #>forth_link
         sta FORTH_WORDLIST+1
+
+        lda #<environment_link
+        sta ENVIRONMENT_WORDLIST
+        lda #>environment_link
+        sta ENVIRONMENT_WORDLIST+1
+
+        lda #<internals_link
+        sta INTERNALS_WORDLIST
+        lda #>internals_link
+        sta INTERNALS_WORDLIST+1
 
         lda #<INITIAL_HERE
         sta HERE
@@ -774,11 +839,9 @@ _onetime
 
 ; TODO report collision
 
-;!if * > DAREA {
-;        !error "embedded bootstrap code colliding with high memory"
-;} else {
-
-; This gap must be >= 0
-!warn DAREA - *, " byte gap between bootstrap code and high memory"
-
-;}
+!if * > DAREA {
+        !error "embedded bootstrap code colliding with high memory"
+} else {
+        ; This gap must be >= 0
+        !warn DAREA - *, " byte gap between bootstrap code and high memory"
+}

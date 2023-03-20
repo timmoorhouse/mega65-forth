@@ -10,6 +10,7 @@
 
 ; TODO can we move put_string here?
 
+        +NONAME
 W_SIMPLE_DOT
         !word *+2
         lda #'$'
@@ -61,6 +62,39 @@ SIMPLE_DOTS
 +        
         rts
 
+        +NONAME
+W_SIMPLE_FIND_NAME     ; ( c-addr u -- 0 | nt )
+        !word DO_COLON
+
+        !word W_2DUP
+        !word W_INTERNALS_WORDLIST
+        !word W_FIND_NAME_IN
+        !word W_DUP
+        !word W_ZEQUAL
+        +ZBRANCH +
+        !word W_DROP
+
+        ; ( c-addr u )
+
+        !word W_2DUP
+        !word W_FORTH_WORDLIST
+        !word W_FIND_NAME_IN
+        !word W_DUP
+        !word W_ZEQUAL
+        +ZBRANCH +
+        !word W_DROP
+
+        ; ( c-addr u )
+
+        !word W_2DUP
+        !word W_ENVIRONMENT_WORDLIST
+        !word W_FIND_NAME_IN
+
++
+        ; ( c-addr u 0|nt )
+        !word W_NIP
+        !word W_NIP
+        !word W_PSEMI
 
         +NONAME
 W_AUTOBOOT_BOOTSTRAP
@@ -71,9 +105,6 @@ W_AUTOBOOT_BOOTSTRAP
 
         !word W_BOOTSTRAP_MIN
 
-        !word W_CR
-        +DOTQ "Starting bootstrap stage 2..."
-        !word W_CR
         +CSLITERAL "bootstrap2.f"
         !word W_COUNT
         +CSLITERAL "included"
@@ -123,32 +154,19 @@ _bootstrap_min_extend_line
 
 _bootstrap_min_found_linefeed
 
-!if 0 {
-        !word W_DOTS
-        !word W_2DUP
-        !word W_TYPE
-        !word W_CR
-}
-
         !word W_DUP
         !word W_TOR
 
         ; (c-addr u) (R: c-addr u)
         !word W_EVALUATE
 
-!if 0 {
-        +DOTQ "evaluate done"
-        !word W_CR
-}
+        ; TODO check for dictionary colliding with bootstrap
 
         !word W_2RFROM
         !word W_PLUS
         !word W_1PLUS ; eat the linefeed
 
         !word W_TOR
-!if 0 {
-        !word W_DOTS,W_CR
-}
 
         +BRANCH _bootstrap_min_loop
 
@@ -161,11 +179,7 @@ _bootstrap_min_done
         !word W_PSEMI
 
 BOOTSTRAP_MIN_START
-; TODO make a bootstrap.f of just what we need to get off the ground
 !binary "bootstrap1.f"
-; !binary "core.f"
-; !binary "core-ext.f"
-; !binary "file.f"
-!byte $0a
+!byte $0a ; an extra linefeed since we don't handle the last line yet TODO remove
 BOOTSTRAP_MIN_LEN = *-BOOTSTRAP_MIN_START
 BOOTSTRAP_MIN_END

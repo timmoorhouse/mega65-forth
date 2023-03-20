@@ -1,8 +1,4 @@
 
-\ The following words are implemented internally:
-\
-\ FILE-STATUS RENAME-FILE REQUIRED
-
 \ TODO file-status
 
 : flush-file ( fileid -- ior ) drop 0 ; \ TODO

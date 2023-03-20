@@ -52,7 +52,7 @@
 ; SETBANK
 ; A = bank for file data, X = bank for filename
 
-        +NONAME
+        +CREATE_INTERNAL "k-setbank", 0
 W_SETBANK       ; (data filename --)
         !word *+2
         stx <TEMP1
@@ -114,7 +114,7 @@ SETBANK
 ; $40 end of file
 ; $80 device not present
 
-        +NONAME
+        +CREATE_INTERNAL "k-readss", 0
 W_READSS        ; (-- ior)
         !word *+2
         jsr READSS
@@ -134,7 +134,7 @@ READSS
 ; Used registers: –
 ; Real address: $FE00.
 
-        +NONAME
+        +CREATE_INTERNAL "k-setlfs", 0
 W_SETLFS        ; (logical device secondary --)
         !word *+2
         stx <TEMP1
@@ -163,7 +163,7 @@ SETLFS
 ; Used registers: –
 ; Real address: $FDF9.
 
-        +NONAME
+        +CREATE_INTERNAL "k-setnam", 0
 W_SETNAM        ; (c-addr u --)
         !word *+2
         stx <TEMP1
@@ -189,7 +189,7 @@ SETNAM
 ; Used registers: A, X, Y.
 ; Real address: ($031A), $F34A.
 
-        +NONAME
+        +CREATE_INTERNAL "k-open", 0
 W_OPEN          ; (--)
         !word *+2
         jsr OPEN
@@ -207,7 +207,7 @@ OPEN
 ; Used registers: A, X, Y.
 ; Real address: ($031C), $F291.
 
-        +NONAME
+        +CREATE_INTERNAL "k-close", 0
 W_CLOSE         ; (fileid --)
         !word *+2
         lda 0,x
@@ -226,7 +226,7 @@ CLOSE
 ; Used registers: A, X.
 ; Real address: ($031E), $F20E.
 
-        +NONAME
+        +CREATE_INTERNAL "k-chkin", 0
 W_CHKIN         ; (u --)
         !word *+2
         stx <TEMP1
@@ -248,7 +248,7 @@ CHKIN
 ; Used registers: A, X.
 ; Real address: ($0320), $F250.
 
-        +NONAME
+        +CREATE_INTERNAL "k-chkout", 0
 W_CHKOUT        ; (u --)
         !word *+2
         stx <TEMP1
@@ -276,7 +276,7 @@ CHKOUT
 
 ; TODO duplication with W_KEY
 
-        +NONAME
+        +CREATE_INTERNAL "k-basin", 0
 W_BASIN         ; (-- c)
         !word *+2
         jsr BASIN

@@ -7,8 +7,33 @@
 ; (???)
 ; ANSI 8.6.1.0360
 
+; TODO could move this to forth
+
 !if ENABLE_DOUBLE {
+        +CREATE "2constant", 0
+W_2CONSTANT
+        !word DO_COLON
+        !word W_CREATE
+        !word W_SWAP
+        !word W_COMMA
+        !word W_COMMA
+        !word W_PSCODE
 }
+DO_2CONSTANT
+        dex
+        dex
+        ldy #2
+        lda (<W),y
+        sta 0,x
+        iny
+        lda (<W),y
+        sta 1,x
+        iny
+        lda (<W),y
+        pha
+        iny
+        lda (<W),y
+        jmp PUSH
 
 ; ****************************************************************************
 ; 2LITERAL
@@ -28,7 +53,7 @@
 ;               number will remain on the stack.
 
 !if 0 {
-        +WORD "dliteral", 0
+        +CREATE "dliteral", 0
 W_DLITERAL
         !word DO_COLON
 ;          !word STATE
@@ -57,7 +82,7 @@ W_DLITERAL
 ; This is required by >number (core) but will only be visible if DOUBLE is enabled
 
 !if ENABLE_DOUBLE {
-        +WORD "d+", 0
+        +CREATE "d+", 0
 } else {
         +NONAME
 }
@@ -84,7 +109,7 @@ W_DPLUS
 ; ANSI 8.6.1.1050
 
 !if ENABLE_DOUBLE {
-        +WORD "d-", 0
+        +CREATE "d-", 0
 W_DSUB
         !word *+2
         sec
@@ -182,7 +207,7 @@ W_DSUB
 
 ; Required by the implementation of . (core)
 
-        +WORD "dnegate", 0
+        +CREATE "dnegate", 0
 W_DNEGATE
         !word *+2
         ; ldy #0 ; TODO

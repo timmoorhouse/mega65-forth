@@ -16,6 +16,8 @@ DO_JUMP_W
 ;      W        address of the code field pointer in zero-page.
 W               !word 0
 
+                !byte 0         ; alignment
+
 ; floating point stack?
 
 ; TODO use a word for this? (turn it into S)
@@ -24,8 +26,6 @@ W               !word 0
 XSAVE           !byte 0 ; temporary to save S when we need to reuse X
 ; TODO separate XSAVE for kernel calls
 KERNEL_XSAVE    !byte 0 ; just for use in kernel calls
-
-NEXT_SBUF       !byte 0 ; TODO move out of base page?
 
 ; TODO move these out of basepage? make them values ...
 INPUT_BUFFER    !word 0 ; Address and length of input buffer

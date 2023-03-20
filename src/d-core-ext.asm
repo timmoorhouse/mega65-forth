@@ -7,7 +7,7 @@
 ; (x -- flag)
 
 !if ENABLE_CORE_EXT {
-        +WORD "0<>", 0
+        +CREATE "0<>", 0
 W_ZNOTEQUAL
         !word *+2
         ; see also 0= (core)
@@ -26,7 +26,7 @@ W_ZNOTEQUAL
 ; (n -- flag)
 
 !if ENABLE_CORE_EXT {
-        +WORD "0>", 0
+        +CREATE "0>", 0
 W_ZGREATER
         !word *+2
         ; ldy #0 ; TODO
@@ -48,7 +48,7 @@ W_ZGREATER
 ; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "2>r", 0
+        +CREATE "2>r", 0
 } else {
         +NONAME
 }
@@ -72,7 +72,7 @@ W_2TOR
 ; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "2r>", 0
+        +CREATE "2r>", 0
 } else {
         +NONAME
 }
@@ -100,7 +100,7 @@ W_2RFROM
 ; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "2r@", 0
+        +CREATE "2r@", 0
 } else {
         +NONAME
 }
@@ -151,7 +151,7 @@ W_2RAT
 ; (x_1 x_2 -- flag)
 
 !if ENABLE_CORE_EXT {
-        +WORD "<>", 0
+        +CREATE "<>", 0
 W_NOTEQUAL
         !word *+2
         ; see also = (core)
@@ -176,7 +176,7 @@ W_NOTEQUAL
 ; (n1 n2 --)
 
 !if ENABLE_CORE_EXT {
-        +WORD "(?do)", 0
+        +CREATE_INTERNAL "(?do)", 0
 W_PQDO
         !word *+2
 
@@ -208,7 +208,7 @@ W_PQDO
 ; TODO move to core-ext.f once we have DOES> (see reference implementation)
 
 !if ENABLE_CORE_EXT {
-        +WORD "defer", 0
+        +CREATE "defer", 0
 } else {
         +NONAME
 }
@@ -278,7 +278,7 @@ W_DEFER_UNINITIALIZED
 ; The word itself is required by the implmentation (of FIND) but is only visible if CORE-EXT is enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "nip", 0
+        +CREATE "nip", 0
 } else {
         +NONAME
 }
@@ -299,7 +299,7 @@ W_NIP
 ; The word itself is required by the implementation but will only be visible if CORE-EXT is enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "parse", 0
+        +CREATE "parse", 0
 } else {
         +NONAME
 }
@@ -418,7 +418,7 @@ _parse_done
 ; The word itself is required by the implementation but will only be visible if CORE-EXT is enabled
 
 !if ENABLE_CORE_EXT {
-        +WORD "parse-name", 0
+        +CREATE "parse-name", 0
 } else {
         +NONAME
 }
@@ -428,7 +428,7 @@ W_PARSE_NAME
         !word W_PPARSE_NAME
         !word W_PSEMI
 
-        +WORD "(parse-name)", 0
+        +CREATE_INTERNAL "(parse-name)", 0
 W_PPARSE_NAME ; (char "<chars>name<char>" -- c-addr u)
         !word *+2
 
@@ -573,7 +573,7 @@ _parse_name_all_done
 ; (x_u...x_1 x_0 u -- x_u...x_1 x_0 x_u)
 
 !if ENABLE_CORE_EXT {
-        +WORD "pick", 0
+        +CREATE "pick", 0
 } else {
         +NONAME
 }
@@ -596,7 +596,7 @@ W_PICK
 ; (-- flag)
 
 !if ENABLE_CORE_EXT {
-        +WORD "refill", 0
+        +CREATE "refill", 0
 } else {
         +NONAME
 }
@@ -622,7 +622,7 @@ W_REFILL
 _refill_file
 
         !word W_SOURCE_ID
-        !word W_BUFFER_OF_FILEID        ; (c-addr u)
+        !word W_FILEID_TO_BUFFER        ; (c-addr u)
         !word W_OVER
         !word W_SWAP                    ; (c-addr c-addr u)
         !word W_TWO
@@ -683,7 +683,7 @@ _refill_done
 ; TODO always enable?
 
 !if ENABLE_CORE_EXT {
-        +WORD "restore-input", 0
+        +CREATE "restore-input", 0
 } else {
         +NONAME
 }
@@ -708,7 +708,7 @@ W_RESTORE_INPUT
 ; (x_u x_u-1...x_0 u -- x_u-1...x_0 x_u)
 
 !if ENABLE_CORE_EXT {
-        +WORD "roll", 0
+        +CREATE "roll", 0
 } else {
         +NONAME
 }
@@ -753,7 +753,7 @@ W_ROLL
 ; TODO always enable?
 
 !if ENABLE_CORE_EXT {
-        +WORD "save-input", 0
+        +CREATE "save-input", 0
 } else {
         +NONAME
 }
@@ -774,7 +774,7 @@ W_SAVE_INPUT
 ; (-- 0 | -1 | fileid)
 
 !if ENABLE_CORE_EXT {
-        +WORD "source-id", 0
+        +CREATE "source-id", 0
 } else {
         +NONAME
 }
@@ -788,7 +788,7 @@ SOURCE_ID
 ; (-- true)
 
 !if ENABLE_CORE_EXT {
-        +WORD "true", 0
+        +CREATE "true", 0
 } else {
         +NONAME
 }
@@ -801,7 +801,7 @@ W_TRUE
 ; (-- u)
 
 !if ENABLE_CORE_EXT {
-        +WORD "unused", 0
+        +CREATE "unused", 0
 W_UNUSED
         !word DO_COLON
         +LITERAL DAREA
@@ -817,7 +817,7 @@ W_UNUSED
 ; See also constant (core)
 
 !if ENABLE_CORE_EXT {
-        +WORD "value", 0
+        +CREATE "value", 0
 W_VALUE
         !word DO_COLON
         !word W_CREATE

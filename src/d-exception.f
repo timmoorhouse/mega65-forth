@@ -3,6 +3,8 @@
 \ variable handler
 \ 0 handler !
 
+internals-wordlist current !
+
 variable e-line
 variable e-in
 variable e-input-buffer
@@ -128,6 +130,8 @@ variable e-input-len
   e-in @ 2- spaces '^' emit cr
   0 theme \ output
   ; is e.
+
+forth-wordlist current !
 
 \ TODO CATCH
 \ : catch     ( xt -- exception# | 0 )

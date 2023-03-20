@@ -5,7 +5,7 @@
 HANDLER
         !word 0
 
-        +WORD "e.", 0
+        +CREATE_INTERNAL "e.", 0
 W_EDOT
         !word DO_DEFER
         !word W_SIMPLE_EDOT
@@ -19,12 +19,12 @@ W_SIMPLE_EDOT        ; (n --)
         !word W_CR
         !word W_PSEMI
 
-        +WORD "e-loc!", 0
+        +CREATE_INTERNAL "e-loc!", 0
 W_ELOC_STORE
         !word DO_DEFER
         !word W_NOOP
 
-        +WORD "e-loc0", 0
+        +CREATE_INTERNAL "e-loc0", 0
 W_ELOC_CLEAR
         !word DO_DEFER
         !word W_NOOP
@@ -34,7 +34,7 @@ W_ELOC_CLEAR
 ; ANSI 9.6.1.0875
 
 !if ENABLE_EXCEPTION {
-        +WORD "catch", 0
+        +CREATE "catch", 0
 } else {
         +NONAME
 }
@@ -74,7 +74,7 @@ W_CATCH
 ; TODO need to be able to throw from assembler
 
 !if ENABLE_EXCEPTION {
-        +WORD "throw", 0
+        +CREATE "throw", 0
 } else {
         +NONAME
 }

@@ -20,8 +20,12 @@
 ( 2 if...                 )
 ( 3 do... [loop|+loop]    )
 
+internals-wordlist current !
+
 ( Resolve backward branch ) 
 : back here - , ; compile-only ( TODO REMOVE? )
+
+forth-wordlist current !
 
 ( Marks the origin of an unconditional forward branch )
 : ahead postpone branch here 0 , ( 2 ) ; immediate compile-only
@@ -57,10 +61,14 @@
 
 : c, ( char -- ) here c! 1 allot ;
 
+internals-wordlist current !
+
 ( counted string literal )
 : csliteral ( c-addr u -- ) ( -- c-addr )
   postpone (csliteral) dup c, swap over here swap cmove allot
   ; immediate compile-only
+
+forth-wordlist current !
 
 ( TODO this only works for len <= 255 )
 : sliteral ( c-addr u -- ) ( -- c-addr u ) 
@@ -75,7 +83,7 @@
     sbuf swap 2dup 2>r cmove 2r> ( TODO klunky )
   then ; immediate
 
-: ' parse-name find-name dup 0= -13 and throw name>interpret ;
+: ' parse-name find-name name>interpret dup 0= -14 and throw ;
 
 ( : postpone )
 (   parse-name find-name dup 0= -13 and throw )
@@ -83,9 +91,9 @@
 
 : ['] ' postpone literal ; immediate compile-only
 
-: >body 2+ ;
+: >body ( xt -- a-addr ) 2+ ;
 
-: to state @ if
+: to ( i*x "<spaces>name" -- ) state @ if
     postpone ['] postpone >body postpone !
   else
     ' >body !
@@ -96,7 +104,18 @@
 
 1 constant r/o
 
-: included r/o open-file if -38 throw then 
+: close-file ( fileid -- ior ) k-close k-readss ;
+
+: open-file ( c-addr u fam -- fileid ior )
+  drop ( TODO use fam ) 
+  0 0 k-setbank k-setnam unused-logical dup unit unused-secondary k-setlfs k-open k-readss ;
+
+: include-file ( i*x fileid -- j*x ) save-input n>r to source-id 0 source-line !
+  0 begin drop
+    refill if ['] (evaluate) catch dup else 0 true then ( exception exit-flag )
+  until nr> restore-input drop throw ; ( TODO check status from restore-input )
+
+: included r/o open-file 0<> -38 and throw
   >r r@ include-file r> close-file drop ;
 
 .( ... BOOTSTRAP STAGE 1 COMPLETE ) cr

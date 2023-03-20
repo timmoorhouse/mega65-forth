@@ -1,4 +1,6 @@
 
+internals-wordlist current !
+
 64 constant c/l     \ characters per line, used by words
 
 : id. ( nt -- ) name>string type ;
@@ -11,15 +13,73 @@
     id.
     true ;
 
+: find-xt 
+  \ ( xt 0 nt -- xt 0 true ) if not found
+  \ ( xt 0 nt -- xt nt false ) if found
+  nip dup name>xt ( xt1 nt xt2 )
+  2 pick = if false else drop 0 true then
+  ;
+
+\ : words ( -- ) get-order 0 ?do ['] print-name swap traverse-wordlist loop ;
+: >name ( xt -- nt | 0 )
+  \ TODO
+  \ - skip over possible alignment byte
+  \ - crawl backwards over at most 31 printable chars
+  \ - stop if we hit something where lower 5 bits match length
+  \ OR
+  \ - traverse each wordlist looking for a match
+  >r get-order r> 0 rot 0 ?do 
+    ( widn ... widi xt 0|nt ) \ TODO !!!!!!!!!
+    rot ['] find-xt swap traverse-wordlist 
+  loop
+  ( xt 0|nt )
+  nip
+  ;
+
+\ TODO handle does>
+: colon-see ( xt -- )
+  dup . ." :" cr 2+
+  40 0 do
+    dup .
+    dup @ case
+      \ Relative branches
+      ['] branch      of ." branch "     2+ dup dup @ + . cr endof
+      ['] 0branch     of ." 0branch "    2+ dup dup @ + . cr endof
+      ['] (loop)      of ." loop "       2+ dup dup @ + . cr endof 
+      ['] (+loop)     of ." +loop "      2+ dup dup @ + . cr endof
+      \ Others ...
+      ['] (do)        of ." do "         2+ dup @ .       cr endof
+      ['] (?do)       of ." ?do "        2+ dup @ .       cr endof
+      ['] (cliteral)  of dup 2+ c@ '$' emit u. 1+ cr endof
+      ['] (literal)   of 2+ dup @ '$' emit u. cr endof
+      ['] (csliteral) of 2+ dup dup c@ + 1+ swap s\" c\" " type count type '"' emit cr endof
+      ['] (2literal)  of 2+ dup @ over 2+ @ '$' emit d. 2+ cr endof
+      ['] (;)         of ." ;" cr leave endof
+      ['] (;code)     of 
+        \ TODO check for jsr/$20 (does>) if so, continue otherwise leave
+        ." TODO ;code " cr 
+      endof 
+      \ ['] forth of ." TODO DOES>" cr endof \ TODO
+      \ TODO ;code
+      dup >name ?dup if name>string type else dup u. then cr
+    endcase
+    2+
+  loop
+  drop
+  ;
+
+forth-wordlist current !
+
 \ *************************************************************************** 
 
+\ see bootstrap2 for .s
 \ TODO if base is 10 used signed output, otherwise unsigned?
-: .s '<' emit depth 0 u.r '>' emit space depth if 0 depth 2- do i pick . -1 +loop then ;
+\ : .s ( -- ) '<' emit depth 0 u.r '>' emit space depth if 0 depth 2- do i pick . -1 +loop then ;
 
-: ? @ . ;
+: ? ( a-addr -- ) @ . ;
 
 : dump ( addr u -- ) \ u is number of lines to display
-    base @ >r hex cr
+    base @ >r hex cr ( addr u ) ( R: base )
     0 do   ( addr )
         16 ( addr u2 )
         over 4 u.r 
@@ -29,13 +89,23 @@
         cr
         +
     loop
-    r> base ! ;
+    drop r> base ! ;
 
 \ following gforth ...
 : xt-see ( xt -- ) 
     base @ >r hex
+    dup @ case
+    ['] :     @ of colon-see endof
+    ['] false @ of 2+ @ . ." constant" cr endof
+    ['] >in   @ of 2+ @ . ." variable" cr endof
+    \ TODO value
+    \ TODO 2constant
+    \ TODO 2variable
+    \ TODO does
+    \ TODO defer
+        >r 3 dump r>
+    endcase
     \ dup 4 u.r space ." TODO - xt-see "
-    3 dump
     r> base ! ;
 
 \ TODO
@@ -55,15 +125,13 @@
 : see ( "<spaces>name" -- )
     base @ >r hex cr
     parse-name find-name ?dup if
-        .s cr
-        dup 4 u.r space ':' emit space dup name>string type
-        \ TODO show name, flags
-        dup name>interpret xt-see
-        5 spaces ';' emit
-        ?immediate if ." immediate" then
+        dup 4 u.r dup name>string space type 
+        dup ?immediate    if space ." immediate"    then
+        dup ?compile-only if space ." compile-only" then
         cr
+        name>xt xt-see
     then r> base ! ;
 
-: words ( -- ) ['] print-name forth-wordlist traverse-wordlist ;
+: words ( -- ) get-order 0 ?do ['] print-name swap traverse-wordlist loop ;
 
 .( ... end of d-tools.f ) cr

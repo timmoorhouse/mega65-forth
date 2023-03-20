@@ -1,4 +1,6 @@
 
+environment-wordlist forth-wordlist internals-wordlist 3 set-order
+
 \ gforth:
 \ TODO savesystem
 
@@ -22,7 +24,6 @@ T{ #-100 2- -> #-102 }T
 \ TODO branch
 \ TODO (cliteral)
 \ TODO (literal)
-\ TODO ?hidden
 \ TODO ?immediate
 \ TODO latest
 \ TODO latestxt
@@ -42,7 +43,6 @@ T{ 1 2 3 sp@ 4 5 rot sp! -> 1 2 3 }T
 
 \ TODO !csp
 \ TODO ?csp
-\ TODO ?comp
 \ TODO ?exec
 \ TODO ?pairs
 \ TODO ?stack
@@ -55,5 +55,7 @@ T{ 1 2 3 sp@ 4 5 rot sp! -> 1 2 3 }T
 \ TODO border
 \ TODO foreground
 \ TODO mon
+
+only forth definitions
 
 cr .( End of internals tests ) cr

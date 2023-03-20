@@ -2,9 +2,6 @@
 ; ****************************************************************************
 ; FILE
 
-FILE_BUFFER_SIZE = 128 ; should be long enough for a line
-MAX_OPEN_FILES   = 10  ; kernel limit
-
 ; TODO separate kernel stuff into separate file
 
 FAM_BIN = 4
@@ -17,7 +14,7 @@ lat   = $035a
 fat   = $0364
 sat   = $036e
 
-        +NONAME
+        +CREATE_INTERNAL "unused-logical", 0
 W_UNUSED_LOGICAL
         !word *+2
         jsr _unused_logical
@@ -66,7 +63,7 @@ _unused_logical
 
 ; TODO use lkupsa to check if sa is in use
 
-        +NONAME
+        +CREATE_INTERNAL "unused-secondary", 0
 W_UNUSED_SECONDARY
         !word *+2
         jsr _unused_secondary
@@ -112,8 +109,8 @@ _unused_secondary
         ; unused ... guaranteed to find one in the range [2,12]
         rts
 
-        +NONAME
-W_BUFFER_OF_FILEID ; (fileid -- c-addr u)
+        +CREATE_INTERNAL "fileid>buffer", 0
+W_FILEID_TO_BUFFER ; (fileid -- c-addr u)
         !word DO_COLON
         ; fileid will be in range [32,42)
         +LITERAL $0f
@@ -126,207 +123,10 @@ W_BUFFER_OF_FILEID ; (fileid -- c-addr u)
         +LITERAL FILE_BUFFER_SIZE
         !word W_PSEMI
 
-; ****************************************************************************
-; CLOSE-FILE
-; (fileid -- ior)
-
-!if ENABLE_FILE {
-        +WORD "close-file", 0
-W_CLOSE_FILE
-        !word DO_COLON
-
-        !word W_CLOSE
-        !word W_READSS
-
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; CREATE-FILE
-; (c-addr u fam -- fileid ior)
-
-!if 0 {
-!if ENABLE_FILE {
-        +WORD "create-file", 0
-W_CREATE_FILE
-        !word DO_COLON
-
-        ; TODO
-        !word W_DROP
-        !word W_2DROP
-        !word W_ZERO
-        !word W_ZERO
-
-        !word W_PSEMI
-}
-}
-
-; ****************************************************************************
-; DELETE-FILE
-; (c-addr u -- ior)
-
-!if 0 {
-!if ENABLE_FILE {
-        +WORD "delete-file", 0
-W_DELETE_FILE
-        !word DO_COLON
-
-        ; TODO
-        !word W_2DROP
-        !word W_ZERO    
-
-        !word W_PSEMI
-}
-}
-
-; ****************************************************************************
-; FILE-POSITION
-; (fileid -- ud ior)
-
-!if 0 {
-!if ENABLE_FILE {
-        +WORD "file-position", 0
-W_FILE_POSITION
-        !word DO_COLON
-
-        ; TODO
-        !word W_DROP
-        !word W_ZERO          
-        !word W_ZERO          
-        !word W_ZERO   
-
-        !word W_PSEMI
-}
-}
-
-; ****************************************************************************
-; FILE-SIZE
-; (fileid -- ud ior)
-
-!if 0 {
-!if ENABLE_FILE {
-        +WORD "file-size", 0
-W_FILE_SIZE
-        !word DO_COLON
-
-        ; TODO
-        !word W_DROP
-        !word W_ZERO          
-        !word W_ZERO          
-        !word W_ZERO 
-
-        !word W_PSEMI
-}
-}
-
-; ****************************************************************************
-; INCLUDE-FILE
-; (i*x fileid -- j*x)
-
-; TODO move to bootstrap1.f
-
-!if ENABLE_FILE {
-        +WORD "include-file", 0
-W_INCLUDE_FILE
-        !word DO_COLON
-
-        !word W_SAVE_INPUT
-        !word W_NTOR
-
-        +LITERAL SOURCE_ID
-        !word W_STORE
-
-        !word W_ZERO
-        !word W_SOURCE_LINE
-        !word W_STORE
-
--       !word W_REFILL
-        +ZBRANCH +
-
-        +LITERAL W_PEVALUATE
-        !word W_CATCH
-
-        !word W_QDUP
-        +ZBRANCH -
-        
-        +BRANCH ++
-
-+       !word W_ZERO
-
-++
-
-        !word W_NRFROM
-        !word W_RESTORE_INPUT
-        !word W_DROP            ; TODO check status from restore
-
-        !word W_THROW           ; Propagate an exception if there was one
-
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; OPEN-FILE
-; (c-addr u fam -- fileid ior)
-
-!if ENABLE_FILE {
-        +WORD "open-file", 0
-W_OPEN_FILE
-        !word DO_COLON
-
-        !word W_DROP    ; TODO use fam?
-
-        !word W_ZERO
-        !word W_DUP
-        !word W_SETBANK
-
-        !word W_SETNAM
-
-        ; TODO in BASIC for DOPEN#, channel numbers in [1,127] use CR, [128,255] use CR LF
-        ; TODO DOPEN# has a ,W flag for write access
-
-        !word W_UNUSED_LOGICAL
-
-        !word W_DUP
-        +LITERAL 8 ; TODO how to select this?
-        !word W_UNUSED_SECONDARY
-
-        !word W_SETLFS
-
-        !word W_OPEN 
-
-        ; TODO if fam includes read, check that file exists
-
-        ; max 10 channels open
-        ; $98  ldtnd = # open channels
-        ; $35a lat   = logical channel table
-        ; $364 fat   = device number table
-        ; $36e sat   = secondary table
-        ; use lower nibble of logical channel as buffer index
-        ; so save-input needs logical channel (0=keyboard) + position into buffer (>IN) - all fits in one word?
-
-        !word W_READSS
-
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; READ-FILE
-; (c-addr u_1 fileid -- u_2 ior)
-
-!if ENABLE_FILE {
-        +WORD "read-file", 0
-W_READ_FILE
-        !word DO_COLON
-
-        ; TODO       
-
-        !word W_DROP
-        !word W_2DROP
-        !word W_ZERO
-        !word W_ZERO
-
-        !word W_PSEMI
-}
+        +CREATE "unit", 0
+W_UNIT
+        !word DO_VALUE
+        !word 8
 
 ; ****************************************************************************
 ; READ-LINE
@@ -338,7 +138,7 @@ W_READ_FILE
 ; If u_2 < u_1 the line ending has been reached.  If u_2 = u_1, the line ending has not been reached.
 
 !if ENABLE_FILE {
-        +WORD "read-line", 0
+        +CREATE "read-line", 0
 W_READ_LINE
         !word DO_COLON
 
@@ -391,125 +191,6 @@ _read_line_after_loop
         ; restore default input
         !word W_ZERO
         !word W_CHKIN
-
-        !word W_READSS
-
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; REPOSITION-FILE
-; (ud fileid -- ior)
-
-!if 0 {
-!if ENABLE_FILE {
-        +WORD "reposition-file", 0
-W_REPOSITION_FILE
-        !word DO_COLON
-
-        ; TODO
-        !word W_DROP
-        !word W_2DROP
-        !word W_ZERO
-
-        !word W_PSEMI
-}
-}
-
-; ****************************************************************************
-; RESIZE-FILE
-; (ud fileid -- ior)
-
-!if 0 {
-!if ENABLE_FILE {
-        +WORD "resize-file", 0
-W_RESIZE_FILE
-        !word DO_COLON
-
-        ; TODO
-        !word W_DROP
-        !word W_2DROP
-        !word W_ZERO
-
-        !word W_PSEMI
-}
-}
-
-; ****************************************************************************
-; WRITE-FILE
-; (c-addr u fileid -- ior)
-
-!if ENABLE_FILE {
-        +WORD "write-file", 0
-W_WRITE_FILE
-        !word DO_COLON
-
-        !word W_CHKOUT
-
-        ; (c-addr u)
-
-        ; Loop index is a pointer to the buffer entry
-        !word W_OVER
-        !word W_PLUS
-        !word W_SWAP
-        +DO _write_file_after_loop
-
-_write_file_loop
-
-        !word W_I
-        !word W_CAT
-        !word W_BASOUT
-
-        !word W_PLOOP
-        !word _write_file_loop-*
-_write_file_after_loop
-
-        ; restore default output
-        !word W_ZERO
-        !word W_CHKOUT
-
-        !word W_READSS
-
-        !word W_PSEMI
-}
-
-; ****************************************************************************
-; WRITE-LINE
-; (c-addr u fileid -- ior)
-
-!if ENABLE_FILE {
-        +WORD "write-line", 0
-W_WRITE_LINE
-        !word DO_COLON
-
-        ; TODO rewrite using WRITE-FILE
-
-        !word W_CHKOUT
-
-        ; (c-addr u)
-
-        ; Loop index is a pointer to the buffer entry
-        !word W_OVER
-        !word W_PLUS
-        !word W_SWAP
-        +DO _write_line_after_loop
-
-_write_line_loop
-
-        !word W_I
-        !word W_CAT
-        !word W_BASOUT
-
-        !word W_PLOOP
-        !word _write_line_loop-*
-_write_line_after_loop
-
-        !word W_CR
-        !word W_BASOUT
-
-        ; restore default output
-        !word W_ZERO
-        !word W_CHKOUT
 
         !word W_READSS
 

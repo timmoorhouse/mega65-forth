@@ -5,22 +5,9 @@
 ; ****************************************************************************
 ; -TRAILING
 ; (c-addr u_1 -- c-addr u_2)
-; ANSI 17.6.1.0170
-
-; FIG:
-;
-;
-;      -TRAILING     addr  n1  ---  addr  n2
-;               Adjusts the character count n1 of a text string beginning 
-;               address to suppress the output of trailing blanks.  ie. 
-;               the characters at addr+n2 are blanks.
-;
-;;
-;;                                       -TRAILING
-;;                                       SCREEN 44 LINE 5
 
 !if ENABLE_STRING {
-        +WORD "-trailing", 0
+        +CREATE "-trailing", 0
 W_DTRAILING
         !word DO_COLON
 ;          !word DUP
@@ -47,21 +34,13 @@ W_DTRAILING
 }
 
 ; ****************************************************************************
-; /STRING
-; (c-addr_1 u_1 n -- c-addr_2 u_2)
-; ANSI 17.6.1.0245
-
-!if ENABLE_STRING {
-}
-
-; ****************************************************************************
 ; CMOVE
 ; (c-addr_1 c-addr_2 u --)
-; ANSI 17.6.1.0910
 
 ; we need this for CREATE
+
 !if ENABLE_STRING {
-        +WORD "cmove", 0
+        +CREATE "cmove", 0
 } else {
         +NONAME
 }
@@ -106,10 +85,9 @@ _cmove_dst
 ; ****************************************************************************
 ; CMOVE>
 ; (c-addr_1 c-addr_2 u --)
-; ANSI 17.6.1.0920
 
 !if ENABLE_STRING {
-        +WORD "cmove>", 0
+        +CREATE "cmove>", 0
 W_CMOVEG
         !word *+2
 
@@ -170,7 +148,6 @@ _cmoveg_dst
 ; ****************************************************************************
 ; COMPARE
 ; (c-addr_1 u_1 c-addr_2 u_2 -- n)
-; ANSI 17.6.1.0935
 
 ; 0 if identical
 
@@ -185,7 +162,7 @@ _cmoveg_dst
 ; The word itself is required by the implementation (of FIND) but is only visible if SEARCH is enabled
 
 !if ENABLE_STRING {
-        +WORD "compare", 0
+        +CREATE "compare", 0
 } else {
         +NONAME
 }
@@ -332,7 +309,6 @@ _compare_equal
 ; ****************************************************************************
 ; SEARCH
 ; (c-addr_1 u_1 c-addr_2 u_2 -- c-addr_3 u_3 flag)
-; ANSI 17.6.1.2191
 
 !if ENABLE_STRING {
 }

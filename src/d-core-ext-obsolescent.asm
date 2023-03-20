@@ -16,7 +16,7 @@
 
 !if ENABLE_CORE_EXT_OBSOLESCENT {
 !if 0 {
-        +WORD_IMM "[compile]"
+        +CREATE_IMM "[compile]"
 W_BCOMPILE
         !word DO_COLON
 ;          !word DFIND

@@ -29,7 +29,6 @@
    
 : buffer: ( u "<name>" -- ; -- addr ) create allot ;
 
-\ TODO c"
 : c" ( "ccc<quote>" -- ) ( -- c-addr ) 
   [char] " parse postpone csliteral ; immediate compile-only
 
@@ -53,9 +52,6 @@
 
 : holds ( c-addr u -- ) begin dup while 1- 2dup + c@ hold repeat 2drop ;
 
-\ TODO marker
-: marker ( "<spaces>name" -- ) ( -- ) create does> ;
-
 : of ( C: -- of-sys ) ( x1 x1 -- | x1 ) 
   1+ >r postpone over postpone = postpone if postpone drop r> ; immediate compile-only
 
@@ -66,6 +62,8 @@
 : within ( n1|u1 n2|u2 n3|u3 -- flag ) over - >r - r> u< ;
 
 \ *************************************************************************** 
+
+internals-wordlist current !
 
 \ Add character C to the contents of address C-ADDR.
 : c+! ( char c-addr -- ) tuck c@ + swap c! ;
@@ -141,7 +139,7 @@ create EscapeTable ( -- addr )
 
 \ Parses a string up to an unescaped '"', translating '\'
 \ escapes to characters. The translated string is a
-\ counted string at *\i{dest}.
+\ counted string at dest.
 \ The supported escapes (case sensitive) are:
 \ \a      BEL          (alert)
 \ \b      BS
@@ -180,12 +178,13 @@ create EscapeTable ( -- addr )
 \ the rules of parse\" above, returning the address
 \ of the translated counted string.
 : readEscaped ( "ccc" -- c-addr )
-  source >in @ /string tuck             \ -- len caddr len
-  sbuf parse\" nip
+  source >in @ /string ( c-addr u ) tuck             \ -- len caddr len
+  sbuf dup >r parse\" nip
   - >in +!
-  sbuf ; \ TODO can't call sbuf twice
+  r> ;
 
-\ TODO s\"
+forth-wordlist current !
+
 \ see http://www.forth200x.org/escaped-strings.html
 : s\" ( "ccc<quote>" -- ) ( -- c-addr u ) 
   readEscaped count

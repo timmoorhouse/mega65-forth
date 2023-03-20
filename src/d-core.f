@@ -5,7 +5,7 @@
 ( The following words are implemented internally:                             )
 ( ! * + +! +LOOP , - . / 0< 0= 1+ 1- 2* 2/ 2DROP 2DUP 2OVER 2SWAP : ; < = >IN )
 ( >NUMBER >R ?DUP @ ACCEPT ALIGN ALIGNED ALLOT AND BASE BL C! C@ CONSTANT     )
-( COUNT CR CREATE DEPTH <DO> DOES> DROP DUP EMIT ENVIRONMENT?                 )
+( COUNT CR CREATE DEPTH <DO> DOES> DROP DUP EMIT                              )
 ( EVALUATE EXECUTE EXIT FILL HERE I INVERT J KEY LEAVE <LOOP>                 )
 ( LSHIFT NEGATE OR OVER POSTPONE R> R@ ROT RSHIFT <S"> SOURCE STATE SWAP      )
 ( TYPE U< UM* UM/MOD UNLOOP VARIABLE XOR [ ]                                  )
@@ -20,13 +20,35 @@
 
 : negate ( n1 -- n2 ) invert 1+ ;
 
+environment-wordlist current !
+
+$ff         constant  /counted-string
+#16         constant  address-unit-bits
+0           constant  floored
+$ff         constant  max-char
+$ffff $7fff 2constant max-d
+$7fff       constant  max-n
+$ffff       constant  max-u
+$ffff $ffff 2constant max-ud
+#128        constant  return-stack-cells
+
+internals-wordlist current !
+
 : +- ( n1 n2 -- n3 ) 0< if negate then ; ( TODO REMOVE )
+
+variable e-msg
+variable e-msg#
+: e-msg! ( c-addr u ) e-msg# ! e-msg ! ;
 
 variable hld ( TODO can we remove this? )
 
 : m/mod ( ud1 u2 -- u3 ud4 ) >r 0 r@ um/mod r> swap >r um/mod r> ; ( TODO just for # so far )
 
+forth-wordlist current !
+
 ( *************************************************************************** )
+
+: ." ( "ccc<quote>" -- ) postpone s" postpone type ; immediate compile-only
 
 : 2! ( x1 x2 a-addr -- ) swap over ! 2+ ! ;
 
@@ -35,10 +57,6 @@ variable hld ( TODO can we remove this? )
 : > ( n1 n2 -- flag ) swap < ;
 
 : abort ( i*x -- ) ( R: j*x -- ) -1 throw ;
-
-variable e-msg
-variable e-msg#
-: e-msg! ( c-addr u ) e-msg# ! e-msg ! ;
 
 : abort" ( "ccc<quote>" -- )
   postpone if 
@@ -64,6 +82,9 @@ variable e-msg#
 : defer@ ( xt1 -- xt2 ) >body @ ; ( CORE-EXT )
 
 : defer! ( xt2 xt1 -- ) >body ! ; ( CORE-EXT )
+
+: environment? ( c-addr u -- false | i*x true )
+  environment-wordlist find-name-in dup if name>interpret execute true then ;
 
 : find ( c-addr -- c-addr 0 | xt 1 | xt -1 ) 
   dup count find-name dup if 
@@ -91,8 +112,6 @@ variable e-msg#
 : quit ( -- ) ( R: 8*x -- ) #-56 throw ;
 
 : recurse ( -- ) latestxt , ; immediate
-
-: ." ( "ccc<quote>" -- ) postpone s" postpone type ; immediate compile-only
 
 : s>d ( x -- d ) dup 0< ;
 
