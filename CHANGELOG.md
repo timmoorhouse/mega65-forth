@@ -1,5 +1,5 @@
 
-v0.2 alpha TBD
+v0.2 alpha 2023-03-20
 - Add `COMPILE-ONLY`.
 - Catch exceptions in `AUTOBOOT`.
 - Embed the bootstrap Forth code in forth-skeletal and parse out of memory instead of reading from a file.  This will allow `INCLUDE` and others to be implemented in Forth.
@@ -11,6 +11,7 @@ v0.2 alpha TBD
 - DOUBLE: add `2CONSTANT`, `2LITERAL`, `D>S`.
 - SEARCH: add `ALSO`, `DEFINITIONS`, `FORTH`, `GET-CURRENT`, `GET-ORDER`, `ONLY`, `ORDER`, `PREVIOUS`, `SET-CURRENT` and `SET-ORDER`.  SEARCH is now feature complete.
 - STRING: add `UNESCAPE`.
+- TOOLS: add `SEE` (incomplete).
 
 v0.1 pre-alpha 2023-03-04
 - Initial version
