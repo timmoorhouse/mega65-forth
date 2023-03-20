@@ -13,6 +13,14 @@ internals-wordlist current !
     id.
     true ;
 
+: find-xt 
+  \ ( xt 0 nt -- xt 0 true ) if not found
+  \ ( xt 0 nt -- xt nt false ) if found
+  nip dup name>xt ( xt1 nt xt2 )
+  2 pick = if false else drop 0 true then
+  ;
+
+\ : words ( -- ) get-order 0 ?do ['] print-name swap traverse-wordlist loop ;
 : >name ( xt -- nt | 0 )
   \ TODO
   \ - skip over possible alignment byte
@@ -20,14 +28,32 @@ internals-wordlist current !
   \ - stop if we hit something where lower 5 bits match length
   \ OR
   \ - traverse each wordlist looking for a match
+  >r get-order r> 0 rot 0 ?do 
+    ( widn ... widi xt 0|nt ) \ TODO !!!!!!!!!
+    rot ['] find-xt swap traverse-wordlist 
+  loop
+  ( xt 0|nt )
+  nip
   ;
 
+\ TODO handle does>
 : colon-see ( xt -- )
-  cr ." TODO do_colon" cr
-  20 0 do
+  2+ \ skip do_colon
+  cr \ ." TODO do_colon" cr
+  50 0 do
     dup . space
     dup @ case
-        ( >r ) dup . cr ( r> )
+      ['] branch      of ." branch "     2+ dup dup @ + . cr endof \ TODO destination
+      ['] 0branch     of ." 0branch "    2+ dup dup @ + . cr endof \ TODO destination
+      \ TODO (do)
+      \ TODO (?do)
+      \ TODO (loop)
+      \ TODO (+loop)
+      ['] (literal)   of 2+ dup @ . cr endof
+      ['] (csliteral) of 2+ dup dup c@ + 1+ swap s\" c\" " type count type '"' emit cr endof
+      ['] (2literal)  of ." (2literal)"  cr endof \ TODO the literal
+      ['] (;)         of ." ;" cr leave endof
+      dup >name ?dup if name>string type else dup . then cr
     endcase
     2+
   loop
@@ -94,8 +120,8 @@ forth-wordlist current !
         dup 4 u.r space ':' emit space dup name>string type
         \ TODO show name, flags
         dup name>interpret xt-see
-        5 spaces ';' emit
         ?immediate if ." immediate" then
+        \ TODO compile-only
         cr
     then r> base ! ;
 

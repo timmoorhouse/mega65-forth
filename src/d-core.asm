@@ -449,7 +449,7 @@ W_SEMI
         !word W_LBRACKET
         !word W_PSEMI
 
-        +NONAME ; ";s" ?
+        +CREATE_INTERNAL "(;)", 0 ; ";s" ?
 W_PSEMI
         ; See also exit
         !word *+2
