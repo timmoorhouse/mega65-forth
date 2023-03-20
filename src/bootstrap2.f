@@ -35,7 +35,7 @@ forth-wordlist 1 set-order
 
 .( ... saving forth-minimal )
 savesystem forth-minimal,p,w
-unused . s" bytes free" type cr \ 28532
+unused . s" bytes free" type cr \ 28194
 
 environment-wordlist forth-wordlist internals-wordlist 3 set-order
 
@@ -106,7 +106,7 @@ only forth definitions
 
 .( ... saving forth-complete )
 savesystem forth-complete,p,w
-unused . s" bytes free" type cr \ 26141
+unused . s" bytes free" type cr \ 24754
 
 .( ... bootstrap stage 2 complete ) cr cr
 
@@ -114,7 +114,7 @@ unused . s" bytes free" type cr \ 26141
 
 : bm s" benchmark.f" included ;
 
-see marker
+\ see marker
 
 \ 1 2 3   asdjfklj   4 5 6
 
