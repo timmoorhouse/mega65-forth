@@ -519,7 +519,7 @@ COLD
 ;               to the minimum standard and restart via ABORT.  May be
 ;               called from the terminal to remove application programs
 ;               and restart.
-
+        
         +map_reset
 
         ; E000-FFFF     3E000   KERNAL
@@ -568,9 +568,15 @@ COLD
 
         lda #10
         sta &BASE
+
+        ; lda #'a'
+        ; jsr EMIT
     
 JSR_ONETIME
         jsr _onetime            ; will be replaced with NOPs in _onetime
+
+        ; lda #'b'
+        ; jsr EMIT
     
 WARM
 
@@ -791,7 +797,8 @@ INITIAL_HERE
 _onetime
 
         ; Replace the 'jsr _onetime' with CLDs so this won't be done again
-        lda #$d8                        ; CLD
+        ; lda #$d8                        ; CLD
+        lda #$b8 ; clv
         sta JSR_ONETIME
         sta JSR_ONETIME+1
         sta JSR_ONETIME+2

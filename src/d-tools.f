@@ -72,8 +72,9 @@ forth-wordlist current !
 
 \ *************************************************************************** 
 
+\ see bootstrap2 for .s
 \ TODO if base is 10 used signed output, otherwise unsigned?
-: .s ( -- ) '<' emit depth 0 u.r '>' emit space depth if 0 depth 2- do i pick . -1 +loop then ;
+\ : .s ( -- ) '<' emit depth 0 u.r '>' emit space depth if 0 depth 2- do i pick . -1 +loop then ;
 
 : ? ( a-addr -- ) @ . ;
 
