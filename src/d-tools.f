@@ -50,10 +50,10 @@ internals-wordlist current !
       \ Others ...
       ['] (do)        of ." do "         2+ dup @ .       cr endof
       ['] (?do)       of ." ?do "        2+ dup @ .       cr endof
-      ['] (cliteral)  of dup 2+ c@ . 1+ cr endof
-      ['] (literal)   of 2+ dup @ '$' emit . cr endof
+      ['] (cliteral)  of dup 2+ c@ '$' emit u. 1+ cr endof
+      ['] (literal)   of 2+ dup @ '$' emit u. cr endof
       ['] (csliteral) of 2+ dup dup c@ + 1+ swap s\" c\" " type count type '"' emit cr endof
-      ['] (2literal)  of ." (2literal)"  cr endof \ TODO the literal
+      ['] (2literal)  of 2+ dup @ over 2+ @ '$' emit d. 2+ cr endof
       ['] (;)         of ." ;" cr leave endof
       ['] (;code)     of 
         \ TODO check for jsr/$20 (does>) if so, continue otherwise leave

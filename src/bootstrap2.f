@@ -110,7 +110,8 @@ unused . s" bytes free" type cr \ 26141
 
 : bm s" benchmark.f" included ;
 
-see marker
+: foo $1a2b3c4d. ;
+see foo
 
 \ 1 2 3   asdjfklj   4 5 6
 
