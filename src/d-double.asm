@@ -129,6 +129,14 @@ W_DSUB
 ; (xd1 -- xd2)
 
 !if ENABLE_DOUBLE {
+        +CREATE "d2*", 0
+W_D2STAR
+        !word *+2
+        asl 2,x
+        rol 3,x
+        rol 0,x
+        rol 1,x
+        jmp NEXT        
 }
 
 ; ****************************************************************************
@@ -136,6 +144,14 @@ W_DSUB
 ; (xd1 -- xd2)
 
 !if ENABLE_DOUBLE {
+        +CREATE "d2/", 0
+W_D2SLASH
+        !word *+2
+        asr 1,x
+        ror 0,x
+        ror 3,x
+        ror 2,x
+        jmp NEXT        
 }
 
 ; ****************************************************************************
