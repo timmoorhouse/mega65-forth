@@ -1,4 +1,7 @@
 
+v0.3 TBD
+- DOUBLE: add `d0=`
+
 v0.2 alpha 2023-03-20
 - Add `COMPILE-ONLY`.
 - Catch exceptions in `AUTOBOOT`.

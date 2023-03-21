@@ -1,4 +1,7 @@
 
+\ The following words are implemented in bootstrap2.f:
+\ .S
+
 internals-wordlist current !
 
 64 constant c/l     \ characters per line, used by words
@@ -7,11 +10,11 @@ internals-wordlist current !
 
 \ TODO use a :noname ...
 : print-name ( nt -- u ) 
-    out c@ 
-    dup if space then
-    c/l > if cr then
-    id.
-    true ;
+  out c@ 
+  dup if space then
+  c/l > if cr then
+  id.
+  true ;
 
 : find-xt 
   \ ( xt 0 nt -- xt 0 true ) if not found
@@ -72,41 +75,37 @@ forth-wordlist current !
 
 \ *************************************************************************** 
 
-\ see bootstrap2 for .s
-\ TODO if base is 10 used signed output, otherwise unsigned?
-\ : .s ( -- ) '<' emit depth 0 u.r '>' emit space depth if 0 depth 2- do i pick . -1 +loop then ;
-
 : ? ( a-addr -- ) @ . ;
 
 : dump ( addr u -- ) \ u is number of lines to display
-    base @ >r hex cr ( addr u ) ( R: base )
-    0 do   ( addr )
-        16 ( addr u2 )
-        over 4 u.r 
-        2dup over + swap do space i c@ 2 u.r loop
-        \ space ':' emit space
-        \ 2dup over + swap do i c@ emit loop \ TODO would need a check for printable chars
-        cr
-        +
-    loop
-    drop r> base ! ;
+  base @ >r hex cr ( addr u ) ( R: base )
+  0 do   ( addr )
+      16 ( addr u2 )
+      over 4 u.r 
+      2dup over + swap do space i c@ 2 u.r loop
+      \ space ':' emit space
+      \ 2dup over + swap do i c@ emit loop \ TODO would need a check for printable chars
+      cr
+      +
+  loop
+  drop r> base ! ;
 
 \ following gforth ...
 : xt-see ( xt -- ) 
-    base @ >r hex
-    dup @ case
-    ['] :     @ of colon-see endof
-    ['] false @ of 2+ @ . ." constant" cr endof
-    ['] >in   @ of 2+ @ . ." variable" cr endof
-    \ TODO value
-    \ TODO 2constant
-    \ TODO 2variable
-    \ TODO does
-    \ TODO defer
-        >r 3 dump r>
-    endcase
-    \ dup 4 u.r space ." TODO - xt-see "
-    r> base ! ;
+  base @ >r hex
+  dup @ case
+  ['] :     @ of colon-see endof
+  ['] false @ of 2+ @ . ." constant" cr endof
+  ['] >in   @ of 2+ @ . ." variable" cr endof
+  \ TODO value
+  \ TODO 2constant
+  \ TODO 2variable
+  \ TODO does
+  \ TODO defer
+      >r 3 dump r>
+  endcase
+  \ dup 4 u.r space ." TODO - xt-see "
+  r> base ! ;
 
 \ TODO
 \ - check code field
@@ -123,14 +122,14 @@ forth-wordlist current !
 \   - DO_DOES
 \     - might not be able to do anything sensible for this case?
 : see ( "<spaces>name" -- )
-    base @ >r hex cr
-    parse-name find-name ?dup if
-        dup 4 u.r dup name>string space type 
-        dup ?immediate    if space ." immediate"    then
-        dup ?compile-only if space ." compile-only" then
-        cr
-        name>xt xt-see
-    then r> base ! ;
+  base @ >r hex cr
+  parse-name find-name ?dup if
+      dup 4 u.r dup name>string space type 
+      dup ?immediate    if space ." immediate"    then
+      dup ?compile-only if space ." compile-only" then
+      cr
+      name>xt xt-see
+  then r> base ! ;
 
 : words ( -- ) get-order 0 ?do ['] print-name swap traverse-wordlist loop ;
 

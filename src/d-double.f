@@ -26,7 +26,7 @@ forth-wordlist current !
 
 \ TODO D0<
 
-\ TODO D0=
+: d0= ( xd -- flag ) or 0= ;
 
 \ TODO D2*
 

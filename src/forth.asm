@@ -774,7 +774,7 @@ _main_loop
 !src "d-locals.asm"
 !src "d-locals-ext.asm"
 !src "d-locals-ext-obsolescent.asm"
-!src "mega65.asm"
+!src "d-mega65.asm"
 !src "d-memory.asm"
 ; !src "d-memory-ext.asm"
 !src "d-search.asm"
