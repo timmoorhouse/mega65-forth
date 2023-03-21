@@ -1,6 +1,6 @@
 
 v0.3 TBD
-- DOUBLE: add `d0=`
+- DOUBLE: add `D0=`, `D=`.
 
 v0.2 alpha 2023-03-20
 - Add `COMPILE-ONLY`.

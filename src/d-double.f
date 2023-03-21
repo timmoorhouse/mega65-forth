@@ -34,7 +34,7 @@ forth-wordlist current !
 
 \ TODO D<
 
-\ TODO D=
+: d= ( xd1 xd2 -- flag ) xor 0= ;
 
 : d>s ( d -- n ) drop ;
 
