@@ -141,7 +141,7 @@ Test | Status | Comments
 [BLOCK](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/blocktest.fth) | TBD | Too early to attempt
 [CORE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/core.fr), [CORE plus](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreplustest.fth) | **FAIL** | Some [problems](#ummod) with `UM/MOD`.  17 errors reported, 9 of which are expected[^petscii].
 [CORE-EXT](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/coreexttest.fth) | PASS | 4 expected[^petscii] errors reported.
-[DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD | Some problems with `D<`, some things still to implement
+[DOUBLE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/doubletest.fth) | TBD | Some things still to implement
 [EXCEPTION](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/exceptiontest.fth) | PASS | 
 [FACILITY](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/facilitytest.fth) | TBD | Too early to attempt
 [FILE](https://github.com/gerryjackson/forth2012-test-suite/blob/master/src/filetest.fth) | TBD | Too early to attempt

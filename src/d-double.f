@@ -1,6 +1,6 @@
 
 \ The following words are implemented internally:                             
-\ 2CONSTANT D+ D- DNEGATE 
+\ 2CONSTANT D+ D- D< DNEGATE 
 
 \ The following words are implemented in core.f:
 \ D. D.R DABS
@@ -27,8 +27,6 @@ forth-wordlist current !
 \ TODO D2*
 
 \ TODO D2/
-
-: d< ( xd1 xd2 -- flag ) d- d0< ;
 
 : d= ( xd1 xd2 -- flag ) d- d0= ;
 
