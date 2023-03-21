@@ -1,7 +1,9 @@
 
 \ The following words are implemented internally:                             
+\ 2CONSTANT D+ D- DNEGATE 
 
-\ 2CONSTANT D+ DNEGATE 
+\ The following words are implemented in core.f:
+\ D. D.R DABS
 
 environment-wordlist current !
 
@@ -18,12 +20,6 @@ forth-wordlist current !
 
 \ TODO 2VARIABLE
 
-\ TODO D-
-
-\ D. see core.f
-
-\ D.R see core.f
-
 : d0< ( d -- flag ) 0< nip ;
 
 : d0= ( xd -- flag ) or 0= ;
@@ -32,13 +28,11 @@ forth-wordlist current !
 
 \ TODO D2/
 
-\ TODO D<
+: d< ( xd1 xd2 -- flag ) d- d0< ;
 
-: d= ( xd1 xd2 -- flag ) xor 0= ;
+: d= ( xd1 xd2 -- flag ) d- d0= ;
 
 : d>s ( d -- n ) drop ;
-
-\ DABS see core.f
 
 \ TODO DMAX
 
