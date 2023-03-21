@@ -24,7 +24,7 @@ forth-wordlist current !
 
 \ D.R see core.f
 
-\ TODO D0<
+: d0< ( d -- flag ) 0< nip ;
 
 : d0= ( xd -- flag ) or 0= ;
 
