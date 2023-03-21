@@ -19,9 +19,9 @@
 
 \ *************************************************************************** 
 
-\ TODO +FIELD
+: +field ( n1 n2 "<spaces>name" -- n3 ) create over , + does> @ + ;
 
-\ TODO BEGIN-STRUCTURE
+: begin-structure ( "<spaces>name" -- struct-sys 0 ) create here 0 0 , does> @ ;
 
 \ TODO CFIELD:
 
@@ -35,7 +35,7 @@
 
 \ TODO EMIT?
 
-\ TODO END-STRUCTURE
+: end-structure ( struct-sys +n -- ) swap ! ;
 
 \ TODO FIELD:
 

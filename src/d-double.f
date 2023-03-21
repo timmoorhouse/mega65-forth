@@ -35,8 +35,10 @@ forth-wordlist current !
 : d>s ( d -- n ) drop ;
 
 \ TODO DMAX
+\ : dmax ( d1 d2 -- d3 ) 2dup < if swap then drop ;
 
 \ TODO DMIN
+\ : dmin ( d1 d2 -- d3 ) 2dup > if swap then drop ;
 
 \ TODO M*
 
