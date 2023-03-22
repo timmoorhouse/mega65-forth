@@ -18,7 +18,7 @@ forth-wordlist current !
 : 2literal ( x1 x2 -- ) ( -- x1 x2 ) 
   postpone (2literal) swap , , ; immediate compile-only
 
-: 2variable create 0 , 0 , does> ;
+: 2variable create 4 allot ;
 
 : d0< ( d -- flag ) 0< nip ;
 
