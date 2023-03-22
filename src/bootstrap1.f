@@ -93,14 +93,15 @@ forth-wordlist current !
 
 : >body ( xt -- a-addr ) 2+ ;
 
-: to ( i*x "<spaces>name" -- ) state @ if
+( TODO clean up this hack ! )
+: _to ( i*x "<spaces>name" -- ) state @ if
     postpone ['] postpone >body postpone !
   else
     ' >body !
   then ; immediate
  
 ( ' : @  is to obtain DO_COLON )
-: :noname align here to latestxt ] 0 to latest here ['] : @ , ;
+: :noname align here _to latestxt ] 0 _to latest here ['] : @ , ;
 
 1 constant r/o
 
@@ -110,7 +111,7 @@ forth-wordlist current !
   drop ( TODO use fam ) 
   0 0 k-setbank k-setnam unused-logical dup unit unused-secondary k-setlfs k-open k-readss ;
 
-: include-file ( i*x fileid -- j*x ) save-input n>r to source-id 0 source-line !
+: include-file ( i*x fileid -- j*x ) save-input n>r _to source-id 0 source-line !
   0 begin drop
     refill if ['] (evaluate) catch dup else 0 true then ( exception exit-flag )
   until nr> restore-input drop throw ; ( TODO check status from restore-input )

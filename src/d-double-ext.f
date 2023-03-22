@@ -4,7 +4,7 @@
 
 \ TODO 2ROT
 
-\ TODO 2VALUE
-: 2value ( x1 x2 "<spaces>name" -- ) create , , does> 2@ ;
+: 2value ( x1 x2 "<spaces>name" -- ) create swap , , 
+  does> store? @ if 2! 0 store? ! else 2@ then ;
 
 .( ... end of d-double-ext.f ) cr

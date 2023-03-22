@@ -3,16 +3,23 @@
 
 \ The following words are implemented internally:                             
 \ 0<> 0> 2>R 2R> 2R@ <> ?DO DEFER NIP PARSE PARSE-NAME    
-\ PICK REFILL RESTORE-INPUT ROLL S\" SAVE-INPUT SOURCE-ID TRUE UNUSED VALUE   
+\ PICK REFILL RESTORE-INPUT ROLL S\" SAVE-INPUT SOURCE-ID TRUE UNUSED   
 
 \ The following words are implemented in bootstrap1.f:
-\ .( :NONAME AGAIN TO
+\ .( :NONAME AGAIN
 
 \ The following words are implemented in core.f:
 \ .R DEFER@ DEFER! IS PAD U.R
 
 : /string ( c-addr1 u1 n -- c-addr2 u2 ) 
   dup >r - swap r> + swap ; ( STRING )
+
+internals-wordlist current !
+
+variable store?
+0 store? !
+
+forth-wordlist current !
 
 \ *************************************************************************** 
 
@@ -55,9 +62,14 @@
 : of ( C: -- of-sys ) ( x1 x1 -- | x1 ) 
   1+ >r postpone over postpone = postpone if postpone drop r> ; immediate compile-only
 
+: to true store-value ! ;
+
 : tuck ( x1 x2 -- x2 x1 x2 ) swap over ;
 
 : u> ( u1 u2 -- flag ) swap u< ;
+
+: value create ,
+  does> store? @ if ! 0 store? ! else @ then ;
 
 : within ( n1|u1 n2|u2 n3|u3 -- flag ) over - >r - r> u< ;
 

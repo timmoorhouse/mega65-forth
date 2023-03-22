@@ -15,7 +15,7 @@ cr .( Starting bootstrap stage 2... ) cr
   r> close-file drop \ TODO check status
   ;
   
-:noname ( -- ) postpone [ 0 to source-id
+:noname ( -- ) postpone [ 0 _to source-id
   begin
     refill drop \ TODO check result from REFILL
     (evaluate)
@@ -84,10 +84,10 @@ environment-wordlist forth-wordlist internals-wordlist 3 set-order
     forth-wordlist here 20 dup allot cmove \ save wordlist table
     ! \ do the fixup
   does> 
-    dup @ to here cell+             \ restore here
+    dup @ _to here cell+            \ restore here
     dup @ set-current cell+         \ restore current
     dup dup @ 0 ?do dup dup @ i - cells + @ swap loop @ set-order dup @ 1+ cells + \ restore order
-    forth-wordlist 20 cmove \ restore wordlist table
+    forth-wordlist 20 cmove         \ restore wordlist table
   ;
 
 : type-file ( fileid -- )

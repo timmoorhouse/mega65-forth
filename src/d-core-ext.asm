@@ -779,7 +779,7 @@ W_SAVE_INPUT
         +NONAME
 }
 W_SOURCE_ID
-        !word DO_VALUE
+        !word DO_CONSTANT
 SOURCE_ID        
         !word 0
 
@@ -808,28 +808,4 @@ W_UNUSED
         !word W_HERE
         !word W_SUB
         !word W_PSEMI        
-}
-
-; ****************************************************************************
-; VALUE
-; (x "<spaces>name" --)
-
-; See also constant (core)
-
-; TODO move to forth
-
-!if ENABLE_CORE_EXT {
-        +CREATE "value", 0
-W_VALUE
-        !word DO_COLON
-        !word W_CREATE
-        !word W_COMMA
-        !word W_PSCODE
-DO_VALUE
-        ldy #2
-        lda (<W),y
-        pha
-        iny
-        lda (<W),y
-        jmp PUSH
 }
