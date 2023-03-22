@@ -705,14 +705,8 @@ _main_clear_stack_and_enter_loop
 
 _main_loop
 
-        ; TODO resolve this using find-name or defer it?
         +LITERAL W_PQUIT
         !word W_CATCH
-
-!if 0 {
-        !word W_DOTS
-        !word W_CR
-}
 
         !word W_QDUP
         +ZBRANCH _main_loop
