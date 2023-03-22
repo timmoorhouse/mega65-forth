@@ -2,22 +2,43 @@
 ; ****************************************************************************
 ; DOUBLE EXT
 
-!if ENABLE_DOUBLE_EXT {
-
 ; ****************************************************************************
 ; 2ROT
-; (x_1 x_2 x_3 x_4 x_5 x_6 -- x_3 x_4 x_5 x_6 x_1 x_2)
-; ANSI 8.6.2.0420
+; (x1 x2 x3 x4 x5 x6 -- x3 x4 x5 x6 x1 x2)
+
+!if ENABLE_DOUBLE_EXT {
+}
 
 ; ****************************************************************************
 ; 2VALUE
-; Forth 2012 8.6.2.0435
 
 ; See reference implementation
 
+!if ENABLE_DOUBLE_EXT {
+}
+
 ; ****************************************************************************
 ; DU<
-; (ud_1 ud_2 -- flag)
-; ANSI 8.6.2.1270
+; (ud1 ud2 -- flag)
 
+!if ENABLE_DOUBLE_EXT {
+        +CREATE "du<", 0
+W_DULESS
+        !word *+2
+        lda 5,x
+        cmp 1,x
+        bne +
+        lda 4,x
+        cmp 0,x
+        bne +
+        lda 7,x
+        cmp 3,x
+        bne +
+        lda 6,x
+        cmp 2,x
++       bcs +
+        dey
++       sty 6,x
+        sty 7,x
+        jmp POP3    
 }
