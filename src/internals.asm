@@ -444,7 +444,7 @@ W_QIMMEDIATE
 
         +CREATE_INTERNAL "latest", 0
 W_LATEST
-        !word DO_VALUE
+        !word DO_CONSTANT
 LATEST        
         !word 0
 
@@ -455,7 +455,7 @@ LATEST
 
         +CREATE_INTERNAL "latestxt", 0
 W_LATESTXT
-        !word DO_VALUE
+        !word DO_CONSTANT
 LATESTXT
         !word 0        
 

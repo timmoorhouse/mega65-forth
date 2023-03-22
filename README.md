@@ -58,6 +58,7 @@ that the build process will get more involved:
 These should get us to the point of bootstrapping with a dictionary written in forth and running unit tests:
 - CORE
   - [ ] Need to reimplement the multiplication/division operations using the math unit.
+  - [ ] Change `TO` so it sets a flag that the next word uses to choose between store/fetch.
 - EXCEPTION
   - [ ] Need to be able to throw exceptions from assembler.  This likely means changing the `THROW` implementation to be native code instead of Forth bytecode.
   - [ ] Many bits of code need to be updated to throw an exception for error conditions.

@@ -816,6 +816,8 @@ W_UNUSED
 
 ; See also constant (core)
 
+; TODO move to forth
+
 !if ENABLE_CORE_EXT {
         +CREATE "value", 0
 W_VALUE

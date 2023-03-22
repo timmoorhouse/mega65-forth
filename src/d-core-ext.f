@@ -21,11 +21,11 @@
   postpone (?do) 0 , here ( 3 ) ; immediate ( compile-only )
 
 : action-of ( "<spaces>name" -- )
-   state @ if
-     postpone ['] postpone defer@
-   else
-     ' defer@
-   then ; immediate
+  state @ if
+    postpone ['] postpone defer@
+  else
+    ' defer@
+  then ; immediate
    
 : buffer: ( u "<name>" -- ; -- addr ) create allot ;
 

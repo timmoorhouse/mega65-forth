@@ -125,7 +125,7 @@ W_FILEID_TO_BUFFER ; (fileid -- c-addr u)
 
         +CREATE "unit", 0
 W_UNIT
-        !word DO_VALUE
+        !word DO_CONSTANT
         !word 8
 
 ; ****************************************************************************
