@@ -62,7 +62,7 @@ forth-wordlist current !
 : of ( C: -- of-sys ) ( x1 x1 -- | x1 ) 
   1+ >r postpone over postpone = postpone if postpone drop r> ; immediate compile-only
 
-: to true store-value ! ;
+: to true store? ! ;
 
 : tuck ( x1 x2 -- x2 x1 x2 ) swap over ;
 
