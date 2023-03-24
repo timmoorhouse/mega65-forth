@@ -1,6 +1,6 @@
 
 \ The following words are implemented internally:                             
-\ 2CONSTANT D+ D- D2* D2/ D< DNEGATE 
+\ 2CONSTANT D+ D- D2* D2/ D< DNEGATE M+
 
 \ The following words are implemented in core.f:
 \ D. D.R DABS
@@ -32,8 +32,6 @@ forth-wordlist current !
 
 : dmin ( d1 d2 -- d3 ) 2over 2over d< 0= if 2swap then 2drop ;
 
-\ TODO M*
-
-\ TODO M+
+\ TODO M*/
 
 .( ... end of d-double.f ) cr

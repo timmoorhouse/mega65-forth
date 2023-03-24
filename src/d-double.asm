@@ -220,4 +220,27 @@ W_DNEGATE
 ; (d1 n -- d2)
 
 !if ENABLE_DOUBLE {
+        +CREATE "m+", 0
+W_MPLUS
+        !word *+2
+        ; TODO not the most efficient ...
+        ; ldy #0 ; TODO
+        lda 1,x
+        bpl +
+        dey
++
+        clc
+        lda 0,x
+        adc 4,x
+        sta 4,x
+        lda 1,x
+        adc 5,x
+        sta 5,x
+        tya
+        adc 2,x
+        sta 2,x
+        tya
+        adc 3,x
+        sta 3,x
+        jmp POP
 }

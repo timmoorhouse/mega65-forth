@@ -1,6 +1,6 @@
 
 v0.3 TBD
-- DOUBLE: add `2ROT`, `2VALUE`, `2VARIABLE`, `D0<`, `D0=`, `D2*`, `D2/`, `D<`, `D=`, `DMAX`, `DMIN`, `DU<`.
+- DOUBLE: add `2ROT`, `2VALUE`, `2VARIABLE`, `D0<`, `D0=`, `D2*`, `D2/`, `D<`, `D=`, `DMAX`, `DMIN`, `DU<`, `M+`.
 - FACILITY: add `+FIELD`, `BEGIN-STRUCTURE`, `END-STRUCTURE`.
 
 v0.2 alpha 2023-03-20
