@@ -99,6 +99,20 @@ MAYBE_BRK
 +       rts
 }
 
+        ; Address and length of input buffer
+
+        +CREATE_INTERNAL "input", 0
+W_INPUT
+        !word DO_VARIABLE
+INPUT
+        !word 0 
+
+        +CREATE_INTERNAL "#input", 0
+W_NINPUT
+        !word DO_VARIABLE
+NINPUT
+        !word 0
+
 ; ****************************************************************************
 
 ; TODO timer

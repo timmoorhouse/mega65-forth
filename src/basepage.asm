@@ -27,10 +27,6 @@ XSAVE           !byte 0 ; temporary to save S when we need to reuse X
 ; TODO separate XSAVE for kernel calls
 KERNEL_XSAVE    !byte 0 ; just for use in kernel calls
 
-; TODO move these out of basepage? make them values ...
-INPUT_BUFFER    !word 0 ; Address and length of input buffer
-INPUT_LEN       !word 0
-
 BASE            !word 0 ; TODO MOVE BELOW HERE?
 STATE           !word 0
 R0              !word 0

@@ -62,6 +62,21 @@ forth-wordlist current !
 : of ( C: -- of-sys ) ( x1 x1 -- | x1 ) 
   1+ >r postpone over postpone = postpone if postpone drop r> ; immediate compile-only
 
+\ : refill ( -- flag )
+\   source-id ?dup if
+\     dup 0< if
+\       \ from a string
+\     else
+\       \ from a file
+\     then
+\   else
+\     \ from the console
+\   then
+\   ( c-addr u )
+\ ;
+\
+
+
 : to true store? ! ;
 
 : tuck ( x1 x2 -- x2 x1 x2 ) swap over ;

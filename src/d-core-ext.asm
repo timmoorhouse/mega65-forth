@@ -318,10 +318,10 @@ W_PARSE
         ; dex
         ; dex
         clc
-        lda <INPUT_BUFFER
+        lda INPUT
         adc IN
         sta 0,x
-        lda <INPUT_BUFFER+1
+        lda INPUT+1
         adc IN+1
         sta 1,x                 ; (addr)
 
@@ -335,11 +335,11 @@ W_PARSE
         dex
         dex
         clc
-        lda <INPUT_BUFFER
-        adc <INPUT_LEN
+        lda INPUT
+        adc NINPUT
         sta 0,x
-        lda <INPUT_BUFFER+1
-        adc <INPUT_LEN+1
+        lda INPUT+1
+        adc NINPUT+1
         sta 1,x                 ; (addr len end)
 
         ; push a temporary current position
@@ -442,10 +442,10 @@ W_PPARSE_NAME ; (char "<chars>name<char>" -- c-addr u)
         ;dex
         ;dex
         clc
-        lda <INPUT_BUFFER
+        lda INPUT
         adc IN
         sta 0,x
-        lda <INPUT_BUFFER+1
+        lda INPUT+1
         adc IN+1
         sta 1,x                 ; (addr)
 
@@ -459,11 +459,11 @@ W_PPARSE_NAME ; (char "<chars>name<char>" -- c-addr u)
         dex
         dex
         clc
-        lda <INPUT_BUFFER
-        adc <INPUT_LEN
+        lda INPUT
+        adc NINPUT
         sta 0,x
-        lda <INPUT_BUFFER+1
-        adc <INPUT_LEN+1
+        lda INPUT+1
+        adc NINPUT+1
         sta 1,x                 ; (addr len end)
 
         ; push a temporary current position
@@ -658,10 +658,10 @@ _refill_tib
 
 _refill_set_buffer
 
-        +LITERAL &INPUT_LEN
+        +LITERAL NINPUT
         !word W_STORE
 
-        +LITERAL &INPUT_BUFFER
+        +LITERAL INPUT
         !word W_STORE
 
         !word W_ZERO
@@ -690,9 +690,9 @@ _refill_done
 W_RESTORE_INPUT
         !word DO_COLON
         !word W_DROP            ; TODO check value, throw if bad?
-        +LITERAL &INPUT_LEN
+        +LITERAL NINPUT
         !word W_STORE
-        +LITERAL &INPUT_BUFFER
+        +LITERAL INPUT
         !word W_STORE
         !word W_IN
         !word W_STORE

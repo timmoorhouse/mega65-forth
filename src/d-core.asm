@@ -1255,10 +1255,10 @@ W_EVALUATE
         !word W_SAVE_INPUT
         !word W_NTOR
 
-        ; TODO we might want to move the setting of INPUT_LEN and INPUT_BUFFER to PEVALUATE?
-        +LITERAL &INPUT_LEN
+        ; TODO we might want to move the setting of NINPUT and INPUT to PEVALUATE?
+        +LITERAL NINPUT
         !word W_STORE
-        +LITERAL &INPUT_BUFFER
+        +LITERAL INPUT
         !word W_STORE
         +LITERAL -1
         +LITERAL SOURCE_ID
@@ -1755,9 +1755,9 @@ beq +
         +CREATE "source", 0
 W_SOURCE
         !word DO_COLON
-        +LITERAL &INPUT_BUFFER
+        +LITERAL INPUT
         !word W_AT
-        +LITERAL &INPUT_LEN
+        +LITERAL NINPUT
         !word W_AT
         !word W_PSEMI
 
